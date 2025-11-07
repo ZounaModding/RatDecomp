@@ -1,4 +1,0 @@
-#ifndef _ANIMATIONMANAGERMES_Z_H_
-#define _ANIMATIONMANAGERMES_Z_H_
-#include "Types_Z.h"
-#endif // _ANIMATIONMANAGERMES_Z_H_

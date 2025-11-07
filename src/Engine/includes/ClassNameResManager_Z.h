@@ -30,7 +30,7 @@ public:
 
 class ClassNameResManager_Z {
     HashName_ZTable_Z m_ClassHT; // Enum?
-    HoleArray_Z<ClassNameRes_Z, 32> m_ClassResHA;
+    HoleArray_Z<ClassNameRes_Z> m_ClassResHA;
 
 public:
     ClassNameResManager_Z()

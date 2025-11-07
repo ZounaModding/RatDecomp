@@ -2,7 +2,7 @@
 #define _HOLEARRAY_Z_H_
 #include "BitArray_Z.h"
 
-template <class T, S32 Granularity>
+template <class T, S32 Granularity = 32>
 class HoleArray_Z {
     DynArray_Z<T, Granularity> m_DA;
     BitArray_Z m_BA;

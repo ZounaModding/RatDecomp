@@ -1,4 +1,0 @@
-#ifndef _ANIMATIONMANAGERSKEL_Z_H_
-#define _ANIMATIONMANAGERSKEL_Z_H_
-#include "Types_Z.h"
-#endif // _ANIMATIONMANAGERSKEL_Z_H_
