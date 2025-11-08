@@ -8,7 +8,7 @@ jobs:
   build:
     # This is a *private* build container.
     # See docs/github_actions.md for more information.
-    container: ghcr.io/zounadecomp/ratdecomp-build:main
+    container: ghcr.io/zounamodding/ratdecomp-build:main
 
     runs-on: ubuntu-latest
     strategy:
