@@ -79,7 +79,7 @@ def sjiswrap_url(tag: str) -> str:
 
 def wibo_url(tag: str) -> str:
     repo = "https://github.com/decompals/wibo"
-    return f"{repo}/releases/download/{tag}/wibo"
+    return f"{repo}/releases/download/{tag}/wibo-i686"
 
 
 TOOLS: Dict[str, Callable[[str], str]] = {
