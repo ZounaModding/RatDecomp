@@ -1489,6 +1489,7 @@ def generate_objdiff_config(
         "Wii/1.5": "mwcc_43_188",
         "Wii/1.6": "mwcc_43_202",
         "Wii/1.7": "mwcc_43_213",
+        "ProDG/3.5": "prodg_35",
     }
 
     def add_unit(
