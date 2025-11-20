@@ -31,8 +31,7 @@ struct ConsoleUnkBuffer_Z {
     U8 m_UnkBuf0x0[4976];
 
     ConsoleUnkBuffer_Z() {
-        memset(&m_UnkBuf0x0, 0, (int)this + (sizeof(m_UnkBuf0x0) - (int)m_UnkBuf0x0));
-    }
+        memset(&m_UnkBuf0x0, 0, (long) ((long)m_UnkBuf0x0 + sizeof(m_UnkBuf0x0)) - ( long)&m_UnkBuf0x0);    }
 };
 
 enum ConsoleId {

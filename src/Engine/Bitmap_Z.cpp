@@ -311,4 +311,22 @@ void Bitmap_Z::SetPoint(S32 i_X, S32 i_Y, const Color& i_Color) {
     }
 }
 
+void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color& i_Color) {
+    U8 l_Red = i_Color.r * 255.0f;
+    U8 l_Green = i_Color.g * 255.0f;
+    U8 l_Blue = i_Color.b * 255.0f;
+    U8 l_Alpha = i_Color.a * 255.0f;
+    switch (i_Format) {
+        case BM_8888:
+            i_Datas[0] = l_Blue;
+            i_Datas[1] = l_Green;
+            i_Datas[2] = l_Red;
+            i_Datas[3] = l_Alpha;
+            break;
+        case BM_888:
+            i_Datas[0] = l_Blue;
+            i_Datas[1] = l_Green;
+            i_Datas[2] = l_Red;
+    }
+}
 #pragma dont_inline off

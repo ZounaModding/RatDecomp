@@ -8,6 +8,7 @@
 #include "ConsoleInterp_Z.h"
 #include "Renderer_Z.h"
 #include "File_Z.h"
+#include "ConsoleInterp_ZHdl.h"
 Extern_Z GCGlobals gData;
 
 Console_Z::Console_Z()
@@ -133,7 +134,7 @@ U32 Console_Z::GetCurrentInterpSize() {
     return 0;
 }
 
-Bool DisplayHelp() {
+Bool Help() {
     gData.Cons->DisplayHelp();
     return TRUE;
 }
@@ -146,11 +147,7 @@ Bool Pause() {
 
 void Console_Z::InterpFile() {
     if (gData.Cons->GetInterp() == NULL) {
-        BaseObject_ZHdl& l_InterpHdl = gData.ClassMgr->NewObject(Name_Z::GetID("ConsoleInterp_Z", 0), Name_Z::GetID("ConsoleInterp", 0));
-        BaseObject_ZHdl l_BObj;
-        l_BObj = l_InterpHdl;
-        BaseObject_Z* l_Interp = l_BObj;
-        m_Interp = (ConsoleInterp_Z*)l_Interp;
+        m_Interp = (ConsoleInterp_ZHdl)gData.ClassMgr->NewObject(Name_Z::GetID("ConsoleInterp_Z", 0), Name_Z::GetID("ConsoleInterp", 0));
         m_Interp->Deactivate();
     }
     GetInterp()->Start(m_StrParam[1], &m_StrParam[0], GetNbParam());
