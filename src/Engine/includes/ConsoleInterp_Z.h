@@ -16,7 +16,7 @@ public:
     inline S32 NbCommands() const { return m_StackCommIdx; }
 
     void Start(const Char* i_CommandLine, S32 i_Unk);
-    void Start(const Char* i_CommandLine, char** i_Args, S32 i_Unk);
+    void Start(const Char* i_CommandLine, Char** i_Args, S32 i_Unk);
 
     DynArray_Z<FileInterp_Z>& GetFileStack() {
         return m_FileStack;

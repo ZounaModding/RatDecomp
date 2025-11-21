@@ -83,7 +83,7 @@ public:
     ABC_CategoryHolder* m_Next;
 
     ABC_CategoryHolder();
-    ABC_CategoryHolder(abc_category i_Category, const char* i_CategoryName = NULL);
+    ABC_CategoryHolder(abc_category i_Category, const Char* i_CategoryName = NULL);
     ABC_CategoryHolder& operator=(const ABC_CategoryHolder& i_Holder);
     ABC_CategoryHolder(const ABC_CategoryHolder& i_Holder);
     ~ABC_CategoryHolder();

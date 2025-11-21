@@ -20,7 +20,7 @@ S32 GetUTF8CharBytes(const Char* i_CharBytePtr) {
 
 U32 GetUTF8CharCode(const Char* i_CharBytePtr) {
     const U8* l_CharByteU8Ptr = (const U8*)i_CharBytePtr;
-    char l_CharFirstByte = *l_CharByteU8Ptr;
+    Char l_CharFirstByte = *l_CharByteU8Ptr;
 
     if ((l_CharFirstByte & 0x80) == 0) {
         return l_CharByteU8Ptr[0];

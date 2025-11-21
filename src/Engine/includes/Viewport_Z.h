@@ -86,7 +86,7 @@ public:
     S32 m_NumOfManipDraws;
     Char m_UnkBytes0xD4[12];
     Renderer_Z* m_Renderer;
-    char m_UnkBytes0xE4[12];
+    U8 m_UnkBytes0xE4[12];
 };
 
 #endif

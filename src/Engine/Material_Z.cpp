@@ -59,7 +59,7 @@ void Material_Z::Clean() {
     }
 }
 
-Extern_Z void O_SinCos(Vec2f, float);
+Extern_Z void O_SinCos(Vec2f, Float);
 
 void Material_Z::UpdateTMatrix() {
     Vec2f m_SinCos;

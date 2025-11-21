@@ -6,18 +6,18 @@
 
 Extern_Z "C" int sprintf(char* s, const char* format, ...);
 #ifdef NONMATCHING_Z
-char ConTemp1[255];
-char ConTemp2[255];
-char ConTemp3[255];
-char ConTemp4[255];
-char ConTemp5[255];
+Char ConTemp1[255];
+Char ConTemp2[255];
+Char ConTemp3[255];
+Char ConTemp4[255];
+Char ConTemp5[255];
 #endif
 Bool ExceptionBool_Z(bool i_Cancelable, const Char* i_Message, ...) {
 }
 
-void ExceptionFonc_Z(const Char* a1, const Char* a2, S32 a3, const char* a4, U32 a5, U32 a6, U32 a7, U32 a8, U32 a9, U64* a10) {
+void ExceptionFonc_Z(const Char* a1, const Char* a2, S32 a3, const Char* a4, U32 a5, U32 a6, U32 a7, U32 a8, U32 a9, U64* a10) {
 #ifdef NONMATCHING_Z
-    Extern_Z char WhereAmI[0x1C];
+    Extern_Z Char WhereAmI[0x1C];
     Char l_Buffer[0x28F0];
     GXColor l_FgColor;
     l_FgColor.r = 255;
@@ -60,7 +60,7 @@ void ExceptionReport(const Char* a1) {
 
 #ifdef NONMATCHING_Z
 void ErrorHandler(OSError error, OSContext* context, ...) {
-    Extern_Z char WhereAmI[0x1C];
+    Extern_Z Char WhereAmI[0x1C];
     Char l_Buffer[0x28F0];
     GXColor l_FgColor;
     l_FgColor.r = 255;

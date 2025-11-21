@@ -141,4 +141,4 @@ void ClassNameRes_Z::MarkHandles() {
     }
 }
 
-static const char* s_Unused = "Unknow Enum Symbol..";
+static const Char* s_Unused = "Unknow Enum Symbol..";

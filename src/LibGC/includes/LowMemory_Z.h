@@ -5,7 +5,7 @@
 class MemoryManager_Z : public Hi_MemoryManager_Z {
 public:
     virtual void Init();
-    virtual void SetCallStackPtrs(unsigned long* a1, long a2) { };
+    virtual void SetCallStackPtrs(U32* a1, S32 a2) { };
 };
 
 Extern_Z MemoryManager_Z MemManager;

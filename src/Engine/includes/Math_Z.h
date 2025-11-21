@@ -105,12 +105,12 @@ struct Vec3f {
     Float operator*(const Vec3f& i_Vec) const { return x * i_Vec.x + y * i_Vec.y + z * i_Vec.z; }
 
     Vec3f operator/(Float i_Factor) const {
-        float l_Inv = 1.f / i_Factor;
+        Float l_Inv = 1.f / i_Factor;
         return Vec3f(x * l_Inv, y * l_Inv, z * l_Inv);
     }
 
     Vec3f& operator/=(Float i_Factor) {
-        float l_Inv = 1.f / i_Factor;
+        Float l_Inv = 1.f / i_Factor;
         x *= l_Inv;
         y *= l_Inv;
         z *= l_Inv;
@@ -336,12 +336,12 @@ struct Vec4f {
     Float operator*(const Vec4f& i_Vec) const { return x * i_Vec.x + y * i_Vec.y + z * i_Vec.z; }
 
     Vec4f operator/(Float i_Factor) const {
-        float l_Inv = 1.f / i_Factor;
+        Float l_Inv = 1.f / i_Factor;
         return Vec4f(x * l_Inv, y * l_Inv, z * l_Inv, w * l_Inv);
     }
 
     Vec4f& operator/=(Float i_Factor) {
-        float l_Inv = 1.f / i_Factor;
+        Float l_Inv = 1.f / i_Factor;
         x *= l_Inv;
         y *= l_Inv;
         z *= l_Inv;
@@ -384,36 +384,36 @@ public:
 
         // Row2
         struct {
-            float f[2];
+            Float f[2];
             UDummy dummy;
-            float v;
+            Float v;
         } m02;
 
         struct {
-            float f[6];
+            Float f[6];
             UDummy dummy;
-            float v;
+            Float v;
         } m12;
 
         struct {
-            float f[10];
+            Float f[10];
             UDummy dummy;
-            float v;
+            Float v;
         } m22;
 
         // Row3
         struct {
-            float f[3];
+            Float f[3];
             UDummy dummy;
         } m03;
 
         struct {
-            float f[7];
+            Float f[7];
             UDummy dummy;
         } m13;
 
         struct {
-            float f[11];
+            Float f[11];
             UDummy dummy;
         } m23;
     } m;

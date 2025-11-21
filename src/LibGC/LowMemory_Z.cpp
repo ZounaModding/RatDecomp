@@ -15,8 +15,8 @@ Extern_Z "C" void __sys_free(void* i_Ptr) {
 void MemoryManager_Z::Init() {
     m_HeapBase = OSGetArenaLo();
     m_HeapEnd = OSGetArenaHi();
-    m_HeapEnd = (void*)((char*)m_HeapEnd - 0x10000 + 0x600);
-    memset(m_HeapBase, 14, (char*)m_HeapEnd - (char*)m_HeapBase);
+    m_HeapEnd = (void*)((U8*)m_HeapEnd - 0x10000 + 0x600);
+    memset(m_HeapBase, 14, (U8*)m_HeapEnd - (U8*)m_HeapBase);
     Hi_MemoryManager_Z::Init();
 }
 

@@ -32,7 +32,7 @@ public:
     static U32 DefaultRdrFlag;
 
 private:
-    char m_Unk0x14[0x0C];
+    U8 m_Unk0x14[0x0C];
     Vec3f m_DiffuseColor;
     Float m_DiffuseOpacity;
     Vec3f m_EmissiveColor;

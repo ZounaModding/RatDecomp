@@ -329,4 +329,5 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
             i_Datas[2] = l_Red;
     }
 }
+
 #pragma dont_inline off

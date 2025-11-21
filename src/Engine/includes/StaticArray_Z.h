@@ -6,7 +6,7 @@
 template <class T, int ReservedSize, Bool DeleteObject = TRUE, Bool InitObject = TRUE>
 class StaticArray_Z {
 private:
-    char ArrayChar[ReservedSize * sizeof(T)];
+    Char ArrayChar[ReservedSize * sizeof(T)];
     int Size;
 
     T& Get(int Id) {

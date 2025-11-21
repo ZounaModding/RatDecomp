@@ -6,8 +6,8 @@
 class HFogData_Z : public ObjectDatas_Z {
 
 private:
-    float m_Unk0x28;
-    float m_Unk0x2C;
+    Float m_Unk0x28;
+    Float m_Unk0x2C;
     Mat4x4 m_UnkMatrix;
     Vec3f m_Color;
     Float m_Active;

@@ -20,11 +20,11 @@ public:
         gQRandom2 = 0.5;
     }
 
-    float gQRandom1;
-    float gQRandom2;
+    Float gQRandom1;
+    Float gQRandom2;
 };
 
-float ran1(S32* i_Seed);
+Float ran1(S32* i_Seed);
 void InitRandom(S32 i_Seed);
 S32 Alea(S32 i_Min, S32 i_Max);
 Float Random();

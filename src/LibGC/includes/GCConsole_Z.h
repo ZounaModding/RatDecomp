@@ -22,10 +22,10 @@ public:
     virtual ~GCConsole_Z();
     virtual U32 InitConsole();
     virtual void CloseConsole();
-    virtual void Update(float a1);
+    virtual void Update(Float a1);
     virtual void Flush();
-    virtual void DisplayStatus(unsigned long a1, const char* a2);
-    virtual void SaveMessage(const char* a1);
+    virtual void DisplayStatus(U32 a1, const Char* a2);
+    virtual void SaveMessage(const Char* a1);
 };
 
 #endif

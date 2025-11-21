@@ -31,7 +31,8 @@ struct ConsoleUnkBuffer_Z {
     U8 m_UnkBuf0x0[4976];
 
     ConsoleUnkBuffer_Z() {
-        memset(&m_UnkBuf0x0, 0, (long) ((long)m_UnkBuf0x0 + sizeof(m_UnkBuf0x0)) - ( long)&m_UnkBuf0x0);    }
+        memset(&m_UnkBuf0x0, 0, (S32)((S32)m_UnkBuf0x0 + sizeof(m_UnkBuf0x0)) - (S32)&m_UnkBuf0x0);
+    }
 };
 
 enum ConsoleId {
@@ -43,12 +44,14 @@ enum ConsoleId {
     ConsoleUser,
     ConsoleNbFolder
 };
+
 class ConsoleUnkS32_Z {
 public:
     S32 m_UnkU32_0x1384;
     S32 m_UnkU32_0x1388;
     S32 m_UnkU32_0x138c;
     S32 m_UnkU32_0x1390;
+
     ConsoleUnkS32_Z() {
         m_UnkU32_0x1390 = 0;
         m_UnkU32_0x138c = 0;
@@ -56,6 +59,7 @@ public:
         m_UnkU32_0x1384 = 0;
     }
 };
+
 class Console_Z {
 protected:
     Char* m_ConsoleText;
@@ -145,18 +149,18 @@ public:
 
     virtual void CloseConsole() { return; };
 
-    virtual void EnableFolder(unsigned long a1);
-    virtual void DisableFolder(unsigned long a1);
+    virtual void EnableFolder(U32 a1);
+    virtual void DisableFolder(U32 a1);
     virtual void EnableFlag(U32 i_Flag);
-    virtual void DisableFlag(unsigned long a1);
-    virtual void Update(float a1);
+    virtual void DisableFlag(U32 a1);
+    virtual void Update(Float a1);
     virtual void Draw(DrawInfo_Z& a1);
     virtual PopupMenu_Z* GetPopupMenu() const;
     virtual void Flush();
-    virtual void DisplayStatus(unsigned long a1, const char* a2);
-    virtual void MessageStatus(unsigned long a1, const char* a2, ...);
-    virtual void SaveMessage(const char* a1);
-    virtual void SaveWarningMessage(const char* a1);
+    virtual void DisplayStatus(U32 a1, const Char* a2);
+    virtual void MessageStatus(U32 a1, const Char* a2, ...);
+    virtual void SaveMessage(const Char* a1);
+    virtual void SaveWarningMessage(const Char* a1);
     virtual void MessageError(bool a1, U64 a2, const Char* a3, va_list& i_Args);
 };
 

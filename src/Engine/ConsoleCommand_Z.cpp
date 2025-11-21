@@ -30,7 +30,7 @@ void Console_Z::AddCommand(const Char* i_Command, CommandProc i_Proc, const Char
 
     S32 len = strlen(i_Command);
 
-    char* l_AliasStr = l_Alias;
+    Char* l_AliasStr = l_Alias;
 
     Char l_Char;
     for (S32 i = 0; i < len && l_AliasSize < 15; i++) {
