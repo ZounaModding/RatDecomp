@@ -852,7 +852,7 @@ config.libs = [
             Object(NonMatching, "Engine/Menu3DDraw_Z.cpp"),
             Object(NonMatching, "Engine/MeshAABB_Z.cpp"),
             Object(NonMatching, "Engine/MaterialAnimLoad_Z.cpp"),
-            Object(NonMatching, "Engine/Console_Z.cpp"),
+            Object(Matching,    "Engine/Console_Z.cpp"),
             Object(NonMatching, "Engine/SelfRunning_Z.cpp"),
             Object(Matching,    "Engine/BitArray_Z.cpp"),
             Object(NonMatching, "Engine/CameraZone_Z.cpp"),

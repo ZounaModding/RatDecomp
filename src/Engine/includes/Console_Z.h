@@ -43,7 +43,19 @@ enum ConsoleId {
     ConsoleUser,
     ConsoleNbFolder
 };
-
+class ConsoleUnkS32_Z {
+public:
+    S32 m_UnkU32_0x1384;
+    S32 m_UnkU32_0x1388;
+    S32 m_UnkU32_0x138c;
+    S32 m_UnkU32_0x1390;
+    ConsoleUnkS32_Z() {
+        m_UnkU32_0x1390 = 0;
+        m_UnkU32_0x138c = 0;
+        m_UnkU32_0x1388 = 0;
+        m_UnkU32_0x1384 = 0;
+    }
+};
 class Console_Z {
 protected:
     Char* m_ConsoleText;
@@ -51,10 +63,7 @@ protected:
     DynArray_Z<Char> m_TextBolded;
     ConsoleUnkBuffer_Z m_ConsoleUnkBuffer;
     U32 m_UnkU32_0x1380;
-    U32 m_UnkU32_0x1384;
-    U32 m_UnkU32_0x1388;
-    U32 m_UnkU32_0x138c;
-    U32 m_UnkU32_0x1390;
+    ConsoleUnkS32_Z m_UnkS32List_0x1384;
     U32 m_UnkU32_0x1394;
     U32 m_UnkU32_0x1398;
     U32 m_UnkU32_0x139c;

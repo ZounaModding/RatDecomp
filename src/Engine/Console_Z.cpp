@@ -12,11 +12,8 @@
 Extern_Z GCGlobals gData;
 
 Console_Z::Console_Z()
-    : m_UnkU32_0x1390(0)
-    , m_UnkU32_0x138c(0)
-    , m_UnkU32_0x1388(0)
-    , m_UnkU32_0x1384(0)
-    , m_UnkBool_0x13ac(0) {
+    : m_UnkS32List_0x1384()
+    , m_UnkBool_0x13ac() {
     m_UnkU32_0x23bc = 0;
     m_MaxComm = 0;
     m_UnkU32_0x23bc = 0;
