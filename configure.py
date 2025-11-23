@@ -760,7 +760,7 @@ config.libs = [
             Object(NonMatching, "Engine/WorldAnim_Z.cpp"),
             Object(NonMatching, "Engine/LightDraw_Z.cpp"),
             Object(NonMatching, "Engine/Gaussian_Z.cpp"),
-            Object(NonMatching, "Engine/EffectManager_Z.cpp"),
+            Object(Matching,    "Engine/EffectManager_Z.cpp"),
             Object(NonMatching, "Engine/SurfaceCollisionCapsule_Z.cpp"),
             Object(NonMatching, "Engine/CameraUser_Z.cpp"),
             Object(NonMatching, "Engine/ParticlesEle_Z.cpp"),
