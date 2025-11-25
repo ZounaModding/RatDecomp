@@ -62,21 +62,10 @@ static void swizzle_offsets(U8* swizz, U8 const* offsets, U32 sourcewidth, U32 s
     }
 }
 
-static S32 make_texture(U32 pitch, U32 height,
-                        GXTexFmt format,
-                        GXTexWrapMode type,
-                        GXTexObj* texture, void* ptr) {
-    GXInitTexObj(texture,
-                 ptr,
-                 (U16)pitch, (U16)height,
-                 format,
-                 type, type,
-                 GX_FALSE);
+static S32 make_texture(U32 pitch, U32 height, GXTexFmt format, GXTexWrapMode type, GXTexObj* texture, void* ptr) {
+    GXInitTexObj(texture, ptr, (U16)pitch, (U16)height, format, type, type, GX_FALSE);
 
-    GXInitTexObjLOD(texture,
-                    GX_NEAR, GX_NEAR,
-                    0, 0, 0.0f,
-                    GX_FALSE, 0, GX_ANISO_1);
+    GXInitTexObjLOD(texture, GX_NEAR, GX_NEAR, 0, 0, 0.0f, GX_FALSE, 0, GX_ANISO_1);
     return (1);
 }
 

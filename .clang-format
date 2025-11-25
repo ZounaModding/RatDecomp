@@ -31,7 +31,7 @@ ReflowComments: false
 IndentWrappedFunctionNames: false
 IndentCaseLabels: true
 ColumnLimit: 0
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: BlockIndent
 AlignOperands: true
 AlignTrailingComments: true
 AlignConsecutiveAssignments: false
