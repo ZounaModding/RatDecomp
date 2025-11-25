@@ -8,9 +8,15 @@ class Skel_Z;
 class AnimationConcat_Z;
 
 struct AnimationMeshKeyId_Z {
+    AnimationMeshKeyId_Z() {
+        Reset();
+    }
+
+    void Reset() {
+        m_CurVisibility = 1;
+    }
+
     S16 m_CurVisibility;
-    AnimationMeshKeyId_Z();
-    void Reset();
 };
 
 struct AnimationMeshData_Z {

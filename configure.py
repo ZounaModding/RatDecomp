@@ -990,7 +990,7 @@ config.libs = [
             Object(NonMatching, "Engine/LodDynAgent_Z.cpp"),
             Object(NonMatching, "Engine/LodMoveCollCarrying_Z.cpp"),
             Object(NonMatching, "Engine/Particles_Z.cpp"),
-            Object(NonMatching, "Engine/AnimationNode_Z.cpp"),
+            Object(Matching,    "Engine/AnimationNode_Z.cpp"),
             Object(NonMatching, "Engine/Throwable_Z.cpp"),
             Object(NonMatching, "Engine/FontsDraw_Z.cpp"),
             Object(NonMatching, "Engine/Menu2DLoadAscii_Z.cpp"),

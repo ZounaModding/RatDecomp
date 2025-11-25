@@ -8,6 +8,16 @@ class BoneNode_Z {
 public:
     void UpdateTM(BoneNode_Z* i_Parent);
 
+    inline void SetTranslation(const Vec3f& i_Translation) { m_Translation = i_Translation; }
+    inline Vec3f& GetTranslation() { return m_Translation; }
+
+    inline void SetScale(const Vec3f& i_Scale) { m_Scale = i_Scale; }
+    inline Vec3f& GetScale() { return m_Scale; }
+
+    inline void SetRotation(const Quat& i_Rotation) { m_Rotation = i_Rotation; }
+    inline Quat& GetRotation() { return m_Rotation; }
+
+    inline void SetRotInWorld(const Quat& i_Rotation) { m_RotInWorld = i_Rotation; }
     inline Quat& GetRotInWorld() { return m_RotInWorld; }
 
     inline void DisableFlag(U32 i_Flag) { m_Flag &= ~i_Flag; }

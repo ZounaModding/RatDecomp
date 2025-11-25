@@ -3,23 +3,36 @@
 #include "Keyframer_Z.h"
 #include "Name_Z.h"
 #include "Types_Z.h"
+#include "AnimMessage_Z.h"
+
+#define ANIM_NODE_RESET_TRANS 1
+#define ANIM_NODE_RESET_ROT 2
+#define ANIM_NODE_RESET_SCALE 4
 
 class BoneNode_Z;
 class AnimationConcatNode_Z;
 class RegMessage_Z;
 
 struct AnimationNodeModifier_Z {
-    Vec3f m_Translation;
     Vec3f m_Scale;
+    Vec3f m_Translation;
     Float m_BoneIndex;
 };
 
 struct AnimationNodeKeyId_Z {
+    AnimationNodeKeyId_Z() {
+        Reset();
+    }
+
+    inline void Reset() {
+        m_CurTrans = 1;
+        m_CurRot = 1;
+        m_CurScale = 1;
+    }
+
     S16 m_CurTrans;
     S16 m_CurRot;
     S16 m_CurScale;
-    AnimationNodeKeyId_Z();
-    void Reset();
 };
 
 struct AnimationNodeData_Z {
@@ -49,9 +62,9 @@ private:
     AnimationNodeData_Z m_Data;
 
 public:
-    static void UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& i_RegMsgOffset);  // i_Times is Start, Cur, Max times
-    static void GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& i_RegMsgOffset);     // i_Times is Start, Cur, Max times
-    static void CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& i_RegMsgOffset); // i_Times is Start, Cur, Max times
+    static void UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex);  // i_Times is Start, Cur, Max times
+    static void GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex);     // i_Times is Start, Cur, Max times
+    static void CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex); // i_Times is Start, Cur, Max times
     static void Load(AnimationNodeData_Z& i_AnimData, void** i_Data);
 };
 #endif // _ANIMATIONNODE_Z_H_

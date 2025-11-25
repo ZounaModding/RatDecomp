@@ -10,40 +10,40 @@ struct AnimationConcat_Z {
     Name_Z m_ObjectName;
     S16 m_ObjectID;
     S16 m_Flag;
-    S16 m_StartKfr; // $SABE: Might be a struct together with EndKfr
-    S16 m_NbKfr;    // $SABE: Might be a struct together with StartKfr
+    U16 m_StartKfr; // $SABE: Might be a struct together with NbKfr
+    U16 m_NbKfr;    // $SABE: Might be a struct together with StartKfr
 };
 
 struct AnimationConcatNode_Z {
     Name_Z m_BoneName;
     S16 m_BoneID;
     S16 m_Flag;
-    S16 m_TransStartKfr;
-    S16 m_TransEndKfr;
-    S16 m_RotStartKfr;
-    S16 m_RotEndKfr;
-    S16 m_BezierRotStartKfr;
-    S16 m_BezierRotEndKfr;
-    S16 m_ScaleStartKfr;
-    S16 m_ScaleEndKfr;
-    S16 m_MsgStartKfr;
-    S16 m_MsgEndKfr;
+    U16 m_TransStartKfr;
+    U16 m_TransNbKfr;
+    U16 m_RotStartKfr;
+    U16 m_RotNbKfr;
+    U16 m_BezierRotStartKfr;
+    U16 m_BezierRotNbKfr;
+    U16 m_ScaleStartKfr;
+    U16 m_ScaleNbKfr;
+    U16 m_MsgStartKfr;
+    U16 m_MsgNbKfr;
 };
 
 struct AnimationConcatMtl_Z {
     Name_Z m_MtlName;
     S16 m_MtlID;
     S16 m_Flag;
-    S16 m_TransUStartKfr;
-    S16 m_TransUEndKfr;
-    S16 m_TransVStartKfr;
-    S16 m_TransVEndKfr;
-    S16 m_DiffuseColorStartKfr;
-    S16 m_DiffuseColorEndKfr;
-    S16 m_EmissiveColorStartKfr;
-    S16 m_EmissiveColorEndKfr;
-    S16 m_RotStartKfr;
-    S16 m_RotEndKfr;
+    U16 m_TransUStartKfr;
+    U16 m_TransUNbKfr;
+    U16 m_TransVStartKfr;
+    U16 m_TransVNbKfr;
+    U16 m_DiffuseColorStartKfr;
+    U16 m_DiffuseColorNbKfr;
+    U16 m_EmissiveColorStartKfr;
+    U16 m_EmissiveColorNbKfr;
+    U16 m_RotStartKfr;
+    U16 m_RotNbKfr;
 };
 
 typedef DynArray_Z<AnimationConcat_Z, 32, 0, 0> AnimationConcat_ZDA;
