@@ -60,11 +60,11 @@ public:
         SetTime(i_Time);
     }
 
-    inline U32 GetNb() const {
+    inline S32 GetNb() const {
         return m_Messages.GetSize();
     }
 
-    inline void SetNb(const U32 i_Nb) {
+    inline void SetNb(const S32 i_Nb) {
         m_Messages.SetSize(i_Nb);
     }
 
@@ -96,6 +96,10 @@ public:
 
     inline const KeyMessage_Z& GetKey(U32 i) const {
         return m_Keys[i];
+    }
+
+    inline DynArray_Z<KeyMessage_Z, 16, 0, 0>& GetKeys() {
+        return m_Keys;
     }
 
     inline void SetNbKey(U32 NbKey) {

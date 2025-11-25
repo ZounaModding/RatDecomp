@@ -28,6 +28,18 @@ struct AnimationConcatNode_Z {
     U16 m_ScaleNbKfr;
     U16 m_MsgStartKfr;
     U16 m_MsgNbKfr;
+
+    inline S16 GetBoneId() const {
+        return m_BoneID;
+    };
+
+    inline U16 GetMsgStart() const {
+        return m_MsgStartKfr;
+    }
+
+    inline U16 GetMsgNb() const {
+        return m_MsgNbKfr;
+    }
 };
 
 struct AnimationConcatMtl_Z {
@@ -60,6 +72,9 @@ public:
     virtual void EndLoadLinks();      /* 0x18 */
     virtual void Clean();             /* 0x1C */
     virtual Bool MarkHandles();       /* 0x20 */
+
+    S32 GetIndexOfNodeById(S32 Id) const;
+    Float GetTimeFromMessage(S32 i_MsgId, S32 i_NodeId, Float i_StartTime = 0.f);
 
     inline Float GetMaxTime() const { return m_MaxTime; }
 
