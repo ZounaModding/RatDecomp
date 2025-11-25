@@ -1,5 +1,7 @@
 #ifndef _FONT_Z_H_
 #define _FONT_Z_H_
+
+// clang-format off
 unsigned char Font[255 - 32][8][8] = {
     { 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,

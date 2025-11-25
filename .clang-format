@@ -32,6 +32,7 @@ IndentWrappedFunctionNames: false
 IndentCaseLabels: true
 ColumnLimit: 0
 AlignAfterOpenBracket: BlockIndent
+BinPackArguments: false
 AlignOperands: true
 AlignTrailingComments: true
 AlignConsecutiveAssignments: false

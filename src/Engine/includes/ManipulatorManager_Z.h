@@ -31,7 +31,8 @@ public:
 
     Bool Contains(Manipulator_Z* i_Manip, ManipulatorList_Z& i_ManipList) {
         for (Manipulator_Z* l_CurrManip = i_ManipList.GetHead();
-             l_CurrManip != NULL; l_CurrManip = l_CurrManip->m_NextPtr) {
+             l_CurrManip != NULL;
+             l_CurrManip = l_CurrManip->m_NextPtr) {
             if (l_CurrManip == i_Manip) {
                 return TRUE;
             }

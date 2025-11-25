@@ -66,7 +66,8 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
         i_Frame.m_Data->m_MsgKfr.GetCctValue(
             i_Frame.m_Cct->m_MsgStartKfr,
             i_Frame.m_Cct->m_MsgNbKfr,
-            i_Times.x, i_Times.y,
+            i_Times.x,
+            i_Times.y,
             i_Times.z,
             i_Frame.m_RegMsg,
             io_RegMsgIndex
@@ -158,7 +159,8 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
             i_Frame.m_Data->m_MsgKfr.GetCctValue(
                 i_Frame.m_Cct->m_MsgStartKfr,
                 i_Frame.m_Cct->m_MsgNbKfr,
-                i_Times.x, i_Times.y,
+                i_Times.x,
+                i_Times.y,
                 i_Times.z,
                 i_Frame.m_RegMsg,
                 io_RegMsgIndex
@@ -173,7 +175,8 @@ void AnimationNode_Z::CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& 
             i_Frame.m_Data->m_MsgKfr.GetCctValue(
                 i_Frame.m_Cct->m_MsgStartKfr,
                 i_Frame.m_Cct->m_MsgNbKfr,
-                i_Times.x, i_Times.y,
+                i_Times.x,
+                i_Times.y,
                 i_Times.z,
                 i_Frame.m_RegMsg,
                 io_RegMsgIndex
