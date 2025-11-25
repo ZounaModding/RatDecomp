@@ -59,7 +59,7 @@ class Fonts_Z : public ResourceObject_Z {
 public:
     Fonts_Z();
     virtual ~Fonts_Z();
-    virtual void Load(void* a1);
+    virtual void Load(void** a1);
     virtual void EndLoad();
     virtual void AfterEndLoad();
     virtual Bool MarkHandles();

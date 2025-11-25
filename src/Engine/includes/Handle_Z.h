@@ -42,9 +42,6 @@ Extern_Z GCGlobals gData;
             m_RealID.GblID = i_Org.m_RealID.GblID;               \
             return *this;                                        \
         }                                                        \
-        ClassName##Hdl(int i_Val) {                              \
-            m_RealID.GblID = i_Val;                              \
-        }                                                        \
         ClassName* operator->() const {                          \
             return (ClassName*)GETPTR((BaseObject_ZHdl&)*this);  \
         }                                                        \
@@ -53,11 +50,15 @@ Extern_Z GCGlobals gData;
         }                                                        \
     }
 
+// ClassName##Hdl(int i_Val) {
+//     m_RealID.GblID = i_Val;
+// }
+
 union HdlID {
-    S32 GblID;
+    int GblID;
 
     struct {
-        S32 Key : 8,
+        int Key : 8,
             ID : 24;
     } Ref;
 };
@@ -71,16 +72,16 @@ public:
         m_RealID.GblID = 0;
     }
 
-    BaseObject_ZHdl(const S32 i_Val) {
+    BaseObject_ZHdl(const int i_Val) {
         m_RealID.Ref.ID = i_Val;
-        m_RealID.Ref.Key = (S8)i_Val;
+        m_RealID.Ref.Key = (char)i_Val;
     }
 
-    S32 GetID() const {
+    int GetID() const {
         return m_RealID.Ref.ID;
     }
 
-    S8 GetKey() const {
+    char GetKey() const {
         return m_RealID.Ref.Key;
     }
 
@@ -97,7 +98,9 @@ protected:
 };
 
 struct HandleRec_Z {
-    static const U8 RSC = 8;
+    enum {
+        RSC = 8
+    };
 
     S8 m_Key;
     S8 m_Flag;
@@ -161,10 +164,8 @@ private:
 
 public:
     inline Name_Z& GetHandleName(const BaseObject_ZHdl& i_Hdl) {
-        int l_ID = i_Hdl.GetID();
-        int l_Key = i_Hdl.GetKey();
-
-        if (CheckKey(l_ID, l_Key)) {
+        S32 l_ID = i_Hdl.GetID();
+        if (CheckKey(l_ID, i_Hdl.GetKey())) {
             return m_HandleRecDA[l_ID].m_Name;
         }
 

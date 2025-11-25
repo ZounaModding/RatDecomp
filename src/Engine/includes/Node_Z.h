@@ -75,7 +75,7 @@ private:
     Float m_Scale;
     Float m_UniformScale;
     Float m_InverseUniformScale;
-    U32 m_UnkRelatedToSeadRef;
+    U32 m_OccluderZoneStartId; // Similar to the one in Surface_Z | index into the occluder zone index DA of Occluder_Z
     Color m_Color;
     Sphere_Z m_BSphere;
     Rect_Z m_DisplaySeadRect;

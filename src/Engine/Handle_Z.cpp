@@ -16,10 +16,6 @@ HandleManager_Z::HandleManager_Z() {
     m_ForbidCheckHandles = FALSE;
 }
 
-S32 HandleManager_Z::HandleToU32(const BaseObject_ZHdl& i_Hdl) {
-    return i_Hdl.m_RealID.GblID;
-}
-
 const BaseObject_ZHdl& HandleManager_Z::CreateNewHandle(BaseObject_Z* i_ObjPtr, const Name_Z& i_Name, S16 i_ClassID, U8 i_Flag) {
     if (!m_NbFree) {
         ExpandSize();
@@ -73,7 +69,6 @@ void HandleManager_Z::DeleteHandle(const BaseObject_ZHdl& i_Hdl) {
     m_FreeRecDA[m_NbFree++] = l_ID;
 }
 
-// $SABE TODO: Fix match %, believed cause is inlined BitArray_Z::GetBit in HashTableBase_Z::Supress
 void HandleManager_Z::RemoveResourceRef(const HandleRec_Z& i_HandleRec) {
     if (i_HandleRec.m_Flag & 0x8) {
         S32Hash_Z l_HashElt(i_HandleRec.m_Name.GetID());
@@ -90,22 +85,20 @@ void HandleManager_Z::AddResourceRef(const HandleRec_Z& i_HandleRec, S32 i_Index
     }
 }
 
-// $SABE TODO: Fix match %, believed cause is inlined BitArray_Z::GetBit in HashTableBase_Z::Search
 S32 HandleManager_Z::IsResourceRef(S32 i_Hdl) {
     S32Hash_Z l_HashElt(i_Hdl);
     const S32Hash_Z* l_Result = m_HandleIdHT.Search(l_HashElt);
     if (l_Result) {
-        return l_Result->m_Value;
+        return l_Result->m_Ref;
     }
     return -1;
 }
 
 S32 HandleManager_Z::ChangeHandleName(const BaseObject_ZHdl& i_Hdl, const Name_Z& i_Name) {
-    int l_ID = i_Hdl.GetID();
-    int l_Key = i_Hdl.GetKey();
+    S32 l_ID = i_Hdl.GetID();
 
-    if (CheckKey(l_ID, l_Key)) {
-        HandleRec_Z l_HandleRec = m_HandleRecDA[i_Hdl.GetID()];
+    if (CheckKey(l_ID, i_Hdl.GetKey())) {
+        HandleRec_Z& l_HandleRec = m_HandleRecDA[l_ID];
         ASSERTLE_Z(!(l_HandleRec.m_Flag & HandleRec_Z::RSC), "", 157, "!(HdlRec.Flag&HandleRec_Z::RSC)");
         l_HandleRec.m_Name = i_Name;
         return TRUE;
@@ -114,19 +107,19 @@ S32 HandleManager_Z::ChangeHandleName(const BaseObject_ZHdl& i_Hdl, const Name_Z
 }
 
 void HandleManager_Z::MarkU32Handle(U32 i_Hdl) {
-    Bool l_Result = FALSE;
-    int l_ID;
-    S8 l_Key;
-
-    l_ID = ((BaseObject_ZHdl*)&i_Hdl)->GetID();
-    if (l_ID < m_HandleRecDA.GetSize()) {
-        l_Key = ((BaseObject_ZHdl*)&i_Hdl)->GetKey();
-        if (l_Key == m_HandleRecDA[l_ID].m_Key) {
-            l_Result = TRUE;
-        }
-    }
-    if (l_Result) {
+    BaseObject_ZHdl l_Hdl = *((BaseObject_ZHdl*)&i_Hdl);
+    S32 l_ID = l_Hdl.GetID();
+    if (CheckKey(l_ID, l_Hdl.GetKey())) {
         m_HandleRecDA[l_ID].m_ObjPtr->MarkHandles();
     }
-    return;
+}
+
+S32 HandleManager_Z::HandleToU32(const BaseObject_ZHdl& i_Hdl) {
+    return i_Hdl.m_RealID.GblID;
+}
+
+BaseObject_ZHdl HandleManager_Z::U32ToHandle(S32 i_Hdl) {
+    BaseObject_ZHdl l_Hdl;
+    l_Hdl.m_RealID.GblID = i_Hdl;
+    return l_Hdl;
 }
