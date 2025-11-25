@@ -45,7 +45,7 @@ def printClasses(funcs):
         if '__dt' in funcs[i]:
             decl = f'\tvirtual ~{class_name}();'
         else:
-            method = demangle(funcs[i])
+            method = demangle(f" {funcs[i]}")
             if method.startswith(f'{class_name}::'):
                 method = method[len(f'{class_name}::'):]
 
