@@ -6,7 +6,7 @@
 Extern_Z GCGlobals gData;
 
 void Material_Z::Load(void** i_Data) {
-    MEMCPYFROMRANGE_Z(&m_DiffuseColor, *i_Data, m_DiffuseColor, m_TextureFlags);
+    LOADRANGE_Z(m_DiffuseColor, m_TextureFlags);
     for (S32 i = 0; i < mtl_nb_params; i++) {
         gData.ClassMgr->LoadLink(m_CurBmapHdl[i], i_Data);
     }

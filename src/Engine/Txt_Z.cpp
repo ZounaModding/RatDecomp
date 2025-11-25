@@ -3,7 +3,7 @@
 
 void Txt_Z::Load(void** i_Data) {
     S32 l_Unk;
-    MEMCPYFROM_Z(&l_Unk, *i_Data, sizeof(S32));
+    LOAD_Z(l_Unk);
     m_File.Init(l_Unk, NULL);
-    MEMCPYFROM_Z(m_File.GetBuf(), *i_Data, m_File.GetSize());
+    LOADBYTES_Z(m_File.GetBuf(), m_File.GetSize());
 }

@@ -34,7 +34,7 @@ void Object_Z::LoadLinks(void** i_Data) {
     BaseObject_Z::LoadLinks(i_Data);
     m_ResObjLink.Load(i_Data);
     gData.ClassMgr->LoadLink(m_ObjectDataHdl, i_Data);
-    MEMCPYFROMRANGE_Z(&m_BSphereLocal, *i_Data, m_BSphereLocal, m_Type);
+    LOADRANGE_Z(m_BSphereLocal, m_Type);
 }
 
 void Object_Z::EndLoadLinks() {
@@ -71,7 +71,7 @@ void ObjectDatas_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_Obj
 }
 
 void ObjectDatas_Z::Load(void** i_Data) {
-    MEMCPYFROM_Z(&m_Flag, *i_Data, 0x14);
+    LOADBYTES_Z(&m_Flag, 0x14);
     return;
 }
 

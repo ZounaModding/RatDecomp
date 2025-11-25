@@ -76,7 +76,7 @@ Char* UserDefineCmd_Z::GetNextCommand(U32& o_Length) {
 
 void UserDefine_Z::Load(void** i_Data) {
     S32 l_DataLength;
-    MEMCPYFROM_Z(&l_DataLength, *i_Data, 4);
+    LOAD_Z(l_DataLength);
     Char* l_Data = (Char*)*i_Data;
     m_Cmd.SetCmd(l_Data, l_DataLength);
     *(U32*)i_Data += l_DataLength;

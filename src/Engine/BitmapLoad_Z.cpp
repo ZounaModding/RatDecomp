@@ -7,25 +7,24 @@
 #include "Types_Z.h"
 
 void Bitmap_Z::Load(void** i_Data) {
-
     S32 l_DataSize;
     S32 l_AmountOfColors;
     S32 l_PalSize;
-    MEMCPYFROMRANGE_Z(&m_SizeX, *i_Data, m_SizeX, m_Flag);
+    LOADRANGE_Z(m_SizeX, m_Flag);
     if (m_PrecalculatedSize) {
         m_Datas = (U8*)AllocContiguousAlignCL_Z(m_PrecalculatedSize, "BITMAP_DATA_ALLOC", 13, 128);
-        MEMCPYFROM_Z(m_Datas, *i_Data, m_PrecalculatedSize);
+        LOADBYTES_Z(m_Datas, m_PrecalculatedSize);
     }
     else {
         l_DataSize = GetDataSize();
         m_Datas = (U8*)AllocContiguousAlignCL_Z(l_DataSize, "BITMAP_DATA_ALLOC", 18, 128);
-        MEMCPYFROM_Z(m_Datas, *i_Data, l_DataSize);
+        LOADBYTES_Z(m_Datas, l_DataSize);
     }
     l_AmountOfColors = GetPalSize();
     if (l_AmountOfColors != 0) {
         l_PalSize = 4 * l_AmountOfColors;
         m_Palette = (U8*)AllocAlignCL_Z(l_PalSize, "BITMAP_PAL_ALLOC", 26, 128);
-        MEMCPYFROM_Z(m_Palette, *i_Data, l_PalSize);
+        LOADBYTES_Z(m_Palette, l_PalSize);
     }
 }
 

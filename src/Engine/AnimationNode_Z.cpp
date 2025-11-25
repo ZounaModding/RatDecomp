@@ -186,7 +186,7 @@ void AnimationNode_Z::CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& 
 }
 
 void AnimationNode_Z::Load(AnimationNodeData_Z& i_AnimData, void** i_Data) {
-    MEMCPYFROM_Z(&i_AnimData.m_Flag, *i_Data, sizeof(i_AnimData.m_Flag));
+    LOAD_Z(i_AnimData.m_Flag);
     i_AnimData.m_RotKfr.Load(i_Data);
     i_AnimData.m_BezierRotKfr.Load(i_Data);
     i_AnimData.m_ScaleKfr.Load(i_Data);
