@@ -3,7 +3,7 @@
 #include "BoneNode_Z.h"
 #include "Sys_Z.h"
 
-void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex) {
+void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_MsgNb) {
     Vec3f l_Vec;
     Quat l_Quat;
 
@@ -16,7 +16,7 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
             l_Quat,
             i_Frame.m_KeyId->m_CurRot
         );
-        i_Frame.m_UpdateBoneNode->SetRotation(l_Quat);
+        i_Frame.m_BoneTrs->m_Rotation = l_Quat;
     }
     else {
         if (i_Frame.m_Cct->m_BezierRotNbKfr > 1) {
@@ -27,7 +27,7 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
                 l_Quat,
                 i_Frame.m_KeyId->m_CurRot
             );
-            i_Frame.m_UpdateBoneNode->SetRotation(l_Quat);
+            i_Frame.m_BoneTrs->m_Rotation = l_Quat;
         }
     }
 
@@ -43,7 +43,7 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
         if (i_Frame.m_Modifier) {
             l_Vec += i_Frame.m_Modifier->m_Scale;
         }
-        i_Frame.m_UpdateBoneNode->SetScale(l_Vec);
+        i_Frame.m_BoneTrs->m_Scale = l_Vec;
     }
 
     // Translation
@@ -58,7 +58,7 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
         if (i_Frame.m_Modifier) {
             l_Vec += i_Frame.m_Modifier->m_Translation;
         }
-        i_Frame.m_UpdateBoneNode->SetTranslation(l_Vec);
+        i_Frame.m_BoneTrs->m_Translation = l_Vec;
     }
 
     // Message
@@ -70,12 +70,12 @@ void AnimationNode_Z::UpdateCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i
             i_Times.y,
             i_Times.z,
             i_Frame.m_RegMsg,
-            io_RegMsgIndex
+            io_MsgNb
         );
     }
 }
 
-void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex) {
+void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_MsgNb) {
     Vec3f l_Vec;
     Vec3f l_OriginalVec;
     Quat l_Quat;
@@ -88,7 +88,7 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
             i_Times.y,
             l_Quat
         );
-        i_Frame.m_UpdateBoneNode->SetRotation(l_Quat);
+        i_Frame.m_BoneTrs->m_Rotation = l_Quat;
     }
     else {
         if (i_Frame.m_Cct->m_BezierRotNbKfr) {
@@ -98,11 +98,11 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
                 i_Times.y,
                 l_Quat
             );
-            i_Frame.m_UpdateBoneNode->SetRotation(l_Quat);
+            i_Frame.m_BoneTrs->m_Rotation = l_Quat;
         }
         else {
             if ((i_Frame.m_Cct->m_Flag & ANIM_NODE_RESET_ROT) != 0) {
-                i_Frame.m_UpdateBoneNode->SetRotation(i_Frame.m_OriginalBoneNode->GetRotation());
+                i_Frame.m_BoneTrs->m_Rotation = i_Frame.m_OriginalBoneNode->GetRotation();
             }
         }
     }
@@ -118,7 +118,7 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
         if (i_Frame.m_Modifier) {
             l_Vec += i_Frame.m_Modifier->m_Scale;
         }
-        i_Frame.m_UpdateBoneNode->SetScale(l_Vec);
+        i_Frame.m_BoneTrs->m_Scale = l_Vec;
     }
     else {
         if (i_Frame.m_Cct->m_Flag & ANIM_NODE_RESET_SCALE) {
@@ -126,7 +126,7 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
             if (i_Frame.m_Modifier) {
                 l_OriginalVec += i_Frame.m_Modifier->m_Scale;
             }
-            i_Frame.m_UpdateBoneNode->SetScale(l_OriginalVec);
+            i_Frame.m_BoneTrs->m_Scale = l_OriginalVec;
         }
     }
 
@@ -141,7 +141,7 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
         if (i_Frame.m_Modifier) {
             l_Vec += i_Frame.m_Modifier->m_Translation;
         }
-        i_Frame.m_UpdateBoneNode->SetTranslation(l_Vec);
+        i_Frame.m_BoneTrs->m_Translation = l_Vec;
     }
     else {
         if (i_Frame.m_Cct->m_Flag & ANIM_NODE_RESET_TRANS) {
@@ -149,7 +149,7 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
             if (i_Frame.m_Modifier) {
                 l_OriginalVec += i_Frame.m_Modifier->m_Translation;
             }
-            i_Frame.m_UpdateBoneNode->SetTranslation(l_OriginalVec);
+            i_Frame.m_BoneTrs->m_Translation = l_OriginalVec;
         }
     }
 
@@ -163,13 +163,13 @@ void AnimationNode_Z::GetCct(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Fr
                 i_Times.y,
                 i_Times.z,
                 i_Frame.m_RegMsg,
-                io_RegMsgIndex
+                io_MsgNb
             );
         }
     }
 }
 
-void AnimationNode_Z::CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_RegMsgIndex) {
+void AnimationNode_Z::CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& i_Frame, S32& io_MsgNb) {
     if (i_Frame.m_RegMsg) {
         if (i_Frame.m_Cct->m_MsgNbKfr) {
             i_Frame.m_Data->m_MsgKfr.GetCctValue(
@@ -179,7 +179,7 @@ void AnimationNode_Z::CctMessage(const Vec3f& i_Times, AnimationCctNodeFrame_Z& 
                 i_Times.y,
                 i_Times.z,
                 i_Frame.m_RegMsg,
-                io_RegMsgIndex
+                io_MsgNb
             );
         }
     }

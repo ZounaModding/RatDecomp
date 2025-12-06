@@ -53,6 +53,11 @@ typedef volatile double VDouble;
 #define Extern_Z extern
 
 #define Aligned_Z(x) __attribute__((aligned(x)))
+#define Packed_Z(x)        \
+    _Pragma("push")        \
+        _Pragma("pack(1)") \
+            x              \
+                _Pragma("pop")
 
 #define ARRAY_CHAR_MAX 256
 

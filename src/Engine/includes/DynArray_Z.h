@@ -3,6 +3,7 @@
 #include "Types_Z.h"
 #include "Memory_Z.h"
 #include "Assert_Z.h"
+#include "Sys_Z.h"
 
 #define DYNARRAY_Z_EXP(exp) \
     { EXCEPTIONC_Z(exp, "Array_Z %s %s (size %d)", #exp, TYPEINFO_Z(this), GetSize()); }
@@ -31,6 +32,20 @@ public:
             Free_Z(m_ArrayPtr);
             m_ArrayPtr = NULL;
         }
+    }
+
+    void Remove(int i_Index) {
+        DYNARRAY_Z_EXP((i_Index < m_Size));
+        if (DeleteObject) {
+            m_ArrayPtr[i_Index].~T();
+        }
+        if (((U32)i_Index) < m_Size - 1) {
+            Sys_Z::MemCpyFrom(m_ArrayPtr + i_Index, m_ArrayPtr + i_Index + 1, (m_Size - i_Index - 1) * sizeof(T));
+        }
+        m_Size--;
+        m_ReservedSize++;
+        if (m_ReservedSize > DYA_RSVSIZEMAX)
+            Minimize();
     }
 
     void SetSize(int i_NewSize, const Bool i_ResizeOnlyIfGreater = FALSE) {

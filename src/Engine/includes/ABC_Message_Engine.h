@@ -6,7 +6,7 @@ typedef int abc_message;
 // Engine Messages
 enum {
     msg_no_message = 0,                             // MonopolyX360SUB.xdb
-    msg_anim_note_track_first = 1,                  // MonopolyX360SUB.xdb
+    msg_anim_note_track_first = 1,                  // JIMMY.ELF
     msg_skel_collide = 2,                           // MonopolyX360SUB.xdb
     msg_anim_loop = 3,                              // MonopolyX360SUB.xdb
     msg_anim_nosmooth = 4,                          // MonopolyX360SUB.xdb
@@ -47,8 +47,8 @@ enum {
     msg_anim_start_material_anim = 38,              // AnimFrame_Z::UpdateNoteTrack
     msg_anim_stop_material_anim = 39,               // AnimFrame_Z::UpdateNoteTrack
     msg_anim_pause_material_anim = 40,              // MonopolyX360SUB.xdb DOES NOTHING
-    msg_rsc_note_track_end = 41,                    // MonopolyX360SUB.xdb
-    msg_anim_note_track_end = 42,                   // JIMMY.ELF
+    msg_anim_note_track_end = 41,                   // JIMMY.ELF
+    msg_rsc_note_track_end = 42,                    // MonopolyX360SUB.xdb
     msg_rtc_started = 43,                           // MonopolyX360SUB.xdb / CameraAgent_Z::CameraAgentSuspend
     msg_rtc_ended = 44,                             // MonopolyX360SUB.xdb RtcAgent_Z::RtcEnd
     msg_rtc_changecamera = 45,                      // MonopolyX360SUB.xdb

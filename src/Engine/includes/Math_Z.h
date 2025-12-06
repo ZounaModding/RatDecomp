@@ -13,6 +13,7 @@ struct Vec2f;
 struct Vec3f;
 struct Vec4f;
 struct Quat;
+struct QuatComp_Z;
 struct Mat3x3;
 struct Mat4x4;
 
@@ -33,6 +34,91 @@ struct Vec2f {
     Vec2f(Float i_x, Float i_y)
         : x(i_x)
         , y(i_y) { };
+
+    Vec2f& Set(Float i_x, Float i_y) {
+        x = i_x;
+        y = i_y;
+        return *this;
+    }
+
+    Vec2f& Set(const Vec2f& i_v) {
+        x = i_v.x;
+        y = i_v.y;
+        return *this;
+    }
+
+    Vec2f& operator=(const Vec2f& i_v) {
+        x = i_v.x;
+        y = i_v.y;
+        return *this;
+    }
+
+    Vec2f operator+(const Vec2f& i_v) const { return Vec2f(x + i_v.x, y + i_v.y); }
+
+    Vec2f& operator+=(const Vec2f& i_v) {
+        x += i_v.x;
+        y += i_v.y;
+        return *this;
+    }
+
+    Vec2f operator+() const { return *this; }
+
+    Vec2f operator-(const Vec2f& i_v) const { return Vec2f(x - i_v.x, y - i_v.y); }
+
+    Vec2f& operator-=(const Vec2f& i_v) {
+        x -= i_v.x;
+        y -= i_v.y;
+        return *this;
+    }
+
+    Vec2f operator-() const { return Vec2f(-x, -y); }
+
+    Vec2f operator*(Float i_f) const { return Vec2f(x * i_f, y * i_f); }
+
+    Vec2f& operator*=(Float i_f) {
+        x *= i_f;
+        y *= i_f;
+        return *this;
+    }
+
+    Float operator*(const Vec2f& i_v) const { return x * i_v.x + y * i_v.y; }
+
+    Vec2f operator/(Float i_f) const {
+        float l_Inv = 1.f / i_f;
+        return Vec2f(x * l_Inv, y * l_Inv);
+    }
+
+    Vec2f& operator/=(Float i_f) {
+        float l_Inv = 1.f / i_f;
+        x *= l_Inv;
+        y *= l_Inv;
+        return *this;
+    }
+
+    Float operator^(const Vec2f& i_v) const { return x * i_v.y - y * i_v.x; }
+
+    Vec2f operator&(const Vec2f& i_v) const { return Vec2f(x * i_v.x, y * i_v.y); }
+
+    Float& operator[](int i_Index) {
+        return (&x)[i_Index];
+    }
+
+    const Float& operator[](int i_Index) const {
+        return (&x)[i_Index];
+    }
+
+    Bool operator==(const Vec2f& i_v) const {
+        Vec2f l_Diff = *this - i_v;
+        return (fabsf(l_Diff.x) < Float_Eps) && (fabsf(l_Diff.y) < Float_Eps);
+    }
+
+    Bool operator!=(const Vec2f& i_v) const { return !operator==(i_v); };
+
+    Float GetNorm2() const { return (*this) * (*this); }
+
+    Float GetNorm() const { return sqrtf(GetNorm2()); }
+
+    Vec2f& Normalize() { return (*this) /= GetNorm(); }
 };
 
 struct Vec3f {
@@ -575,6 +661,13 @@ struct Quat {
 
     Bool operator!=(const Quat& i_Quat) const { return !operator==(i_Quat); }
 } Aligned_Z(16);
+
+struct QuatComp_Z {
+    S16 x;
+    S16 y;
+    S16 z;
+    S16 w;
+};
 
 // $SABE: Tangent Binormal Vertex ? - From Monopoly MAP
 struct TBVtx {

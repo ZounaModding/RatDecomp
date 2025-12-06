@@ -39,12 +39,12 @@ Console_Z::~Console_Z() {
     Command_Z* l_Curr = m_CommandList;
     while (l_Curr != NULL) {
         Command_Z* l_Next = l_Curr->m_Prev;
-        delete l_Curr;
+        Delete_Z l_Curr;
         l_Curr = l_Next;
     }
     S32 l_Unk = 0;
-    delete m_ConsoleText;
-    delete m_PopupMenu;
+    Delete_Z m_ConsoleText;
+    Delete_Z m_PopupMenu;
     m_ConsoleText = NULL;
     m_Interp = NULL;
 }

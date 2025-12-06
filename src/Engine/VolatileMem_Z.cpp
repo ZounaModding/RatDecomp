@@ -1,8 +1,6 @@
 #include "VolatileMem_Z.h"
 
-void VolatileMgr_Z::Minimize() {
-    return;
-}
+void VolatileMgr_Z::Minimize() { }
 
 void VolatileMgr_Z::SetState(int i_ArrayOffset, S32 i_State) {
     VolatileBlock& l_VolBlock = m_VolatileBlockArray[i_ArrayOffset];
@@ -66,7 +64,6 @@ void VolatileMgr_Z::UpdateVolatileBlocks(Float i_DeltaTime) {
             FreeVolatileBlock_Z(l_CurBlockId);
         }
     }
-    return;
 }
 
 void VolatileMgr_Z::FreeVolatileBlock_Z(U32 i_BlockIdx) {

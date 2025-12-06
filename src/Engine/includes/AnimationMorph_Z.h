@@ -12,10 +12,22 @@ struct AnimationMorphKeyId_Z {
     S16 m_CurMorph;
     AnimationMorphKeyId_Z();
     void Reset();
+
+    inline S16 GetCurMorph() const {
+        return m_CurMorph;
+    }
+
+    inline void SetCurMorph(S16 i_CurMorph) {
+        m_CurMorph = i_CurMorph;
+    }
 };
 
 struct AnimationMorphData_Z {
     KeyframerFloatComp_Z m_MorphKfr;
+
+    inline void Flush() {
+        m_MorphKfr.Flush();
+    }
 };
 
 class AnimationMorph_Z {

@@ -37,22 +37,16 @@ void Object_Z::LoadLinks(void** i_Data) {
     LOADRANGE_Z(m_BSphereLocal, m_Type);
 }
 
-void Object_Z::EndLoadLinks() {
-    return;
-}
+void Object_Z::EndLoadLinks() { }
 
-void Object_Z::Load(void** i_Data) {
-    return;
-}
+void Object_Z::Load(void** i_Data) { }
 
 void Object_Z::EndLoad() {
     m_ResObjLink.EndLoad();
     gData.ClassMgr->UpdateLink(m_ObjectDataHdl);
 }
 
-void Object_Z::Draw(DrawInfo_Z& a1, ObjectDatas_Z* i_Data) {
-    return;
-}
+void Object_Z::Draw(DrawInfo_Z& a1, ObjectDatas_Z* i_Data) { }
 
 ObjectDatas_Z::ObjectDatas_Z() {
     m_Flag = 0;
@@ -72,7 +66,6 @@ void ObjectDatas_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_Obj
 
 void ObjectDatas_Z::Load(void** i_Data) {
     LOADBYTES_Z(&m_Flag, 0x14);
-    return;
 }
 
 Bool ObjectDatas_Z::MarkHandles() {

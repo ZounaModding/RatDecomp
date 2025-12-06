@@ -22,7 +22,6 @@ void Hi_MemoryManager_Z::Init() {
     m_FreeMemCached = s_GetFreeMem();
     m_MaxMemUsed = 0;
     m_AllocTimer = 0.0f;
-    return;
 }
 
 void Hi_MemoryManager_Z::Shut() {

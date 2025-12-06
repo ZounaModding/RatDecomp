@@ -31,4 +31,10 @@ public:
     LOAD_Z(nb);                   \
     da.SetSize(nb);               \
     for (S32 i = 0; i < nb; i++) da[i].Load(i_Data);
+#define LOADDYNARRAYSIZE_Z(da) \
+    LOAD_Z(l_Nb);              \
+    da.SetSize(l_Nb);
+#define LOADDYNARRAYSIZENB_Z(da, nb) \
+    LOAD_Z(nb);                      \
+    da.SetSize(nb);
 #endif

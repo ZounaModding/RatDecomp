@@ -8,9 +8,11 @@ class Material_Z;
 class AnimationConcatMtl_Z;
 
 struct AnimationMaterialKeyId_Z {
-    S16 m_CurTrans;
+    S16 m_CurTransU;
+    S16 m_CurTransV;
+    S16 m_CurDiffuse;
+    S16 m_CurEmissive;
     S16 m_CurRot;
-    S16 m_CurScale;
     AnimationMaterialKeyId_Z();
     void Reset();
 };
@@ -21,6 +23,14 @@ struct AnimationMtlData_Z {
     KeyframerVec3fComp_Z m_EmissiveColorKfr;
     KeyframerVec3fComp_Z m_DiffuseColorKfr;
     KeyframerFloatComp_Z m_RotKfr;
+
+    inline void Flush() {
+        m_TransUKfr.Flush();
+        m_TransVKfr.Flush();
+        m_EmissiveColorKfr.Flush();
+        m_DiffuseColorKfr.Flush();
+        m_RotKfr.Flush();
+    }
 };
 
 class AnimationMaterial_Z {
@@ -30,7 +40,7 @@ private:
     AnimationMtlData_Z m_Data;
 
 public:
-    static void UpdateCct(Float i_Time, const AnimationMtlData_Z&, const AnimationConcatMtl_Z& i_Cct, AnimationMaterialKeyId_Z& i_KeyId, Material_Z* i_Material);
+    static void UpdateCct(Float i_Time, const AnimationMtlData_Z& i_AnimData, const AnimationConcatMtl_Z& i_Cct, AnimationMaterialKeyId_Z& i_KeyId, Material_Z* i_Material);
     static void Load(AnimationMtlData_Z& i_AnimData, void** i_Data);
 };
 #endif // _ANIMATIONMATERIAL_Z_H_

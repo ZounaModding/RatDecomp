@@ -9,9 +9,7 @@ Extern_Z "C" size_t strlen(const char* str);
 Extern_Z "C" Float atof(const char* str);
 Extern_Z "C" int stricmp(const char* String1, const char* String2);
 
-void Console_Z::DisplayHelp() {
-    return;
-}
+void Console_Z::DisplayHelp() { }
 
 void Console_Z::AddCommand(const Char* i_Command, CommandProc i_Proc, const Char* i_Desc) {
     Command_Z* l_Command = NewL_Z(26) Command_Z;

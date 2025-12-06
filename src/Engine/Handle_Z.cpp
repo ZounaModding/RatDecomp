@@ -107,9 +107,9 @@ S32 HandleManager_Z::ChangeHandleName(const BaseObject_ZHdl& i_Hdl, const Name_Z
 }
 
 void HandleManager_Z::MarkU32Handle(U32 i_Hdl) {
-    BaseObject_ZHdl l_Hdl = *((BaseObject_ZHdl*)&i_Hdl);
+    BaseObject_ZHdl l_Hdl = U32ToHandle(i_Hdl);
     S32 l_ID = l_Hdl.GetID();
-    if (CheckKey(l_ID, l_Hdl.GetKey())) {
+    if (CheckKey(i_Hdl, l_Hdl.GetKey())) {
         m_HandleRecDA[l_ID].m_ObjPtr->MarkHandles();
     }
 }
@@ -119,7 +119,5 @@ S32 HandleManager_Z::HandleToU32(const BaseObject_ZHdl& i_Hdl) {
 }
 
 BaseObject_ZHdl HandleManager_Z::U32ToHandle(S32 i_Hdl) {
-    BaseObject_ZHdl l_Hdl;
-    l_Hdl.m_RealID.GblID = i_Hdl;
-    return l_Hdl;
+    return *((BaseObject_ZHdl*)&i_Hdl);
 }

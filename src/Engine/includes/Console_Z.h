@@ -147,7 +147,7 @@ public:
     virtual void Init();
     virtual U32 InitConsole();
 
-    virtual void CloseConsole() { return; };
+    virtual void CloseConsole() { };
 
     virtual void EnableFolder(U32 a1);
     virtual void DisableFolder(U32 a1);

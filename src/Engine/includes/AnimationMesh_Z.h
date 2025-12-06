@@ -21,6 +21,10 @@ struct AnimationMeshKeyId_Z {
 
 struct AnimationMeshData_Z {
     KeyframerFloatComp_Z m_VisibilityKfr;
+
+    inline void Flush() {
+        m_VisibilityKfr.Flush();
+    }
 };
 
 class AnimationMesh_Z {

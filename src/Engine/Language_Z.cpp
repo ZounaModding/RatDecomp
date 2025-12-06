@@ -40,5 +40,5 @@ U8 GetCharIdFromText(Char* i_Text) {
     return 0xFF;
 }
 
-Bool TT() {
+Bool TT(int i_Id) {
 }

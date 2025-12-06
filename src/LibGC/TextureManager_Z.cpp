@@ -2,9 +2,7 @@
 #include "os/OSCache.h"
 #include "gx/GXTexture.h"
 
-TextureManager_Z::TextureManager_Z() {
-    return;
-}
+TextureManager_Z::TextureManager_Z() { }
 
 TextureManager_Z::~TextureManager_Z() {
     Shut();

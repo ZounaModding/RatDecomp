@@ -5,11 +5,12 @@
 
 GCGlobals gData;
 
-Extern_Z void OSInit();
-Extern_Z void DVDInit();
 Extern_Z void GetFlagsFromGame();
 Extern_Z void MathInitTables();
 Extern_Z Char* strcpy(Char* __dest, Char* __src);
+
+Extern_Z "C" void OSInit();
+Extern_Z "C" void DVDInit();
 Extern_Z "C" void OSReport(const Char* __msg, ...);
 Extern_Z "C" void __start();
 
@@ -43,7 +44,6 @@ void PrintMemoryStatus(Char* i_Comment) {
     OSReport(">     DBSTACK  0x%08x  0x%08x  %08d ko\n", l_DbStackEnd, &l_DbStackAddr, 64);
     OSReport(">     HEAP     0x%08x  0x%08x  %08d ko  %.2f mo\n", l_ArenaLo, l_ArenaHi, l_SizeInKo, l_HeapSize);
     OSReport("\n\n");
-    return;
 }
 
 void InitProgram() {
@@ -62,5 +62,4 @@ void InitProgram() {
     MathInitTables();
     strcpy((Char*)(&gData.m_Pad_0x14[0x7D4]), ".\\");
     DVDInit();
-    return;
 }

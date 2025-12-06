@@ -11,6 +11,7 @@
 #
 # Append --help to see available options.
 ###
+# fmt: off
 
 import argparse
 import sys
@@ -131,7 +132,7 @@ config.dtk_path = args.dtk
 config.objdiff_path = args.objdiff
 config.binutils_path = args.binutils
 config.compilers_path = args.compilers
-config.generate_map = args.map
+config.generate_map = True # Always do map cause it's annoying to pass --map every time
 config.non_matching = args.non_matching
 config.sjiswrap_path = args.sjiswrap
 config.progress = args.progress
@@ -459,16 +460,16 @@ config.libs = [
     DolphinLib(
         "ax",
         [
-            Object(NonMatching, "3rdParty/dolphin/ax/AX.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/AXAlloc.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/AXAux.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/AXCL.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AX.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AXAlloc.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AXAux.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AXCL.c"),
             Object(NonMatching, "3rdParty/dolphin/ax/AXOut.c"),
             Object(NonMatching, "3rdParty/dolphin/ax/AXSPB.c"),
             Object(NonMatching, "3rdParty/dolphin/ax/AXVPB.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/AXComp.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/DSPCode.c"),
-            Object(NonMatching, "3rdParty/dolphin/ax/AXProf.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AXComp.c"),
+            Object(Matching, "3rdParty/dolphin/ax/DSPCode.c"),
+            Object(Matching, "3rdParty/dolphin/ax/AXProf.c"),
         ],
     ),
     DolphinLib(
@@ -745,8 +746,8 @@ config.libs = [
             Object(NonMatching, "Engine/ABC_Agent.cpp"),
             Object(NonMatching, "Engine/WorldLightning_Z.cpp"),
             Object(NonMatching, "Engine/HFog_Z.cpp"),
-            Object(NonMatching, "Engine/AnimationMaterial_Z.cpp"),
-            Object(NonMatching, "Engine/AnimationMorph_Z.cpp"),
+            Object(Matching,    "Engine/AnimationMaterial_Z.cpp"),
+            Object(Matching,    "Engine/AnimationMorph_Z.cpp"),
             Object(NonMatching, "Engine/Manipulator_Z.cpp"),
             Object(Matching,    "Engine/Parameters_Z.cpp"),
             Object(NonMatching, "Engine/MovieManipulator_Z.cpp"),
@@ -859,7 +860,7 @@ config.libs = [
             Object(Matching,    "Engine/String_Z.cpp"),
             Object(NonMatching, "Engine/StreamManager_Z.cpp"),
             Object(NonMatching, "Engine/GameManagerCmd_Z.cpp"),
-            Object(NonMatching, "Engine/Animation_Z.cpp"),
+            Object(Matching,    "Engine/Animation_Z.cpp"),
             Object(NonMatching, "Engine/LodMoveCollCling_Z.cpp"),
             Object(NonMatching, "Engine/KeyframerRot_Z.cpp"),
             Object(NonMatching, "Engine/ObjectsBreakCollShadow_Z.cpp"),
@@ -876,7 +877,7 @@ config.libs = [
             Object(NonMatching, "Engine/AStar_Z.cpp"),
             Object(NonMatching, "Engine/Ghost_Z.cpp"),
             Object(NonMatching, "Engine/AnimFrameLoad_Z.cpp"),
-            Object(NonMatching, "Engine/AnimationLoad_Z.cpp"),
+            Object(Matching,    "Engine/AnimationLoad_Z.cpp"),
             Object(NonMatching, "Engine/RendererPrimitiveBuffers_Z.cpp"),
             Object(NonMatching, "Engine/WaterHeightmap_Z.cpp"),
             Object(NonMatching, "Engine/Light_Z.cpp"),
@@ -944,7 +945,7 @@ config.libs = [
             Object(NonMatching, "Engine/LodMoveCollShadow_Z.cpp"),
             Object(NonMatching, "Engine/GraphLevel_Z.cpp"),
             Object(NonMatching, "Engine/SplineZoneLoad_Z.cpp"),
-            Object(NonMatching, "Engine/KeyframerLoad_Z.cpp"),
+            Object(Matching,    "Engine/KeyframerLoad_Z.cpp"),
             Object(NonMatching, "Engine/Main_Z.cpp"),
             Object(Matching,    "Engine/Object_Z.cpp"),
             Object(NonMatching, "Engine/Menu2DDraw_Z.cpp"),
@@ -960,7 +961,7 @@ config.libs = [
             Object(NonMatching, "Engine/Fonts_Z.cpp"),
             Object(NonMatching, "Engine/PlayParticles_Z.cpp"),
             Object(NonMatching, "Engine/NetManager_Z.cpp"),
-            Object(NonMatching, "Engine/AnimationMesh_Z.cpp"),
+            Object(Matching,    "Engine/AnimationMesh_Z.cpp"),
             Object(NonMatching, "Engine/CollisionVol_Z.cpp"),
             Object(NonMatching, "Engine/LodCollision_Z.cpp"),
             Object(NonMatching, "Engine/RtcPlayer_Z.cpp"),

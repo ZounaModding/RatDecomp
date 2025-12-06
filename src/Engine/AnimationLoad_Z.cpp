@@ -19,3 +19,43 @@ void Animation_Z::Load(void** i_Data) {
         GetDebugName();
     }
 }
+
+void Animation_Z::EndLoad() {
+    ResourceObject_Z::EndLoad();
+    AnimationNode_Z::EndLoad(m_NodeKfr);
+}
+
+void Animation_Z::AfterEndLoad() {
+    S32 i;
+    S32 l_Nb = GetNbAnimationNode();
+    for (i = 0; i < l_Nb; i++) {
+        m_NodeCct[i].m_BoneID = (S16)gData.AnimMgr->GetNodeByName(m_NodeCct[i].m_BoneName);
+    }
+    l_Nb = GetNbAnimationMtl();
+    for (i = 0; i < l_Nb; i++) {
+        m_MtlCct[i].m_MtlID = (S16)gData.AnimMgr->GetMaterialByName(m_MtlCct[i].m_MtlName);
+    }
+    l_Nb = GetNbAnimationMesh();
+    for (i = 0; i < l_Nb; i++) {
+        m_MeshCct[i].m_ObjectID = (S16)gData.AnimMgr->GetMeshByName(m_MeshCct[i].m_ObjectName);
+    }
+    l_Nb = GetNbAnimationMorph();
+    for (i = 0; i < l_Nb; i++) {
+        m_MorphCct[i].m_ObjectID = (S16)gData.AnimMgr->GetMeshByName(m_MorphCct[i].m_ObjectName);
+    }
+}
+
+void Animation_Z::EndLoadLinks() {
+    m_NodeKfr.m_MsgKfr.EndLinks(m_ResObjLink);
+}
+
+void Animation_Z::Clean() {
+    m_NodeCct.SetSize(0);
+    m_MtlCct.SetSize(0);
+    m_MeshCct.SetSize(0);
+    m_MorphCct.SetSize(0);
+    m_NodeKfr.Flush();
+    m_MeshKfr.Flush();
+    m_MtlKfr.Flush();
+    m_MorphKfr.Flush();
+}

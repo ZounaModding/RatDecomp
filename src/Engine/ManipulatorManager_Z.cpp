@@ -2,9 +2,7 @@
 #include "GCMain_Z.h"
 #include "Math_Z.h"
 
-void ManipulatorManager_Z::MarkHandles() {
-    return;
-}
+void ManipulatorManager_Z::MarkHandles() { }
 
 Bool ManipulatorManager_Z::Minimize() {
     m_ManipDA.Minimize();
@@ -111,7 +109,6 @@ void ManipulatorManager_Z::Activate(Manipulator_Z* i_Manip) {
         m_UnkManipList.Remove(i_Manip);
         m_ManipList[i_Manip->GetGroup()].Add(i_Manip);
     }
-    return;
 }
 
 void ManipulatorManager_Z::Deactivate(Manipulator_Z* i_Manip) {
@@ -127,7 +124,6 @@ void ManipulatorManager_Z::Deactivate(Manipulator_Z* i_Manip) {
         m_ManipList[i_Manip->GetGroup()].Remove(i_Manip);
         m_UnkManipList.Add(i_Manip);
     }
-    return;
 }
 
 void ManipulatorList_Z::Add(Manipulator_Z* i_Manip) {

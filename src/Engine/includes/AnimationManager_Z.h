@@ -130,6 +130,8 @@ public:
 
     void SetNodeId(const Name_Z& i_Name, S32 i_Id);
     void SetMaterialId(const Name_Z& i_Name, S32 i_Id);
+    U32 GetNodeByName(const Name_Z& i_Name);
+    U32 GetMaterialByName(const Name_Z& i_Name);
     U32 GetMeshByName(const Name_Z& i_Name);
     void ReserveMsgArray();
 

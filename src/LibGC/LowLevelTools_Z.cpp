@@ -57,22 +57,22 @@ void Node_Z::UpdateRootTM() {
 
 void BoneNode_Z::UpdateTM(BoneNode_Z* i_Parent) {
     Mat4x4 l_LocalMatrix;
-    m_Rotation.GetMatrix(l_LocalMatrix);
-    l_LocalMatrix.m[0][0] *= m_Scale.x;
-    l_LocalMatrix.m[1][0] *= m_Scale.y;
-    l_LocalMatrix.m[2][0] *= m_Scale.z;
-    l_LocalMatrix.m[3][0] = m_Translation.x;
-    l_LocalMatrix.m[0][1] *= m_Scale.x;
-    l_LocalMatrix.m[1][1] *= m_Scale.y;
-    l_LocalMatrix.m[2][1] *= m_Scale.z;
-    l_LocalMatrix.m[3][1] = m_Translation.y;
-    l_LocalMatrix.m[0][2] *= m_Scale.x;
-    l_LocalMatrix.m[1][2] *= m_Scale.y;
-    l_LocalMatrix.m[2][2] *= m_Scale.z;
-    l_LocalMatrix.m[3][2] = m_Translation.z;
+    GetRotation().GetMatrix(l_LocalMatrix);
+    l_LocalMatrix.m[0][0] *= GetScale().x;
+    l_LocalMatrix.m[1][0] *= GetScale().y;
+    l_LocalMatrix.m[2][0] *= GetScale().z;
+    l_LocalMatrix.m[3][0] = GetTranslation().x;
+    l_LocalMatrix.m[0][1] *= GetScale().x;
+    l_LocalMatrix.m[1][1] *= GetScale().y;
+    l_LocalMatrix.m[2][1] *= GetScale().z;
+    l_LocalMatrix.m[3][1] = GetTranslation().y;
+    l_LocalMatrix.m[0][2] *= GetScale().x;
+    l_LocalMatrix.m[1][2] *= GetScale().y;
+    l_LocalMatrix.m[2][2] *= GetScale().z;
+    l_LocalMatrix.m[3][2] = GetTranslation().z;
     GetWorldMatrix() = i_Parent->GetWorldMatrix() * l_LocalMatrix;
 
-    m_RotInWorld = i_Parent->GetRotInWorld() * m_Rotation;
+    m_RotInWorld = i_Parent->GetRotInWorld() * GetRotation();
     m_RotInWorld.GetMatrix(m_RotInWorldMatrix);
     EnableFlag(FL_BONENODE_INVALIDROT);
 }

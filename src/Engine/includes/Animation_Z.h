@@ -5,13 +5,24 @@
 #include "AnimationMaterial_Z.h"
 #include "AnimationMorph_Z.h"
 #include "ResourceObject_Z.h"
+#include "BoneNode_Z.h"
+
+#define FL_ANIM_CCT_NONE 0
 
 struct AnimationConcat_Z {
     Name_Z m_ObjectName;
     S16 m_ObjectID;
     S16 m_Flag;
-    U16 m_StartKfr; // $SABE: Might be a struct together with NbKfr
-    U16 m_NbKfr;    // $SABE: Might be a struct together with StartKfr
+    S16 m_StartKfr; // $SABE: Might be a struct together with NbKfr
+    S16 m_NbKfr;    // $SABE: Might be a struct together with StartKfr
+
+    inline S16 GetStart() const {
+        return m_StartKfr;
+    };
+
+    inline S16 GetNb() const {
+        return m_NbKfr;
+    }
 };
 
 struct AnimationConcatNode_Z {
@@ -46,16 +57,16 @@ struct AnimationConcatMtl_Z {
     Name_Z m_MtlName;
     S16 m_MtlID;
     S16 m_Flag;
-    U16 m_TransUStartKfr;
-    U16 m_TransUNbKfr;
-    U16 m_TransVStartKfr;
-    U16 m_TransVNbKfr;
-    U16 m_DiffuseColorStartKfr;
-    U16 m_DiffuseColorNbKfr;
-    U16 m_EmissiveColorStartKfr;
-    U16 m_EmissiveColorNbKfr;
-    U16 m_RotStartKfr;
-    U16 m_RotNbKfr;
+    S16 m_TransUStartKfr;
+    S16 m_TransUNbKfr;
+    S16 m_EmissiveColorStartKfr;
+    S16 m_EmissiveColorNbKfr;
+    S16 m_DiffuseColorStartKfr;
+    S16 m_DiffuseColorNbKfr;
+    S16 m_RotStartKfr;
+    S16 m_RotNbKfr;
+    S16 m_TransVStartKfr;
+    S16 m_TransVNbKfr;
 };
 
 typedef DynArray_Z<AnimationConcat_Z, 32, 0, 0> AnimationConcat_ZDA;
@@ -65,16 +76,38 @@ typedef DynArray_Z<AnimationConcatMtl_Z, 32, 0, 0> AnimationConcatMtl_ZDA;
 class Animation_Z : public ResourceObject_Z {
 public:
     Animation_Z();
-    virtual ~Animation_Z();           /* 0x08 */
+
+    // clang-format off
+    virtual ~Animation_Z() { }        /* 0x08 */
     virtual void Load(void** i_Data); /* 0x0C */
     virtual void EndLoad();           /* 0x10 */
     virtual void AfterEndLoad();      /* 0x14 */
     virtual void EndLoadLinks();      /* 0x18 */
     virtual void Clean();             /* 0x1C */
     virtual Bool MarkHandles();       /* 0x20 */
+    // clang-format on
 
     S32 GetIndexOfNodeById(S32 Id) const;
     Float GetTimeFromMessage(S32 i_MsgId, S32 i_NodeId, Float i_StartTime = 0.f);
+    Bool GetMessageFromNode(S32 i_NodeId, Float i_PrecTime, Float i_CurTime, Float i_MaxTime, RegMessage_Z* o_Msg, S32& io_NbMsg);
+    void BuildSmooth(
+        Float i_Time,
+        Float i_SmoothTime,
+        const BoneNodePtr_ZDA& i_OriginalBones,
+        const BoneNodePtr_ZDA& i_InstantiatedBones,
+        const AnimationNodeModifier_ZDA& i_Modifiers,
+        AnimationConcatNode_ZDA& i_Ccts,
+        AnimationNodeData_Z& i_Data
+    );
+    void GetNodeCct(const Vec3f& i_Times, const BoneNodePtr_ZDA& i_OriginalBones, const BoneNodePtr_ZDA& i_InstantiatedBones, const AnimationNodeModifier_ZDA& i_Modifiers);
+    static void GetExtNodeCct(
+        const Vec3f& i_Times,
+        const BoneNodePtr_ZDA& i_OriginalBones,
+        const BoneNodePtr_ZDA& i_InstantiatedBones,
+        const AnimationNodeModifier_ZDA& i_Modifiers,
+        const AnimationConcatNode_ZDA& i_Ccts,
+        const AnimationNodeData_Z& i_Data
+    );
 
     inline Float GetMaxTime() const { return m_MaxTime; }
 
@@ -82,7 +115,7 @@ public:
 
     inline U16 GetFlag() const { return m_Flag; }
 
-    inline U32 GetNbAnimationNode() const {
+    inline int GetNbAnimationNode() const {
         return m_NodeCct.GetSize();
     }
 
@@ -94,7 +127,7 @@ public:
         return m_NodeKfr;
     }
 
-    inline U32 GetNbAnimationMtl() const {
+    inline int GetNbAnimationMtl() const {
         return m_MtlCct.GetSize();
     }
 
@@ -106,7 +139,7 @@ public:
         return m_MtlKfr;
     }
 
-    inline U32 GetNbAnimationMesh() const {
+    inline int GetNbAnimationMesh() const {
         return m_MeshCct.GetSize();
     }
 
@@ -118,7 +151,7 @@ public:
         return m_MeshKfr;
     }
 
-    inline U32 GetNbAnimationMorph() const {
+    inline int GetNbAnimationMorph() const {
         return m_MorphCct.GetSize();
     }
 
@@ -131,7 +164,7 @@ public:
     }
 
     static BaseObject_Z* NewObject() {
-        return New_Z Animation_Z;
+        return NewL_Z(102) Animation_Z;
     }
 
 private:

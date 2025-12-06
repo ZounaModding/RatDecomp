@@ -306,12 +306,12 @@ void Quat::GetMatrix(Mat3x3& Mat) const {
 }
 
 Vec3f Quat::operator*(const Vec3f& p) const {
-    Float w, vx, vy, vz;
+    Float lw, vx, vy, vz;
 
-    w = this->w;
-    vx = this->v.x;
-    vy = this->v.y;
-    vz = this->v.z;
+    lw = w;
+    vx = v.x;
+    vy = v.y;
+    vz = v.z;
 
     Float pw, pvx, pvy, pvz;
 
@@ -322,16 +322,16 @@ Vec3f Quat::operator*(const Vec3f& p) const {
     Vec3f result;
 
     pw = -vx * pvx - vy * pvy - vz * pvz;
-    result.x = w * pvx + vy * pvz - vz * pvy;
-    result.y = w * pvy + vz * pvx - vx * pvz;
-    pvz = w * pvz + vx * pvy - vy * pvx;
+    result.x = lw * pvx + vy * pvz - vz * pvy;
+    result.y = lw * pvy + vz * pvx - vx * pvz;
+    pvz = lw * pvz + vx * pvy - vy * pvx;
 
     pvx = result.x;
     pvy = result.y;
 
-    result.x = -pw * vx + pvx * w - pvy * vz + pvz * vy;
-    result.y = -pw * vy + pvy * w - pvz * vx + pvx * vz;
-    result.z = -pw * vz + pvz * w - pvx * vy + pvy * vx;
+    result.x = -pw * vx + pvx * lw - pvy * vz + pvz * vy;
+    result.y = -pw * vy + pvy * lw - pvz * vx + pvx * vz;
+    result.z = -pw * vz + pvz * lw - pvx * vy + pvy * vx;
 
     return result;
 }

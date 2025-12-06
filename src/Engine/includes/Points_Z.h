@@ -13,7 +13,7 @@ public:
     virtual ~Points_Z() { };
 
     static BaseObject_Z* NewObject() {
-        return New_Z Points_Z;
+        return NewL_Z(67) Points_Z;
     }
 
     virtual void Load(void** i_Data);

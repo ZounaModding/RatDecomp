@@ -6,12 +6,12 @@
 U32 Material_Z::DefaultRdrFlag = FL_MAT_RDR_UNK23;
 
 Material_Z::Material_Z() {
-    m_RdrFlags2 = 0;
+    m_RdrFlag2 = 0;
     m_WaterHeightMap = NULL;
-    m_RdrFlags = DefaultRdrFlag;
+    m_RdrFlag = DefaultRdrFlag;
     m_ColFlag = FL_MAT_COL_UNK0 | FL_MAT_COL_COLLIDABLE | FL_MAT_COL_UNK2;
-    m_ObjectFlags = 0;
-    m_TextureFlags = 0;
+    m_ObjectFlag = 0;
+    m_Flag = 0;
 
     m_UVTransform.m.m[0][0] = 1.0f;
     m_UVTransform.m.m[0][1] = 0.0f;
@@ -55,7 +55,7 @@ void Material_Z::Clean() {
         m_WaterHeightMap->Release();
         Delete_Z m_WaterHeightMap;
         m_WaterHeightMap = NULL;
-        m_RdrFlags2 = 0;
+        m_RdrFlag2 = 0;
     }
 }
 
@@ -70,7 +70,7 @@ void Material_Z::UpdateTMatrix() {
     m_UVTransform.m.m[0][1] = -m_SinCos.y * m_Scale.y;
     m_UVTransform.m.m[1][1] = m_SinCos.x * m_Scale.y;
 
-    if (m_TextureFlags & FL_MATERIAL_PAWAP) {
+    if (m_Flag & FL_MATERIAL_PAWAP) {
         m_UVTransform.m.m[2][0] = m_Translation.x - (m_UVTransform.m.m[0][0] + m_UVTransform.m.m[1][0]) * 0.5f + 0.5f;
         m_UVTransform.m.m[2][1] = m_Translation.y - (m_UVTransform.m.m[0][1] + m_UVTransform.m.m[1][1]) * 0.5f + 0.5f;
     }

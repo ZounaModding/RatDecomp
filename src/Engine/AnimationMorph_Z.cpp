@@ -3,14 +3,13 @@
 #include "MeshMorph_Z.h"
 #include "Types_Z.h"
 
-// $SABE TODO: Finish matching
 void AnimationMorph_Z::UpdateCct(Float i_Time, const AnimationMorphData_Z& i_AnimData, const AnimationConcat_Z& i_Cct, AnimationMorphKeyId_Z& i_KeyId, MorphTarget_Z& i_MorphTarget) {
     if (i_AnimData.m_MorphKfr.GetNbKeys()) {
-        S32 l_CurMorph = i_KeyId.m_CurMorph;
-        S32 l_StartKfr = i_Cct.m_StartKfr;
-        S32 l_NbKfr = i_Cct.m_NbKfr;
+        Float l_Visibility;
+        S16 l_Cur = i_KeyId.m_CurMorph;
         Float l_Morph;
-        i_KeyId.m_CurMorph = i_AnimData.m_MorphKfr.GetCctValue(l_NbKfr, l_StartKfr, i_Time, l_Morph, l_CurMorph);
+        l_Cur = i_AnimData.m_MorphKfr.GetCctValue(i_Cct.m_StartKfr, i_Cct.m_NbKfr, i_Time, l_Morph, l_Cur);
+        i_KeyId.m_CurMorph = l_Cur;
         i_MorphTarget.m_Morph = l_Morph;
     }
 }

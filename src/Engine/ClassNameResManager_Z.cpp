@@ -110,8 +110,6 @@ void ClassNameRes_Z::Load(void** i_Data) {
         gData.ClassMgr->LoadLinkId(&l_HashElt.m_Ref, i_Data);
         m_ResourceHT.Insert(l_HashElt);
     }
-
-    return;
 }
 
 void ClassNameRes_Z::UpdateLinks() {

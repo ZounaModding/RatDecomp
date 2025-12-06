@@ -11,6 +11,7 @@ public:
     void EndLoad();
     void EndLoadLinks();
     void MarkHandles();
+    void UpdateLinkFromId(BaseObject_ZHdl& i_Hdl, S32 i_ID) const;
     DynArray_Z<BaseObject_ZHdl, 32> m_LinkedResourceDA;
 };
 

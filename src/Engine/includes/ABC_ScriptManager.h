@@ -23,9 +23,9 @@ private:
     Float m_ScriptTime;
     Float m_CycleDuration;
     U32 m_CycleCount;
-    Float m_UnkFloat_0x10;
+    Float m_DisplayMaxUsageTime; // MonopolyX360SUB.xdb
     StreamAgent_ZHdl m_StreamAgentHdl;
-    ABC_Message* m_Messages;
+    ABC_Message* m_TimedMessages;
     HashName_ZTable_Z m_MsgEnum;
 
 public:

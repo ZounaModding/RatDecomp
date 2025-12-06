@@ -103,9 +103,7 @@ void Renderer_Z::SetActiveViewport(S32 i_ViewportId) {
     }
 }
 
-void Renderer_Z::FlushActiveViewport() {
-    return;
-}
+void Renderer_Z::FlushActiveViewport() { }
 
 void Renderer_Z::Draw(S32 i_ViewportId, Float i_DeltaTime) {
     SetActiveViewport(i_ViewportId);
