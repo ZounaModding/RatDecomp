@@ -6,8 +6,13 @@
 #include "AnimFrame_ZHdl.h"
 
 struct KeyFollow_Z : public Key_Z {
+    friend class KeyframerFollow_Z;
+    friend class AnimFrame_Z;
+
 public:
-    KeyFollow_Z() { }
+    KeyFollow_Z() {
+        m_NodeHdl = Node_ZHdl();
+    }
 
     KeyFollow_Z(const Float i_Time) {
         SetTime(i_Time);
@@ -43,6 +48,8 @@ private:
 };
 
 class KeyframerFollow_Z {
+    friend class AnimFrame_Z;
+
 public:
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();
@@ -56,11 +63,11 @@ public:
         return m_Keys[i];
     }
 
-    inline DynArray_Z<KeyFollow_Z, 32, 1, 1>& GetKeys() {
+    inline DynArray_Z<KeyFollow_Z, 4, 1, 1>& GetKeys() {
         return m_Keys;
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -88,7 +95,7 @@ public:
     void MarkHandles();
 
 private:
-    DynArray_Z<KeyFollow_Z, 32, 1, 1> m_Keys;
+    DynArray_Z<KeyFollow_Z, 4, 1, 1> m_Keys;
 };
 
 struct StartStop_Z {
@@ -99,6 +106,8 @@ struct StartStop_Z {
 typedef DynArray_Z<StartStop_Z, 4> StartStop_ZDA;
 
 struct KeyStartStop_Z : public Key_Z {
+    friend class AnimFrame_Z;
+
 public:
     KeyStartStop_Z() { }
 
@@ -145,6 +154,8 @@ private:
 };
 
 class KeyframerStartStop_Z {
+    friend class AnimFrame_Z;
+
 public:
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();
@@ -162,7 +173,7 @@ public:
         return m_Keys;
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -198,11 +209,11 @@ public:
     AnimFrame_Z();
 
     // clang-format off
-    virtual ~AnimFrame_Z() { }     /* 0x08 */
-    virtual void Load(void* a1);   /* 0x0C */
-    virtual void EndLoad();        /* 0x10 */
-    virtual Bool MarkHandles();    /* 0x14 */
-    virtual void Update(Float a1); /* 0x18 */
+    virtual ~AnimFrame_Z() { }              /* 0x08 */
+    virtual void Load(void** i_Data);       /* 0x0C */
+    virtual void EndLoad();                 /* 0x10 */
+    virtual Bool MarkHandles();             /* 0x14 */
+    virtual void Update(Float i_DeltaTime); /* 0x18 */
     // clang-format on
 
 private:

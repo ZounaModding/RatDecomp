@@ -541,7 +541,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -586,7 +586,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -637,7 +637,7 @@ public:
         return m_Keys;
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -688,7 +688,7 @@ public:
         return m_Keys;
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -735,7 +735,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -786,7 +786,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -837,7 +837,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -884,7 +884,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -930,7 +930,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -975,7 +975,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1022,7 +1022,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1073,7 +1073,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1118,7 +1118,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1170,7 +1170,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1221,7 +1221,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
@@ -1272,7 +1272,7 @@ public:
         return m_Keys[i];
     }
 
-    inline void SetNbKey(U32 NbKey) {
+    inline void SetNbKey(S32 NbKey) {
         m_Keys.SetSize(NbKey);
     }
 
