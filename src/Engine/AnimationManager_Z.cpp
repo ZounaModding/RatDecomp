@@ -3,6 +3,8 @@
 
 Extern_Z "C" int sprintf(char* i_Buf, const char* i_Format, ...);
 
+static String_Z<256> DefaultStringAnimationMgr;
+
 AnimationManager_Z::AnimationManager_Z()
     : m_NodeIds(ANIM_RESOURCE_MAX)
     , m_MaterialIds(ANIM_RESOURCE_MAX)
@@ -63,18 +65,80 @@ AnimationManager_Z::AnimationManager_Z()
     ReserveMsgArray();
 }
 
+AnimationManager_Z::~AnimationManager_Z() {
+    Shut();
+    ReleaseMsgArray();
+}
+
 Bool AnimationManager_Z::MarkHandles() {
     ClassNameResManager_Z::MarkHandles();
+    MarkSkelHandles();
     return TRUE;
 }
 
 Bool AnimationManager_Z::Minimize() {
     ClassNameResManager_Z::Minimize();
+    m_NodeIds.Minimize();
+    m_MaterialIds.Minimize();
+    m_MeshIds.Minimize();
+    m_SkelOriginalNodes.Minimize();
+    m_NodeNames.Minimize();
+    m_MaterialNames.Minimize();
+    m_MeshNames.Minimize();
     return TRUE;
 }
 
-AnimationManager_Z::~AnimationManager_Z() {
+S32 AnimationManager_Z::GetNodeByName(const Name_Z& i_Name) {
+    Name_ZHash_Z l_HashElt(i_Name);
+    const Name_ZHash_Z* l_Result = m_NodeIds.Search(l_HashElt);
+    if (l_Result) {
+        return l_Result->m_Ref;
+    }
+    l_HashElt.m_Ref = m_NodeNames.Add();
+    m_NodeNames[l_HashElt.m_Ref] = i_Name;
+    m_NodeIds.Insert(l_HashElt);
+    return l_HashElt.m_Ref;
 }
 
 void AnimationManager_Z::SetNodeId(const Name_Z& i_Name, S32 i_Id) {
+    Name_ZHash_Z l_HashElt(i_Name);
+    l_HashElt.m_Ref = m_NodeNames.Add();
+    m_NodeNames[l_HashElt.m_Ref] = i_Name;
+    m_NodeIds.Insert(l_HashElt);
 }
+
+S32 AnimationManager_Z::GetMaterialByName(const Name_Z& i_Name) {
+    Name_ZHash_Z l_HashElt(i_Name);
+    const Name_ZHash_Z* l_Result = m_MaterialIds.Search(l_HashElt);
+    if (l_Result) {
+        return l_Result->m_Ref;
+    }
+    l_HashElt.m_Ref = m_MaterialNames.Add();
+    m_MaterialNames[l_HashElt.m_Ref] = i_Name;
+    m_MaterialIds.Insert(l_HashElt);
+    return l_HashElt.m_Ref;
+}
+
+void AnimationManager_Z::SetMaterialId(const Name_Z& i_Name, S32 i_Id) {
+    Name_ZHash_Z l_HashElt(i_Name);
+    l_HashElt.m_Ref = m_MaterialNames.Add();
+    m_MaterialNames[l_HashElt.m_Ref] = i_Name;
+    m_MaterialIds.Insert(l_HashElt);
+}
+
+S32 AnimationManager_Z::GetMeshByName(const Name_Z& i_Name) {
+    Name_ZHash_Z l_HashElt(i_Name);
+    const Name_ZHash_Z* l_Result = m_MeshIds.Search(l_HashElt);
+    if (l_Result) {
+        return l_Result->m_Ref;
+    }
+    l_HashElt.m_Ref = m_MeshNames.Add();
+    m_MeshNames[l_HashElt.m_Ref] = i_Name;
+    m_MeshIds.Insert(l_HashElt);
+    return l_HashElt.m_Ref;
+}
+
+const Char* s_Unused_4343 = "_Str!=Get()";
+const Char* s_Unused_4344 = "String_Z.h";
+const Char* s_Unused_4587 = "%s\\%s.txt";
+const Char* s_Unused_4589 = "_Anim.TANIM";

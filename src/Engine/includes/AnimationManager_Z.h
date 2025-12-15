@@ -3,8 +3,8 @@
 #include "ClassNameResManager_Z.h"
 #include "DynPtrArray_Z.h"
 #include "AnimMessage_Z.h"
+#include "BoneNode_Z.h"
 
-class BoneNode_Z;
 class RegMessage_Z;
 class SkelMessage_Z;
 
@@ -99,24 +99,23 @@ struct SkelNodeArray {
     Name_Z m_SkelName;
     int m_RefCount;
 
-    // $SABE TODO: Fix
     SkelNodeArray() {
+        m_RefCount = 0;
         m_BonesArrayPtr = NULL;
         m_RootBonePtr = NULL;
-        m_RefCount = 0;
     }
 
-    // $SABE TODO: Fix
     ~SkelNodeArray() {
         if (m_BonesArrayPtr) {
-            Free_Z(m_BonesArrayPtr);
+            Delete_Z[] m_BonesArrayPtr;
         }
         else {
             ASSERTLE_Z(m_SkelNodes.GetSize() == 0 && m_BonesArrayPtr == NULL, "", 21, "SkelNodes.GetSize()==0&&BonesArrayPtr==0");
         }
-        m_SkelNodes.Empty();
+        m_SkelNodes.Flush();
         m_BonesArrayPtr = NULL;
         m_RootBonePtr = NULL;
+        m_RefCount = 0;
     }
 };
 
@@ -124,16 +123,18 @@ class AnimationManager_Z : public ClassNameResManager_Z {
 public:
     AnimationManager_Z();
 
-    virtual Bool MarkHandles();
-    virtual Bool Minimize();
-    virtual ~AnimationManager_Z();
+    virtual Bool MarkHandles();    /* 0x08 */
+    virtual Bool Minimize();       /* 0x0C */
+    virtual ~AnimationManager_Z(); /* 0x10 */
 
+    S32 GetNodeByName(const Name_Z& i_Name);
     void SetNodeId(const Name_Z& i_Name, S32 i_Id);
+    S32 GetMaterialByName(const Name_Z& i_Name);
     void SetMaterialId(const Name_Z& i_Name, S32 i_Id);
-    U32 GetNodeByName(const Name_Z& i_Name);
-    U32 GetMaterialByName(const Name_Z& i_Name);
-    U32 GetMeshByName(const Name_Z& i_Name);
+    S32 GetMeshByName(const Name_Z& i_Name);
     void ReserveMsgArray();
+    void ReleaseMsgArray();
+    void MarkSkelHandles();
 
 private:
     HashName_ZTable_Z m_NodeIds;
