@@ -33,8 +33,12 @@ protected:
 
 class Keyframer_Z {
 public:
-    Keyframer_Z()
-        : m_Flag(FL_KEYFRAMER_SMOOTH) {
+    U16 GetFlag() const {
+        return m_Flag;
+    }
+
+    void EnableFlag(U16 i_Flag) {
+        m_Flag |= i_Flag;
     }
 
 public:
