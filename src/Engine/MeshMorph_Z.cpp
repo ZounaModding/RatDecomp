@@ -1,6 +1,7 @@
 #include "MeshMorph_Z.h"
 #include "Sys_Z.h"
 #include "Program_Z.h"
+#include "AnimationManager_Z.h"
 
 void Morpher_Z::Load(void** i_Data) {
     S32 l_Nb;

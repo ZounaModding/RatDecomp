@@ -5,8 +5,9 @@
 #include "ClassManager_Z.h"
 #include "Timer_Z.h"
 #include "Console_Z.h"
-#include "AnimationManager_Z.h"
+class AnimationManager_Z;
 #include "XRamManager_Z.h"
+#include "MatrixCache_Z.h"
 
 Extern_Z Char* strcpy(Char* __dest, Char* __src);
 Extern_Z "C" void memset(void* __s, S32 __c, U32 __n);
@@ -26,7 +27,8 @@ public:
     Console_Z* Cons;
     Renderer_Z* MainRdr;
     ClassManager_Z* ClassMgr;
-    U8 m_Pad_0x14[0x1C];
+    U8 m_Pad_0x14[0x18];
+    Mat4x4Buffer_Z* MatrixBuffer;
     ManipulatorManager_Z* ManipMgr;
     GameManager_Z* GameMgr;
     U8 m_Pad_0x34[0x4];

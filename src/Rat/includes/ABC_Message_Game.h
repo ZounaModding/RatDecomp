@@ -6,7 +6,8 @@
 // Game Messages
 enum {
     msg_game_start = msg_engine_end,
-    msg_start_check_player = 105,              // IT_TIMED_PLATFORM_G::CheckPlayer
+    msg_collision_player_in = 105,             // IT_TIMED_PLATFORM_G::CheckPlayer, Player_G::GetCollisionMessageIn
+    msg_collision_player_out = 106,            // Player_G::GetCollisionMessageOut
     msg_end_check_player = 107,                // GangAgent_G::CheckPlayerDist, GuardAgent_G::CheckSight, SwarmGroupTriggerZone_G::CheckPlayerDist
     msg_start_check_respawn = 108,             // IT_TIMED_PLATFORM_G::CheckRespawn
     msg_check_player = 109,                    // IT_TIMED_PLATFORM_G::CheckPlayer

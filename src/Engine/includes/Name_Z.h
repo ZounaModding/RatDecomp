@@ -32,6 +32,11 @@ public:
     static U32 GetID(const Char* a1, U32 a2 = 0);
     static U32 GetID(U8* data, U32 size, U32 result);
 
+    inline Name_Z& operator=(const Name_Z& i_Name) {
+        m_ID = i_Name.m_ID;
+        return (*this);
+    }
+
     Bool operator==(const Name_Z& a1) const { return m_ID == a1.m_ID; }
 
     Bool operator==(Name_Z a1) { return m_ID == a1.m_ID; }

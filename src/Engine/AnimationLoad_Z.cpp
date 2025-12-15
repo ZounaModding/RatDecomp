@@ -1,5 +1,6 @@
 #include "Animation_Z.h"
 #include "Sys_Z.h"
+#include "AnimationManager_Z.h"
 
 void Animation_Z::Load(void** i_Data) {
     LOAD_Z(m_MaxTime);

@@ -43,9 +43,11 @@ public:
 
     Name_ZHash_Z() { }
 
-    Name_ZHash_Z(Name_Z i_Value) { m_Value = i_Value; }
+    Name_ZHash_Z(const Name_Z& i_Value) {
+        m_Value = i_Value;
+    }
 
-    Name_ZHash_Z(Name_Z i_Value, S32 i_Ref) {
+    Name_ZHash_Z(const Name_Z& i_Value, S32 i_Ref) {
         m_Value = i_Value;
         m_Ref = i_Ref;
     }

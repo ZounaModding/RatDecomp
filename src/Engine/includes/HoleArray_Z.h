@@ -15,6 +15,12 @@ public:
         m_NbElement = 0;
     }
 
+    ~HoleArray_Z() {
+        for (int i = 0; i < m_Size; i++) {
+            Remove(i);
+        }
+    }
+
     S32 GetSize() const { return m_Size; }
 
     U32 IsElement(S32 i_Index) const {

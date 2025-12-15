@@ -85,8 +85,6 @@ void Renderer_Z::InitViewport(U32 i_NbViewports) {
     }
 }
 
-Extern_Z const Vec3f VEC3F_NULL;
-
 void Renderer_Z::SetActiveViewport(S32 i_ViewportId) {
     SetCurrentFogColor(VEC3F_NULL);
     FlushActiveViewport();

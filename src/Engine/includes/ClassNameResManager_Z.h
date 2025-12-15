@@ -29,12 +29,13 @@ public:
 };
 
 class ClassNameResManager_Z {
-    HashName_ZTable_Z m_ClassHT; // Enum?
+protected:
+    HashName_ZTable_Z m_Enum;
     HoleArray_Z<ClassNameRes_Z> m_ClassResHA;
 
 public:
     ClassNameResManager_Z()
-        : m_ClassHT(64) {
+        : m_Enum(64) {
     }
 
     virtual void Shut();

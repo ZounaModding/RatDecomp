@@ -121,6 +121,8 @@ struct Vec2f {
     Vec2f& Normalize() { return (*this) /= GetNorm(); }
 };
 
+Extern_Z const Vec2f VEC2F_NULL;
+
 struct Vec3f {
     Float x, y, z;
 
@@ -237,6 +239,8 @@ struct Vec3f {
         return *this;
     }
 };
+
+Extern_Z const Vec3f VEC3F_NULL;
 
 inline Vec3f operator*(Float i_Factor, const Vec3f& i_Vec) {
     return i_Vec * i_Factor;
@@ -457,6 +461,10 @@ struct Vec4f {
     Float GetNorm() const { return sqrtf(x * x + y * y + z * z); }
 
     Vec4f& Normalize() { return (*this) /= sqrtf(x * x + y * y + z * z); }
+
+    Vec3f& xyz() {
+        return *(Vec3f*)&x;
+    }
 };
 
 inline Vec4f operator*(Float i_Factor, const Vec4f& i_Vec) {

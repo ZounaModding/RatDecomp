@@ -39,9 +39,9 @@ public:
 
     inline S32 GetSize() const { return m_Size; }
 
+    // TODO: When all uses of GetBit (inlined) are decompiled, make it match properly
     inline U32 GetBit(S32 i_Bit) const {
         DYNARRAY_Z_EXP(i_Bit < m_Size);
-        S32 l_Temp = m_BitsDA[i_Bit >> 5];
         return m_BitsDA[i_Bit >> 5] & (1 << (i_Bit & 0x1F));
     }
 

@@ -3,8 +3,6 @@
 #include "Assert_Z.h"
 #include "AnimMessage_Z.h"
 
-Extern_Z const Vec3f VEC3F_NULL;
-
 Bool Animation_Z::MarkHandles() {
     if (!ResourceObject_Z::MarkHandles()) {
         return FALSE;

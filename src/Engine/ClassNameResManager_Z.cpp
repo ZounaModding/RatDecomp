@@ -3,7 +3,7 @@
 #include "Program_Z.h"
 
 void ClassNameResManager_Z::Shut() {
-    m_ClassHT.Flush();
+    m_Enum.Flush();
 
     for (S32 i = m_ClassResHA.FindFirst(); i >= 0; i = m_ClassResHA.FindNext(i)) {
         m_ClassResHA[i].Flush();
@@ -62,7 +62,7 @@ void ClassNameResManager_Z::MarkHandlesFromClass(const Name_Z& i_Name, const Nam
 
 Bool ClassNameResManager_Z::Minimize() {
     S32 l_ClassID;
-    m_ClassHT.Minimize();
+    m_Enum.Minimize();
     m_ClassResHA.Minimize();
     l_ClassID = m_ClassResHA.FindFirst();
     while (l_ClassID >= 0) {

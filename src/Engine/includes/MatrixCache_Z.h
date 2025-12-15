@@ -7,6 +7,7 @@ typedef U16 MatDbId;
 class Mat4x4Buffer_Z {
 public:
     Mat4x4Buffer_Z();
+    void RemoveMatrix(U16 i_Id);
 
 private:
     DynArray_Z<Mat4x4, 32, FALSE, FALSE> m_MatArray;

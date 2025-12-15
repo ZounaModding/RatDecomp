@@ -61,7 +61,7 @@ public:
     }
 
     inline Bitmap_ZHdl& GetBitmap(S32 i_Id = mtl_diffuse) {
-        return m_CurBmapHdl[i_Id];
+        return m_BmapHdl[i_Id];
     }
 
     inline U8 GetTileU() {
@@ -73,7 +73,7 @@ public:
     }
 
     inline void SetBitmap(const Bitmap_ZHdl& i_BmapHdl, S32 i_Id = mtl_diffuse) {
-        m_CurBmapHdl[i_Id] = i_BmapHdl;
+        m_BmapHdl[i_Id] = i_BmapHdl;
     }
 
     inline void SetTranslation(const Vec2f& i_Trans) {
@@ -199,7 +199,7 @@ private:
     U8 m_ConstantAlphaWriteValue;
     U32 m_RdrFlag2;
     WaterHeightMap_Z* m_WaterHeightMap;
-    Bitmap_ZHdl m_CurBmapHdl[mtl_nb_params];
+    Bitmap_ZHdl m_BmapHdl[mtl_nb_params];
 };
 
 #endif
