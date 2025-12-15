@@ -3,6 +3,9 @@
 #include "Math_Z.h"
 #include "UserDefine_ZHdl.h"
 #include "BoneNodeFlag_Z.h"
+#include "DynPtrArray_Z.h"
+
+class BoneNode_Z;
 
 struct BoneTRS_Z {
     Quat m_Rotation;
@@ -23,6 +26,9 @@ struct BoneTRS_Z {
 
 class BoneNode_Z {
 public:
+    BoneNode_Z();
+    ~BoneNode_Z();
+
     void UpdateTM(BoneNode_Z* i_Parent);
 
     inline void SetTranslation(const Vec3f& i_Translation) { m_Trs.m_Translation = i_Translation; }
@@ -61,7 +67,25 @@ public:
 
     //inline void EnableFlag(U32 i_Flag) { m_Flag |= i_Flag; }
 
+    inline void SetWorldMatrixId(U16 i_Id) { m_RotInWorldMatrix.m.m03.dummy.u16[0] = i_Id; }
+
+    inline U16 GetWorldMatrixId() const { return m_RotInWorldMatrix.m.m03.dummy.u16[0]; }
+
+    inline void SetWorldMatrix(const Mat4x4& i_World) { *(Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32 = i_World; }
+
     inline Mat4x4& GetWorldMatrix() { return *(Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
+
+    inline Mat4x4* GetWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
+
+    inline void SetInverseWorldMatrixId(U16 i_Id) { m_RotInWorldMatrix.m.m03.dummy.u16[1] = i_Id; }
+
+    inline U16 GetInverseWorldMatrixId() const { return m_RotInWorldMatrix.m.m03.dummy.u16[1]; }
+
+    inline void SetInverseWorldMatrix(const Mat4x4& i_InvWorld) { *(Mat4x4*)m_RotInWorldMatrix.m.m23.dummy.i32 = i_InvWorld; }
+
+    inline Mat4x4& GetInverseWorldMatrix() { return *(Mat4x4*)m_RotInWorldMatrix.m.m23.dummy.i32; }
+
+    inline Mat4x4* GetInverseWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m23.dummy.i32; }
 
     inline void SetName(const Name_Z& i_Name) { m_Name = i_Name; }
 
