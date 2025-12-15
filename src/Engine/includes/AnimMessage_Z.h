@@ -63,7 +63,7 @@ struct SkelMessage_Z {
     Skel_Z* m_VsSkelPtr;
     BoneNode_Z* m_BoneNodePtr;
     BoneNode_Z* m_VsBoneNodePtr;
-    AnimatedAgent_Z* m_AnimatedAgentPtr;
+    AnimatedAgent_Z* m_VsAgentPtr;
 };
 
 struct KeyMessage_Z : public Key_Z {
@@ -168,7 +168,7 @@ public:
     }
 
     S32 Get(Float i_StartTime, Float i_CurTime, Float i_MaxTime, const Message_Z& i_Msg, RegMessage_Z& o_Value);
-    S32 GetValue(Float i_StartTime, Float i_CurTime, Float i_MaxTime, RegMessage_Z* o_Value, S32& io_MsgNb, S32 i_MsgId) const;
+    S32 GetValue(Float i_StartTime, Float i_CurTime, Float i_MaxTime, RegMessage_Z* o_Value, S32& io_MsgNb, S32 i_MsgId = -1) const;
     S32 GetCctValue(S32 i_StartKey, S32 i_KeyCount, Float i_StartTime, Float i_CurTime, Float i_MaxTime, RegMessage_Z* o_Value, S32& io_MsgNb) const;
     void Load(void** i_Data);
     void MarkHandles();

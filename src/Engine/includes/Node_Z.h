@@ -22,6 +22,7 @@ public:
     void GetLocal(const Segment_Z& i_WorldSegment, Segment_Z& o_LocalSegment);
     void GetLocal(const Sphere_Z& i_WorldSph, Sphere_Z& o_LocalSph);
     void GetLocal(const Capsule_Z& i_WorldCapsule, Capsule_Z& o_LocalCapsule);
+    void Changed();
 
     Object_Z* GetObject(Bool) const;
 
@@ -45,9 +46,15 @@ public:
 
     inline Mat4x4* GetWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
 
+    void SetRotation(const Quat& i_Rotation);
+
     inline Quat& GetRotation() { return m_Rotation; }
 
+    void SetScale(Float i_Scale);
+
     inline Float GetUniformScale() { return m_UniformScale; }
+
+    void SetTranslation(const Vec3f& i_Translation);
 
     inline Mat4x4& GetInverseWorldMatrix() {
         if (GetFlag() & FL_NODE_INVALIDMAT) {

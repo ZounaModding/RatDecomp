@@ -29,8 +29,11 @@ void AnimFrame_Z::Load(void** i_Data) {
         m_StartStopAnimKfr.m_Keys[i].m_StartStops.SetSize(l_Nb2);
         LOAD_Z(m_StartStopAnimKfr.m_Keys[i].m_Time);
         for (S32 j = 0; j < l_Nb2; j++) {
-            gData.ClassMgr->LoadLink(m_StartStopAnimKfr.m_Keys[i].m_StartStops[j].m_AnimHdl, i_Data);
-            LOAD_Z(m_StartStopAnimKfr.m_Keys[i].m_StartStops[j].m_Value);
+            StartStop_ZDA& l_StartStops = m_StartStopAnimKfr.m_Keys[i].m_StartStops;
+            gData.ClassMgr->LoadLink(l_StartStops[j].m_AnimHdl, i_Data);
+            // $SABE: If I do m_StartStopAnimKfr.m_Keys[i].m_StartStops again it generates the lwzx's
+            U32 l_Value;
+            LOAD_Z(l_StartStops[j].m_Value);
         }
     }
     LOADRANGE_Z(m_CurTime, m_PlayFlag);

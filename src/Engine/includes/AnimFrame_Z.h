@@ -4,6 +4,7 @@
 #include "Node_ZHdl.h"
 #include "Keyframer_Z.h"
 #include "AnimFrame_ZHdl.h"
+#include "AnimMessage_Z.h"
 
 struct KeyFollow_Z : public Key_Z {
     friend class KeyframerFollow_Z;
@@ -101,6 +102,22 @@ private:
 struct StartStop_Z {
     AnimFrame_ZHdl m_AnimHdl; // Animation to start/stop
     U32 m_Value;              // Value (Stop = 0 / Start = 1 )
+
+    U32 GetValue() const {
+        return m_Value;
+    }
+
+    void SetValue(U32 i_Value) {
+        m_Value = i_Value;
+    }
+
+    AnimFrame_ZHdl& GetAnim() {
+        return m_AnimHdl;
+    }
+
+    void SetAnim(const AnimFrame_ZHdl& i_AnimHdl) {
+        m_AnimHdl = i_AnimHdl;
+    }
 };
 
 typedef DynArray_Z<StartStop_Z, 4> StartStop_ZDA;
