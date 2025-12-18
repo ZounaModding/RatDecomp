@@ -9,6 +9,8 @@ class RegMessage_Z;
 class SkelMessage_Z;
 
 #define ANIM_RESOURCE_MAX 128
+#define MAX_REGMSG_ARRAY_SIZE 512
+#define MAX_SKELMSG_ARRAY_SIZE 256
 
 enum NodeIds {
     BONE_TETE = 0,
@@ -134,6 +136,17 @@ public:
     S32 GetMeshByName(const Name_Z& i_Name);
     void ReserveMsgArray();
     void ReleaseMsgArray();
+    void SwapMsgArray();
+    RegMessage_Z& GetRegMessage(S32 i_Idx);
+    S32 GetMaxRegMessage();
+    RegMessage_Z* GetRegMessage();
+    S32& GetRegMessageNb();
+    void PrintfMsgAndCount();
+    S32& GetSkelMessageNb();
+    SkelMessage_Z* GetSkelMessage();
+    S32 AddSkelId(const Name_Z& i_SkelName);
+    void SetOriginalArray(S32 i_SkelId, BoneNode_Z* i_OriginalBones);
+    void RemoveSkelNodes(S32 i_SkelId);
     void MarkSkelHandles();
 
 private:
@@ -146,12 +159,12 @@ private:
     HoleArray_Z<SkelNodeArray> m_SkelOriginalNodes;
     RegMessage_Z* m_AnimMsg;
     RegMessage_Z* m_BufAnimMsg;
-    U32 m_AnimMsgNb;
-    U32 m_BufAnimMsgNb;
+    S32 m_AnimMsgNb;
+    S32 m_BufAnimMsgNb;
     SkelMessage_Z* m_SkelMsg;
     SkelMessage_Z* m_BufSkelMsg;
-    U32 m_SkelMsgNb;
-    U32 m_BufSkelMsgNb;
+    S32 m_SkelMsgNb;
+    S32 m_BufSkelMsgNb;
     U32 m_UnkU32_0xC4;
     RegMessage_Z m_DfltRegMsg;
     SkelMessage_Z m_DfltSkelMsg;

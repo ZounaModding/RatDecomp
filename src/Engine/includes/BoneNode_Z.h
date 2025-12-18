@@ -95,6 +95,10 @@ public:
 
     inline BoneNode_Z* GetHeadSon() { return m_Trs.m_HeadSon; }
 
+    BoneNode_Z* GetRoot();
+
+    void MarkHandles();
+
 private:
     BoneTRS_Z m_Trs;
     // Quat m_Rotation;
