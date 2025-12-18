@@ -18,8 +18,8 @@ public:
     void SetAllBits();
     void ClearAllBits();
     void ClearBitRange(S32 i_StartIndex, S32 i_EndIndex);
-    S32 FindFirstBit(bool i_State = TRUE, S32 i_firstBitToCheck = 0) const;
-    S32 FindLastBit(bool i_State, S32 i_firstBitToCheck) const;
+    S32 FindFirstBit(Bool i_State = TRUE, S32 i_firstBitToCheck = 0) const;
+    S32 FindLastBit(Bool i_State, S32 i_firstBitToCheck) const;
 
     inline void Minimize() {
         m_BitsDA.Minimize();

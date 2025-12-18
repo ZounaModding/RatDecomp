@@ -21,8 +21,8 @@ public:
     virtual void LockBlockAt(S16 a1, S32 a2);            /* 0x30 */
     virtual void Get(S16 a1, S32 a2);                    /* 0x34 */
     virtual void EndGet(U8* a1);                         /* 0x38 */
-    virtual void Read(U8* a1, S32 a2, U32 a3, bool a4);  /* 0x3C */
-    virtual void Write(U8* a1, S32 a2, U32 a3, bool a4); /* 0x40 */
+    virtual void Read(U8* a1, S32 a2, U32 a3, Bool a4);  /* 0x3C */
+    virtual void Write(U8* a1, S32 a2, U32 a3, Bool a4); /* 0x40 */
 };
 
 #endif

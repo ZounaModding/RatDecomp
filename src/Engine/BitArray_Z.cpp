@@ -67,7 +67,7 @@ void BitArray_Z::ClearAllBits() {
     }
 }
 
-S32 BitArray_Z::FindFirstBit(bool i_State, S32 i_FirstBitToCheck) const {
+S32 BitArray_Z::FindFirstBit(Bool i_State, S32 i_FirstBitToCheck) const {
     DYNARRAY_Z_EXP(i_FirstBitToCheck <= m_Size);
     if (i_FirstBitToCheck >= m_Size) {
         return -1;
@@ -137,7 +137,7 @@ S32 BitArray_Z::FindFirstBit(bool i_State, S32 i_FirstBitToCheck) const {
     return -1;
 }
 
-S32 BitArray_Z::FindLastBit(bool i_State, S32 i_FirstBitToCheck) const {
+S32 BitArray_Z::FindLastBit(Bool i_State, S32 i_FirstBitToCheck) const {
     DYNARRAY_Z_EXP(i_FirstBitToCheck <= m_Size);
     while (i_FirstBitToCheck >= 0) {
         if (i_State) {

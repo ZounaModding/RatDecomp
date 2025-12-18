@@ -17,7 +17,7 @@ private:
     DynArray_Z<Game_ZHdl, 8> m_GamesDA;
     CameraOccluder_ZHdl m_CameraOccluderHdls[4];
     CameraStream_ZHdl m_CameraStreamHdls[4];
-    bool m_IsPaused;
+    Bool m_IsPaused;
 };
 
 #endif

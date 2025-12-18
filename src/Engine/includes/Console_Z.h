@@ -161,7 +161,7 @@ public:
     virtual void MessageStatus(U32 a1, const Char* a2, ...);
     virtual void SaveMessage(const Char* a1);
     virtual void SaveWarningMessage(const Char* a1);
-    virtual void MessageError(bool a1, U64 a2, const Char* a3, va_list& i_Args);
+    virtual void MessageError(Bool a1, U64 a2, const Char* a3, va_list& i_Args);
 };
 
 #endif

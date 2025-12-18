@@ -149,7 +149,7 @@ public:
     virtual void CleanAllDatas();                                                                                                            /* 0x30 */
     virtual void Minimize();                                                                                                                 /* 0x34 */
     virtual void Draw(S32 a1, Float a2);                                                                                                     /* 0x38 */
-    virtual void SetViewMatrix(bool a1);                                                                                                     /* 0x3C */
+    virtual void SetViewMatrix(Bool a1);                                                                                                     /* 0x3C */
     virtual void DrawTransparent(DrawInfo_Z& a1);                                                                                            /* 0x40 */
     virtual void DrawPostRenderEffects(DrawInfo_Z& a1);                                                                                      /* 0x44 */
     virtual void InitViewport(U32 a1);                                                                                                       /* 0x48 */
@@ -198,9 +198,9 @@ public:
     virtual void ApplyDirectionalOnVertex(Vertex3D* a1, Vec3f& a2, LightData_Z& a3);                                                         /* 0xF4 */
     virtual void ApplyFogOnVertex(Vertex3D* a1, Vec4f& a2);                                                                                  /* 0xF8 */
     virtual void DrawFace(Vertex3D& a1, Vertex3D& a2, Vertex3D& a3);                                                                         /* 0xFC */
-    virtual void DrawStrip(Vertex3D* a1, U32 a2, bool a3);                                                                                   /* 0x100 */
-    virtual void DrawStripAfterScene(Vertex3D* a1, U32 a2, bool a3);                                                                         /* 0x104 */
-    virtual void DrawLine(const Vec3f& a1, const Vec3f& a2, const Color& a3, bool a4, bool a5);                                              /* 0x108 */
+    virtual void DrawStrip(Vertex3D* a1, U32 a2, Bool a3);                                                                                   /* 0x100 */
+    virtual void DrawStripAfterScene(Vertex3D* a1, U32 a2, Bool a3);                                                                         /* 0x104 */
+    virtual void DrawLine(const Vec3f& a1, const Vec3f& a2, const Color& a3, Bool a4, Bool a5);                                              /* 0x108 */
     virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4);                                                      /* 0x10C */
     virtual void DrawImage(Bitmap_ZHdl& a1);                                                                                                 /* 0x110 */
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);                                                                      /* 0x114 */
@@ -212,12 +212,12 @@ public:
     virtual void Draw2DQuad(Vec2f* a1, Vec3f* a2, Vec2f* a3, Float a4, Float a5);                                                            /* 0x12C */
     virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4);                                                                    /* 0x130 */
     virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4);                                                                      /* 0x134 */
-    virtual void EnableZBuffer(bool a1);                                                                                                     /* 0x138 */
+    virtual void EnableZBuffer(Bool a1);                                                                                                     /* 0x138 */
     virtual void DrawString(const Vec2f& a1, const Char* a2, const Color& a3, Float a4, Float a5);                                           /* 0x13C */
-    virtual void DrawString(const Vec3f& a1, const Char* a2, bool a3);                                                                       /* 0x140 */
-    virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, bool a4);                                                      /* 0x144 */
+    virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3);                                                                       /* 0x140 */
+    virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4);                                                      /* 0x144 */
     virtual void SetShadowMapRect(Vec2f& a1, Vec2f& a2, Vec2f& a3);                                                                          /* 0x148 */
-    virtual void RenderScreen(U8** a1, S32& a2, S32& a3, U8& a4, bool a5);                                                                   /* 0x14C */
+    virtual void RenderScreen(U8** a1, S32& a2, S32& a3, U8& a4, Bool a5);                                                                   /* 0x14C */
     virtual void MakeScreenShot(Char* a1);                                                                                                   /* 0x150 */
     virtual void MakeAVI(S32 a1, S32 a2);                                                                                                    /* 0x154 */
     virtual void CloseAVI();                                                                                                                 /* 0x158 */
