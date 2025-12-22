@@ -6,6 +6,8 @@
 #include "Timer_Z.h"
 #include "Console_Z.h"
 class AnimationManager_Z;
+class SoundManager_Z;
+class ABC_ScriptManager;
 #include "XRamManager_Z.h"
 #include "MatrixCache_Z.h"
 
@@ -27,13 +29,17 @@ public:
     Console_Z* Cons;
     Renderer_Z* MainRdr;
     ClassManager_Z* ClassMgr;
-    U8 m_Pad_0x14[0x18];
+    U8 m_Pad_0x14[0x8];
+    ABC_ScriptManager* ScriptMgr;
+    U8 m_Pad_0x20[0xC];
     Mat4x4Buffer_Z* MatrixBuffer;
     ManipulatorManager_Z* ManipMgr;
     GameManager_Z* GameMgr;
     U8 m_Pad_0x34[0x4];
     AnimationManager_Z* AnimMgr;
-    U8 m_Pad_0x40[0x44];
+    U8 m_Pad_0x40[0x10];
+    SoundManager_Z* SoundMgr;
+    U8 m_Pad_0x54[0x30];
     XRamManager_Z* XRamMgr;
     U8 m_Pad_0x88[0x4];
     Bool m_ExitApp;

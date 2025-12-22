@@ -303,9 +303,9 @@ asm void ConcatMat4x4AndConvert(const Mat4x4& a1, const Mat4x4& a2, Mat3x3& a3)
     lfd       f15, 0x30(r1)
     psq_l     f14, 0x28(r1), 0, 0
     lfd       f14, 0x20(r1)
-  
+
     addi      r1, r1, 0x140
-    blr  
+    blr
 
 }
 

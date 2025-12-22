@@ -46,7 +46,7 @@ void Object_Z::EndLoad() {
     gData.ClassMgr->UpdateLink(m_ObjectDataHdl);
 }
 
-void Object_Z::Draw(DrawInfo_Z& a1, ObjectDatas_Z* i_Data) { }
+void Object_Z::Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data) { }
 
 ObjectDatas_Z::ObjectDatas_Z() {
     m_Flag = 0;

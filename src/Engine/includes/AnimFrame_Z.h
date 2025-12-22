@@ -6,6 +6,30 @@
 #include "AnimFrame_ZHdl.h"
 #include "AnimMessage_Z.h"
 
+class Light_Z;
+class HFog_Z;
+class Omni_Z;
+
+#define VL_STARTSTOP_STOP 0
+#define VL_STARTSTOP_START 1
+#define VL_STARTSTOP_PAUSE 2
+
+#define FL_ANIM_NONE (U16)(0 << 0)
+#define FL_ANIM_PLAY (U16)(1 << 0)                                   // Animation is currently playing or paused
+#define FL_ANIM_STARTED (U16)(1 << 1)                                // Playback has started
+#define FL_ANIM_READMESSAGE (U16)(1 << 2)                            // Messages can be interpreted
+#define FL_ANIM_PLAYONCE (U16)(1 << 3)                               // Animation must only play once
+#define FL_ANIM_NEVERAGAIN (U16)(1 << 4)                             // Animation will never restart, even after a reset
+#define FL_ANIM_PLAYED (U16)(1 << 5)                                 // Animation has finished playing back
+#define FL_ANIM_AUTOSTART (U16)(1 << 6)                              // Animation starts automatically at the beginning of the game
+#define FL_ANIM_NOT_RESTART (U16)(FL_ANIM_PLAYONCE | FL_ANIM_PLAYED) // We cannot restart the animation
+#define FL_ANIM_MESSAGE (U16)(1 << 7)                                // Message
+#define FL_ANIM_ON_PLAY (U16)(FL_ANIM_PLAY | FL_ANIM_STARTED)        // PlayAnim currently playing
+#define FL_ANIM_PAUSED (U16)(1 << 8)                                 // Animation is paused
+#define FL_ANIM_UNK_0x200 (U16)(1 << 9)                              // Disables update
+
+#define ANIMFRAME_MAX_MSG_ARRAY_SIZE 64
+
 struct KeyFollow_Z : public Key_Z {
     friend class KeyframerFollow_Z;
     friend class AnimFrame_Z;
@@ -92,7 +116,7 @@ public:
         m_Keys.Flush();
     }
 
-    S32 GetValue(Float i_Time, Float i_MaxTime, Vec3f& o_Value, Quat& o_Rot, Bool i_Inc);
+    Bool GetValue(Float i_Time, Float i_MaxTime, Vec3f& o_Value, Quat& o_Rot, Bool i_Inc);
     void MarkHandles();
 
 private:
@@ -124,6 +148,7 @@ typedef DynArray_Z<StartStop_Z, 4> StartStop_ZDA;
 
 struct KeyStartStop_Z : public Key_Z {
     friend class AnimFrame_Z;
+    friend class KeyframerStartStop_Z;
 
 public:
     KeyStartStop_Z() { }
@@ -214,7 +239,7 @@ public:
         m_Keys.Flush();
     }
 
-    S32 GetValue(Float i_PrevTime, Float& i_CurTime, Float i_MaxTime, AnimFrame_Z* i_CurAnim) const;
+    Bool GetValue(Float i_PrevTime, Float& i_CurTime, Float i_MaxTime, AnimFrame_Z* i_CurAnim);
     void MarkHandles();
 
 private:
@@ -222,19 +247,41 @@ private:
 };
 
 class AnimFrame_Z : public ResourceObject_Z {
+    friend class KeyframerStartStop_Z;
+
 public:
     AnimFrame_Z();
 
     // clang-format off
-    virtual ~AnimFrame_Z() { }              /* 0x08 */
-    virtual void Load(void** i_Data);       /* 0x0C */
-    virtual void EndLoad();                 /* 0x10 */
-    virtual Bool MarkHandles();             /* 0x14 */
-    virtual void Update(Float i_DeltaTime); /* 0x18 */
+
+    virtual ~AnimFrame_Z();                   /* 0x08 */
+    virtual void Load(void** i_Data);         /* 0x0C */
+    virtual void EndLoad();                   /* 0x10 */
+    virtual Bool MarkHandles();               /* 0x14 */
+    virtual void Update(Float i_DeltaTime) {} /* 0x18 */
+
     // clang-format on
 
+    void ResetFlag();
+    void ResetAnim();
+    void Update();
+    void UpdateMessage(Float i_DeltaTime);
+    void DoStart(Float i_StartTime = 0.0f, Float i_CurTime = 0.0f, Float i_PrevTime = -1.0f);
+    void Start(Float i_DeltaTime = 0.0f);
+    void Stop(Float i_DeltaTime = 0.0f);
+    void Pause(Float i_DeltaTime = 0.0f);
+    void SetAnimOnTime(Float i_DeltaTime);
+
+    inline Bool IsOn() const {
+        return m_PlayFlag & FL_ANIM_PLAY;
+    }
+
 private:
-    Node_ZHdl m_NodeHdl;
+    void InitNoteTrack(Node_Z* i_Node);
+    void UpdateNoteTrack(Node_Z* i_Node);
+    S32 GetAnimatedObjects(Node_Z* i_Node, Light_Z** o_Light, HFog_Z** o_Fog, Omni_Z** o_Omni);
+
+    Node_ZHdl m_AnimatedNodeHdl;
     Float m_MaxTime;
     KeyframerVec3f_Z m_TransKfr;
     KeyframerRot_Z m_RotKfr;

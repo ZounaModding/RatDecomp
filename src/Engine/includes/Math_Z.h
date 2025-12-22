@@ -17,6 +17,19 @@ struct QuatComp_Z;
 struct Mat3x3;
 struct Mat4x4;
 
+inline Float InvSqrt(register Float x, register Float y = 1.f) {
+    register Float Ret = 0.0f;
+
+    if (x) {
+        asm
+        {
+            frsqrte fp4,x
+            fmuls   Ret,fp4,y
+        }
+    }
+    return Ret;
+}
+
 void Inverse2(const Mat4x4&, Mat4x4&);
 
 union UDummy { // $SABE: U dummy!
@@ -184,9 +197,9 @@ struct Vec3f {
     Vec3f operator*(Float i_Factor) const { return Vec3f(x * i_Factor, y * i_Factor, z * i_Factor); }
 
     Vec3f& operator*=(Float i_Factor) {
-        x *= i_Factor;
-        y *= i_Factor;
-        z *= i_Factor;
+        x = x * i_Factor;
+        y = y * i_Factor;
+        z = z * i_Factor;
         return *this;
     }
 
@@ -228,7 +241,9 @@ struct Vec3f {
 
     Float GetNorm() const { return sqrtf(GetNorm2()); }
 
-    Vec3f& Normalize() { return (*this) /= GetNorm(); }
+    inline Vec3f& Normalize() {
+        return (*this) *= InvSqrt(GetNorm2());
+    }
 
     Float HGetNorm2() const { return x * x + z * z; }
 
@@ -683,7 +698,9 @@ struct TBVtx {
     Vec2f UnkVec2f_0x8;
 };
 
-Sphere_Z operator*(const Mat4x4& Mat, const Sphere_Z& Sphere);
+Sphere_Z operator*(const Mat4x4& i_Mat, const Sphere_Z& i_Sphere);
+
+void BuildLookAtRotation(const Vec3f& i_LookAt, const Vec3f& i_Up, Quat& o_Quat);
 
 template <typename T>
 T Clamp(T i_Value, T i_Min, T i_Max) {

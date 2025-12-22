@@ -1,6 +1,7 @@
 #ifndef _NODEFLAG_Z_H_
 #define _NODEFLAG_Z_H_
 
+#define FL_NODE_NONE (0 << 0)             // 0x0 - No flags
 #define FL_NODE_SCAN (1 << 0)             // 0x1 - Do recursion, used if a Node_Z in the branch needs update
 #define FL_NODE_UNK_0x2 (1 << 1)          // 0x2 - Unknown
 #define FL_NODE_UNK_0x4 (1 << 2)          // 0x4 - Unknown

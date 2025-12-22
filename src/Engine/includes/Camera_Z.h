@@ -81,11 +81,11 @@ private:
 
 public:
     void UpdateInverseWorldMatrix(Node_Z* i_Node);
-    virtual ~Camera_Z();                                      /* 0x08 */
-    virtual void Load(void** a1);                             /* 0x0C */
-    virtual void EndLoad();                                   /* 0x10 */
-    virtual void Draw(DrawInfo_Z& a1, ObjectDatas_Z* a2);     /* 0x14 */
-    virtual void UpdateObject(Node_Z* a1, ObjectDatas_Z* a2); /* 0x18 */
+    virtual ~Camera_Z();                                              /* 0x08 */
+    virtual void Load(void** a1);                                     /* 0x0C */
+    virtual void EndLoad();                                           /* 0x10 */
+    virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data); /* 0x14 */
+    virtual void UpdateObject(Node_Z* a1, ObjectDatas_Z* a2);         /* 0x18 */
 
     void SetFov(Float i_Fov);
 

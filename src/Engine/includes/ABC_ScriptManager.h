@@ -16,6 +16,9 @@ typedef BnkLinkArray_Z<ABC_BehaviorHolder> BehaviorHolderBnkLinkArray;
 typedef BnkLinkArray_Z<ABC_CategoryHolder> CategoryHolderBnkLinkArray;
 typedef BnkLinkArray_Z<ABC_CategoryData> CategoryDataBnkLinkArray;
 
+struct Param_Z {
+};
+
 class ABC_ScriptManager {
 
 private:
@@ -29,12 +32,14 @@ private:
     HashName_ZTable_Z m_MsgEnum;
 
 public:
+    // clang-format off
     virtual ~ABC_ScriptManager();
     virtual void Init();
     virtual void Shut();
     virtual void MarkHandles();
-    virtual void Draw(DrawInfo_Z& a1);
+    virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual void ReadEnumFromFiles();
+    virtual void NoteTrackInterpMessage(StaticArray_Z<Param_Z, 16, 1, 1>&, Message_Z&);
     virtual void NoteTrackGlobalFlag(Message_Z& a1);
     virtual void MateriaInterpColFlag(const Char* a1);
     virtual void MateriaInterpRdrFlag(const Char* a1);
@@ -53,13 +58,17 @@ public:
     virtual void ViewportDone(const Game_ZHdl& i_GameHdl);
     virtual void WorldAdded(const World_ZHdl& a1);
     virtual void UpdateIndependentResources(const World_ZHdl& a1);
-    virtual void InterpKeyframeMsg(const RegMessage_Z& a1);
+    virtual void InterpKeyframeMsg(const RegMessage_Z& a1) { };
     virtual void StreamRestored(const Node_ZHdl& a1);
     virtual void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2);
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2);
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, S32 a2);
     virtual void Update(Float a1);
     virtual void Minimize();
+    // clang-format onF
+
+    void RemoveAgent(ABC_AgentHdl& i_AgentHdl);
+    void FlushTimedMessagesTo(ABC_Agent* i_Agent, abc_message i_Msg = msg_no_message);
 
 private:
     // $VIOLET: TODO: add more defs

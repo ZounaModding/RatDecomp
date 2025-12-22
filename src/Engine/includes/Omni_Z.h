@@ -86,6 +86,15 @@ public:
     inline const MaterialAnim_ZHdl& GetMaterialAnim() const {
         return m_MaterialAnimHdl;
     }
+
+    inline Bool IsActive() const { return IsFlag(FL_OBJECT_ACTIVE); }
+
+    inline void SetActive(Bool i_Active = TRUE) {
+        DisableFlag(FL_OBJECT_ACTIVE);
+        if (i_Active) {
+            EnableFlag(FL_OBJECT_ACTIVE);
+        }
+    }
 };
 
 #endif // _OMNI_Z_H_

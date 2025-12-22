@@ -3,7 +3,7 @@
 
 // TODO: Finish matching
 void AnimFrame_Z::Load(void** i_Data) {
-    gData.ClassMgr->LoadLink(m_NodeHdl, i_Data);
+    gData.ClassMgr->LoadLink(m_AnimatedNodeHdl, i_Data);
     LOAD_Z(m_MaxTime);
     m_TransKfr.Load(i_Data);
     m_RotKfr.Load(i_Data);
@@ -43,7 +43,7 @@ void AnimFrame_Z::EndLoad() {
     S32 i;
     S32 j;
     m_ResObjLink.EndLoad();
-    gData.ClassMgr->UpdateLink(m_NodeHdl);
+    gData.ClassMgr->UpdateLink(m_AnimatedNodeHdl);
     for (i = 0; i < m_FollowSplineKfr.GetNbKeys(); i++) {
         gData.ClassMgr->UpdateLink(m_FollowSplineKfr.m_Keys[i].m_NodeHdl);
     }

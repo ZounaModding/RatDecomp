@@ -7,5 +7,9 @@
 #include "LowMemory_Z.h"
 #include "GCMain_Z.h"
 Extern_Z GCGlobals gData;
-
+Extern_Z S32 User_NbMatrix;
+Extern_Z Float User_MaxSqrDistActive;
+Extern_Z Float User_DefaultAgentMaxSqrDistActive;
+Extern_Z Float User_DefaultAgentMinSqrDistActive;
+Extern_Z S32 User_BFVersion;
 #endif

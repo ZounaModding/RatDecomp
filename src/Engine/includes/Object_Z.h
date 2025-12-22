@@ -65,6 +65,40 @@ private:
     Color m_DefaultColor;
 };
 
+#define FL_OBJECT_NONE (0 << 0)
+#define FL_OBJECT_UNK_0x1 (1 << 0)               // 0x1 - Unknown
+#define FL_OBJECT_UNK_0x2 (1 << 1)               // 0x2 - Unknown
+#define FL_OBJECT_UNK_0x4 (1 << 2)               // 0x4 - Unknown
+#define FL_OBJECT_UNK_0x8 (1 << 3)               // 0x8 - Unknown
+#define FL_OBJECT_UNK_0x10 (1 << 4)              // 0x10 - Unknown
+#define FL_OBJECT_UNK_0x20 (1 << 5)              // 0x20 - Unknown
+#define FL_OBJECT_UNK_0x40 (1 << 6)              // 0x40 - Unknown
+#define FL_OBJECT_UNK_0x80 (1 << 7)              // 0x80 - Unknown
+#define FL_OBJECT_UNK_0x100 (1 << 8)             // 0x100 - Unknown
+#define FL_OBJECT_UNK_0x200 (1 << 9)             // 0x200 - Unknown
+#define FL_OBJECT_UNK_0x400 (1 << 10)            // 0x400 - Unknown
+#define FL_OBJECT_UNK_0x800 (1 << 11)            // 0x800 - Unknown
+#define FL_OBJECT_UNK_0x1000 (1 << 12)           // 0x1000 - Unknown
+#define FL_OBJECT_UNK_0x2000 (1 << 13)           // 0x2000 - Unknown
+#define FL_OBJECT_UNK_0x4000 (1 << 14)           // 0x4000 - Unknown
+#define FL_OBJECT_UNK_0x8000 (1 << 15)           // 0x8000 - Unknown
+#define FL_OBJECT_UNK_0x10000 (1 << 16)          // 0x10000 - Unknown
+#define FL_OBJECT_UNK_0x20000 (1 << 17)          // 0x20000 - Unknown
+#define FL_OBJECT_UNK_0x40000 (1 << 18)          // 0x40000 - Unknown
+#define FL_OBJECT_UNK_0x80000 (1 << 19)          // 0x80000 - Unknown
+#define FL_OBJECT_ACTIVE (1 << 20)               // 0x100000 - Is the object active (Used by Light_Z and Omni_Z)
+#define FL_OBJECT_IS_SPLINE_TRACK_LOOP (1 << 21) // 0x200000 - Unknown
+#define FL_OBJECT_UNK_0x400000 (1 << 22)         // 0x400000 - Unknown
+#define FL_OBJECT_UNK_0x800000 (1 << 23)         // 0x800000 - Unknown
+#define FL_OBJECT_UNK_0x1000000 (1 << 24)        // 0x1000000 - Unknown
+#define FL_OBJECT_UNK_0x2000000 (1 << 25)        // 0x2000000 - Unknown
+#define FL_OBJECT_UNK_0x4000000 (1 << 26)        // 0x4000000 - Unknown
+#define FL_OBJECT_UNK_0x8000000 (1 << 27)        // 0x8000000 - Unknown
+#define FL_OBJECT_UNK_0x10000000 (1 << 28)       // 0x10000000 - Unknown
+#define FL_OBJECT_UNK_0x20000000 (1 << 29)       // 0x20000000 - Unknown
+#define FL_OBJECT_UNK_0x40000000 (1 << 30)       // 0x40000000 - Unknown
+#define FL_OBJECT_UNK_0x80000000 (1 << 31)       // 0x80000000 - Unknown
+
 /* sizeof(Object_Z) == 0x80 */
 class Object_Z : public ResourceObject_Z {
 public:
@@ -176,7 +210,7 @@ public:
         return m_FadeOutDistance;
     }
 
-private:
+protected:
     Sphere_Z m_BSphereLocal;
     Box_Z m_BBoxLocal;
     Float m_FadeOutDistance;

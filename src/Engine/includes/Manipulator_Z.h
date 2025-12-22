@@ -42,6 +42,9 @@ public:
     virtual void Update(Float i_DeltaTime);          /* 0x10 */
     virtual void Draw(const Viewport_Z* i_Vp);       /* 0x14 */
     virtual void Draw(const DrawInfo_Z& i_DrawInfo); /* 0x18 */
+
+private:
+    S32 m_ViewportId;
 };
 
 class ManipulatorSceneDraw_Z : public Manipulator_Z {

@@ -149,6 +149,18 @@ public:
     void RemoveSkelNodes(S32 i_SkelId);
     void MarkSkelHandles();
 
+    inline void SetUpdateFlag(U32 i_Flag) {
+        m_UpdateFlag = i_Flag;
+    }
+
+    inline U32 GetUpdateFlag() const {
+        return m_UpdateFlag;
+    }
+
+    inline Bool IsUpdateFlag(U32 i_Flag) const {
+        return m_UpdateFlag & i_Flag;
+    }
+
 private:
     HashName_ZTable_Z m_NodeIds;
     DynArray_Z<Name_Z, 32, FALSE> m_NodeNames;

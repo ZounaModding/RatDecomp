@@ -32,8 +32,8 @@ public:
     const BaseObject_ZHdl& GetHandle() const;
     String_Z<ARRAY_CHAR_MAX>* GetDebugName() const;
     String_Z<ARRAY_CHAR_MAX>* GetDebugRscName() const;
-    void Send(abc_message i_Msg, ABC_Agent* i_Receiver, Float i_Param);
-    void SendTimed(abc_message i_Msg, ABC_Agent* i_Receiver, Float i_Delay, Float i_Param);
+    void Send(abc_message i_Msg, ABC_Agent* i_Receiver, Float i_Param = UNDEFINED_FVALUE);
+    void SendTimed(abc_message i_Msg, ABC_Agent* i_Receiver, Float i_Delay, Float i_Param = UNDEFINED_FVALUE);
     void SetName(const Name_Z& i_Name, Bool i_ResToo = FALSE);
 };
 

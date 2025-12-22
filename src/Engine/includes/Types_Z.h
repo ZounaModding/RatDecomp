@@ -61,4 +61,9 @@ typedef volatile double VDouble;
 
 #define ARRAY_CHAR_MAX 256
 
+#undef UNDEFINED_VALUE
+#define UNDEFINED_VALUE -1612
+#undef UNDEFINED_FVALUE
+#define UNDEFINED_FVALUE -1612.0f
+
 #endif

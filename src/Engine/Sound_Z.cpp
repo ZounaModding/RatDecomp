@@ -10,7 +10,7 @@ Sound_Z::~Sound_Z() {
 
 void Sound_Z::Init() {
     m_SndDatas_Z = 0;
-    m_Flags.Flags = 0;
+    m_Flag = 0;
     m_XRamBlock = -1;
     m_Frequency = 0;
     m_Unk0x1D = 0;

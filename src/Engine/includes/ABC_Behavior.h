@@ -9,6 +9,19 @@ class ABC_CategoryData;
 
 typedef int behavior_result;
 
+#define behavior_condition_state(s) (behavior_fsm_states + (s) * 2)
+#define behavior_action_state(s) (behavior_fsm_states + (s) * 2 + 1)
+
+#define behavior_fsm_state(c, s) ((c) + (s) * 2)
+
+enum {
+    result_FALSE = FALSE,
+    result_TRUE = TRUE,
+    result_MISSING_PART,
+    result_OK,
+    result_ERROR
+};
+
 enum behavior_state_type {
     behavior_activate,
     behavior_deactivate,
@@ -31,11 +44,11 @@ enum behavior_state_type {
     behavior_fsm_states = behavior_condition
 };
 
-typedef behavior_result (ABC_Agent::*behaviorMethodPtr)(behavior_state_type behavior_state, ABC_Behavior* aBehavior);
+typedef behavior_result (ABC_Agent::*behaviorMethodPtr)(behavior_state_type i_State, ABC_Behavior* i_Bhv);
 
 class ABC_CategoryData {
     ABC_CategoryData() {
-        m_Category = -1;
+        m_Category = cat_no_category;
         m_Next = NULL;
         m_IsPublic = FALSE;
     }
@@ -82,12 +95,22 @@ public:
     ABC_BehaviorHolder* m_PrivateBehaviors;
     ABC_CategoryHolder* m_Next;
 
-    ABC_CategoryHolder();
+    ABC_CategoryHolder() {
+        m_Category = cat_no_category;
+        m_PublicBehaviors = NULL;
+        m_PrivateBehaviors = NULL;
+        m_Next = NULL;
+    }
+
     ABC_CategoryHolder(abc_category i_Category, const Char* i_CategoryName = NULL);
     ABC_CategoryHolder& operator=(const ABC_CategoryHolder& i_Holder);
     ABC_CategoryHolder(const ABC_CategoryHolder& i_Holder);
     ~ABC_CategoryHolder();
 };
+
+#define BHV_STARTED (U16)(1 << 0)
+#define BHV_WAS_EXECUTED_THIS_CYCLE (U16)(1 << 1)
+#define BHV_IS_ACTIVE (U16)(1 << 2)
 
 class ABC_Behavior {
 public:
@@ -97,11 +120,27 @@ public:
     void SetLocalDataSize(S32 i_Size);
     void LoadLocalVariables(void* i_Data);
     void StoreLocalVariables(const void* i_Data);
+    void AddPublicCategory(abc_category i_Cat, const char* i_CategoryName = NULL);
+    void AddPrivateCategory(abc_category i_Cat, const char* i_CategoryName = NULL);
+    void Execute(ABC_Agent* i_Agent);
 
-private:
+    Bool HasFlag(U16 i_Flag) const { return (m_BehaviorFlags & i_Flag) ? TRUE : FALSE; }
+
+    void SetFlag(U16 i_Flag) { m_BehaviorFlags |= i_Flag; }
+
+    U16 GetFlag() const { return m_BehaviorFlags; }
+
+    void ResetFlag(U16 i_Flag) { m_BehaviorFlags &= (U16)(~i_Flag); }
+
+    int GetFSMState(void) const { return m_BehaviorState; }
+
+    void SetFSMState(int i_State) { m_BehaviorState = (S16)i_State; }
+
     ABC_Behavior* m_Next;
     ABC_CategoryData* m_CategoryListHead;
-    behaviorMethodPtr m_Behavior;
+    behaviorMethodPtr m_Method;
+
+private:
     void* m_LocalData;
     S32 m_LocalDataSize;
     U16 m_BehaviorFlags;

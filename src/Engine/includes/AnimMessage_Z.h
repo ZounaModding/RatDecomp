@@ -16,7 +16,7 @@ class KeyframerMessage_Z;
 typedef DynArray_Z<Message_Z, 4, 0, 1> Message_ZDA;
 
 struct Message_Z {
-    S32 m_Id;
+    abc_message m_Id;
     S32 m_U32Param;
     U32 m_FlagParam;
     Float m_FloatParam;
@@ -29,7 +29,7 @@ struct Message_Z {
 };
 
 struct RegMessage_Z {
-    S32 m_Id;
+    abc_message m_Id;
     U32 m_U32Param;
     U32 m_FlagParam;
     Float m_FloatParam;
@@ -39,6 +39,10 @@ struct RegMessage_Z {
     Skel_Z* m_SkelPtr;
     BoneNode_Z* m_BoneNodePtr;
     Node_Z* m_NodePtr;
+
+    RegMessage_Z() {
+        m_NameParam = Name_Z();
+    }
 
     RegMessage_Z& operator=(const Message_Z& i_Msg) {
         m_Id = i_Msg.m_Id;
@@ -68,6 +72,7 @@ struct SkelMessage_Z {
 
 struct KeyMessage_Z : public Key_Z {
     friend class KeyframerMessage_Z;
+    friend class AnimFrame_Z;
 
 public:
     KeyMessage_Z() { }
@@ -120,6 +125,8 @@ private:
 typedef DynArray_Z<KeyMessage_Z, 32, 1, 1> KeyMessage_ZDA;
 
 class KeyframerMessage_Z {
+    friend class AnimFrame_Z;
+
 public:
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();

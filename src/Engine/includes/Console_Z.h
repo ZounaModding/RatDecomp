@@ -154,7 +154,7 @@ public:
     virtual void EnableFlag(U32 i_Flag);
     virtual void DisableFlag(U32 a1);
     virtual void Update(Float a1);
-    virtual void Draw(DrawInfo_Z& a1);
+    virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual PopupMenu_Z* GetPopupMenu() const;
     virtual void Flush();
     virtual void DisplayStatus(U32 a1, const Char* a2);

@@ -2,6 +2,7 @@
 
 void AnimationManager_Z::ReserveMsgArray() {
     m_UpdateFlag = 0;
+    // Inline most likely
     m_DfltRegMsg.m_SkelPtr = NULL;
     m_DfltRegMsg.m_BoneNodePtr = NULL;
     m_DfltRegMsg.m_NodePtr = NULL;
@@ -11,6 +12,7 @@ void AnimationManager_Z::ReserveMsgArray() {
     while (l_Ptr -= 4, i--) {
         *(U32*)(l_Ptr + 0xe0) = 0; // Use the pointer to offset into m_UnkBytes_0x18[4*i] to set them to 0
     }
+    // Finish inline
     m_DfltSkelMsg.m_SkelPtr = NULL;
     m_DfltSkelMsg.m_VsSkelPtr = NULL;
     m_DfltSkelMsg.m_BoneNodePtr = NULL;

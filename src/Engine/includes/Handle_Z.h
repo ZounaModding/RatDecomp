@@ -137,7 +137,7 @@ public:
     virtual void CheckHandles();
     virtual void MarkHandles(S32 a1);
     virtual void Update(Float a1);
-    virtual void Draw(DrawInfo_Z& a1);
+    virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual void Minimize();
     virtual void ClearMark();
     virtual void InvalidClassSize(S16 const a1);
