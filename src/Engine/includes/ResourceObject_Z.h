@@ -7,11 +7,11 @@ class ResourceObjectLink_Z {
 public:
     ResourceObjectLink_Z() { };
     ~ResourceObjectLink_Z() { };
-    void Load(void** a1);
+    void Load(void** i_Data);
     void EndLoad();
     void EndLoadLinks();
     void MarkHandles();
-    void UpdateLinkFromId(BaseObject_ZHdl& i_Hdl, S32 i_ID) const;
+    void UpdateLinkFromId(BaseObject_ZHdl& o_Hdl, S32 i_ID) const;
     DynArray_Z<BaseObject_ZHdl, 32> m_LinkedResourceDA;
 };
 

@@ -152,6 +152,7 @@ public:
     S32 HandleToU32(const BaseObject_ZHdl& i_Hdl);
     void MarkU32Handle(U32 i_Hdl);
     Bool MarkHandle(const BaseObject_ZHdl&);
+    void MarkHandles(const BaseObject_ZHdl&);
     void ForbidCheckHandles(Bool i_ForbidCheckHandles);
     const BaseObject_ZHdl& CreateNewHandle(BaseObject_Z* i_BObj, const Name_Z& i_Name, S16 i_ClassID, U8 i_Flag);
     void ExpandSize(S32 i_NewSize = HandleGranularity);
