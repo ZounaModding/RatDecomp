@@ -5,10 +5,10 @@
 
 struct ABC_Message {
     BaseObject_ZHdl m_Sender;
-    abc_message m_MessageID;
+    abc_message m_Id;
     ABC_Message* m_Next;
     Float m_Time;
-    Float m_MessageParameter;
+    Float m_Param;
 
     ABC_Message() {
         Reset();
@@ -16,10 +16,10 @@ struct ABC_Message {
 
     void Reset() {
         m_Sender = NULL;
-        m_MessageID = msg_no_message;
+        m_Id = msg_no_message;
         m_Next = NULL;
         m_Time = -1.0f;
-        m_MessageParameter = UNDEFINED_FVALUE;
+        m_Param = UNDEFINED_FVALUE;
     }
 };
 

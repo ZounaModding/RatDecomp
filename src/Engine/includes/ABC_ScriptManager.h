@@ -32,7 +32,6 @@ private:
     HashName_ZTable_Z m_MsgEnum;
 
 public:
-    // clang-format off
     virtual ~ABC_ScriptManager();
     virtual void Init();
     virtual void Shut();
@@ -58,17 +57,20 @@ public:
     virtual void ViewportDone(const Game_ZHdl& i_GameHdl);
     virtual void WorldAdded(const World_ZHdl& a1);
     virtual void UpdateIndependentResources(const World_ZHdl& a1);
-    virtual void InterpKeyframeMsg(const RegMessage_Z& a1) { };
+    virtual void InterpKeyframeMsg(const RegMessage_Z& a1) {};
     virtual void StreamRestored(const Node_ZHdl& a1);
     virtual void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2);
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2);
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, S32 a2);
     virtual void Update(Float a1);
     virtual void Minimize();
-    // clang-format onF
 
     void RemoveAgent(ABC_AgentHdl& i_AgentHdl);
     void FlushTimedMessagesTo(ABC_Agent* i_Agent, abc_message i_Msg = msg_no_message);
+    void SetAgentState(ABC_Agent* i_Agent, abc_agentState i_State);
+    ABC_CategoryData* GetNewCategory();
+
+    Float GetTime() { return m_ScriptTime; }
 
 private:
     // $VIOLET: TODO: add more defs

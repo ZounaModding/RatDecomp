@@ -965,7 +965,7 @@ config.libs = [
             Object(NonMatching, "Engine/CollisionVol_Z.cpp"),
             Object(NonMatching, "Engine/LodCollision_Z.cpp"),
             Object(NonMatching, "Engine/RtcPlayer_Z.cpp"),
-            Object(NonMatching, "Engine/ABC_Behavior.cpp"),
+            Object(Matching,    "Engine/ABC_Behavior.cpp"),
             Object(NonMatching, "Engine/UnPack_Z.cpp"),
             Object(NonMatching, "Engine/CameraStream_Z.cpp"),
             Object(NonMatching, "Engine/DebugTools_Z.cpp"),

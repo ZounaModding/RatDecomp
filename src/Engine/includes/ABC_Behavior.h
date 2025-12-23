@@ -5,7 +5,7 @@
 #include "ABC_Category_Engine.h"
 class ABC_Behavior;
 class ABC_Agent;
-class ABC_CategoryData;
+struct ABC_CategoryData;
 
 typedef int behavior_result;
 
@@ -46,7 +46,7 @@ enum behavior_state_type {
 
 typedef behavior_result (ABC_Agent::*behaviorMethodPtr)(behavior_state_type i_State, ABC_Behavior* i_Bhv);
 
-class ABC_CategoryData {
+struct ABC_CategoryData {
     ABC_CategoryData() {
         m_Category = cat_no_category;
         m_Next = NULL;
@@ -56,16 +56,14 @@ class ABC_CategoryData {
     Bool HasCategory(abc_category i_Cat);
     Bool HasPublicCategory(abc_category i_Cat);
 
-private:
     ABC_CategoryData* m_Next;
-    S32 m_Category;
+    abc_category m_Category;
     Bool m_IsPublic;
 };
 
-class ABC_BehaviorHolder {
-public:
-    behaviorMethodPtr m_Method;
+struct ABC_BehaviorHolder {
     ABC_BehaviorHolder* m_Next;
+    behaviorMethodPtr m_Method;
 
     ABC_BehaviorHolder() {
         m_Method = NULL;
@@ -88,8 +86,7 @@ public:
     }
 };
 
-class ABC_CategoryHolder {
-public:
+struct ABC_CategoryHolder {
     abc_category m_Category;
     ABC_BehaviorHolder* m_PublicBehaviors;
     ABC_BehaviorHolder* m_PrivateBehaviors;
@@ -120,8 +117,9 @@ public:
     void SetLocalDataSize(S32 i_Size);
     void LoadLocalVariables(void* i_Data);
     void StoreLocalVariables(const void* i_Data);
-    void AddPublicCategory(abc_category i_Cat, const char* i_CategoryName = NULL);
-    void AddPrivateCategory(abc_category i_Cat, const char* i_CategoryName = NULL);
+    void AddCategory(abc_category i_Category, Bool i_IsPublic, const Char* i_CategoryName = NULL);
+    void AddPublicCategory(abc_category i_Category, const Char* i_CategoryName = NULL);
+    void AddPrivateCategory(abc_category i_Category, const Char* i_CategoryName = NULL);
     void Execute(ABC_Agent* i_Agent);
 
     Bool HasFlag(U16 i_Flag) const { return (m_BehaviorFlags & i_Flag) ? TRUE : FALSE; }

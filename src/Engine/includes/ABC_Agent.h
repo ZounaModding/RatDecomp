@@ -45,27 +45,28 @@ public:
     // Category methods
 
     ABC_CategoryHolder* GetNewCategoryHolder();
+    void AddBehaviorToCategory(behaviorMethodPtr i_BhvMethod, abc_category i_Category, Bool i_IsPublic, const Char* i_CategoryName);
     void ReleaseCategoryHolders(ABC_CategoryHolder* i_CategoryHolder);
     virtual ABC_CategoryHolder* GetCategories() { return NULL; }
     virtual void SetCategories(ABC_CategoryHolder* i_CategoryHolder) = 0;
     virtual void ActivateCategory(abc_category i_Category) { }
     virtual abc_category GetCategory(const Char* i_CategoryName) { return cat_no_category; }
     void _ActivateCategory(abc_category i_Category, ABC_CategoryHolder* i_CategoryHolder);
-    abc_category _GetCategory(const char* i_CategoryName, ABC_CategoryHolder* i_CategoryHolder);
+    abc_category _GetCategory(const Char* i_CategoryName, ABC_CategoryHolder* i_CategoryHolder);
     void DeactivateCategory(abc_category i_Category);
 
     // Message methods
 
-    void GetNewMessage();
+    ABC_Message* GetNewMessage();
     void ReleaseMessageList();
     void SwapMessageList();
     inline Float MsgParam() const { return m_MessageParameter; }
     inline BaseObject_ZHdl MsgSender() { return m_Sender; }
-    void Receive(abc_message i_Message, const BaseObject_ZHdl& i_Sender, Float i_Param = UNDEFINED_FVALUE);
-    void Receive(ABC_Message* i_Message);
-    Bool Message(abc_message i_Message);
-    Bool FlushMessage(abc_message i_Message);
-    Bool FlushEveryMessage(abc_message i_Message, ABC_Agent* i_Sender = NULL);
+    void Receive(abc_message i_Msg, const BaseObject_ZHdl& i_Sender, Float i_Param = UNDEFINED_FVALUE);
+    void Receive(ABC_Message* i_Msg);
+    Bool Message(abc_message i_Msg);
+    Bool FlushMessage(abc_message i_Msg);
+    Bool FlushEveryMessage(abc_message i_Msg, ABC_Agent* i_Sender = NULL);
     Bool FlushAllMessages();
 
     // Flag methods
@@ -79,6 +80,9 @@ public:
     // Execution methods
 
     void Execution();
+    void StartCycle();
+    void FinishCycle();
+    ABC_Behavior* GetNextExecutableBehavior();
 
     // State methods
 
