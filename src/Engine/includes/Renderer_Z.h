@@ -31,6 +31,20 @@
 #define FL_EFFECT_DEBUG_BUFFERS (U32)(1 << 29)      // 0x20000000
 #define FL_EFFECT_MAKE_AVI (U32)(1 << 31)           // 0x80000000
 
+// $SABE: PC only
+enum SID_VS {
+    SID_VS_DFLT = 0,
+    SID_VS_NODFLT = 1,
+    SID_VS_ZONLY = 2,
+    SID_VS_OMNI = 3,
+    SID_VS_REFR = 4,
+    SIS_VS_OMNI_SHADOW = 5,
+    SID_VS_SHADOW = 6,
+    SID_VS_WATER = 7,
+    SID_VS_COUNT = 8,
+    SID_VS_NONE = 8
+};
+
 enum ViewportId {
     NONE_VIEWPORT = -1,
     MAX_VIEWPORT = 4,
@@ -372,12 +386,14 @@ public:
 
     virtual void MoveScreenOrigin(S32 a1, S32 a2);
     virtual void SetDOF_Depth(Float i_DofDepth);
-    virtual void PushOrder(Float a1);
+
+    virtual void PushOrder(Float i_Order) { }
 
     virtual void PushSo(U8 i_SceneOrder) { }
 
-    virtual void PushDo(U8 a1);
-    virtual void PushDs(U16 a1);
+    virtual void PushDo(U8 i_DrawOrderGroup) { }
+
+    virtual void PushDs(U16 i_DrawState) { }
 
     virtual U32 PushGroupId(U8 i_GroupId) { return 0; }
 

@@ -727,7 +727,7 @@ void GCRenderer_Z::DrawState(U16 i_StateFlag) {
 void GCRenderer_Z::SetRenderContext(U32 i_Flag) {
     Bitmap_Z* l_LightmapTexture = m_ActiveBitmaps[BITMAP_RADIOSITY];
 
-    U32 l_OmniMask = m_OmniLightMask | GX_LIGHT0;
+    U32 l_OmniMask = m_CurOmniLightMask | GX_LIGHT0;
     U32 l_HasLightmapTextureFlag = l_LightmapTexture ? FL_RDR_CONTEXT_HAS_LIGHTMAP_TEXTURE : 0;
     U32 l_HasMaterialTextureFlag = (m_ActiveMaterialTextureFlag & 1) ? FL_RDR_CONTEXT_MATERIAL_TEXTURE : 0;
 

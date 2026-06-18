@@ -71,6 +71,8 @@ public:
 
     static BaseObject_Z* NewObject() { return NewL_Z(83) HFogData_Z; }
 
+    Vec3f& GetColor() { return m_Color; }
+
 private:
     Float m_Unk0x28;
     Float m_Unk0x2C;

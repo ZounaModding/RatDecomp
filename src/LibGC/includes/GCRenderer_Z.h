@@ -76,12 +76,12 @@ enum DrawingState {
     ds_unk_0x200 = 0x200,
     ds_unk_0x400 = 0x400,
     ds_disable_forced_dstalpha = 0x800,
-    ds_ztestwrite = ds_ztest | ds_zwrite,                                   // 0x0003
-    ds_cwrite = ds_cwritergb | ds_cwritea,                                  // 0x000c
-    ds_alpha = ds_ablend | ds_noatest | ds_aref128,                         // 0x0070
-    ds_zonly = ds_ztest | ds_zwrite | ds_cw,                                // 0x0083
+    ds_ztestwrite = ds_ztest | ds_zwrite,                                   // 0x3
+    ds_cwrite = ds_cwritergb | ds_cwritea,                                  // 0xc
+    ds_alpha = ds_ablend | ds_noatest | ds_aref128,                         // 0x70
+    ds_zonly = ds_ztest | ds_zwrite | ds_cw,                                // 0x83
     ds_opaque_no_alpha_write = ds_ztest | ds_zwrite | ds_cwritergb | ds_cw, // 0x87
-    ds_opaque = ds_ztest | ds_zwrite | ds_cwrite | ds_cw,                   // 0x008f
+    ds_opaque = ds_ztest | ds_zwrite | ds_cwrite | ds_cw,                   // 0x8f
     ds_cull_order = ds_cw | ds_ccw,                                         // 0x180
 };
 
@@ -154,7 +154,13 @@ public:
         U8 m_VertexData[DRAW3D_VTXBUFFER_NB * sizeof(GCVertex3DStream)];
     } Aligned_Z(32);
 
+    void End();
     void EndRender();
+
+    void SwitchBuffer() {
+        m_CurBankIdx = 1 - m_CurBankIdx;
+        m_CurBankIdx = 1 - m_CurBankIdx;
+    }
 
     S32 m_CurBankIdx;
     BaseDisplayList_Z* m_CurDisplayList;
@@ -258,14 +264,23 @@ public:
     virtual void EndRender(Float i_DeltaTime);
     virtual Bool Minimize();
     virtual void Draw(S32 i_ViewportId, Float i_DeltaTime);
-    virtual void DrawTransparent(DrawInfo_Z& a1);
+
     virtual void ClearZBuffer(S32 i_X, S32 i_Y, S32 i_Width, S32 i_Height);
 
     virtual void ClearFrameBuffer(S32 a1, S32 a2, S32 a3, S32 a4) { }
 
-    virtual void PushOrder(Float a1);
-    virtual void PushDo(U8 a1);
-    virtual void PushDs(U16 a1);
+    virtual void PushOrder(Float i_Order) {
+        m_PushedOrder = i_Order;
+    }
+
+    virtual void PushDo(U8 i_DrawOrderGroup) {
+        m_PushedDrawOrderGroup = i_DrawOrderGroup;
+    }
+
+    virtual void PushDs(U16 i_DrawState) {
+        m_PushedDrawState = i_DrawState;
+    }
+
     virtual void SetActiveMaterial(Material_Z* i_Material);
     virtual void SetActiveTexture(Bitmap_Z* i_Bitmap, S32 i_Unk);
     virtual void FreeTexture(S16 i_TexId);
@@ -303,12 +318,22 @@ public:
     void DrawState(U16 i_StateFlag);
     void SetRenderContext(U32 i_ContextFlag);
     void SetTexture(Bitmap_Z* i_Bitmap, GXTexWrapMode i_WrapS, GXTexWrapMode i_WrapT, GXTexMapID i_TexMapID = GX_TEXMAP0);
+
+    // GCRendererTransp_Z.cpp
+
+    Bool DrawExtPrimitive(ExtPrimitiveInfo_Z* i_ExtPrimInfo);
     U16 SortRendererDatas(SortElem_Z* i_SortElems);
+    virtual void DrawTransparent(DrawInfo_Z& i_DrawInfo);
+    void DrawOrder(DrawInfo_Z& i_DrawInfo, unsigned char i_Order);
+    void ImmediatQuad(const Vec2f& i_UVMin, const Vec2f& i_UVMax, const Vec2f& i_PosMin, const Vec2f& i_PosMax, const Vec2f& i_Size, const Color& i_Color, Float i_Z);
+    void InitBlock(DrawInfo_Z& i_DrawInfo);
+
+    // GCRendererLighting_Z.cpp
+
+    void DisableFog();
+    void EnableFog();
     void NoFog();
     void NoOmnis();
-    void EnableFog();
-    void DisableFog();
-    void ImmediatQuad(const Vec2f& i_UVMin, const Vec2f& i_UVMax, const Vec2f& i_PosMin, const Vec2f& i_PosMax, const Vec2f& i_Size, const Color& i_Color, Float i_Z);
 
     // void ResetContextFlag() {
     //     m_VizQueryDisplayListCount = 0;
@@ -349,7 +374,7 @@ private:
     GXColor m_CurAmbientColor;
     Vec4f m_CurObjColor;
     S32 m_CurOmniLightCount;
-    U32 m_OmniLightMask;
+    U32 m_CurOmniLightMask;
     GXLightObj m_CurOmniLights[MAX_OMNI];
     HFogData_Z* m_CurMainFog;
     HFogData_Z* m_CurEnabledFog;
@@ -360,7 +385,7 @@ private:
     S32 m_RenderContextFlag;
     U32 m_ActiveMaterialTextureFlag; // Max FL_TEX_ALL (all bitmaps)
     U32 m_CurMtxId;
-    U32 m_CurMtxKey;
+    S32 m_CurMtxKey;
     Mat4x4 m_Local2Cam Aligned_Z(64);
     Mat4x4 m_InvTransposed Aligned_Z(64);
     Mat4x4 m_CameraMatrix Aligned_Z(64);
