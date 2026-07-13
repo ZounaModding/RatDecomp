@@ -57,9 +57,9 @@ void GCRenderer_Z::DrawTransparent(DrawInfo_Z& i_DrawInfo) {
 
     U32 l_FrameBufferEffectFlag = i_DrawInfo.m_Flag & 4;
 
-    m_DrawOrderGroupShouldDraw[do_unk_16] = (U32)i_DrawInfo.m_VpId < 6 && l_FrameBufferEffectFlag && !m_SkipFrameBufferEffects;
+    m_DrawOrderGroupShouldDraw[do_postproc] = i_DrawInfo.m_VpId < 6 && l_FrameBufferEffectFlag && !m_SkipFrameBufferEffects;
 
-    m_DrawOrderGroupShouldDraw[do_shadow_cast] = (U32)i_DrawInfo.m_VpId < 6 && l_FrameBufferEffectFlag && !m_SkipFrameBufferEffects;
+    m_DrawOrderGroupShouldDraw[do_shadow_cast] = i_DrawInfo.m_VpId < 6 && l_FrameBufferEffectFlag && !m_SkipFrameBufferEffects;
 
     m_DrawOrderGroupShouldDraw[do_unk_14] = FALSE;
     m_DrawOrderGroupShouldDraw[do_unk_13] = m_DrawOrderGroupShouldDraw[do_unk_14];
@@ -69,26 +69,22 @@ void GCRenderer_Z::DrawTransparent(DrawInfo_Z& i_DrawInfo) {
     S32 l_DrawCallCount = m_DrawCalls.GetSize();
 
     if (l_DrawCallCount != 0 && m_FrameBufferIdx >= 2) {
-        SortElem_Z l_SortElems[4096];
+        SortElem_Z l_SortElems[MAX_DRAW_CALLS_PER_FRAME];
 
-        S32 NbDatas = Min(l_DrawCallCount, (S32)4096);
+        S32 l_DrawCallsToProcess = Min(l_DrawCallCount, MAX_DRAW_CALLS_PER_FRAME);
 
         SortElem_Z* l_CurElem = l_SortElems;
         ExtPrimitiveInfo_Z* l_DrawCalls = m_DrawCalls.GetArrayPtr();
         ExtPrimitiveInfo_Z* l_CurDrawCall = l_DrawCalls;
 
-        U16 Cpt = 1;
-
-        while (NbDatas--) {
+        U16 l_NextIdx = 1;
+        while (l_DrawCallsToProcess--) {
             U8* l_Key = (U8*)&l_CurElem->m_Key;
-
-            l_Key[3] = (U8)l_CurDrawCall->m_Order;
-            l_Key[2] = (U8)(l_CurDrawCall->m_Order >> 8);
+            l_Key[3] = l_CurDrawCall->m_Order;
+            l_Key[2] = (l_CurDrawCall->m_Order >> 8);
             l_Key[1] = l_CurDrawCall->m_UnusedSortKeyInsideGroup_0x78;
             l_Key[0] = l_CurDrawCall->m_DrawOrderGroup;
-
-            l_CurElem->m_NextElemIdx = Cpt++;
-
+            l_CurElem->m_NextElemIdx = l_NextIdx++;
             l_CurElem++;
             l_CurDrawCall++;
         }
@@ -137,7 +133,237 @@ void GCRenderer_Z::DrawTransparent(DrawInfo_Z& i_DrawInfo) {
     InitBlock(i_DrawInfo);
 }
 
-void GCRenderer_Z::DrawOrder(DrawInfo_Z& i_DrawInfo, unsigned char i_Order) { }
+// TODO: Finish matching
+void GCRenderer_Z::DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order) {
+    Vec2f l_UVMin;
+    Vec2f l_UVMax;
+    Vec2f l_PosMin;
+    Vec2f l_PosMax;
+    Vec2f l_Size;
+    Color l_Color;
+
+    if (i_Order == m_CurDrawOrderGroup) {
+        return;
+    }
+
+    if (i_Order < m_CurDrawOrderGroup) {
+        m_CurDrawOrderGroup = i_Order - 1;
+    }
+
+    while (m_CurDrawOrderGroup < i_Order) {
+        m_ActiveMaterial = NULL;
+        m_CurDrawOrderGroup++;
+
+        S32 l_CurDrawOrderGroup = m_CurDrawOrderGroup;
+
+        if (l_CurDrawOrderGroup < do_postproc) {
+            if (l_CurDrawOrderGroup == do_scene_draw) {
+                goto DrawSceneDraw;
+            }
+
+            continue;
+        }
+
+        if (l_CurDrawOrderGroup == do_global_screen_fx) {
+            goto DrawFrameBufferEffects;
+        }
+
+        continue;
+
+    DrawSceneDraw:
+        if ((U32)m_DrawOrderGroupDrawCallCount[do_scene_draw - 1] != 0) {
+            SetActiveMaterial(NULL);
+
+            SetRenderContext(FL_RDR_CONTEXT_VERTEX_COLOR_TEX_ALPHA);
+            SetRenderBlendOp(FL_SOUSTRACTIF);
+            m_CurBlendFlags = -1;
+            DrawState(ds_cwrite | ds_ablend | ds_aref128);
+
+            DisableFog();
+            NoOmnis();
+
+            Float l_VpSizeY = i_DrawInfo.m_VpSizeY;
+            Float l_VpSizeX = i_DrawInfo.m_VpSizeX;
+
+            l_Size.x = l_VpSizeX;
+            l_Size.y = l_VpSizeY;
+
+            l_UVMin.x = 0.0f;
+            l_UVMin.y = 0.0f;
+
+            l_UVMax.x = l_VpSizeX;
+            l_UVMax.y = l_VpSizeY;
+
+            Float l_VpStartY = i_DrawInfo.m_VpStartY;
+            Float l_VpStartX = i_DrawInfo.m_VpStartX;
+
+            Float l_PosMaxY = l_VpStartY + l_VpSizeY;
+            Float l_PosMaxX = l_VpStartX + l_VpSizeX;
+
+            l_PosMin.x = l_VpStartX;
+            l_PosMin.y = l_VpStartY;
+
+            l_PosMax.x = l_PosMaxX;
+            l_PosMax.y = l_PosMaxY;
+
+            l_Color.r = 0.1f;
+            l_Color.g = 0.1f;
+            l_Color.b = 0.1f;
+            l_Color.a = 1.0f;
+
+            GXSetCopyFilter(FALSE, NULL, FALSE, m_RenderModeObj.vfilter);
+
+            GXSetTexCopySrc(
+                (U16)i_DrawInfo.m_VpStartX,
+                (U16)i_DrawInfo.m_VpStartY,
+                (U16)i_DrawInfo.m_VpSizeX,
+                (U16)i_DrawInfo.m_VpSizeY
+            );
+
+            GXInitTexObj(
+                &m_FrameBufferTexObj,
+                m_FrameBufferTextureData,
+                (U16)i_DrawInfo.m_VpSizeX,
+                (U16)i_DrawInfo.m_VpSizeY,
+                GX_TF_RGBA8,
+                GX_CLAMP,
+                GX_CLAMP,
+                FALSE
+            );
+
+            GXInitTexObjLOD(
+                &m_FrameBufferTexObj,
+                GX_LINEAR,
+                GX_NEAR,
+                0.0f,
+                0.0f,
+                0.0f,
+                FALSE,
+                FALSE,
+                GX_ANISO_1
+            );
+
+            GXSetCopyClamp((GXFBClamp)(GX_CLAMP_TOP | GX_CLAMP_BOTTOM));
+
+            GXSetTexCopyDst(
+                GXGetTexObjWidth(&m_FrameBufferTexObj),
+                GXGetTexObjHeight(&m_FrameBufferTexObj),
+                GX_TF_RGBA8,
+                FALSE
+            );
+
+            GXCopyTex(m_FrameBufferTextureData, FALSE);
+            GXPixModeSync();
+
+            GXSetCopyFilter(FALSE, m_RenderModeObj.sample_pattern, TRUE, m_RenderModeObj.vfilter);
+
+            GXLoadTexObj(&m_FrameBufferTexObj, GX_TEXMAP0);
+
+            ImmediatQuad(l_UVMin, l_UVMax, l_PosMin, l_PosMax, l_Size, l_Color, 1.0f);
+        }
+
+        continue;
+
+    DrawFrameBufferEffects:
+        if (m_DrawOrderGroupShouldDraw[do_postproc] && (m_EffectFlag & (FL_EFFECT_SPECIAL_VISION | FL_EFFECT_BLOOM | FL_EFFECT_RADIAL_MOTION_BLUR)) != 0) {
+            SetActiveMaterial(NULL);
+
+            GXSetCopyFilter(FALSE, NULL, FALSE, m_RenderModeObj.vfilter);
+
+            GXSetTexCopySrc(
+                (U16)i_DrawInfo.m_VpStartX,
+                (U16)i_DrawInfo.m_VpStartY,
+                (U16)i_DrawInfo.m_VpSizeX,
+                (U16)i_DrawInfo.m_VpSizeY
+            );
+
+            GXInitTexObj(
+                &m_FrameBufferTexObj,
+                m_FrameBufferTextureData,
+                (U16)(i_DrawInfo.m_VpSizeX * 0.5f),
+                (U16)(i_DrawInfo.m_VpSizeY * 0.5f),
+                GX_TF_RGBA8,
+                GX_CLAMP,
+                GX_CLAMP,
+                FALSE
+            );
+
+            GXInitTexObjLOD(
+                &m_FrameBufferTexObj,
+                GX_LINEAR,
+                GX_NEAR,
+                0.0f,
+                0.0f,
+                0.0f,
+                FALSE,
+                FALSE,
+                GX_ANISO_1
+            );
+
+            GXSetCopyClamp((GXFBClamp)(GX_CLAMP_TOP | GX_CLAMP_BOTTOM));
+
+            GXSetTexCopyDst(
+                GXGetTexObjWidth(&m_FrameBufferTexObj),
+                GXGetTexObjHeight(&m_FrameBufferTexObj),
+                GX_TF_RGBA8,
+                TRUE
+            );
+
+            GXCopyTex(m_FrameBufferTextureData, FALSE);
+            GXPixModeSync();
+
+            GXSetCopyFilter(FALSE, m_RenderModeObj.sample_pattern, TRUE, m_RenderModeObj.vfilter);
+
+            GXLoadTexObj(&m_FrameBufferTexObj, GX_TEXMAP0);
+
+            if (m_EffectFlag & FL_EFFECT_SPECIAL_VISION) {
+                SpecialWarpZone(i_DrawInfo);
+            }
+
+            if (m_EffectFlag & FL_EFFECT_RADIAL_MOTION_BLUR) {
+                RadialMBlur(i_DrawInfo);
+            }
+
+            if (m_EffectFlag & FL_EFFECT_BLOOM) {
+                SetRenderBlendOp(FL_ADDITIF);
+                SetRenderContext(FL_RDR_CONTEXT_BLOOM);
+
+                DisableFog();
+                NoOmnis();
+
+                DrawState(ds_cwrite | ds_noatest);
+
+                l_Color.r = 0.5f;
+                l_Color.g = 0.5f;
+                l_Color.b = 0.5f;
+                l_Color.a = 1.0f;
+
+                Float l_VpSizeY = i_DrawInfo.m_VpSizeY;
+                Float l_VpSizeX = i_DrawInfo.m_VpSizeX;
+
+                l_Size.y = l_VpSizeY * 0.5f;
+                l_Size.x = l_VpSizeX * 0.5f;
+                l_UVMin.x = 0.0f;
+                l_UVMin.y = 0.0f;
+                l_UVMax.x = l_VpSizeX * 0.5f;
+                l_UVMax.y = l_VpSizeY * 0.5f;
+
+                Float l_VpStartY = i_DrawInfo.m_VpStartY;
+                Float l_VpStartX = i_DrawInfo.m_VpStartX;
+
+                l_PosMin.x = l_VpStartX;
+                l_PosMin.y = l_VpStartY;
+
+                l_PosMax.x = l_VpStartX + l_VpSizeX;
+                l_PosMax.y = l_VpStartY + l_VpSizeY;
+
+                GXLoadTexObj(&m_FrameBufferTexObj, GX_TEXMAP0);
+
+                ImmediatQuad(l_UVMin, l_UVMax, l_PosMin, l_PosMax, l_Size, l_Color, 1.0f);
+            }
+        }
+    }
+}
 
 void GCRenderer_Z::ImmediatQuad(
     const Vec2f& i_UVMin,

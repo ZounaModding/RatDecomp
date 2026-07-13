@@ -304,11 +304,17 @@ Bool Console_Z::InterpCommandLine(const Char* i_CommandStr, U32 i_Depth) {
 
 Bool Console_Z::InterpFloat(const Char* i_CommandStr, Float& o_Value) {
     U32 i = 0;
+#ifdef BUGFIXES_Z
+    Bool l_IsNegative = FALSE;
+#endif
     if (i_CommandStr[0] == 0) {
         return FALSE;
     }
     if (i_CommandStr[0] == '-') {
         i++;
+#ifdef BUGFIXES_Z
+        l_IsNegative = TRUE;
+#endif
     }
 
     U8 l_AfterDecimalPoint = FALSE;

@@ -163,4 +163,9 @@ private:
     String_Z<ARRAY_CHAR_MAX> m_BfVersion;    // Just version
 };
 
+// Load defines
+
+#define LOADLINK_Z(dst) gData.ClassMgr->LoadLink(dst, i_Data)
+#define LOADLINKID_Z(dst) gData.ClassMgr->LoadLinkId(dst, i_Data)
+
 #endif

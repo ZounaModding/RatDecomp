@@ -21,6 +21,7 @@
 #undef DEBUG_Z
 #ifdef NONMATCHING_Z
 #define DEBUG_Z
+#define BUGFIXES_Z
 #endif
 
 #endif

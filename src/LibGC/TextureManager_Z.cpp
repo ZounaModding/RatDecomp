@@ -20,111 +20,224 @@ void TextureManager_Z::Shut(void) {
     }
 }
 
-// $VIOLET: Please finish this. this is nowhere near being right </3
-void TextureManager_Z::LoadTexture(Bitmap_Z* i_Bmap, _GXTexWrapMode i_WrapS, _GXTexWrapMode i_WrapT, GXTexMapID i_TexMapID) {
+// TODO: Finish matching
+void TextureManager_Z::LoadTexture(
+    Bitmap_Z* i_Bmap,
+    GXTexWrapMode i_WrapS,
+    GXTexWrapMode i_WrapT,
+    GXTexMapID i_TexMapID
+) {
     Texture_Z* l_Tex;
     S32 l_Size;
-    S32 l_SizeX, l_SizeY;
+    S32 l_SizeX;
+    S32 l_SizeY;
+
     if (i_Bmap->GetTexId() == INVALID_TEXID) {
         l_Size = i_Bmap->GetSize();
+
         DCStoreRange(i_Bmap->GetDatas(), l_Size);
+
         i_Bmap->SetTexId(m_TextureHA.Add());
+
         l_SizeX = i_Bmap->GetSizeX();
         l_SizeY = i_Bmap->GetSizeY();
+
         l_Tex = &m_TextureHA[i_Bmap->GetTexId()];
+
         switch (i_Bmap->GetFormat()) {
-            case BM_I4A4:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_IA4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
-                l_Tex->m_Palette = FALSE;
-                break;
-            case BM_I8A8:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_IA8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
-                l_Tex->m_Palette = FALSE;
-                break;
             case BM_4:
-                if (i_Bmap->GetPalFormat() == PAL_LUM) {
-                    GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_I4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
-                    l_Tex->m_Palette = FALSE;
+                GXInitTexObjCI(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_C4,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE,
+                    GX_TLUT0
+                );
+
+                if (i_Bmap->GetPalFormat() == PAL_565) {
+                    GXInitTlutObj(
+                        &l_Tex->m_Tlut,
+                        i_Bmap->GetPalette(),
+                        GX_TL_RGB565,
+                        i_Bmap->GetNbEntries()
+                    );
                 }
                 else {
-                    if (i_Bmap->GetPalFormat() == PAL_565) {
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette(), GX_TL_RGB565, i_Bmap->GetNbEntries());
-                    }
-                    else if (i_Bmap->GetPalFormat() == PAL_3444) {
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette(), GX_TL_RGB5A3, i_Bmap->GetNbEntries());
-                    }
-                    else if (i_Bmap->GetPalFormat() == PAL_8888) {
-                        l_Tex->m_SecondaryPalette = TRUE;
-
-                        // Initialize the secondary texture
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTexObjCI(&l_Tex->m_SecondaryTex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C4, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID + 1);
-                        // Init Two LUTs to simulate 8888
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette() + 0 * i_Bmap->GetNbEntries() * 2, GX_TL_IA8, i_Bmap->GetNbEntries());
-                    }
-                    l_Tex->m_Palette = TRUE;
+                    GXInitTlutObj(
+                        &l_Tex->m_Tlut,
+                        i_Bmap->GetPalette(),
+                        GX_TL_RGB5A3,
+                        i_Bmap->GetNbEntries()
+                    );
                 }
+
+                l_Tex->m_Palette = TRUE;
+                l_Tex->m_SecondaryPalette = FALSE;
                 break;
+
             case BM_8:
-                if (i_Bmap->GetPalFormat() == PAL_LUM) {
-                    GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_I8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
-                    l_Tex->m_Palette = FALSE;
+                GXInitTexObjCI(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_C8,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE,
+                    GX_TLUT0
+                );
+
+                if (i_Bmap->GetPalFormat() == PAL_565) {
+                    GXInitTlutObj(
+                        &l_Tex->m_Tlut,
+                        i_Bmap->GetPalette(),
+                        GX_TL_RGB565,
+                        i_Bmap->GetNbEntries()
+                    );
                 }
                 else {
-                    if (i_Bmap->GetPalFormat() == PAL_565) {
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette(), GX_TL_RGB565, i_Bmap->GetNbEntries());
-                    }
-                    else if (i_Bmap->GetPalFormat() == PAL_3444) {
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette(), GX_TL_RGB5A3, i_Bmap->GetNbEntries());
-                    }
-                    else if (i_Bmap->GetPalFormat() == PAL_8888) {
-                        l_Tex->m_SecondaryPalette = TRUE;
-
-                        // Initialize the secondary texture
-                        GXInitTexObjCI(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID);
-                        GXInitTexObjCI(&l_Tex->m_SecondaryTex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_C8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE, GX_TLUT0 + i_TexMapID + 1);
-                        // Init Two LUTs to simulate 8888
-                        GXInitTlutObj(&l_Tex->m_Tlut, i_Bmap->GetPalette() + 0 * i_Bmap->GetNbEntries() * 2, GX_TL_IA8, i_Bmap->GetNbEntries());
-                    }
-                    l_Tex->m_Palette = TRUE;
+                    GXInitTlutObj(
+                        &l_Tex->m_Tlut,
+                        i_Bmap->GetPalette(),
+                        GX_TL_RGB5A3,
+                        i_Bmap->GetNbEntries()
+                    );
                 }
+
+                l_Tex->m_SecondaryPalette = FALSE;
+                l_Tex->m_Palette = TRUE;
                 break;
+
             case BM_565:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_RGB565, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
+                GXInitTexObj(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_RGB565,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE
+                );
+
                 l_Tex->m_Palette = FALSE;
+                l_Tex->m_SecondaryPalette = FALSE;
                 break;
+
             case BM_5551:
             case BM_4444:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_RGB5A3, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
+                GXInitTexObj(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_RGB5A3,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE
+                );
+
                 l_Tex->m_Palette = FALSE;
+                l_Tex->m_SecondaryPalette = FALSE;
                 break;
-            case BM_888:
+
             case BM_8888:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_RGBA8, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
+            case BM_888:
+                GXInitTexObj(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_RGBA8,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE
+                );
+
                 l_Tex->m_Palette = FALSE;
+                l_Tex->m_SecondaryPalette = FALSE;
                 break;
+
+            case BM_I8:
+                GXInitTexObj(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_I8,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE
+                );
+
+                l_Tex->m_Palette = FALSE;
+                l_Tex->m_SecondaryPalette = FALSE;
+                break;
+
             case BM_CMPR:
-                GXInitTexObj(&l_Tex->m_Tex, i_Bmap->GetDatas(), l_SizeX, l_SizeY, GX_TF_CMPR, (GXTexWrapMode)i_WrapS, (GXTexWrapMode)i_WrapT, GX_FALSE);
+                GXInitTexObj(
+                    &l_Tex->m_Tex,
+                    i_Bmap->GetDatas(),
+                    l_SizeX,
+                    l_SizeY,
+                    GX_TF_CMPR,
+                    (GXTexWrapMode)i_WrapS,
+                    (GXTexWrapMode)i_WrapT,
+                    GX_FALSE
+                );
+
                 l_Tex->m_Palette = FALSE;
+                l_Tex->m_SecondaryPalette = FALSE;
                 break;
+        }
+
+        if (i_Bmap->IsFlagEnable(FL_BITMAP_BILINEAR)) {
+            GXInitTexObjLOD(
+                &l_Tex->m_Tex,
+                GX_LINEAR,
+                GX_LINEAR,
+                0.0f,
+                0.0f,
+                0.0f,
+                GX_FALSE,
+                GX_FALSE,
+                GX_ANISO_1
+            );
+        }
+        else {
+            GXInitTexObjLOD(
+                &l_Tex->m_Tex,
+                GX_NEAR,
+                GX_NEAR,
+                0.0f,
+                0.0f,
+                0.0f,
+                GX_FALSE,
+                GX_FALSE,
+                GX_ANISO_1
+            );
         }
     }
     else {
         l_Tex = &m_TextureHA[i_Bmap->GetTexId()];
     }
+
     l_Tex->m_Bmap = i_Bmap;
     l_Tex->m_Used = TRUE;
+
     if (l_Tex->m_Palette) {
-        GXLoadTlut(&l_Tex->m_Tlut, GX_TLUT0 + i_TexMapID);
+        GXLoadTlut(&l_Tex->m_Tlut, GX_TLUT0);
     }
+
     GXLoadTexObj(&l_Tex->m_Tex, i_TexMapID);
 
     if (l_Tex->m_SecondaryPalette) {
-        GXLoadTexObj(&l_Tex->m_SecondaryTex, (GXTexMapID)(i_TexMapID + 1));
+        GXLoadTexObj(&l_Tex->m_SecondaryTex, GX_TEXMAP1);
     }
 }
 
@@ -145,6 +258,7 @@ void TextureManager_Z::Clean() {
     }
 }
 
+// TODO: Finish matching
 Bool TextureManager_Z::Minimize() {
     Clean();
     m_TextureHA.Minimize();

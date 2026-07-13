@@ -67,7 +67,16 @@ public:
         m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)gData.MatrixBuffer->GetMatrix(GetWorldMatrixId());
     }
 
+    inline void SetWorldMatrixPtr(Mat4x4* i_MatrixPtr) {
+        m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)i_MatrixPtr;
+    }
+
     inline Mat4x4* GetWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
+
+    void UpdateWorldMatrixPtr(U16 i_Id) {
+        SetWorldMatrixId(i_Id);
+        SetWorldMatrixPtr(gData.MatrixBuffer->GetMatrix(GetWorldMatrixId()));
+    }
 
     void SetRotation(const Quat& i_Rotation);
 
@@ -143,7 +152,7 @@ public:
         m_RotInWorldMatrix.m.m03.dummy.i32 = i_Id;
     }
 
-    inline S32 GetCollideSeadId() const {
+    inline S32& GetCollideSeadId() {
         return m_RotInWorldMatrix.m.m03.dummy.i32;
     }
 
@@ -151,7 +160,7 @@ public:
         m_RotInWorldMatrix.m.m23.dummy.i32 = i_Id;
     }
 
-    inline S32 GetDisplaySeadId() const {
+    inline S32& GetDisplaySeadId() {
         return m_RotInWorldMatrix.m.m23.dummy.i32;
     }
 
@@ -167,7 +176,7 @@ public:
         m_InverseRotInWorldMatrix.m.m03.dummy.f32 = i_Value;
     }
 
-    inline Float GetStart() const {
+    inline Float& GetStart() {
         return m_InverseRotInWorldMatrix.m.m03.dummy.f32;
     }
 
@@ -175,7 +184,7 @@ public:
         m_InverseRotInWorldMatrix.m.m13.dummy.f32 = i_Value;
     }
 
-    inline Float GetEnd() const {
+    inline Float& GetEnd() {
         return m_InverseRotInWorldMatrix.m.m13.dummy.f32;
     }
 

@@ -28,8 +28,16 @@ Bool GCRenderer_Z::Init(S32 i_SizeX, S32 i_SizeY) {
                 (U16)((640 - m_SizeX) / 2),
                 (U16)((480 - m_SizeY) / 2)
             );
+#ifdef BUGFIXES_Z
+            // The original code outputs a 640-wide VI region, which Dolphin displays
+            // slightly narrower than exact 4:3 because of GC/Wii non-square pixel timing.
+            // Use a 704-wide active VI region centered in the 720-wide VI range.
+            m_RenderModeObj.viWidth = 704;
+            m_RenderModeObj.viXOrigin = 8;
+#else
             m_RenderModeObj.viWidth = 640;
             m_RenderModeObj.viXOrigin = 40;
+#endif
             break;
 
         case VI_PAL:
@@ -39,8 +47,13 @@ Bool GCRenderer_Z::Init(S32 i_SizeX, S32 i_SizeY) {
                 (U16)((640 - m_SizeX) / 2),
                 (U16)((528 - m_SizeY) / 2)
             );
+#ifdef BUGFIXES_Z
+            m_RenderModeObj.viWidth = 704;
+            m_RenderModeObj.viXOrigin = 8;
+#else
             m_RenderModeObj.viWidth = 640;
             m_RenderModeObj.viXOrigin = 40;
+#endif
             break;
 
         case VI_MPAL:
@@ -50,8 +63,13 @@ Bool GCRenderer_Z::Init(S32 i_SizeX, S32 i_SizeY) {
                 (U16)((640 - m_SizeX) / 2),
                 (U16)((480 - m_SizeY) / 2)
             );
+#ifdef BUGFIXES_Z
+            m_RenderModeObj.viWidth = 704;
+            m_RenderModeObj.viXOrigin = 8;
+#else
             m_RenderModeObj.viWidth = 640;
             m_RenderModeObj.viXOrigin = 40;
+#endif
             break;
     }
 
@@ -61,7 +79,14 @@ Bool GCRenderer_Z::Init(S32 i_SizeX, S32 i_SizeY) {
     GXSetDispCopySrc(0, 0, m_RenderModeObj.fbWidth, m_RenderModeObj.efbHeight);
 
     U32 l_DispCopyYScale = GXSetDispCopyYScale((Float)m_RenderModeObj.xfbHeight / (Float)m_RenderModeObj.efbHeight);
+
+#ifdef BUGFIXES_Z
+    // Keep XFB copy destination and allocation consistent.
+    U16 l_FrameBufferWidth = AlignUp_Z((U16)m_RenderModeObj.fbWidth, 16);
+    GXSetDispCopyDst(l_FrameBufferWidth, (U16)l_DispCopyYScale);
+#else
     GXSetDispCopyDst((U16)m_SizeX, (U16)l_DispCopyYScale);
+#endif
 
     GXSetCopyFilter(
         m_RenderModeObj.aa,
@@ -74,7 +99,10 @@ Bool GCRenderer_Z::Init(S32 i_SizeX, S32 i_SizeY) {
     GXSetDither(TRUE);
     GXSetFieldMode(m_RenderModeObj.field_rendering, m_RenderModeObj.xfbHeight < m_RenderModeObj.viHeight);
 
+#ifndef BUGFIXES_Z
     U16 l_FrameBufferWidth = AlignUp_Z((U16)m_SizeX, 16);
+#endif
+
     U32 l_FrameBufferSize = l_FrameBufferWidth * l_DispCopyYScale * 2;
 
     m_FrameBuffers[0] = (U8*)AllocAlignCL_Z(l_FrameBufferSize, "FrameBuffer A", 131, GC_BUFFER_ALIGN);

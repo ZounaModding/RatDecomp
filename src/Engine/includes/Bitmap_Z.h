@@ -18,11 +18,11 @@ enum BmFormat_Z {
     BM_565 = 0x08,  // 16 RGB
     BM_4444 = 0x0A, // 16 RGBA
     BM_1555 = 0x0B, //.TGA compatibility
-    BM_8888 = 0x0C, // 32 RGBA
-    BM_888 = 0x0D,  // 24 RGB
+    BM_8888 = 0x0C, // 32 RGBA - Is DXT5 on PC
+    BM_888 = 0x0D,  // 24 RGB - Is DXT1 on PC
     BM_CMPR = 0x0E, // S3TC
-    BM_I4A4 = 0x0F, // I4A4
-    BM_I8A8 = 0x10, // I4A4
+    BM_I8 = 0x0F,   // I8
+    BM_I8A8 = 0x10, // I8A8
 };
 
 enum PalFormat_Z {
@@ -100,21 +100,29 @@ public:
     void SetPoint(S32 i_X, S32 i_Y, const Color& i_Color);
     void SetPoint(U8* i_Data, U8 i_Forma, S32 i_X, S32 i_Y, const Color& i_Color);
 
+    S32 GetPrecalculatedSize() {
+        return m_PrecalculatedSize;
+    }
+
     S32 GetSize() {
-        if (m_PrecalculatedSize)
+        if (m_PrecalculatedSize) {
             return m_PrecalculatedSize;
-        else
-            return GetDataSize();
+        }
+        return GetDataSize();
     }
 
     S32 GetDataSize();
 
     S32 GetNbEntries() {
-        U8 l_Format = m_Format;
-        if (l_Format == BM_4)
+        if (m_Format == BM_4) {
             return 16;
-        else
-            return l_Format == BM_8 ? 256 : 0;
+        }
+        else if (m_Format == BM_8) {
+            return 256;
+        }
+        else {
+            return 0;
+        }
     }
 
     void SetUniversal(U8* i_Datas);

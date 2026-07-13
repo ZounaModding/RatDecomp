@@ -26,7 +26,7 @@ public:
     ~TextureManager_Z();
     Bool Init(void);
     void Shut(void);
-    void LoadTexture(Bitmap_Z* i_Bmap, _GXTexWrapMode i_WrapS, _GXTexWrapMode i_WrapT, GXTexMapID i_TexMapID = GX_TEXMAP0);
+    void LoadTexture(Bitmap_Z* i_Bmap, GXTexWrapMode i_WrapS, GXTexWrapMode i_WrapT, GXTexMapID i_TexMapID = GX_TEXMAP0);
     void RemoveTexture(U32 i_TexId);
     void Clean();
     Bool Minimize();

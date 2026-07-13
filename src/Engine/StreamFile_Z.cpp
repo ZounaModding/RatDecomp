@@ -145,7 +145,7 @@ void StreamFile_Z::Read(S32 i_BlockIdx) {
 
     BlockDescription_Z* l_BlockDesc = &g_BigFileHeader.m_Blocks[i_BlockIdx];
 
-    if (!(g_BigFileHeader.m_Flag & BF_HEADER_FLAG_NOT_RTC)) {
+    if (!(g_BigFileHeader.m_Flag & BF_HEADER_FLAG_COMPRESSED)) {
         Free_Z(m_Buf[0].m_RealPtr);
         m_Buf[0].m_RealPtr = AllocEndAlignL_Z(l_BlockDesc->m_PaddedSize, 214, 128);
         m_Buf[0].m_AlignedPtr = m_Buf[0].m_RealPtr;

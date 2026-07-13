@@ -25,7 +25,7 @@
 
 #define STR_FILE_ERROR_NONE 0
 
-#define BF_HEADER_FLAG_NOT_RTC (1 << 0)
+#define BF_HEADER_FLAG_COMPRESSED (1 << 0) // Does the bigfile have compressed objects
 
 struct BlockDescription_Z {
     S32 m_ObjectCount;

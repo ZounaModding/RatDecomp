@@ -12,6 +12,7 @@
 #define FIFO_BUFFER_SIZE (380 * 1024)
 #define GC_BUFFER_ALIGN 32
 #define VIZ_QUERY_DISPLAY_LIST_SIZE 32
+#define MAX_DRAW_CALLS_PER_FRAME (S32)4096
 
 #define FL_RDR_CONTEXT_NONE (0 << 0) // 0x0 - No flags
 
@@ -55,9 +56,9 @@ enum DrawingOrder {
     do_unk_13 = 13,
     do_unk_14 = 14,
     do_flare = 15,
-    do_unk_16 = 16,
-    do_unk_17 = 17,
-    do_unk_18 = 18,
+    do_postproc = 16,
+    do_screen_fx = 17,
+    do_global_screen_fx = 18,
     do_last = 19,
     do_count = 20
 };
@@ -324,9 +325,11 @@ public:
     Bool DrawExtPrimitive(ExtPrimitiveInfo_Z* i_ExtPrimInfo);
     U16 SortRendererDatas(SortElem_Z* i_SortElems);
     virtual void DrawTransparent(DrawInfo_Z& i_DrawInfo);
-    void DrawOrder(DrawInfo_Z& i_DrawInfo, unsigned char i_Order);
+    void DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order);
     void ImmediatQuad(const Vec2f& i_UVMin, const Vec2f& i_UVMax, const Vec2f& i_PosMin, const Vec2f& i_PosMax, const Vec2f& i_Size, const Color& i_Color, Float i_Z);
     void InitBlock(DrawInfo_Z& i_DrawInfo);
+    void SpecialWarpZone(DrawInfo_Z& i_DrawInfo);
+    void RadialMBlur(DrawInfo_Z& i_DrawInfo);
 
     // GCRendererLighting_Z.cpp
 

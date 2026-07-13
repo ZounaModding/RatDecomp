@@ -104,7 +104,7 @@ Float Bitmap_Z::GetBytePerPixel() {
             l_Result = 0.5;
             break;
         case BM_8:
-        case BM_I4A4:
+        case BM_I8:
             l_Result = 1.0;
             break;
         case BM_5551:
@@ -137,7 +137,7 @@ S32 Bitmap_Z::GetPalSize() {
         case BM_8888:
         case BM_888:
         case BM_CMPR:
-        case BM_I4A4:
+        case BM_I8:
             return 0;
         default:
             ASSERTL_Z(FALSE, "Bitmap_Z::GetPalSize", 138);

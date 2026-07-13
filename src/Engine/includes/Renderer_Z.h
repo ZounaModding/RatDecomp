@@ -19,7 +19,7 @@
 #define FL_EFFECT_DEPTH_OF_FIELD (U32)(1 << 4)      // 0x10
 #define FL_EFFECT_VSYNC (U32)(1 << 5)               // 0x20
 #define FL_EFFECT_UNK_0x40 (U32)(1 << 6)            // 0x40
-#define FL_EFFECT_UNK_0x80 (U32)(1 << 7)            // 0x80
+#define FL_EFFECT_SPECIAL_VISION (U32)(1 << 7)      // 0x80
 #define FL_EFFECT_UNK_0x100 (U32)(1 << 8)           // 0x100
 #define FL_EFFECT_UNK_0x200 (U32)(1 << 9)           // 0x200
 #define FL_EFFECT_SCREEN_DISTORTION (U32)(1 << 10)  // 0x400
@@ -120,7 +120,7 @@ struct DrawInfo_Z {
     Box_Z m_BBoxCamSpace;
     ClipSphere_Z m_ClipSph;
     Viewport_Z* m_Vp;
-    S32 m_VpId;
+    U32 m_VpId;
     S32 m_FirstPlayerVpId;
     S32 m_VpCount;
     Float m_VpTangent; // idk to what
