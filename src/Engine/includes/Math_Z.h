@@ -164,6 +164,7 @@ struct Vec3f {
     Vec3f() { };
     Vec3f(const Color& i_Color);
     Vec3f(const Quat& i_Quat);
+    inline Vec3f(const Vec4f& i_Vec);
 
     Vec3f(Float i_x, Float i_y, Float i_z) {
         x = i_x;
@@ -192,7 +193,7 @@ struct Vec3f {
         return *this;
     }
 
-    inline Vec3f operator=(const Vec4f& i_Vec);
+    Vec3f operator=(const Vec4f& i_Vec);
 
     Vec3f operator+(const Vec3f& i_Vec) const { return Vec3f(x + i_Vec.x, y + i_Vec.y, z + i_Vec.z); }
 
@@ -528,6 +529,12 @@ struct Vec4f {
     }
 };
 
+inline Vec3f::Vec3f(const Vec4f& i_Vec) {
+    x = i_Vec.x;
+    y = i_Vec.y;
+    z = i_Vec.z;
+}
+
 inline Vec4f operator*(Float i_Factor, const Vec4f& i_Vec) {
     return i_Vec * i_Factor;
 }
@@ -782,6 +789,8 @@ struct Quat {
 
     Bool operator!=(const Quat& i_Quat) const { return !operator==(i_Quat); }
 } Aligned_Z(16);
+
+Extern_Z const Quat QUAT_NULL;
 
 struct QuatComp_Z {
     S16 x;

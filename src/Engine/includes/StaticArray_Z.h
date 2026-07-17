@@ -100,6 +100,27 @@ public:
         return ReservedSize == m_Size ? TRUE : FALSE;
     }
 
+    void SetSize(int i_NewSize) {
+        int i;
+        if (i_NewSize != m_Size) {
+            if (i_NewSize > m_Size) {
+                if (InitObject) {
+                    for (i = m_Size; i < i_NewSize; i++) {
+                        new (&Get(i)) T;
+                    }
+                }
+            }
+            else if (i_NewSize < m_Size) {
+                if (DeleteObject) {
+                    for (i = m_Size - 1; i >= i_NewSize; i--) {
+                        Get(i).~T();
+                    }
+                }
+            }
+            m_Size = i_NewSize;
+        }
+    }
+
     void Remove(int i_Index) {
         DYNARRAY_Z_EXP((((U32)i_Index) < (U32)m_Size));
         if (DeleteObject)

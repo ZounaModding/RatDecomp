@@ -7,7 +7,7 @@ public:
     virtual ~VehiculeMove_Z();
     virtual void Init();
     virtual void Reset();
-    virtual void Update(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, Float a4, S32 a5);
+    virtual void Update(const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);
 
     static BaseObject_Z* NewObject() { return NewL_Z(17) VehiculeMove_Z; }
 };

@@ -19,7 +19,7 @@ public:
 
     void SetObjectMove(const BaseObject_ZHdl& i_ObjectMoveHdl);
 
-    inline ObjectMove_ZHdl GetObjectMove() {
+    inline ObjectMove_ZHdl& GetObjectMove() {
         return m_ObjectMoveHdl;
     }
 

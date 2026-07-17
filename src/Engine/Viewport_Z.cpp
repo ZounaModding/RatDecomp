@@ -179,7 +179,7 @@ void Viewport_Z::Draw(DrawInfo_Z& i_DrawInfo) {
     i_DrawInfo.m_VpSizeY = m_SizeY;
     World_Z* l_World = m_WorldHdl;
     Node_Z* l_CameraNode = m_CameraNodeHdl;
-    i_DrawInfo.m_Flag = DrawInfo_Z::FL_DRAWINFO_UNK_0x4;
+    i_DrawInfo.m_Flag = DrawInfo_Z::FL_DRAWINFO_DO_POST_PROCESS;
 
     if (l_World && l_CameraNode) {
         Camera_Z* l_Camera = (Camera_Z*)l_CameraNode->GetObjectA();
@@ -221,7 +221,7 @@ void Viewport_Z::Draw(DrawInfo_Z& i_DrawInfo) {
         }
 
         i_DrawInfo.m_Vp->m_Renderer->SetViewMatrix(TRUE);
-        i_DrawInfo.m_Flag = DrawInfo_Z::FL_DRAWINFO_UNK_0x4;
+        i_DrawInfo.m_Flag = DrawInfo_Z::FL_DRAWINFO_DO_POST_PROCESS;
     }
 
     m_Renderer->DrawTransparent(i_DrawInfo);

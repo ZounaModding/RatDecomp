@@ -9,7 +9,6 @@
 #include "SystemObject_Z.h"
 #include "UserDefine_Z.h"
 #include "Agent_ZHdl.h"
-#include "Agent_Z.h"
 #include "HFog_Z.h"
 #include "NodeFlag_Z.h"
 #include "MatrixCache_Z.h"
@@ -36,6 +35,9 @@ public:
     void Changed();
     void Changed(S32 i_Flag);
     void AddSon(const Node_ZHdl& i_Son, Bool i_IsWorldRelative = FALSE, Bool i_Changed = TRUE);
+    void GetAllSons(Node_ZHdlDA& i_Sons, Bool i_Recursive = FALSE) const;
+    void Remove(Bool a1, Bool a2);
+    Node_ZHdl& GetRoot();
 
     inline Bool IsRoot() const { return m_Parent == NULL; }
 
@@ -84,9 +86,19 @@ public:
 
     void SetScale(Float i_Scale);
 
+    inline Float& GetScale() { return m_Scale; }
+
     inline Float GetUniformScale() { return m_UniformScale; }
 
     void SetTranslation(const Vec3f& i_Translation);
+
+    inline Vec3f& GetLocalTranslation() { return m_Translation; }
+
+    void SetFromWorldTrans(const Vec3f& i_Trans);
+    void SetFromWorldTransRot(const Vec3f& i_Trans, const Quat& i_Rot);
+    void SetFromWorldTransScale(const Vec3f& i_Trans, Float i_Scale);
+    void SetFromWorldScale(Float i_Scale);
+    void SetFromWorldTransRotScale(const Vec3f& i_Trans, const Quat& i_Rot, const Float& i_Scale);
 
     inline const Vec3f& GetTranslation() {
         return GetWorldMatrix().GetMatrixTrans();

@@ -2,6 +2,8 @@
 #define _FLAREGC_Z_H_
 #include "Flare_Z.h"
 
+#define FL_FLAREGC_REBUILD_DISPLAYLIST (FL_OBJECTDATAS_LAST << 4) // 0x100000 - Rebuild display list for this flare
+
 class FlareGC_Z : public Flare_Z {
 public:
     virtual ~FlareGC_Z();

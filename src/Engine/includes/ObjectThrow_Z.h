@@ -14,27 +14,27 @@ public:
     virtual void Init();
 
     virtual void Reset();
-    virtual void Update(Float a1);
-    virtual void Update(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, Float a4, S32 a5);
-    virtual void DisableCollision(World_Z* a1, Float a2, S32 a3);
-    virtual void UpdateCollision(SeadZone_Z& a1, const Vec3f& a2, Vec3f& a3, Vec3f& a4, Vec3f& a5, Float a6, S32 a7);
-    virtual void EndUpdateCollision(SeadZone_Z& a1, const Vec3f& a2, const Vec3f& a3, const Vec3f& a4, Float a5, S32 a6);
-    virtual void RestoreCollision(SeadZone_Z& a1, S32 a2);
-    virtual void UpdateCollisionLineFlag(const ColLineResult_Z& a1, const Vec3f& a2, S32 a3);
-    virtual void UpdateCollisionMsg(Node_Z* a1, const Vec3f& a2, U64 a3, S32 a4);
-    virtual void SetNodeObject(const Node_ZHdl& a1, S32 a2);
-    virtual void FatherUnLinked(S32 a1);
+    virtual void Update(Float i_DeltaTime);
+    virtual void Update(const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);
+    virtual void DisableCollision(World_Z* i_World, Float i_DeltaTime, S32 i_Index);
+    virtual void UpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, Vec3f& io_NewPos, Vec3f& io_Dir, Vec3f& io_Orient, Float i_DeltaTime, S32 i_Index);
+    virtual void EndUpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_CurNodePos, const Vec3f& i_NewPos, Float i_DeltaTime, S32 i_Index);
+    virtual void RestoreCollision(SeadZone_Z& i_Zone, S32 i_Index);
+    virtual Bool UpdateCollisionLineFlag(const ColLineResult_Z& i_Result, const Vec3f& i_Pos, S32 i_Index);
+    virtual void UpdateCollisionMsg(Node_Z* i_Node, const Vec3f& i_Pos, U64 i_Flag, S32 i_Index);
+    virtual void SetNodeObject(const Node_ZHdl& i_NodeHdl, S32 i_Index);
+    virtual void FatherUnLinked(S32 i_Index);
     virtual void Abort();
     virtual void GetSLidingSlopeAngle();
     virtual void GetSLidingMaxSlopeAngle();
     virtual void GetReflexLimitAngle();
     virtual void GetHCollMinAngle();
-    virtual void UnLinkThrow(ObjectMoveData_Z* a1);
+    virtual void UnLinkThrow(ObjectMoveData_Z* i_MoveData);
     virtual void EndLiveTimeObject();
-    virtual void Bounce(const ColLineResult_Z& a1);
-    virtual void UpdateCollision(const ColLineResult_Z& a1, ObjectMoveSphereColl_Z& a2, Float a3, S32 a4);
-    virtual void UpdateCollisionCarrying(SeadZone_Z& a1, const Vec3f& a2, const Vec3f& a3);
-    virtual void SetNodeDepl(const Vec3f& a1, Float a2);
+    virtual void Bounce(const ColLineResult_Z& i_Result);
+    virtual void UpdateCollision(const ColLineResult_Z& i_Result, ObjectMoveSphereColl_Z& io_SphereColl, Float i_DeltaTime, S32 i_Index);
+    virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos);
+    virtual void SetNodeDepl(const Vec3f& i_Displacement, Float i_DeltaTime);
 
     static BaseObject_Z* NewObject() { return NewL_Z(140) ObjectThrow_Z; }
 

@@ -850,7 +850,7 @@ config.libs = [
             Object(NonMatching, "Engine/GraphDraw_Z.cpp"),
             Object(NonMatching, "Engine/SeadIndex_Z.cpp"),
             Object(NonMatching, "Engine/UnSharedCollisionTool_Z.cpp"),
-            Object(NonMatching, "Engine/ObjectMove_Z.cpp"),
+            Object(Matching,    "Engine/ObjectMove_Z.cpp"),
             Object(NonMatching, "Engine/Menu3DDraw_Z.cpp"),
             Object(NonMatching, "Engine/MeshAABB_Z.cpp"),
             Object(NonMatching, "Engine/MaterialAnimLoad_Z.cpp"),

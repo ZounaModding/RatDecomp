@@ -7,6 +7,9 @@
 #include "Object_ZHdl.h"
 #include "Light_ZHdl.h"
 
+#define FL_LOD_FORCE_HIGHEST (FL_OBJECTDATAS_LAST)               // 0x10000 - Force highest LOD
+#define FL_LOD_DISABLE_STENCIL_SHADOW (FL_OBJECTDATAS_LAST << 1) // 0x20000 - Disable stencil shadow for this LOD
+
 struct ShadowReceiver_Z {
     Node_ZHdl m_NodeHdl;                  // node we collided with hdl
     Object_ZHdl m_ObjectHdl;              // object we collided with hdl

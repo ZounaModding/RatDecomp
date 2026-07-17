@@ -171,11 +171,11 @@ void GCRenderer_Z::DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order) {
         continue;
 
     DrawSceneDraw:
-        if ((U32)m_DrawOrderGroupDrawCallCount[do_scene_draw - 1] != 0) {
+        if ((U32)m_DrawOrderGroupDrawCallCount[do_shadow_cast] != 0) {
             SetActiveMaterial(NULL);
 
             SetRenderContext(FL_RDR_CONTEXT_VERTEX_COLOR_TEX_ALPHA);
-            SetRenderBlendOp(FL_SOUSTRACTIF);
+            SetRenderBlendOp(FL_MTL_RDR_SOUSTRACTIF);
             m_CurBlendFlags = -1;
             DrawState(ds_cwrite | ds_ablend | ds_aref128);
 
@@ -325,7 +325,7 @@ void GCRenderer_Z::DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order) {
             }
 
             if (m_EffectFlag & FL_EFFECT_BLOOM) {
-                SetRenderBlendOp(FL_ADDITIF);
+                SetRenderBlendOp(FL_MTL_RDR_ADDITIF);
                 SetRenderContext(FL_RDR_CONTEXT_BLOOM);
 
                 DisableFog();

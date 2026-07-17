@@ -1,6 +1,7 @@
 #ifndef _SPLINE_Z_H_
 #define _SPLINE_Z_H_
 #include "Object_Z.h"
+#include "Node_ZHdl.h"
 
 #define SPLINE_NBSEGMENT 8
 
@@ -31,7 +32,11 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(119) Spline_Z; }
 
     Float GetValueOnTrack(Float i_Ratio, Vec3f& i_Pos);
+    Float GetValueOnTrack(const Node_ZHdl& i_NodeHdl, Float i_Ratio, Vec3f& i_Pos);
     Float GetValueOutTrack(Float i_Ratio, Vec3f& i_Pos);
+    S32 GetSplineId(Float i_Ratio);
+
+    static Float CalcSplineLen(Vec3f& i_PosA, Vec3f& i_PosB, Vec3f& i_PosC, Vec3f& i_PosD, Float i_Ratio);
 
 private:
     PointsDA m_Points;

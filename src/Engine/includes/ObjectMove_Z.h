@@ -20,67 +20,83 @@ public:
 
     virtual void Init();
     virtual void Reset();
-    virtual void Update(Float a1);
-    virtual void Update(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, Float a4, S32 a5);
-    virtual void Update(SeadZone_Z& a1, const Vec3f& a2, const Vec3f& a3, const Vec3f& a4, Float a5, S32 a6);
-    virtual void ComputeNewPos(const Vec3f& a1, Vec3f& a2, Vec3f& a3, Float a4, S32 a5);
-    virtual void ResetPosAndRot(const Vec3f& a1, const Quat& a2);
-    virtual void DisableCollision(World_Z* a1, Float a2, S32 a3);
-    virtual void BeforeUpdateCollision(SeadZone_Z& a1, const Vec3f& a2);
-    virtual void UpdateCollision(SeadZone_Z& a1, const Vec3f& a2, Vec3f& a3, Vec3f& a4, Vec3f& a5, Float a6, S32 a7);
-    virtual void EndUpdateCollision(SeadZone_Z& a1, const Vec3f& a2, const Vec3f& a3, const Vec3f& a4, Float a5, S32 a6);
-    virtual void RestoreCollision(SeadZone_Z& a1, S32 a2);
-    virtual void UpdateCollisionCollectable(SeadZone_Z& a1, const Vec3f& a2);
-    virtual void UpdateSphereCollisionCollectable(SeadZone_Z& a1, const Sphere_Z& a2);
-    virtual void SetCollideData(const Node_ZHdl& a1, const ObjectMoveCollData_Z& a2);
-    virtual void UpdateShadow(SeadZone_Z& a1, Float a2, S32 a3);
-    virtual void UpdateCollisionShadow(World_Z* a1, Float a2);
-    virtual void UpdateCollisionLineFlag(const ColLineResult_Z& a1, const Vec3f& a2, S32 a3);
-    virtual void UpdateCollisionSphereFlag(const ColSphereResult_Z& a1, const Vec3f& a2);
-    virtual void UpdateCollisionMsg(Node_Z* a1, const Vec3f& a2, U64 a3, S32 a4);
-    virtual void UpdateDepth(SeadZone_Z& a1, const Vec3f& a2);
+    virtual void Update(Float i_DeltaTime);
+    virtual void Update(const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);
+    virtual void Update(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);
+    virtual void ComputeNewPos(const Vec3f& i_CurPos, Vec3f& o_NewPos, Vec3f& o_Dir, Float i_DeltaTime, S32 i_Index);
+    virtual void ResetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot);
+    virtual void DisableCollision(World_Z* i_World, Float i_DeltaTime, S32 i_Index);
+    virtual void BeforeUpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_Pos);
+    virtual void UpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, Vec3f& io_NewPos, Vec3f& io_Dir, Vec3f& io_Orient, Float i_DeltaTime, S32 i_Index);
+    virtual void EndUpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_CurNodePos, const Vec3f& i_NewPos, Float i_DeltaTime, S32 i_Index);
+    virtual void RestoreCollision(SeadZone_Z& i_Zone, S32 i_Index);
+    virtual void UpdateCollisionCollectable(SeadZone_Z& i_Zone, const Vec3f& i_Pos);
+    virtual void UpdateSphereCollisionCollectable(SeadZone_Z& i_Zone, const Sphere_Z& i_Sphere);
+    virtual void SetCollideData(const Node_ZHdl& i_NodeHdl, const ObjectMoveCollData_Z& i_CollideData);
+    virtual void UpdateShadow(SeadZone_Z& i_Zone, Float i_DeltaTime, S32 i_Index);
+    virtual void UpdateCollisionShadow(World_Z* i_World, Float i_DeltaTime);
+    virtual Bool UpdateCollisionLineFlag(const ColLineResult_Z& i_Result, const Vec3f& i_Pos, S32 i_Index);
+    virtual Bool UpdateCollisionSphereFlag(const ColSphereResult_Z& i_Result, const Vec3f& i_Pos);
+    virtual void UpdateCollisionMsg(Node_Z* i_Node, const Vec3f& i_Pos, U64 i_Flag, S32 i_Index);
+    virtual void UpdateDepth(SeadZone_Z& i_Zone, const Vec3f& i_Pos);
     virtual void GetDepthAdd();
     virtual void GetDepthOrigin();
-    virtual void SetDepthValue(Float a1);
-    virtual void SetDepthOrigin(Float a1);
+    virtual void SetDepthValue(Float i_Value);
+    virtual void SetDepthOrigin(Float i_Origin);
     virtual void SetNoDepthFound();
     virtual void GetName();
-    virtual void SetNodeObject(const Node_ZHdl& a1, S32 a2);
-    virtual void GetSphere(Sphere_Z& a1, U16 a2, S32 a3);
-    virtual void GetNode(S32 a1);
-    virtual void IsNodeFlag(U32 a1, S32 a2);
-    virtual void SetNodeFlag(U32 a1, S32 a2);
-    virtual void EnableNodeFlag(U32 a1, S32 a2);
-    virtual void DisableNodeFlag(U32 a1, S32 a2);
-    virtual void GetPos(S32 a1);
-    virtual void GetScale(S32 a1);
-    virtual void GetRot(S32 a1);
-    virtual void SetPos(const Vec3f& a1, S32 a2);
-    virtual void SetPosAndRot(const Vec3f& a1, const Quat& a2, S32 a3);
-    virtual void SetPosAndScale(const Vec3f& a1, Float a2, S32 a3);
-    virtual void SetPosRotAndScale(const Vec3f& a1, const Quat& a2, Float a3, S32 a4);
-    virtual void SetScale(Float a1, S32 a2);
-    virtual void ParentLink(S32 a1);
-    virtual void RestoreStartingPos(S32 a1);
-    virtual void StoreStartingPos(S32 a1);
-    virtual void ChangeLink(const Node_ZHdl& a1, Node_Z* a2, bool a3, S32 a4);
-    virtual void GetLastEffectiveSpeed(S32 a1);
-    virtual void GetLastEffectiveAccel(S32 a1);
-    virtual void FatherUnLinked(S32 a1);
+    virtual void SetNodeObject(const Node_ZHdl& i_NodeHdl, S32 i_Index);
+    virtual void GetSphere(Sphere_Z& o_Sphere, U16 i_Type, S32 i_Index);
+    virtual Node_ZHdl& GetNode(S32 i_Index);
+    virtual void IsNodeFlag(U32 i_Flag, S32 i_Index);
+    virtual void SetNodeFlag(U32 i_Flag, S32 i_Index);
+    virtual void EnableNodeFlag(U32 i_Flag, S32 i_Index);
+    virtual void DisableNodeFlag(U32 i_Flag, S32 i_Index);
+    virtual const Vec3f& GetPos(S32 i_Index);
+    virtual Float GetScale(S32 i_Index);
+    virtual Quat& GetRot(S32 i_Index);
+    virtual void SetPos(const Vec3f& i_Pos, S32 i_Index);
+    virtual void SetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot, S32 i_Index);
+    virtual void SetPosAndScale(const Vec3f& i_Pos, Float i_Scale, S32 i_Index);
+    virtual void SetPosRotAndScale(const Vec3f& i_Pos, const Quat& i_Rot, Float i_Scale, S32 i_Index);
+    virtual void SetScale(Float i_Scale, S32 i_Index);
+    virtual Bool ParentLink(S32 i_Index);
+    virtual void RestoreStartingPos(S32 i_Index);
+    virtual void StoreStartingPos(S32 i_Index);
+    virtual void ChangeLink(const Node_ZHdl& i_NodeHdl, Node_Z* i_Parent, bool i_Update, S32 i_Index);
+    virtual Vec3f& GetLastEffectiveSpeed(S32 i_Index);
+    virtual Vec3f& GetLastEffectiveAccel(S32 i_Index);
+    virtual void FatherUnLinked(S32 i_Index);
     virtual void Abort();
-    virtual void UpdateDynamic(SeadZone_Z& a1, const Vec3f& a2, const Vec3f& a3, S32 a4);
-    virtual void UpdateVolume(SeadZone_Z& a1, bool a2);
-    virtual void UpdateCollisionVolume(World_Z* a1, bool a2);
-    virtual void UpdateCollisionNode(SeadZone_Z& a1, const Vec3f& a2, const Sphere_Z& a3, Vec3f& a4, Vec3f& a5, S32 a6, bool a7);
-    virtual void GetCollisionNodeDepl(const Vec3f& a1, Vec3f& a2, Vec3f& a3);
-    virtual void InitLinkCollisionNode(ColLineResult_Z& a1, const Vec3f& a2, S32 a3);
-    virtual void EndCollisionNode(bool a1, S32 a2);
-    virtual void GetLinkCollisionNode(Vec3f& a1, Vec3f& a2, Vec3f& a3, Vec3f& a4, S32 a5);
+    virtual void UpdateDynamic(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos, S32 i_Index);
+    virtual void UpdateVolume(SeadZone_Z& i_Zone, bool i_IsInit);
+    virtual void UpdateCollisionVolume(World_Z* i_World, bool i_IsInit);
+    virtual void UpdateCollisionNode(SeadZone_Z& i_Zone, const Vec3f& i_Pos, const Sphere_Z& i_Sphere, Vec3f& io_Orient, Vec3f& io_Dir, S32 i_Index, bool i_GetDisplacement);
+    virtual void GetCollisionNodeDepl(const Vec3f& i_CurPos, Vec3f& o_Orient, Vec3f& o_Dir);
+    virtual void InitLinkCollisionNode(ColLineResult_Z& i_Result, const Vec3f& i_Orient, S32 i_Index);
+    virtual void EndCollisionNode(bool i_Abort, S32 i_Index);
+    virtual void GetLinkCollisionNode(Vec3f& o_Intersection, Vec3f& o_InterGround, Vec3f& o_Local, Vec3f& o_LocalLookAt, S32 i_Index);
     virtual void GetSpeed(void) const;
     virtual void GetAcceleration(void) const;
-    virtual void GetVolumeMemory(S32 a1);
+    virtual StaticArray_Z<Node_ZHdl, 8>* GetVolumeMemory(S32 i_Index);
+
+    void SetCollideData(const ObjectMoveCollData_Z& i_CollideData, S32 i_Index);
+    Float ComputeGotoPos(const Vec3f& i_CurPos, Vec3f& o_NewPos, Vec3f& o_Dir, Float i_DeltaTime);
+    void DeadCodeUseUndefinedFValue();
 
     static BaseObject_Z* NewObject() { return NewL_Z(276) ObjectMove_Z; }
+
+    inline void EnableFlag(U64 i_Flag) {
+        m_CollisionBools |= i_Flag;
+    }
+
+    inline void DisableFlag(U64 i_Flag) {
+        m_CollisionBools &= ~i_Flag;
+    }
+
+    inline Bool IsFlagEnable(U64 i_Flag) {
+        return (m_CollisionBools & i_Flag) ? TRUE : FALSE;
+    }
 
     inline Bool IsOwnerCollisionRestored() {
         return !m_OwnerHdl.IsValid();
@@ -92,6 +108,10 @@ public:
 
     inline ObjectMove_ZHdl& GetOwnerNoCollision() {
         return m_OwnerHdl;
+    }
+
+    inline S32 GetNodeObjectId(Node_ZHdl& i_NodeHdl) const {
+        return 0;
     }
 
 private:

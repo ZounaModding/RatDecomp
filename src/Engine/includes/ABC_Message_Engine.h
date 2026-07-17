@@ -84,8 +84,7 @@ enum {
     msg_sequenced_collide = 74,               // 0x4A - Creatures_G::Contact
     msg_skin_act_begin = 75,                  // 0x4B - SkinAgent_Z::Act
     msg_skin_act_end = 76,                    // 0x4C - SkinAgent_Z::Act
-    msg_bumper = 77,                          // 0x4D - JIMMY.ELF - ITS ONE OF THE TWO
-    msg_father_unlinked = 77,                 // 0x4D - JIMMY.ELF - ITS ONE OF THE TWO
+    msg_bumper = 77,                          // 0x4D - JIMMY.ELF / LodMove_Z::UpdateCollisionLineFlag
     msg_camera_capture_patch_start = 78,      // 0x4E - MonopolyX360SUB.xdb
     msg_camera_capture_frame_start = 79,      // 0x4F - MonopolyX360SUB.xdb
     msg_camera_capture_texture_start = 80,    // 0x50 - MonopolyX360SUB.xdb

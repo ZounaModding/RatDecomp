@@ -45,7 +45,7 @@ SystemDatas_Z::SystemDatas_Z() {
     l_Bitmap->SetTransp(BM_NO_TRANSP);
 
     m_StencilMaterialHdl->SetCode(FL_MTL_CODE_STENCIL);
-    m_StencilMaterialHdl->EnableRenderFlag(FL_ADDITIF);
+    m_StencilMaterialHdl->EnableRenderFlag(FL_MTL_RDR_ADDITIF);
 
     m_BloomMaterialHdl->SetCode(FL_MTL_CODE_BLOOM);
     m_BloomMaterialHdl->SetDiffuse(Vec3f(0.35f, 0.35f, 0.35f));
@@ -64,7 +64,7 @@ SystemDatas_Z::SystemDatas_Z() {
     m_OverdrawMaterialHdl->SetBitmap(m_WhiteBitmapHdl, Material_Z::mtl_diffuse);
     m_OverdrawMaterialHdl->SetDiffuse(Vec3f(0.0f, 0.0f, 0.0f));
     m_OverdrawMaterialHdl->SetEmissive(Vec3f(0.05f, 0.0f, 0.05f));
-    m_OverdrawMaterialHdl->EnableRenderFlag(FL_IS_ALPHABLENDED | FL_ADDITIF);
+    m_OverdrawMaterialHdl->EnableRenderFlag(FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_ADDITIF);
     m_OverdrawMaterialHdl->Changed();
 
     m_DefaultLightDataHdl = gData.ClassMgr->NewResource(Name_Z("LightData_Z"), Name_Z("DefaultLight"));

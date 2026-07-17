@@ -7,15 +7,15 @@
 
 class MaterialAnim_ZHdl;
 
-#define FL_MAT_NONE (U8)(0 << 0)
-#define FL_MAT_PLAY (U8)(1 << 0)
-#define FL_MAT_PLAYED (U8)(1 << 1)
-#define FL_MAT_PLAYONCE (U8)(1 << 2)
-#define FL_MAT_NEVERAGAIN (U8)(1 << 3)
-#define FL_MAT_AUTOSTART (U8)(1 << 4)
-#define FL_MAT_NOT_ANIMATED (U8)(1 << 5)
+#define FL_MTL_NONE (U8)(0 << 0)
+#define FL_MTL_PLAY (U8)(1 << 0)
+#define FL_MTL_PLAYED (U8)(1 << 1)
+#define FL_MTL_PLAYONCE (U8)(1 << 2)
+#define FL_MTL_NEVERAGAIN (U8)(1 << 3)
+#define FL_MTL_AUTOSTART (U8)(1 << 4)
+#define FL_MTL_NOT_ANIMATED (U8)(1 << 5)
 
-#define FL_MAT_NOT_RESTART (U8)(FL_MAT_PLAYONCE | FL_MAT_PLAYED)
+#define FL_MTL_NOT_RESTART (U8)(FL_MTL_PLAYONCE | FL_MTL_PLAYED)
 
 class MaterialAnim_Z : public ResourceObject_Z {
 public:
@@ -40,7 +40,7 @@ public:
     }
 
     Bool IsAnimated() {
-        return !(m_PlayFlag & FL_MAT_NOT_ANIMATED);
+        return !(m_PlayFlag & FL_MTL_NOT_ANIMATED);
     }
 
 private:

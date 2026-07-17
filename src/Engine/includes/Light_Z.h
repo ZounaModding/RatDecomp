@@ -28,12 +28,12 @@ public:
 
     inline Vec3f& GetTranslation() { return m_Translation; }
 
-    inline Bool IsActive() const { return IsFlag(FL_OBJECT_ACTIVE); }
+    inline Bool IsActive() const { return IsFlag(FL_IS_LIGHT_ACTIVE); }
 
     inline void SetActive(Bool i_Active = TRUE) {
-        DisableFlag(FL_OBJECT_ACTIVE);
+        DisableFlag(FL_IS_LIGHT_ACTIVE);
         if (i_Active) {
-            EnableFlag(FL_OBJECT_ACTIVE);
+            EnableFlag(FL_IS_LIGHT_ACTIVE);
         }
     }
 

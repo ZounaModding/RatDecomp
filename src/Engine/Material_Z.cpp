@@ -4,11 +4,11 @@
 #include "Types_Z.h"
 #include "MaterialManager_Z.h"
 
-U32 Material_Z::DefaultRdrFlag = FL_MAT_RDR_UNK23;
+U32 Material_Z::DefaultRdrFlag = FL_MTL_RDR_UNK_0x800000;
 
 Material_Z::Material_Z() {
     m_RdrFlag = DefaultRdrFlag;
-    m_ColFlag = FL_MAT_COL_UNK0 | FL_MAT_COL_COLLIDABLE | FL_MAT_COL_UNK2;
+    m_ColFlag = FL_MTL_COL_CLING | FL_MTL_COL_COLLISION | FL_MTL_COL_COLLISIONCAM;
     m_ObjectFlag = 0;
     m_Flag = 0;
 
@@ -92,9 +92,9 @@ void Material_Z::Changed() {
     if (m_BmapHdls[mtl_specularmap].IsValid()) {
         m_Flag = m_Flag | FL_TEX_SPECULAR;
     }
-    m_RdrFlag &= FL_TRANSP_RESET;
-    if (m_DiffuseOpacity < 1.0f || m_RdrFlag & (FL_ADDITIF | FL_SOUSTRACTIF)) {
-        m_RdrFlag = m_RdrFlag | FL_IS_ALPHABLENDED;
+    m_RdrFlag &= FL_MTL_RDR_TRANSP_RESET;
+    if (m_DiffuseOpacity < 1.0f || m_RdrFlag & (FL_MTL_RDR_ADDITIF | FL_MTL_RDR_SOUSTRACTIF)) {
+        m_RdrFlag = m_RdrFlag | FL_MTL_RDR_IS_ALPHABLENDED;
     }
     else {
         UpdateTransp();

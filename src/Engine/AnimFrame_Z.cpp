@@ -960,7 +960,7 @@ Bool KeyframerFollow_Z::GetValue(Float i_Time, Float i_MaxTime, Vec3f& o_Value, 
 
         Vec3f l_Target;
 
-        if ((l_Ratio >= 1.0f || l_Ratio < 0.0f) && !l_Spline->IsFlag(FL_OBJECT_IS_SPLINE_TRACK_LOOP)) {
+        if ((l_Ratio >= 1.0f || l_Ratio < 0.0f) && !l_Spline->IsFlag(FL_IS_SPLINE_TRACK_LOOP)) {
             l_Spline->GetValueOutTrack(l_Ratio, l_Target);
         }
         else {

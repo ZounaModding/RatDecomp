@@ -8,8 +8,8 @@ public:
 
     virtual ~ObjectsBounce_Z() { }
 
-    virtual void EndLiveTimeObject(S32 a1);
-    virtual void UpdateCollision(const ColLineResult_Z& a1, ObjectMoveSphereColl_Z& a2, Float a3, S32 a4);
+    virtual void EndLiveTimeObject(S32 i_Index);
+    virtual void UpdateCollision(const ColLineResult_Z& i_Result, ObjectMoveSphereColl_Z& io_SphereColl, Float i_DeltaTime, S32 i_Index);
 
     static BaseObject_Z* NewObject() { return NewL_Z(16) ObjectsBounce_Z; }
 };

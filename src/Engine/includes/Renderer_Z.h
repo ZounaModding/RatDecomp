@@ -8,6 +8,7 @@
 #include "PrimitiveBuffers_Z.h"
 #include "Viewport_Z.h"
 #include "StaticArray_Z.h"
+#include "GameManager_Z.h"
 
 #define RATIO_SCREEN_STANDARD (4.f / 3.f)
 #define RATIO_SCREEN_WIDESCREEN (16.f / 9.f)
@@ -43,18 +44,6 @@ enum SID_VS {
     SID_VS_WATER = 7,
     SID_VS_COUNT = 8,
     SID_VS_NONE = 8
-};
-
-enum ViewportId {
-    NONE_VIEWPORT = -1,
-    MAX_VIEWPORT = 4,
-    START_PREDEFINED_VIEWPORT = 4,
-    USER_VIEWPORT_FIRST = 4,
-    USER_VIEWPORT_SECOND = 5,
-    USER_VIEWPORT_LAST = 6,
-    GLOBAL_VIEWPORT = 6,
-    GLOBAL_DEBUG_VIEWPORT = GLOBAL_VIEWPORT,
-    TOTAL_VIEWPORT = 7
 };
 
 class Omni_Z;
@@ -110,9 +99,9 @@ struct DrawInfo_Z {
         FL_DRAWINFO_NONE = 0,
         FL_DRAWINFO_UNK_0x1 = 1,
         FL_DRAWINFO_UNK_0x2 = 2,
-        FL_DRAWINFO_UNK_0x4 = 4,
+        FL_DRAWINFO_DO_POST_PROCESS = 4,
         FL_DRAWINFO_NO_HFOG = 8,
-        FL_DRAWINFO_NO_DLIGHT = 16,
+        FL_DRAWINFO_LIGHT_BAKED = 16,
     };
 
     Mat4x4 m_Local2Cam;

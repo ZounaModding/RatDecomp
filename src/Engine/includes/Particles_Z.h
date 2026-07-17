@@ -3,6 +3,8 @@
 #include "Object_Z.h"
 #include "ParticlesEle_Z.h"
 
+#define FL_PARTICLES_DISABLE_PLANE_UPDATE (FL_OBJECTDATAS_LAST) // 0x10000 - Disable collision plane update for this particle
+
 class ParticlesData_Z;
 
 class Particles_Z : public Object_Z {

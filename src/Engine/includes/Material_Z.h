@@ -158,15 +158,15 @@ public:
     }
 
     inline Bool IsTransparent() const {
-        return ((GetRenderFlag() & FL_IS_TRANSPARENT) != 0);
+        return ((GetRenderFlag() & FL_MTL_RDR_IS_TRANSPARENT) != 0);
     }
 
     inline Bool IsAlphaBlended() const {
-        return ((GetRenderFlag() & FL_IS_ALPHABLENDED) != 0);
+        return ((GetRenderFlag() & FL_MTL_RDR_IS_ALPHABLENDED) != 0);
     }
 
     inline Bool IsTwoSided() const {
-        return ((GetRenderFlag() & FL_TWO_SIDE) != 0);
+        return ((GetRenderFlag() & FL_MTL_RDR_TWO_SIDE) != 0);
     }
 
     inline U32 GetCollisionFlag() const {
@@ -246,13 +246,13 @@ public:
         Bitmap_Z* l_Bmap = m_BmapHdls[mtl_diffuse];
         if (l_Bmap) {
             if (l_Bmap->IsTransp(BM_TRANSP)) {
-                m_RdrFlag = m_RdrFlag | FL_IS_ALPHABLENDED;
+                m_RdrFlag = m_RdrFlag | FL_MTL_RDR_IS_ALPHABLENDED;
                 return;
             }
         }
         if (l_Bmap) {
             if (l_Bmap->IsTransp(BM_TRANSP_ONE)) {
-                m_RdrFlag = m_RdrFlag | FL_IS_TRANSPARENT;
+                m_RdrFlag = m_RdrFlag | FL_MTL_RDR_IS_TRANSPARENT;
                 return;
             }
         }

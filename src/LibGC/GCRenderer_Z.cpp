@@ -597,8 +597,8 @@ void GCRenderer_Z::SetMaterial(Material_Z* i_Material, GXChannelID i_Channel) {
         Bitmap_Z* l_Bitmap = *l_BitmapHdl;
         m_ActiveBitmaps[BITMAP_DIFFUSE] = l_Bitmap;
 
-        GXTexWrapMode l_WrapT = (l_RdrFlag & FL_TEX_ADDRESS_CLAMP_V) ? GX_CLAMP : GX_REPEAT;
-        GXTexWrapMode l_WrapS = (l_RdrFlag & FL_TEX_ADDRESS_CLAMP_U) ? GX_CLAMP : GX_REPEAT;
+        GXTexWrapMode l_WrapT = (l_RdrFlag & FL_MTL_RDR_TEX_ADDRESS_CLAMP_V) ? GX_CLAMP : GX_REPEAT;
+        GXTexWrapMode l_WrapS = (l_RdrFlag & FL_MTL_RDR_TEX_ADDRESS_CLAMP_U) ? GX_CLAMP : GX_REPEAT;
 
         SetTexture(l_Bitmap, l_WrapS, l_WrapT, GX_TEXMAP0);
 
@@ -637,7 +637,7 @@ void GCRenderer_Z::SetMaterial(Material_Z* i_Material, GXChannelID i_Channel) {
 
     GXSetTevColor((GXTevRegID)1, l_Color);
 
-    if (l_RdrFlag & FL_ADDITIF) {
+    if (l_RdrFlag & FL_MTL_RDR_ADDITIF) {
         DisableFog();
     }
     else {
@@ -646,40 +646,40 @@ void GCRenderer_Z::SetMaterial(Material_Z* i_Material, GXChannelID i_Channel) {
 }
 
 void GCRenderer_Z::SetRenderBlendOp(U32 i_Flag) {
-    if (m_CurBlendFlags == (i_Flag & FL_RDR_BLEND_MASK)) {
+    if (m_CurBlendFlags == (i_Flag & FL_MTL_RDR_BLEND_MASK)) {
         return;
     }
 
-    switch (i_Flag & (FL_IS_ALPHABLENDED | FL_IS_TRANSPARENT | FL_ADDITIF | FL_SOUSTRACTIF | FL_DESTADDITIF)) {
-        case FL_IS_ALPHABLENDED | FL_ADDITIF:
-        case FL_ADDITIF:
+    switch (i_Flag & (FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_IS_TRANSPARENT | FL_MTL_RDR_ADDITIF | FL_MTL_RDR_SOUSTRACTIF | FL_MTL_RDR_DESTADDITIF)) {
+        case FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_ADDITIF:
+        case FL_MTL_RDR_ADDITIF:
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_CLEAR);
             GXSetZCompLoc(TRUE);
             break;
 
-        case FL_DESTADDITIF:
-        case FL_IS_ALPHABLENDED | FL_DESTADDITIF:
+        case FL_MTL_RDR_DESTADDITIF:
+        case FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_DESTADDITIF:
             GXSetBlendMode(GX_BM_BLEND, GX_BL_DSTALPHA, GX_BL_ONE, GX_LO_CLEAR);
             GXSetZCompLoc(TRUE);
             break;
 
-        case FL_SOUSTRACTIF:
-        case FL_IS_ALPHABLENDED | FL_SOUSTRACTIF:
+        case FL_MTL_RDR_SOUSTRACTIF:
+        case FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_SOUSTRACTIF:
             GXSetBlendMode(GX_BM_SUBTRACT, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
             GXSetZCompLoc(TRUE);
             break;
 
-        case FL_IS_ALPHABLENDED:
+        case FL_MTL_RDR_IS_ALPHABLENDED:
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
             GXSetZCompLoc(TRUE);
             break;
 
-        case FL_IS_TRANSPARENT:
+        case FL_MTL_RDR_IS_TRANSPARENT:
             GXSetBlendMode(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, GX_LO_CLEAR);
             GXSetZCompLoc(FALSE);
             break;
 
-        case FL_IS_ALPHABLENDED | FL_IS_TRANSPARENT:
+        case FL_MTL_RDR_IS_ALPHABLENDED | FL_MTL_RDR_IS_TRANSPARENT:
             GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
             GXSetZCompLoc(FALSE);
             break;
@@ -690,14 +690,14 @@ void GCRenderer_Z::SetRenderBlendOp(U32 i_Flag) {
             break;
     }
 
-    if (i_Flag & FL_TWO_SIDE) {
+    if (i_Flag & FL_MTL_RDR_TWO_SIDE) {
         DrawState(m_CurDrawState & ~(ds_cw | ds_ccw));
     }
     else {
         DrawState(m_CurDrawState | ds_cw);
     }
 
-    m_CurBlendFlags = i_Flag & FL_RDR_BLEND_MASK;
+    m_CurBlendFlags = i_Flag & FL_MTL_RDR_BLEND_MASK;
 }
 
 void GCRenderer_Z::DrawState(U16 i_StateFlag) {
