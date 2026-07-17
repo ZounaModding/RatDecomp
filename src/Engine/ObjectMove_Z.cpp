@@ -32,7 +32,7 @@ void ObjectMove_Z::Reset() {
     m_Accel = VEC3F_NULL;
     m_LinkedNodeHdl = HANDLE_NULL;
     m_OwnerHdl = HANDLE_NULL;
-    m_CollisionBools &= INT_BOL_LODMOVE | INT_BOL_DUMMY;
+    m_CollisionBools &= INT_BOL_KEEP;
     EnableFlag(COL_BOL_DEFAULT);
     m_Flag = 0;
     m_ShadowOldRayLen = -1.0f;
