@@ -79,13 +79,6 @@
 #define COL_BOL_DEFAULT (COL_BOL_SHADOW | COL_BOL_DYNAMIC | COL_BOL_REFLECT | COL_BOL_UPDATE_GROUND_LIGHTING)
 
 // Bits kept each frame by ObjectMove_Z::ComputeNewPos
-#define COL_BOL_CLEAN_BASE (INT_COL_TYPE | COL_BOL_PREF | COL_BOL_SET)
-
-// $SABE: Preserve depth state between frames so leaving water resets the stale depth value. (Fixes levitating water damage bug)
-#ifdef BUGFIXES_Z
-#define COL_BOL_CLEAN (COL_BOL_CLEAN_BASE | COL_BOL_DEPTH_OK)
-#else
-#define COL_BOL_CLEAN COL_BOL_CLEAN_BASE
-#endif
+#define COL_BOL_CLEAN (INT_COL_TYPE | COL_BOL_PREF | COL_BOL_SET)
 
 #endif
