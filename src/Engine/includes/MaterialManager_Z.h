@@ -27,6 +27,7 @@ public:
     MaterialUser_Z* GetMaterialUser(S32 i_MaterialCode);
 
     void Update(Float i_DeltaTime);
+    void MarkHandles();
 
     inline void EndPause() {
         m_IsPaused = FALSE;

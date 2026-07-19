@@ -57,6 +57,7 @@ public:
     GameManager_Z();
 
     void Update(Float i_DeltaTime);
+    void MarkHandles();
     S32 GetGameIdByWorld(const World_ZHdl& i_WorldHdl);
     void DebugDisplay(Viewport_Z* i_Vp);
 

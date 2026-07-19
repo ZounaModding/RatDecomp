@@ -330,7 +330,8 @@ public:
 
     virtual void CleanAllDatas() { }
 
-    virtual Bool Minimize();
+    virtual Bool Minimize() { return FALSE; }
+
     virtual void Draw(S32 i_ViewportId, Float i_DeltaTime);
 
     virtual void SetViewMatrix(Bool i_Unk) { }
@@ -424,7 +425,7 @@ public:
 
     virtual Float GetPercentAlloc(S32 i_Unk) { return 0.0f; }
 
-    virtual void MarkHandles();
+    virtual void MarkHandles() { }
 
     virtual void SetCurrentFogColor(const Vec3f& i_Color) {
         m_FogColor = i_Color;

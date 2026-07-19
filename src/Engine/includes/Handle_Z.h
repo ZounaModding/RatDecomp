@@ -7,7 +7,7 @@
 #include "HashTable_Z.h"
 //#include "Global_Z.h"
 
-#define HandleGranularity 16384
+#define HANDLEREC_GRANULARITY 16384
 #define HANDLE_NULL BaseObject_ZHdl()
 
 #define HANDLE_MARKED_FALSE 0
@@ -104,6 +104,10 @@ public:
         m_RealID.Ref.Key = (char)i_Val;
     }
 
+    BaseObject_ZHdl(const BaseObject_ZHdl& i_Org) {
+        m_RealID.GblID = i_Org.m_RealID.GblID;
+    }
+
     int GetID() const {
         return m_RealID.Ref.ID;
     }
@@ -133,12 +137,14 @@ public:
 struct HandleRec_Z {
     enum {
         NONE = 0,
+        DELETING = 1,
         RSC_XRAM = 2,
         RSC_XRAM_LOADED = 4,
         RSC = 8,
         RSC_STR_DONE = 16,
         RSC_STR_LOADING = 32,
         RSC_STR = 64,
+        KEEP = (U8) ~(DELETING),
     };
 
     HandleRec_Z() {
@@ -150,7 +156,7 @@ struct HandleRec_Z {
     S8 m_Key;
     S8 m_Flag;
     S8 m_Marked;
-    Bool m_AsyncRelated;
+    S8 m_LastKeyBeforeAsyncDelete;
     BaseObject_Z* m_ObjPtr;
     Name_Z m_Name;
     S16 m_ClassID;
@@ -161,6 +167,9 @@ class HandleStream_Z {
 public:
     void Draw(DrawInfo_Z& i_DrawInfo);
     void Update(Float i_DeltaTime);
+
+private:
+    U8 m_Pad_0x0[0x234];
 };
 
 class HandleManager_Z {
@@ -168,8 +177,8 @@ public:
     static HandleStream_Z HandleStream;
 
 protected:
-    DynArray_Z<HandleRec_Z, HandleGranularity> m_HandleRecDA;
-    DynArray_Z<S32, HandleGranularity> m_FreeRecDA;
+    DynArray_Z<HandleRec_Z, HANDLEREC_GRANULARITY> m_HandleRecDA;
+    DynArray_Z<S32, HANDLEREC_GRANULARITY> m_FreeRecDA;
     HashS32Table_Z m_HandleIdHT;
     U32 m_HandleRecDASize;
     S32 m_NbFree;
@@ -187,22 +196,27 @@ protected:
     S32 m_NextManagerToMarkHandles;
     U32 m_LastDeleteFrameNb;
     S32 m_UnkS32_0x44; // $SABE: Gets tested in HandleManager_Z::MarkHandle but never passes
-    U32 m_FramesSpentDeleting;
+    Float m_FramesSpentDeleting;
 
 public:
     HandleManager_Z();
 
-    virtual void CheckHandles();
-    virtual void MarkHandles(S32 a1);
+    virtual S32 CheckHandles();
+    virtual S32 MarkHandles(S32 i_Manager);
     virtual void Update(Float i_DeltaTime);
     virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual void Minimize();
     virtual void ClearMark();
-    virtual void InvalidClassSize(S16 const a1) const;
+
+    virtual void InvalidClassSize(S16 const a1) const { }
+
     virtual void RemoveResource(const BaseObject_ZHdl& a1);
     virtual S32 ChangeHandleName(const BaseObject_ZHdl& i_Hdl, const Name_Z& i_Name);
     virtual void DeleteHandle(const BaseObject_ZHdl& a1);
-    virtual void GetNameStrFromId(const Name_Z& a1) const;
+
+    virtual const String_Z<ARRAY_CHAR_MAX>& GetNameStrFromId(const Name_Z& i_Name) const {
+        return m_DefaultNameString;
+    }
 
     BaseObject_Z* GetPtr(const BaseObject_ZHdl& i_Hdl) const;
     BaseObject_Z* GetPtrXRam(const HandleRec_Z& i_HandleRec) const;
@@ -211,9 +225,12 @@ public:
     void MarkU32Handle(U32 i_Hdl);
     Bool MarkHandle(const BaseObject_ZHdl&);
     void MarkHandles(const BaseObject_ZHdl&);
+    U8 IsMarked(const BaseObject_ZHdl& i_Hdl);
+    Bool AsynchCheckHandles();
+    Bool IsAsynchDelHandle(const BaseObject_ZHdl& i_Hdl) const;
     void ForbidCheckHandles(Bool i_ForbidCheckHandles);
     const BaseObject_ZHdl& CreateNewHandle(BaseObject_Z* i_BObj, const Name_Z& i_Name, S16 i_ClassID, U8 i_Flag = HandleRec_Z::NONE);
-    void ExpandSize(S32 i_NewSize = HandleGranularity);
+    void ExpandSize(S32 i_NewSize = HANDLEREC_GRANULARITY);
     void AddResourceRef(const HandleRec_Z& i_HandleRec, S32 i_Index);
     void RemoveResourceRef(const HandleRec_Z& i_HandleRec);
     S32 IsResourceRef(S32 i_Hdl);

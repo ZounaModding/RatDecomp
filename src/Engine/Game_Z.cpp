@@ -139,7 +139,7 @@ void Game_Z::SetGamePlayerNb(S32 i_Nb, Bool i_IsMono, const Name_Z& i_CameraAgen
         CameraAgent_Z* l_CamAgent = l_CamAgentHdl;
 
         m_PlayerCamNodeHdls[i] = gData.ClassMgr->NewObject(Name_Z(Name_Z::GetID("Node_Z")), Name_Z::GetID(l_CameraNameStr));
-        Node_Z* l_CamNode = (Node_Z*)GETPTR(m_PlayerCamNodeHdls[i]);
+        Node_Z* l_CamNode = m_PlayerCamNodeHdls[i];
         l_CamNode->SetTranslation(l_StartPos);
         l_CamNode->SetLight(gData.SystemDatas->GetDefaultLight());
 

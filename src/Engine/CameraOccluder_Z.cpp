@@ -17,8 +17,8 @@ void CameraOccluder_Z::Update(Float i_DeltaTime) {
     Viewport_Z& l_Vp = gData.MainRdr->GetViewport(m_ViewportId);
     l_Vp.UpdateFrustrum();
 
-    World_Z* l_World = (World_Z*)GETPTR(l_Vp.GetWorld());
-    Node_Z* l_CamNode = (Node_Z*)GETPTR(l_Vp.GetCamera());
+    World_Z* l_World = l_Vp.GetWorld();
+    Node_Z* l_CamNode = l_Vp.GetCamera();
     if (!l_World || !l_CamNode) {
         return;
     }

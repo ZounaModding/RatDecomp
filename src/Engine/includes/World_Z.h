@@ -32,6 +32,7 @@ public:
 
     Node_ZHdl GetNodeByName(const Name_Z& i_Name) const;
     void Update(Float i_DeltaTime);
+    void Assume();
 
     inline OccludedSeadHandle_Z& GetSeadDisplay() {
         return m_SeadDisplay;
@@ -102,6 +103,22 @@ protected:
 public:
     WorldManager_Z();
     virtual ~WorldManager_Z();
+
+    inline void MarkHandles() {
+        S32 i = m_WorldHdls.FindFirst();
+        while (i >= 0) {
+            m_WorldHdls[i]->MarkHandles();
+            i = m_WorldHdls.FindNext(i);
+        }
+    }
+
+    inline void Assume() {
+        S32 i = m_WorldHdls.FindFirst();
+        while (i >= 0) {
+            m_WorldHdls[i]->Assume();
+            i = m_WorldHdls.FindNext(i);
+        }
+    }
 };
 
 #endif // _WORLD_Z_H_

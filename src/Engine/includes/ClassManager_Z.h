@@ -76,11 +76,11 @@ class ClassManager_Z : public HandleManager_Z {
 public:
     ClassManager_Z();
 
-    virtual void CheckHandles();
+    virtual S32 CheckHandles();
     virtual void Minimize();
     virtual void ClearMark();
     virtual void InvalidClassSize(S16 a1) const;
-    virtual void GetNameStrFromId(const Name_Z& a1) const;
+    virtual const String_Z<ARRAY_CHAR_MAX>& GetNameStrFromId(const Name_Z& i_Name) const;
     virtual ~ClassManager_Z();
     virtual Bool OpenBigFile(const Char* i_BfName, const Name_Z& i_StreamAgentClassName, Bool i_Unused);
     virtual void CloseBigFile();

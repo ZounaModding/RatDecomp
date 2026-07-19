@@ -29,7 +29,7 @@ void GameManager_Z::Update(Float i_DeltaTime) {
     gData.MaterialMgr->Update(i_DeltaTime);
 
     for (S32 i = 0; i < m_GameHdls.GetSize(); i++) {
-        Game_Z* l_Game = (Game_Z*)GETPTR(m_GameHdls[i]);
+        Game_Z* l_Game = m_GameHdls[i];
         if (l_Game) {
             l_Game->Update(i_DeltaTime);
         }
@@ -38,7 +38,7 @@ void GameManager_Z::Update(Float i_DeltaTime) {
 
 S32 GameManager_Z::GetGameIdByWorld(const World_ZHdl& i_WorldHdl) {
     for (S32 i = 0; i < GetNbGame(); i++) {
-        Game_Z* l_Game = (Game_Z*)GETPTR(m_GameHdls[i]);
+        Game_Z* l_Game = m_GameHdls[i];
 
         if (l_Game && l_Game->m_WorldHdl == i_WorldHdl) {
             return i;

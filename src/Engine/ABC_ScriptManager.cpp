@@ -115,7 +115,7 @@ ABC_AgentHdl ABC_ScriptManager::NewAgent(const Name_Z& i_AgentClassName, const C
 }
 
 void ABC_ScriptManager::RemoveAgent(ABC_AgentHdl& i_AgentHdl) {
-    ABC_Agent* l_Agent = (ABC_Agent*)GETPTR(i_AgentHdl);
+    ABC_Agent* l_Agent = i_AgentHdl;
     if (!l_Agent) {
         return;
     }

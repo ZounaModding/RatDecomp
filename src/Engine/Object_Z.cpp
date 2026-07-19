@@ -58,7 +58,7 @@ ObjectDatas_Z::ObjectDatas_Z() {
 
 void ObjectDatas_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl) {
     ASSERTLE_Z(o_ObjectDatasHdl.IsValid(), "", 126, "_ObjectDatasHdl.IsValid()");
-    ObjectDatas_Z* l_ObjectDatas = (ObjectDatas_Z*)GETPTR(o_ObjectDatasHdl);
+    ObjectDatas_Z* l_ObjectDatas = o_ObjectDatasHdl;
     l_ObjectDatas->m_DefaultColor = m_DefaultColor;
     l_ObjectDatas->m_Flag = m_Flag | FL_OBJECTDATAS_CLONED;
     l_ObjectDatas->SetName(m_Name, FALSE);
