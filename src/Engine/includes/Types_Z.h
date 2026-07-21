@@ -57,6 +57,7 @@ typedef volatile double VDouble;
 
 #define AlignUp_Z(A, B) (((U32)(A) + (B) - 1) & ~((B) - 1))
 #define AlignDown_Z(A, B) ((U32)(A) & ~((B) - 1))
+#define IsAligned_Z(A, B) (((U32)(A) & ((B) - 1)) == 0)
 
 #undef Weak_Z
 #ifdef __MWERKS__

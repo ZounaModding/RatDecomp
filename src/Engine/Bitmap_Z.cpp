@@ -20,7 +20,7 @@ Bitmap_Z::~Bitmap_Z() {
 
 void Bitmap_Z::Init() {
     m_Flag = 0;
-    Bitmap_Z::EnableFlag(0x14);
+    Bitmap_Z::EnableFlag(FL_BITMAP_BILINEAR | FL_BITMAP_UNK_0x10);
     m_Datas = 0;
     m_Palette = 0;
     m_SizeX = 0;
@@ -329,5 +329,7 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
             i_Datas[2] = l_Red;
     }
 }
+
+void Bitmap_Z::SetUniversal(U8* i_Datas) { }
 
 #pragma dont_inline off

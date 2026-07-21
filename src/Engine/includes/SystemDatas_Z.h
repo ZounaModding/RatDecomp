@@ -35,6 +35,10 @@ public:
         return m_WhiteBitmapHdl;
     }
 
+    inline Material_ZHdl& GetNoTextureMaterial() {
+        return m_NoTextureMaterialHdl;
+    }
+
 private:
     GameObj_ZHdlDA m_ExtGameObjHdls;
     GameObj_ZHdlDA m_GameObjHdls;

@@ -38,7 +38,7 @@ public:
 
     Bool Open(const Char* i_FilePath, U32 i_Flags);
     void SetError(U32 i_Error);
-    void WaitIO();
+    Bool WaitIO();
     S32 Read(void* i_Buffer, S32 i_Size);
     void Write(const void* i_Buffer, S32 i_Size);
     U32 GetSize();

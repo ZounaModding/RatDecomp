@@ -44,7 +44,7 @@ public:
     virtual void DelFileA(Char* a1);
     virtual void RefreshCards();
     virtual void RefreshCard();
-    virtual void GetCardStatus();
+    virtual U32 GetCardStatus();
     virtual void GetCardFreeSpace();
     virtual void CalculateSpaceNeeded(S32 a1, S32* a2);
     virtual void CalculateSpaceNeededForOneFile(S32 a1);
@@ -60,7 +60,7 @@ public:
     virtual void CreateDirectoryA();
     virtual void UnFormatCard();
     virtual void IsNewCardConnected();
-    virtual void SetPortAndSlot(int a1, int a2);
+    virtual U32 SetPortAndSlot(int a1, int a2);
     virtual void ResetManageMC();
     virtual void Update(Float a1);
     virtual void RegisterAgentAndMessage(ABC_Agent* a1, int a2);

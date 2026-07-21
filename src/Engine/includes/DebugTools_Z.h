@@ -57,6 +57,7 @@ enum EngineFlags {
     FL_DISABLE_MOVIE = 1 << 9,
     FL_INGAME_CONSOLE = 1 << 11,
     FL_UNK_0x1000 = 1 << 12,
+    FL_ENABLE_L2R2 = 1 << 13,
     FL_OCCLUDER_ON = 1 << 14,
     FL_MEMORY_VERIFY = 1 << 16,
     FL_STREAMZONE = 1 << 17,
@@ -123,9 +124,12 @@ enum MaterialFlags {
 };
 
 enum GameFlags {
-    FL_GAME_NONE = 0 << 0,     // 0
-    FL_GAME_PAL = 1 << 7,      // 0x80
-    FL_GAME_2_FRAMES = 1 << 15 // 0x8000
+    FL_GAME_NONE = 0 << 0,        // 0
+    FL_GAME_PAL = 1 << 7,         // 0x80
+    FL_GAME_UNK_0x400 = 1 << 10,  // 0x400
+    FL_GAME_UNK_0x800 = 1 << 11,  // 0x800
+    FL_GAME_UNK_0x1000 = 1 << 12, // 0x1000
+    FL_GAME_2_FRAMES = 1 << 15    // 0x8000
 };
 
 #endif // _DEBUGTOOLS_Z_H_

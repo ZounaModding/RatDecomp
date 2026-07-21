@@ -10,6 +10,8 @@
 #define FL_BITMAP_UNK_0x1 (1 << 0)
 #define FL_BITMAP_BILINEAR (1 << 2)
 #define FL_BITMAP_UNK_0x8 (1 << 3)
+#define FL_BITMAP_UNK_0x10 (1 << 4)
+#define FL_BITMAP_UNK_0x20 (1 << 5)
 
 enum BmFormat_Z {
     BM_4 = 0x01,    // 4 Bits Indexed RGB
@@ -67,6 +69,8 @@ public:
     void SetTexId(S16 i_TexId) { m_TexID = i_TexId; }
 
     void EnableFlag(U16 i_Flag) { m_Flag |= i_Flag; }
+
+    void DisableFlag(U16 i_Flag) { m_Flag &= ~i_Flag; }
 
     U8 GetFormat() { return m_Format; }
 

@@ -31,8 +31,12 @@ typedef int BOOL;
 
 typedef unsigned int uint;
 
+#ifndef FALSE
 #define FALSE 0
+#endif
+#ifndef TRUE
 #define TRUE 1
+#endif
 
 #if defined(__MWERKS__)
 #define AT_ADDRESS(addr) : (addr)

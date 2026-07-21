@@ -19,14 +19,19 @@ class ResourceObject_Z : public BaseObject_Z {
 public:
     ResourceObject_Z() { };
     virtual ~ResourceObject_Z() { };
-    virtual void Load(void** i_Data);
+    virtual void Load(void** i_Data) { };
 
     virtual void EndLoad() {
         m_ResObjLink.EndLoad();
     };
 
-    virtual void LoadLinks(void** a1);
-    virtual void EndLoadLinks();
+    virtual void LoadLinks(void** i_Data) {
+        BaseObject_Z::LoadLinks(i_Data);
+        m_ResObjLink.Load(i_Data);
+    }
+
+    virtual void EndLoadLinks() { }
+
     virtual Bool MarkHandles();
     ResourceObjectLink_Z m_ResObjLink;
 };

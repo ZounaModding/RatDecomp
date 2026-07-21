@@ -15,9 +15,10 @@ public:
     virtual void UpdateInput(Float a1);
     virtual void IsButtonPressed(U8 a1);
     virtual void Vibration(S32 a1, U8 a2, U8 a3);
-    virtual void GetDeviceStatus(S32 a1, S32 a2);
-    virtual void GetControl(InputDevice_Z* a1, S32 a2, void* a3, bool a4);
+    virtual S32 GetDeviceStatus(S32 a1, S32 a2);
+    virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown);
     virtual void ResetPad(S16 a1);
+    Bool UpdatePaddle(S16 i_PadIdx);
 
 private:
     PADStatus m_PadStatus[4];

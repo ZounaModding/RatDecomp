@@ -63,7 +63,7 @@ public:
         }
     }
 
-    S32 Add(const T& i_Elem) {
+    S32 Add(T i_Elem) {
         S32 l_Free;
         if (m_Size == 0)
             l_Free = -1;

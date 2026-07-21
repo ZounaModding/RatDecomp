@@ -13,7 +13,7 @@ S32 KeyframerHdl_Z::GetValue(Float i_Time, BaseObject_ZHdl& o_Value, S32 i_KeyOf
 void KeyframerHdl_Z::MarkHandles() {
     for (S32 i = 0; i < GetNbKeys(); i++) {
         if (m_Keys[i].m_Value.IsValid()) {
-            gData.ClassMgr->GetPtr(m_Keys[i].m_Value)->MarkHandles();
+            m_Keys[i].m_Value->MarkHandles();
         }
     }
 }

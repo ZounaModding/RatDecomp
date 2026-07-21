@@ -157,8 +157,8 @@ protected:
     U16 m_OutputCpt;
     Bool m_OutputEnable;
 
-    DynArray_Z<Entry, 128> m_EntryDA;
-    DynArray_Z<Item, 128> m_ItemDA;
+    DynArray_Z<Entry, 16> m_EntryDA;
+    DynArray_Z<Item, 16> m_ItemDA;
 
     Bool AllocMem(Entry* i_Entry, S16 i_NbMax);
     void FreeMem(Entry* i_Entry, State i_ToState);
@@ -247,6 +247,62 @@ void DataManager_Z<T>::Defragment() {
 }
 
 template <class T>
+void DataManager_Z<T>::Minimize() {
+    S32 l_EntryCount;
+    S32 l_LastEntry;
+
+    for (S32 i = m_ItemDA.GetSize(); i > 0; --i) {
+        m_ItemDA.GetArrayPtr()[i - 1].~Item();
+    }
+
+    DoObjectsCulling(30000);
+
+    Bool l_Done = FALSE;
+    while (!l_Done) {
+        l_Done = TRUE;
+        S16 l_Previous = -1;
+        S16 l_Item = m_FreeList.m_First;
+
+        while (l_Item != -1) {
+            if (l_Item == m_ItemDA.GetSize() - 1) {
+                if (l_Previous != -1) {
+                    m_ItemDA[l_Previous].m_Next = m_ItemDA[l_Item].m_Next;
+                }
+                if (m_ItemDA[l_Item].m_Next != -1) {
+                    m_ItemDA[m_ItemDA[l_Item].m_Next].m_Prev = l_Previous;
+                }
+                if (l_Item == m_FreeList.m_First) {
+                    m_FreeList.m_First = m_ItemDA[l_Item].m_Next;
+                }
+                if (l_Item == m_FreeList.m_Last) {
+                    m_FreeList.m_Last = l_Previous;
+                }
+                --m_FreeList.m_Nb;
+                m_ItemDA.SetSize(m_ItemDA.GetSize() - 1, TRUE);
+                l_Done = FALSE;
+                break;
+            }
+
+            l_Previous = l_Item;
+            l_Item = m_ItemDA[l_Item].m_Next;
+        }
+    }
+
+    m_ItemDA.Minimize();
+
+    l_EntryCount = m_EntryDA.GetSize();
+    if (l_EntryCount) {
+        for (l_LastEntry = l_EntryCount - 1; l_LastEntry >= 0; --l_LastEntry) {
+            if (m_EntryDA[l_LastEntry].m_State != RELEASED_MEM) {
+                break;
+            }
+        }
+        m_EntryDA.SetSize(l_LastEntry + 1);
+    }
+    m_EntryDA.Minimize();
+}
+
+template <class T>
 void DataManager_Z<T>::DoObjectsCulling(S16 i_NbRequest) {
     while (i_NbRequest > 0) {
         Hdl l_Hdl = GetLRUObjectEntry(m_CullTime);
@@ -266,13 +322,7 @@ DataManager_Z<T>::RegisterObject(S16 i_NbMax) {
     Entry l_Entry;
     l_Entry.m_State = SLEEPING_MEM;
     l_Entry.m_UsedList.m_Nb = 0;
-    l_Entry.m_UsedList.m_First = -1;
-    l_Entry.m_UsedList.m_Last = -1;
     l_Entry.m_FreeList.m_Nb = i_NbMax;
-    l_Entry.m_FreeList.m_First = -1;
-    l_Entry.m_FreeList.m_Last = -1;
-    l_Entry.m_ArrayPtr = NULL;
-    l_Entry.m_LastUsedTime = 0.0f;
 
     int l_NbObj = m_EntryDA.GetSize();
     for (int i = 0; i < l_NbObj; i++) {

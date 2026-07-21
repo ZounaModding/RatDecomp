@@ -1,6 +1,96 @@
 #include "GCRenderer_Z.h"
+#include "FlareGC_Z.h"
 
 ExternC_Z void exit(int);
+
+S32 GCRenderer_Z::PushADraw(StreamList_Z* i_StreamList, BaseDisplayList_Z* i_DisplayList, S32 i_RenderContextFlag) {
+    S32 l_DrawCallIdx = m_DrawCalls.Add();
+    ExtPrimitiveInfo_Z& l_DrawCall = m_DrawCalls[l_DrawCallIdx];
+    m_DrawOrderGroupDrawCallCount[m_PushedDrawOrderGroup]++;
+
+    U32 l_Order;
+    if (m_PushedDrawOrderGroup == ds_opaque) {
+        l_Order = 0;
+    }
+    else {
+        l_Order = (U32)(65535.0f / (1.0f + m_PushedOrder));
+    }
+
+    l_DrawCall.m_Order = l_Order;
+
+    l_DrawCall.m_DrawOrderGroup = m_PushedDrawOrderGroup;
+    l_DrawCall.m_DrawState = m_PushedDrawState;
+    l_DrawCall.m_UnusedSortKeyInsideGroup_0x78 = m_PushedUnusedSortKeyInsideGroup_0x2672;
+    l_DrawCall.m_StreamList = i_StreamList;
+    l_DrawCall.m_DisplayList = i_DisplayList;
+    l_DrawCall.m_Material = m_ActiveMaterial;
+    if (i_RenderContextFlag == -1) {
+        l_DrawCall.m_RenderContextFlag = m_RenderContextFlag & ~FL_RDR_CONTEXT_LIGHT_MASK;
+    }
+    else {
+        l_DrawCall.m_RenderContextFlag = i_RenderContextFlag;
+    }
+
+    l_DrawCall.m_BlendFlag = m_CurBlendFlags;
+    l_DrawCall.m_DirectionalLight = m_CurDirectionalLight;
+    l_DrawCall.m_AmbientColor = m_CurAmbientColor;
+    l_DrawCall.m_ObjDatasColor.x = m_CurObjColor.x;
+    l_DrawCall.m_ObjDatasColor.y = m_CurObjColor.y;
+    l_DrawCall.m_ObjDatasColor.z = m_CurObjColor.z;
+    l_DrawCall.m_FadeValue = m_CurObjColor.w;
+    l_DrawCall.m_OmniLightCount = m_CurOmniLightCount;
+    l_DrawCall.m_OmniLightMask = m_CurOmniLightMask;
+    builtin_memcpy(l_DrawCall.m_OmniLights, m_CurOmniLights, sizeof(l_DrawCall.m_OmniLights));
+    l_DrawCall.m_MainFog = m_CurMainFog;
+    l_DrawCall.m_EnabledFog = m_CurEnabledFog;
+    l_DrawCall.m_FogNear = m_FogNear;
+    l_DrawCall.m_FogFar = m_FogFar;
+    l_DrawCall.m_FogStartZ = m_FogStartZ;
+    l_DrawCall.m_FogEndZ = m_FogEndZ;
+    PSMTXCopy(*(Mtx*)&m_Local2Cam, l_DrawCall.m_Local2Cam);
+    PSMTXCopy(*(Mtx*)&m_InvTransposed, l_DrawCall.m_InvTransposed);
+    l_DrawCall.m_MtxId = m_CurMtxId;
+    l_DrawCall.m_MtxKey = m_CurMtxKey;
+    l_DrawCall.m_ActiveBitmaps[BITMAP_RADIOSITY] = m_ActiveBitmaps[BITMAP_RADIOSITY];
+    l_DrawCall.m_PrevDrawCallIdx = -1;
+    l_DrawCall.m_NextDrawCallIdx = -1;
+    return l_DrawCallIdx;
+}
+
+S32 GCRenderer_Z::PushLinkedDraw(S32 i_LinkedDrawCallIdx, StreamList_Z* i_StreamList, BaseDisplayList_Z* i_DisplayList) {
+    S32 l_NewDrawCallIdx = PushADraw(i_StreamList, i_DisplayList, -1);
+    if (i_LinkedDrawCallIdx >= 0) {
+        m_DrawCalls[i_LinkedDrawCallIdx].m_NextDrawCallIdx = l_NewDrawCallIdx;
+    }
+    m_DrawCalls[l_NewDrawCallIdx].m_PrevDrawCallIdx = i_LinkedDrawCallIdx;
+    return l_NewDrawCallIdx;
+}
+
+S32 GCRenderer_Z::PushVizQuery(DrawInfo_Z& i_DrawInfo, const Vec3f& i_VertexPosScreen) {
+    DisplayList_Z* l_DisplayList;
+    S32 l_Result = m_VizQueryDisplayListCount;
+    if (l_Result == VIZ_QUERY_DISPLAY_LIST_SIZE) {
+        return -1;
+    }
+
+    m_VizQueryDisplayListCount++;
+    l_DisplayList = &m_VizQueryDisplayLists[l_Result];
+    l_DisplayList->Begin();
+    GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT7, 4);
+
+    Float l_Z = -i_VertexPosScreen.z;
+    Float l_Size = 8.0f * i_VertexPosScreen.z / i_DrawInfo.m_Vp->GetHSize();
+
+    GXPosition3f32(i_VertexPosScreen.x - l_Size, i_VertexPosScreen.y - l_Size, l_Z);
+    GXPosition3f32(i_VertexPosScreen.x + l_Size, i_VertexPosScreen.y - l_Size, l_Z);
+    GXPosition3f32(i_VertexPosScreen.x - l_Size, i_VertexPosScreen.y + l_Size, l_Z);
+    GXPosition3f32(i_VertexPosScreen.x + l_Size, i_VertexPosScreen.y + l_Size, l_Z);
+
+    l_DisplayList->End();
+    l_Result = PushADraw(&FlareDataGC_Z::VizQueryStreamList, l_DisplayList, -1);
+    m_DrawCalls[l_Result].m_RenderContextFlag = FL_RDR_CONTEXT_FLAT_COLOR;
+    return l_Result;
+}
 
 // TODO: Finish matching
 U16 GCRenderer_Z::SortRendererDatas(SortElem_Z* i_List) {
@@ -365,6 +455,7 @@ void GCRenderer_Z::DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order) {
     }
 }
 
+// TODO: Finish matching
 void GCRenderer_Z::ImmediatQuad(
     const Vec2f& i_UVMin,
     const Vec2f& i_UVMax,
@@ -374,6 +465,59 @@ void GCRenderer_Z::ImmediatQuad(
     const Color& i_Color,
     Float i_Z
 ) {
+    GCImmediateVertex_Z l_Vertices[4];
+    Float l_InvSizeX = 1.0f / i_Size.x;
+    Float l_InvSizeY = 1.0f / i_Size.y;
+
+    l_Vertices[0].m_Position.x = i_PosMin.x;
+    l_Vertices[0].m_Position.y = i_PosMin.y;
+    l_Vertices[0].m_TextureCoordinates.x = i_UVMin.x * l_InvSizeX;
+    l_Vertices[0].m_TextureCoordinates.y = i_UVMin.y * l_InvSizeY;
+
+    l_Vertices[1].m_Position.x = i_PosMax.x;
+    l_Vertices[1].m_Position.y = i_PosMin.y;
+    l_Vertices[1].m_TextureCoordinates.x = i_UVMax.x * l_InvSizeX;
+    l_Vertices[1].m_TextureCoordinates.y = i_UVMin.y * l_InvSizeY;
+
+    l_Vertices[2].m_Position.x = i_PosMax.x;
+    l_Vertices[2].m_Position.y = i_PosMax.y;
+    l_Vertices[2].m_TextureCoordinates.x = i_UVMax.x * l_InvSizeX;
+    l_Vertices[2].m_TextureCoordinates.y = i_UVMax.y * l_InvSizeY;
+
+    l_Vertices[3].m_Position.x = i_PosMin.x;
+    l_Vertices[3].m_Position.y = i_PosMax.y;
+    l_Vertices[3].m_TextureCoordinates.x = i_UVMin.x * l_InvSizeX;
+    l_Vertices[3].m_TextureCoordinates.y = i_UVMax.y * l_InvSizeY;
+
+    U8 l_Red = (U8)(255.0f * i_Color.r);
+    U8 l_Green = (U8)(255.0f * i_Color.g);
+    U8 l_Blue = (U8)(255.0f * i_Color.b);
+    U8 l_Alpha = (U8)(255.0f * i_Color.a);
+
+    GXSetCurrentMtx(GX_IDENTITY);
+    GXSetProjection(*(Mtx44*)&m_OrthoMatrix, GX_ORTHOGRAPHIC);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXBegin(GX_QUADS, GX_VTXFMT4, 4);
+
+    for (S32 i = 0; i < 4; i++) {
+        GXPosition3f32(l_Vertices[i].m_Position.x, l_Vertices[i].m_Position.y, -i_Z);
+        GXColor4u8(l_Red, l_Green, l_Blue, l_Alpha);
+        GXTexCoord2f32(l_Vertices[i].m_TextureCoordinates.x, l_Vertices[i].m_TextureCoordinates.y);
+    }
+
+    GXSetProjection(*(Mtx44*)&m_ProjMatrix, GX_PERSPECTIVE);
 }
 
-void GCRenderer_Z::InitBlock(DrawInfo_Z& i_DrawInfo) { }
+void GCRenderer_Z::InitBlock(DrawInfo_Z& i_DrawInfo) {
+    if (i_DrawInfo.m_VpId == 0 && (i_DrawInfo.m_Flag & DrawInfo_Z::FL_DRAWINFO_DO_POST_PROCESS)) {
+        m_LightCacheState1.m_InUseNb = 0;
+    }
+
+    m_LightCacheState1.m_InUseNb = Max(m_LightCacheState1.m_InUseNb, m_ARamAllocator.m_AllocatedSize / 1024);
+    m_LightCacheState1.m_MaxInUseNb = Max(m_LightCacheState1.m_InUseNb, m_LightCacheState1.m_MaxInUseNb);
+    m_LightCacheState1.m_TotalNb = (U32)(m_ARamAllocator.m_EndAddress - m_ARamAllocator.m_StartAddress) >> 10;
+    m_ARamAllocator.Init();
+}

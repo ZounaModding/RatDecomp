@@ -327,7 +327,7 @@ void PopupMenu_Z::Update(Float i_DeltaTime) {
         Bool l_IsRightPressed = FALSE;
         Bool l_IsLeftPressed = FALSE;
 
-        if (gData.InputMgr->GetDevice(i).m_AnyDPadPressed) {
+        if (gData.InputMgr->GetDevice(i).m_YPressed) {
             m_DoDraw = TRUE;
         }
         if (gData.InputMgr->GetDevice(i).m_DPadUpPressed) {

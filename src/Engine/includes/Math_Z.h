@@ -2,7 +2,10 @@
 #define _MATH_Z_H_
 #include "MathTools_Z.h"
 #include "Types_Z.h"
-#include "Bitmap_Z.h"
+#include "Color_Z.h"
+#include "DynArray_Z.h"
+
+ExternC_Z void memset(void* __s, S32 __c, U32 __n);
 
 const Float Float_Eps = 1.e-6f;
 const Float Float_Eps_2 = 1.e-12f;
@@ -691,7 +694,11 @@ struct Mat4x4 {
 
     void Transp(Mat4x4& _Out) const;
 
-    Float GetUniformScale() const;
+    inline Float GetUniformScale() const {
+        Vec3f l_Scale(m[0][0], m[0][1], m[0][2]);
+        return l_Scale.GetNorm();
+    }
+
     void GetScale(Vec3f& o_Scale) const;
     const Vec4f& GetMatrixTrans4() const;
 
@@ -700,7 +707,7 @@ struct Mat4x4 {
 
     U32 GetCRC() const;
     inline Vec3f operator*(const Vec3f& i_Vec) const;
-    inline Vec4f operator*(const Vec4f& i_Vec) const;
+    Vec4f operator*(const Vec4f& i_Vec) const;
 
     inline const Vec3f& GetMatrixTrans() const {
         return *(Vec3f*)(&m[3][0]);
@@ -805,6 +812,13 @@ struct TBVtx {
     Vec2f UnkVec2f_0x8;
 };
 
+class Vec3f_S16_Z {
+public:
+    S16 x;
+    S16 y;
+    S16 z;
+};
+
 Sphere_Z operator*(const Mat4x4& i_Mat, const Sphere_Z& i_Sphere);
 
 void BuildLookAtRotation(const Vec3f& i_LookAt, const Vec3f& i_Up, Quat& o_Quat);
@@ -814,6 +828,24 @@ T Clamp(T i_Value, T i_Min, T i_Max) {
     if (i_Value <= i_Min) return i_Min;
     if (i_Value >= i_Max) return i_Max;
     return i_Value;
+}
+
+inline Double Abs(Float i_Value) {
+    return fabsf(i_Value);
+}
+
+template <typename T>
+inline void FastSmooth(const T& i_Current, const T& i_Target, Float i_Rate, Float i_DeltaTime, T& o_Result) {
+    Float l_Inv = 1.0f - 1.0f / i_Rate;
+    Float l_Factor = 2.0f * i_DeltaTime * (i_Rate / 30.0f) * 1.0f * l_Inv;
+    Float l_Weight = 1.0f;
+    if (l_Factor <= 1.0f) {
+        l_Weight = i_DeltaTime * (i_Rate / 30.0f) * (1.0f - l_Factor) * l_Inv;
+        if (1.0f < l_Weight) {
+            l_Weight = 1.0f;
+        }
+    }
+    o_Result = (i_Target - i_Current) * l_Weight + i_Current;
 }
 
 template <typename T>
@@ -834,5 +866,11 @@ T Max(T i_V1, T i_V2) {
 
 void Inverse2(const Mat4x4& i_Mat, Mat4x4& o_Mat);
 void ComputeMathPrecision();
+
+typedef DynArray_Z<Vec3f_S16_Z, 32, FALSE, FALSE, 4> Vec3f_S16_ZDA;
+typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;
+typedef DynArray_Z<Vec2f, 32, FALSE, FALSE, 32> Vec2fDA;
+typedef DynArray_Z<Vec4f, 32, FALSE, FALSE, 32> Vec4fDA;
+typedef DynArray_Z<TBVtx, 32, FALSE, FALSE, 4> TBVtxDA;
 
 #endif

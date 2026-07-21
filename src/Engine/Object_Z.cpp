@@ -19,8 +19,8 @@ Bool Object_Z::MarkHandles() {
         return FALSE;
     }
     else {
-        if (gData.ClassMgr->GetPtr(m_ObjectDataHdl) != NULL) {
-            gData.ClassMgr->GetPtr(m_ObjectDataHdl)->MarkHandles();
+        if (m_ObjectDataHdl.IsValid()) {
+            m_ObjectDataHdl->MarkHandles();
         }
         return TRUE;
     }

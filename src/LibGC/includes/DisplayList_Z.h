@@ -5,16 +5,22 @@
 #include <gx.h>
 
 class BaseDisplayList_Z {
-    virtual void GetSize();
-    virtual void GetCurSize();
-    virtual void GetData();
-    virtual void Call();
+public:
+    virtual U32 GetSize() { return 0; }
+
+    virtual U32 GetCurSize() { return 0; }
+
+    virtual U8* GetData() { return NULL; }
+
+    virtual void Call() {
+        GXCallDisplayList(GetData(), GetCurSize());
+    }
 };
 
 class DisplayList_Z : public BaseDisplayList_Z {
     U8* m_Data;
-    U32 m_CurrSize;
-    U32 m_Size;
+    S32 m_CurrSize;
+    S32 m_Size;
 
 public:
     DisplayList_Z() {
@@ -24,13 +30,17 @@ public:
     };
 
     ~DisplayList_Z() {
+        Reset();
+    };
+
+    void Reset() {
         if (m_Data) {
             Free_Z(m_Data);
         }
         m_Data = NULL;
         m_CurrSize = 0;
         m_Size = 0;
-    };
+    }
 
     void Begin() {
         DCInvalidateRange(m_Data, m_CurrSize);
@@ -42,16 +52,20 @@ public:
         m_Data = (U8*)AllocAlignCL_Z(m_CurrSize, i_Comment, 64, 32);
     }
 
+    void Load(void** i_Data);
+
     U32 End() {
         m_Size = GXEndDisplayList();
-        ASSERTLE_Z(m_CurrSize <= m_Size, "Display List Overflow.", 112, "CurrSize<=Size");
+        ASSERTLE_Z(m_Size <= m_CurrSize, "Display List Overflow.", 112, "CurrSize<=Size");
         DCStoreRange(m_Data, m_CurrSize);
         return m_Size;
     }
 
-    virtual void GetSize();
-    virtual void GetCurSize();
-    virtual void GetData();
+    virtual U32 GetSize() { return m_CurrSize; }
+
+    virtual U32 GetCurSize() { return m_Size; }
+
+    virtual U8* GetData() { return m_Data; }
 };
 
 #endif // _DISPLAYLIST_Z_H_

@@ -2,6 +2,10 @@
 #include "ABC_ScriptManager.h"
 #include "StreamAgent_Z.h"
 
+void ClassManager_Z::GetNameFromId(U32 i_ID, Name_Z& o_Name) {
+    o_Name.m_ID = i_ID;
+}
+
 Bool ClassManager_Z::OpenBigFile(const Char* i_BfName, const Name_Z& i_StreamAgentClassName, Bool i_Unused) {
     StreamAgent_ZHdl* l_StrAgentHdl = gData.ScriptMgr->GetStreamAgent();
 

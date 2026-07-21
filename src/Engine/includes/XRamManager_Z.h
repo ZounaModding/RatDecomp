@@ -14,14 +14,16 @@ public:
     virtual void Update(Float i_DeltaTime);
     virtual void Flush();
     virtual void Minimize();
-    virtual void GetMemAllocated();
-    virtual void AllocBlock(S32 a1, S32 a2, S32 a3);
-    virtual void GetBlockPtr(S16 a1);
-    virtual void GetBlockSize(S16 a1);
+
+    virtual S32 GetMemAllocated() { return 0; }
+
+    virtual S16 AllocBlock(S32 i_Size, S32 i_UserParam1, S32 i_UserParam2);
+    virtual U32 GetBlockPtr(S16 i_BlockIdx);
+    virtual S32 GetBlockSize(S16 i_BlockIdx);
     virtual void FreeBlock(S16 a1);
     virtual void LockBlockAt(S16 a1, S32 a2);
-    virtual void Get(S16 a1, S32 a2);
-    virtual void EndGet(U8* a1);
+    virtual U8* Get(S16 a1, S32 a2);
+    virtual void EndGet(U8* i_Data);
     virtual void Read(U8* a1, S32 a2, U32 a3, Bool a4);
     virtual void Write(U8* a1, S32 a2, U32 a3, Bool a4);
 };

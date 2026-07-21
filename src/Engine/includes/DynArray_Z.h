@@ -107,6 +107,10 @@ public:
         return m_Size;
     }
 
+    int GetReserved() const {
+        return m_ReservedSize;
+    }
+
     int Add() {
         if (!m_ReservedSize) {
             DYNARRAY_Z_EXP(Granularity <= DYA_RSVSIZEMAX);

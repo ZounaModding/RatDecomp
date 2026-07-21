@@ -17,7 +17,11 @@ Bool Cmd_OpenSBF();
 Bool Cmd_CloseSBF();
 Bool Cmd_PlayDialog();
 
-#define FL_TRACK_NONE (U32)(0 << 0)
+enum TrackFlags_Z {
+    FL_TRACK_NONE = 0,
+    FL_TRACK_STREAM = 1 << 9,
+    FL_TRACK_MUSIC = (1 << 12) | (1 << 11) | FL_TRACK_STREAM | (1 << 4) | (1 << 2) | (1 << 0)
+};
 
 struct Track_Z {
     Bool Release();
@@ -130,13 +134,13 @@ public:
     virtual void GetStreamSoundDuration(const Char* a1);
     virtual void IsStreamPlaying(const Char* a1);
     virtual void IsAnyStreamPlaying();
-    virtual void LoadMusic(const Char* a1);
+    virtual S32 LoadMusic(const Char* a1);
     virtual void PlayMusic(const Char* i_FilePath, U32 i_Flag, Float i_StopTime, Float i_FadeInTime);
     virtual void SkipMusic(const Name_Z& a1, const Name_Z& a2, U32 a3, Bool a4);
     virtual void SkipMusicQueueSize();
     virtual void GetMusicTime();
     virtual void StopMusic(Float i_FadeOutTime);
-    virtual void IsMusicPlaying();
+    virtual Bool IsMusicPlaying();
     virtual void GetLipSyncFromStream(const Node_ZHdl& a1);
     virtual void PlaySound(Sound_ZHdl& i_SoundHdl, U32 i_Flag, const Node_ZHdl& i_NodeHdl, BoneNode_Z* i_BoneNode = NULL);
     virtual void StopSound(Sound_ZHdl& i_SoundHdl, const Node_ZHdl& i_NodeHdl, Float i_UnkFloat);
@@ -146,7 +150,7 @@ public:
     virtual void StopSound(S32 a1);
     virtual void GetTrackTime(S32 a1);
     virtual void GetDlgDTime(S32 a1);
-    virtual void GetUsedTrackString();
+    virtual const Char* GetUsedTrackString();
 
     void FreeTrack(S32 i_TrackIdx);
 
@@ -154,7 +158,7 @@ public:
         CloseFrame();
     }
 
-private:
+protected:
     Track_Z m_Tracks[SND_MGR_MAX_TRACKS];
     S32 m_NbTracksFailedToPlay;
     S32 m_VpOccluderZoneIds[SND_MGR_MAX_OCCLUDER_ZONE_IDS];

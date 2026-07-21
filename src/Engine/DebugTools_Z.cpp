@@ -41,6 +41,10 @@ void RegisterDebugCommand() {
     REGISTERCOMMAND("DrawMemGraph", DrawMemGraph);
 }
 
+Bool EnablePopupMenu() {
+    return TRUE;
+}
+
 Bool DisableConsole() {
     if (gData.Cons->GetNbParam() != 2) {
         gData.ToggleEngineFlag(FL_DISABLE_CONSOLE);

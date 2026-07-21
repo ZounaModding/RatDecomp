@@ -33,4 +33,8 @@ Weak_Z BaseObject_ZHdl::operator BaseObject_Z*() const {
     return GETPTR(*this);
 }
 
+Weak_Z BaseObject_Z* BaseObject_ZHdl::operator->() const {
+    return (BaseObject_Z*)GETPTR((BaseObject_ZHdl&)*this);
+}
+
 #endif

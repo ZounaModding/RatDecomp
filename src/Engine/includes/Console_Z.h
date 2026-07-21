@@ -23,6 +23,7 @@
 #define FL_CONSOLE_UNK_0x8 (U32)(1 << 3)
 #define FL_CONSOLE_UNK_0x10 (U32)(1 << 4)
 #define FL_CONSOLE_PAUSED (U32)(1 << 5)
+#define FL_CONSOLE_UNK_0x40 (U32)(1 << 6)
 
 Bool DisplayHelp();
 Bool Pause();
@@ -106,7 +107,11 @@ private:
     String_Z<CONSOLE_STATIC_COMMAND_VAR_LEN_MAX> m_CommandVar[CONSOLE_MAX_STATIC_COMMAND_VAR];
     S32 m_StackNbVar;
     Bool m_StackVarState[8];
+
+protected:
     U32 m_FolderFlag;
+
+private:
     U32 m_Flag;
     U32 m_Depth;
     Bool m_UnkBool_0x6c70;
@@ -129,6 +134,10 @@ public:
 
     S32 GetNbParam() const {
         return m_NbParam;
+    }
+
+    Char* GetMessageBuffer() {
+        return m_ConsoleText;
     }
 
     Bool InterpCommandLine(const Char* i_CommandStr, U32 i_Depth);

@@ -13,7 +13,6 @@ struct BnkDynArrayEle_Z {
     DynArray_Z<T, Granularity, DeleteObject, InitObject, Alignment> m_DA;
 
     BnkDynArrayEle_Z() {
-        m_NextBank = NULL;
     }
 };
 
@@ -61,6 +60,7 @@ public:
         if (!l_Bank) {
             l_Bank = NewL_Z(84) Bank_Z;
             *l_Link = l_Bank;
+            l_Bank->m_NextBank = NULL;
         }
 
         if (!l_Bank->m_DA.GetFree()) {
@@ -68,6 +68,41 @@ public:
         }
 
         return l_Bank->m_DA[l_Bank->m_DA.Add()];
+    }
+
+    inline T& AddRef(S32& o_Index) {
+        Bank_Z** l_Link = &m_HeadBank;
+        Bank_Z* l_Bank;
+        o_Index = 0;
+
+        while (TRUE) {
+            l_Bank = *l_Link;
+            if (!l_Bank) {
+                l_Bank = NewL_Z(110) Bank_Z;
+                *l_Link = l_Bank;
+                l_Bank->m_NextBank = NULL;
+            }
+            if (!l_Bank->m_DA.GetSize() || l_Bank->m_DA.GetReserved()) {
+                S32 l_Index = l_Bank->m_DA.Add();
+                o_Index += l_Index;
+                return l_Bank->m_DA[l_Index];
+            }
+
+            o_Index += Granularity;
+            l_Link = &l_Bank->m_NextBank;
+        }
+    }
+
+    T& operator[](S32 i_Index) {
+        Bank_Z* l_Bank = m_HeadBank;
+        while (l_Bank) {
+            if (i_Index < l_Bank->m_DA.GetSize()) {
+                return l_Bank->m_DA[i_Index];
+            }
+            i_Index -= l_Bank->m_DA.GetSize();
+            l_Bank = l_Bank->m_NextBank;
+        }
+        return m_HeadBank->m_DA[0];
     }
 
     void Empty() {

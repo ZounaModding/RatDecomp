@@ -1,6 +1,7 @@
 #include "Fonts_Z.h"
 #include "Main_Z.h"
 #include "Program_Z.h"
+#include "Material_Z.h"
 
 S32 GetUTF8CharBytes(const Char* i_CharBytePtr) {
     if ((*i_CharBytePtr & 0x80) == 0) {
@@ -40,8 +41,8 @@ U32 GetUTF8CharCode(const Char* i_CharBytePtr) {
 
 Bool Fonts_Z::MarkHandles() {
     for (S32 i = 0; i < m_MaterialDA.GetSize(); i++) {
-        if (gData.ClassMgr->GetPtr(m_MaterialDA[i]) != NULL) {
-            gData.ClassMgr->GetPtr(m_MaterialDA[i])->MarkHandles();
+        if (m_MaterialDA[i].IsValid()) {
+            m_MaterialDA[i]->MarkHandles();
         }
     }
     return ResourceObject_Z::MarkHandles();

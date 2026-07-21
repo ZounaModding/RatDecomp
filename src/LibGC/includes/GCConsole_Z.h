@@ -8,7 +8,11 @@ typedef void (GCConsole_Z::*FolderProcDraw_Z)(Float i_DTime);
 
 class Folder_Z {
 public:
-    String_Z<128> m_Name;
+    Folder_Z()
+        : m_FolderProc(NULL) {
+    }
+
+    Char m_Name[128];
     FolderProcDraw_Z m_FolderProc;
 };
 
@@ -26,6 +30,17 @@ public:
     virtual void Flush();
     virtual void DisplayStatus(U32 a1, const Char* a2);
     virtual void SaveMessage(const Char* a1);
+
+    void InitConsoleSystem();
+    void InitFolders();
+    void SwitchFolder(S32 i_Folder);
+    void SystemDraw(Float i_DTime);
+
+    void MessageDraw(Float i_DTime) { }
+
+    void ScriptDraw(Float i_DTime) { }
+
+    void FrameRedrawSystem(Bool i_Redraw);
 };
 
 #endif

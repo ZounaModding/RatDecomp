@@ -137,6 +137,8 @@ public:
 
     inline Bool IsFlagEnable(U32 i_Flag, U32 i_TrueFlag) const { return ((m_Flag & i_Flag) == i_TrueFlag); }
 
+    inline Bitmap_Z* GetRadiosityBmap() const { return m_RadiosityBitmap; }
+
     void Update(World_Z* i_World, Node_Z* i_Parent);
 
     void Update();
@@ -231,7 +233,7 @@ private:
     LightData_Z* m_LightData;
     HFogData_Z* m_HFogData;
     Bitmap_Z* m_RadiosityBitmap;
-    BaseObject_Z* m_UnkObjPtr_0x158;
+    Bitmap_Z* m_RadiosityNormalBitmap; // From Monopoly MAP
 };
 
 #endif

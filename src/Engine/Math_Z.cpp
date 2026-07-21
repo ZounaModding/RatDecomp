@@ -343,3 +343,6 @@ void Quat::Normalize(void) {
     v.z *= rhn;
     w *= rhn;
 }
+
+void ComputeMathPrecision() {
+}

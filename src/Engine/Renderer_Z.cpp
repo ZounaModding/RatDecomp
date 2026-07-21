@@ -9,6 +9,9 @@
 #include "Program_Z.h"
 #include "SystemDatas_Z.h"
 #include "World_Z.h"
+#include "ABC_ScriptManager.h"
+#include "SoundManager_Z.h"
+#include "Memory_Z.h"
 
 #pragma dont_inline on
 
@@ -178,6 +181,7 @@ void Renderer_Z::Draw(S32 i_ViewportId, Float i_DeltaTime) {
     SetActiveViewport(i_ViewportId);
 
     DrawInfo_Z l_DrawInfo;
+    l_DrawInfo.m_VpId = i_ViewportId;
     l_DrawInfo.m_FirstPlayerVpId = -1;
     l_DrawInfo.m_VpCount = -1;
     l_DrawInfo.m_Unk0_0x17c0_From_Renderer_0x704 = m_UnkBoolFalse_0x704;
@@ -188,12 +192,204 @@ void Renderer_Z::Draw(S32 i_ViewportId, Float i_DeltaTime) {
     l_DrawInfo.m_LodPatchMin = m_LodPatchMin;
     l_DrawInfo.m_LodPatchMax = m_LodPatchMax;
     l_DrawInfo.m_LodPatchDist = m_LodPatchDist;
-    l_DrawInfo.m_VpId = i_ViewportId;
     l_DrawInfo.m_DeltaTime = i_DeltaTime;
     m_Viewports[i_ViewportId].Draw(l_DrawInfo);
 
     if (i_ViewportId == GLOBAL_DEBUG_VIEWPORT) {
-        // TODO: Implement debug draw
+        SetActiveMaterial(NULL);
+        gData.GameMgr->DebugDisplay(&GetViewport(GLOBAL_DEBUG_VIEWPORT));
+        gData.ScriptMgr->Draw(l_DrawInfo);
+        gData.SoundMgr->Draw(l_DrawInfo);
+        gData.ClassMgr->Draw(l_DrawInfo);
+
+        m_CurFps = 1.0f / i_DeltaTime;
+        FastSmooth(m_Fps, m_CurFps, 1.1f, i_DeltaTime, m_Fps);
+
+        U32 l_FpsThreshold = 59;
+        if (gData.m_GameFlag & FL_GAME_2_FRAMES) {
+            l_FpsThreshold = 29;
+        }
+
+        if ((gData.m_EngineFlag & FL_DISPLAY_FPS) && m_Fps < (Float)l_FpsThreshold) {
+            Color l_BorderColor;
+            l_BorderColor.Set(1.0f, 0.0f, 0.0f, 0.5f);
+            Vec2f l_P0;
+            Vec2f l_P1;
+            l_P0.Set(0.0f, 0.0f);
+            l_P1.Set((Float)m_SizeX, 16.0f);
+            DrawQuad(l_P0, l_P1, l_BorderColor, 0.1f);
+            l_P0.Set((Float)(m_SizeX - 16), 16.0f);
+            l_P1.Set((Float)m_SizeX, (Float)(m_SizeY - 16));
+            DrawQuad(l_P0, l_P1, l_BorderColor, 0.1f);
+            l_P0.Set(0.0f, (Float)(m_SizeY - 16));
+            l_P1.Set((Float)m_SizeX, (Float)m_SizeY);
+            DrawQuad(l_P0, l_P1, l_BorderColor, 0.1f);
+            l_P0.Set(0.0f, 16.0f);
+            l_P1.Set(16.0f, (Float)(m_SizeY - 16));
+            DrawQuad(l_P0, l_P1, l_BorderColor, 0.1f);
+        }
+
+        if (gData.m_EngineFlag & FL_DISPLAY_FPS) {
+            S32 l_SizeX;
+            S32 l_SizeY;
+            GetSize(l_SizeX, l_SizeY);
+            Vec2f l_TextPos((Float)(l_SizeX - 210), (Float)(l_SizeY - 24));
+            Vec2f l_BgPos(l_TextPos);
+
+            CacheState_Z l_MatState;
+            gData.MatrixBuffer->GetState(l_MatState);
+
+            S32 l_MatInUse;
+            S32 l_LightC1;
+            S32 l_LightC2;
+            S32 l_PatchCD;
+            U32 l_GblDma;
+            U32 l_GifDma;
+            Float l_Timer = m_DisplayCacheStateUpdateTimer;
+            if (l_Timer < 0.0f) {
+                m_DisplayCacheStateUpdateTimer = l_Timer - i_DeltaTime;
+                l_LightC1 = m_LightCacheState1.m_MaxInUseNb;
+                l_LightC2 = m_LightCacheState2.m_MaxInUseNb;
+                l_PatchCD = m_PatchCacheState.m_MaxInUseNb;
+                l_GblDma = m_GblDmaMaxInUseNb;
+                l_GifDma = m_GifDmaMaxInUseNb;
+                l_MatInUse = l_MatState.m_MaxInUseNb;
+            }
+            else {
+                m_DisplayCacheStateUpdateTimer = l_Timer + i_DeltaTime;
+                l_LightC1 = m_LightCacheState1.m_InUseNb;
+                l_LightC2 = m_LightCacheState2.m_InUseNb;
+                l_PatchCD = m_PatchCacheState.m_InUseNb;
+                l_GblDma = m_GblDmaInUseNb;
+                l_GifDma = m_GifDmaInUseNb;
+                l_MatInUse = l_MatState.m_InUseNb;
+            }
+
+            m_DisplayFpsUpdateTimer = m_DisplayFpsUpdateTimer - i_DeltaTime;
+            Float l_GpuTarget = 1.0f / Clamp(m_GpuTargetMsOrFps, 0.0001f, 1.0f);
+            FastSmooth(m_GpuFps, l_GpuTarget, 1.1f, i_DeltaTime, m_GpuFps);
+            Float l_CpuTarget = 1.0f / Clamp(m_CpuTargetMsOrFps, 0.0001f, 1.0f);
+            FastSmooth(m_CpuFps, l_CpuTarget, 1.1f, i_DeltaTime, m_CpuFps);
+
+            if (m_DisplayFpsUpdateTimer <= 0.0f) {
+                m_DisplayFpsUpdateTimer = 0.1f;
+                Float l_Time = gData.m_Timer;
+                U32 l_Sec = (U32)l_Time;
+                U32 l_Min = (U32)(l_Time / 60.0f);
+                U32 l_Hour = (U32)(l_Time / 3600.0f);
+                m_TimeString.Sprintf("Time: %2dh%02dm%02ds", l_Hour % 3600, l_Min % 60, l_Sec % 60);
+
+                const Char* l_VsyncStr = "";
+                if (m_EffectFlag & FL_EFFECT_VSYNC) {
+                    l_VsyncStr = "(vsync)";
+                }
+                m_FpsString.Sprintf("Fps: %.1f (%.2fms) %s", l_VsyncStr, m_Fps, 1000.0f / m_Fps);
+                m_GpuString.Sprintf("Gpu: %.1f (%.2fms) %2.f%%", l_VsyncStr, m_GpuFps, 1000.0f / m_GpuFps, 100.0f * GetFreq() / m_GpuFps);
+                m_CpuString.Sprintf("Cpu: %.1f (%.2fms) %2.f%%", l_VsyncStr, m_CpuFps, 1000.0f / m_CpuFps, 100.0f * GetFreq() / m_CpuFps);
+                m_FragmentsString.Sprintf("Fragments: %d", MemManager.GetFragments());
+                Float l_Largest = (Float)MemManager.GetLargestFree() / 1048576.0f;
+                m_LargestBlockString.Sprintf("Largest Block: %d.%d Mo", (S32)l_Largest, (S32)(10.0f * l_Largest) - (S32)l_Largest * 10);
+                Float l_FreeMem = (Float)MemManager.GetFreeMem() / 1048576.0f;
+                m_FreeMemString.Sprintf("Free Mem: %d.%d Mo", (S32)l_FreeMem, (S32)(10.0f * l_FreeMem) - (S32)l_FreeMem * 10);
+                m_MatrixUsageString.Sprintf("Mat: %d/%d", l_MatInUse, l_MatState.m_TotalNb);
+                m_LightC1String.Sprintf("LightC1: %d/%d", l_LightC1, m_LightCacheState1.m_TotalNb);
+                m_LightC2String.Sprintf("LightC2: %d/%d", l_LightC2, m_LightCacheState2.m_TotalNb);
+                m_PatchCDString.Sprintf("PatchCD: %d/%d", l_PatchCD, m_PatchCacheState.m_TotalNb);
+                m_GlobalDmaString.Sprintf("GblDMA: %d/%dk", (S32)l_GblDma >> 10, (S32)m_GblDmaTotalNb >> 10);
+                m_GifDmaString.Sprintf("GifDMA: %d/%dk", (S32)l_GifDma >> 10, (S32)m_GifDmaTotalNb >> 10);
+            }
+
+            Color l_White(1.0f, 1.0f, 1.0f, 1.0f);
+            Float l_Near = GetDefaultNear();
+            DrawString(l_TextPos, m_TimeString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_FpsString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_FragmentsString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_LargestBlockString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_FreeMemString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, gData.SoundMgr->GetUsedTrackString(), l_White, l_Near, 1.0f);
+
+            l_TextPos.x = l_TextPos.x - 4.0f;
+            l_BgPos.y = l_BgPos.y + 12.0f;
+            l_TextPos.y = (l_TextPos.y - 8.0f) + 4.0f;
+            l_BgPos.x = l_BgPos.x + 204.0f;
+            Color l_BgColor(0.1f, 0.2f, 0.2f, 0.6f);
+            DrawQuad(l_TextPos, l_BgPos, l_BgColor, (Float)(1e-06f + l_Near));
+
+            if (m_DisplayCacheStateUpdateTimer < 0.0f) {
+                l_BgColor.Set(1.0f, 0.0f, 0.0f, 0.4f);
+            }
+            if (Abs(m_DisplayCacheStateUpdateTimer) > 1.0f) {
+                S32 l_Sign;
+                if (0.0f == m_DisplayCacheStateUpdateTimer) {
+                    l_Sign = 0;
+                }
+                else if (m_DisplayCacheStateUpdateTimer >= 0.0f) {
+                    l_Sign = 1;
+                }
+                else {
+                    l_Sign = -1;
+                }
+                m_DisplayCacheStateUpdateTimer = 1e-06f * (Float)(-l_Sign);
+            }
+
+            l_TextPos.Set((Float)(l_SizeX - 360), (Float)(l_SizeY - 24));
+            l_BgPos = l_TextPos;
+            DrawString(l_TextPos, m_MatrixUsageString, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_LightC1String, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_LightC2String, l_White, l_Near, 1.0f);
+            l_TextPos.y = l_TextPos.y - 8.0f;
+            DrawString(l_TextPos, m_PatchCDString, l_White, l_Near, 1.0f);
+            l_TextPos.x = l_TextPos.x - 4.0f;
+            l_TextPos.y = (l_TextPos.y - 8.0f) + 4.0f;
+            l_BgPos.y = l_BgPos.y + 12.0f;
+            l_BgPos.x = l_BgPos.x + 148.0f;
+            DrawQuad(l_TextPos, l_BgPos, l_BgColor, (Float)(0.001f + l_Near));
+        }
+
+        if (gData.m_EngineFlag & FL_INGAME_CONSOLE) {
+            Char* l_Msg = gData.Cons->GetMessageBuffer();
+            S32 l_End = strlen(l_Msg) - 1;
+            S32 l_Line = 0;
+            for (Char* l_Cur = l_Msg + l_End; l_End > 0 && (*l_Cur == '\n' || *l_Cur == '\r'); l_Cur--) {
+                l_End--;
+            }
+            Color l_MsgColor(0.4f, 0.4f, 0.4f, 1.0f);
+            if (gData.Cons->IsFlagEnable(FL_CONSOLE_PAUSED)) {
+                l_MsgColor.g = 0.0f;
+                l_MsgColor.b = 0.0f;
+            }
+            while (l_End > 0) {
+                S32 l_Start = l_End - 1;
+                for (Char* l_Cur = l_Msg + l_Start; l_Start != 0 && *l_Cur != '\n' && *l_Cur != '\r'; l_Cur--) {
+                    l_Start--;
+                }
+                if (l_Start != l_End) {
+                    U32 l_Len = (l_End - l_Start) + 1;
+                    if (l_Len > 63) {
+                        l_Len = 63;
+                    }
+                    Char l_Buf[76];
+                    strncpy(l_Buf, l_Msg + l_Start, l_Len);
+                    l_Buf[l_Len] = '\0';
+                    Vec2f l_MsgPos(10.0f, 10.0f * (Float)(U32)(20 - l_Line) + 100.0f);
+                    DrawString(l_MsgPos, l_Buf, l_MsgColor, 0.1f, 1.0f);
+                    l_Line++;
+                }
+                if (l_Line == 20) {
+                    break;
+                }
+                l_End = l_Start - 1;
+            }
+        }
+
+        gData.Cons->Draw(l_DrawInfo);
     }
 }
 

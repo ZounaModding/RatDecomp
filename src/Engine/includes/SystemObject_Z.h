@@ -2,6 +2,8 @@
 #define _SYSTEMOBJECT_Z_H_
 #include "Math_Z.h"
 
+class BaseObject_Z;
+
 struct Box_Z;
 struct Sphere_Z;
 struct Cylindre_Z;
@@ -138,6 +140,20 @@ struct Rect_Z {
         x2 = _x2;
         y2 = _y2;
     }
+};
+
+#define DEFAULT_NOCULLED 10001.f
+
+class CullCone_Z {
+public:
+    Vec3f m_Origin;
+    Float m_Length;
+    Vec3f m_Direction;
+    Float m_AngleCos;
+
+    Bool IsCulled(const Vec4f& i_Position);
+
+    void NoCulling() { m_Length = DEFAULT_NOCULLED; }
 };
 
 struct Capsule_Z {

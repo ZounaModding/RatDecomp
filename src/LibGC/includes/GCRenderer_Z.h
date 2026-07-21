@@ -92,19 +92,47 @@ enum DrawingState {
 
 class Draw2D_Z {
 public:
-    struct GCVertex2DStream {
-        Vec3f m_Pos;
+    Draw2D_Z()
+        : m_CurWriteEnd(NULL)
+        , m_CurWritePtr(NULL)
+        , m_PreviousWritePtr(NULL)
+        , m_CurDisplayListIdx(0)
+        , m_RemainingVertexCount(-1) {
+    }
+
+    class GCVertex2DStream {
+    public:
+        Vec3f m_Position;
         GXColor m_Color;
-        Vec2f m_UV;
+        Vec2f m_TextureCoordinates;
+
+        void CopyFrom(const GCVertex2DStream& i_Vertex) {
+            m_Position.x = i_Vertex.m_Position.x;
+            m_Position.y = i_Vertex.m_Position.y;
+            m_Position.z = i_Vertex.m_Position.z;
+            m_Color.r = i_Vertex.m_Color.r;
+            m_Color.g = i_Vertex.m_Color.g;
+            m_Color.b = i_Vertex.m_Color.b;
+            m_Color.a = i_Vertex.m_Color.a;
+            m_TextureCoordinates.x = i_Vertex.m_TextureCoordinates.x;
+            m_TextureCoordinates.y = i_Vertex.m_TextureCoordinates.y;
+        }
     };
+
+// $SABE: This is kinda weird so it may be wrong and it's done some other way
+#pragma push
+#pragma pack(1)
 
     class GCListVertex2D {
     public:
         U8 m_PrimType;
-        U8 m_VertexCountHigh;
-        U8 m_VertexCountLow;
+        U16 m_VertexCount;
         U8 m_VertexData[DRAW2D_VTXBUFFER_NB * sizeof(GCVertex2DStream)];
-    } Aligned_Z(32);
+        U8 m_Padding[25];
+        S32 m_DisplayListSize;
+    };
+
+#pragma pop
 
     class Primitive2DList_Z {
     public:
@@ -118,10 +146,14 @@ public:
     void Shut();
     void Begin();
     void End();
+    void UnLock();
     void Minimize();
+    U8* Request(Material_Z* i_Material, Bool i_Transparent, S32 i_VertexCount);
+    void CloseRequest();
+    void Lock(Material_Z* i_Material, U16 i_DrawState, S32 i_RenderFlags);
 
-    U8* m_CurWritePtr;
     U8* m_CurWriteEnd;
+    U8* m_CurWritePtr;
     U8* m_PreviousWritePtr;
     Material_Z* m_CurMaterial;
     U16 m_CurDrawState;
@@ -140,6 +172,11 @@ public:
 
 class Draw3D_Z {
 public:
+    Draw3D_Z()
+        : m_CurBankIdx(0)
+        , m_CurDisplayList(NULL) {
+    }
+
     struct GCVertex3DStream {
         Vec3f m_Pos;
         GXColor m_Color;
@@ -169,6 +206,15 @@ public:
 };
 
 // END TODO
+
+class GCImmediateVertex_Z {
+public:
+    Vec3f m_Position;
+    GXColor m_Color; // may be wrong
+    Vec3f m_Normal;  // may be wrong
+    U32 m_Flags;     // may be wrong
+    Vec2f m_TextureCoordinates;
+};
 
 // TODO: Move these to their own files
 struct ScanCode_Z {
@@ -211,7 +257,7 @@ struct ExtPrimitiveInfo_Z {
     BaseDisplayList_Z* m_DisplayList;
     Material_Z* m_Material;
     GXLightObj m_DirectionalLight;
-    GXColor m_AmbientColor;
+    U32 m_AmbientColor; // GXColor
     Vec3f m_ObjDatasColor;
     Float m_FadeValue;
     U32 m_OmniLightCount;
@@ -240,6 +286,8 @@ struct SortElem_Z {
 
 class GCRenderer_Z : public Renderer_Z {
 public:
+    friend class Draw2D_Z;
+
     // TODO: Finish matching
     GCRenderer_Z() {
         FIXDEBUGINLINING_Z();
@@ -294,11 +342,11 @@ public:
     virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4);
     virtual void DrawImage(Bitmap_ZHdl& a1);
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);
-    virtual void Draw2DQuad(const Vec2f& a1, const Vec2f& a2, const Vec2f& a3, const Vec2f& a4, const Color& a5, const Color& a6, Float a7);
+    virtual void Draw2DQuad(const Vec2f& i_PosBottomLeft, const Vec2f& i_PosTopRight, const Vec2f& i_UvBottomLeft, const Vec2f& i_UvTopRight, const Color& i_ColBottomRight, const Color& i_ColTopRight, Float i_Z);
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5);
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Float a4);
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6);
-    virtual void Draw2DQuad(Vec2f* a1, Vec3f* a2, Vec2f* a3, Float a4, Float a5);
+    virtual void Draw2DQuad(Vec2f* i_Positions, Vec3f* i_Colors, Vec2f* i_TextureCoordinates, Float i_Z, Float i_Alpha);
     virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4);
     virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4);
     virtual void DrawString(const Vec2f& a1, const Char* a2, const Color& a3, Float a4, Float a5);
@@ -308,7 +356,7 @@ public:
     virtual void FlushActiveViewport();
     virtual void InitRenderStates();
     virtual void SetProfiler(Bool i_Enable);
-    virtual void PushADraw(StreamList_Z* a1, BaseDisplayList_Z* a2, S32 a3);
+    virtual S32 PushADraw(StreamList_Z* i_StreamList, BaseDisplayList_Z* i_DisplayList, S32 i_Param);
 
     static void ClearAFrameBuffer(U8* i_Buffer, S32 i_UnkS32);
     void RestoreViewport();
@@ -316,6 +364,9 @@ public:
     void SetWorldToCam(const Mat4x4&);
     void SetMaterial(Material_Z* i_Material, GXChannelID i_Channel);
     void SetRenderBlendOp(U32 i_BlendFlag);
+
+    U32 GetCurrentBlendFlags() const { return m_CurBlendFlags; }
+
     void DrawState(U16 i_StateFlag);
     void SetRenderContext(U32 i_ContextFlag);
     void SetTexture(Bitmap_Z* i_Bitmap, GXTexWrapMode i_WrapS, GXTexWrapMode i_WrapT, GXTexMapID i_TexMapID = GX_TEXMAP0);
@@ -324,6 +375,8 @@ public:
 
     Bool DrawExtPrimitive(ExtPrimitiveInfo_Z* i_ExtPrimInfo);
     U16 SortRendererDatas(SortElem_Z* i_SortElems);
+    S32 PushLinkedDraw(S32 i_LinkedDrawCallIdx, StreamList_Z* i_StreamList, BaseDisplayList_Z* i_DisplayList);
+    S32 PushVizQuery(DrawInfo_Z& i_DrawInfo, const Vec3f& i_VertexPosScreen);
     virtual void DrawTransparent(DrawInfo_Z& i_DrawInfo);
     void DrawOrder(DrawInfo_Z& i_DrawInfo, U8 i_Order);
     void ImmediatQuad(const Vec2f& i_UVMin, const Vec2f& i_UVMax, const Vec2f& i_PosMin, const Vec2f& i_PosMax, const Vec2f& i_Size, const Color& i_Color, Float i_Z);
@@ -333,6 +386,11 @@ public:
 
     // GCRendererLighting_Z.cpp
 
+    Bool SetLights(const DrawInfo_Z& i_DrawInfo, const Color& i_Color);
+    void SetOmnis(const DrawInfo_Z& i_DrawInfo);
+    Bool SetLight(const DrawInfo_Z& i_DrawInfo, const Color& i_Color);
+    void SetRadiosity(Node_Z* i_Node);
+    void SetFog(const DrawInfo_Z& i_DrawInfo);
     void DisableFog();
     void EnableFog();
     void NoFog();
@@ -374,7 +432,7 @@ private:
     S32 m_VizQueryDisplayListCount;
     DisplayList_Z m_VizQueryDisplayLists[VIZ_QUERY_DISPLAY_LIST_SIZE];
     GXLightObj m_CurDirectionalLight;
-    GXColor m_CurAmbientColor;
+    U32 m_CurAmbientColor; // GXColor
     Vec4f m_CurObjColor;
     S32 m_CurOmniLightCount;
     U32 m_CurOmniLightMask;

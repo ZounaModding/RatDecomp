@@ -103,6 +103,7 @@ public:
     const BaseObject_ZHdl& NewObject(const Name_Z& i_ClassName);
     const BaseObject_ZHdl& NewObject(const Char* i_ClassName);
     Name_Z& GetClassName(const BaseObject_ZHdl& i_Hdl);
+    void GetNameFromId(U32 i_ID, Name_Z& o_Name);
 
     const BaseObject_ZHdl& NewResource(const Name_Z& i_ClassName, const Name_Z& i_Name);
     Bool GetFile(const Char* i_Path, File_Z& i_File);
@@ -139,6 +140,7 @@ public:
     }
 
     Bool LoadResource(BigFileRsc_Z& i_Resource);
+    void LoadResourceData(BigFileRsc_Z& i_Resource);
 
     const Char* GetBigFileHeaderText() const { return m_BfHeaderText; }
 

@@ -13,7 +13,7 @@ void Node_Z::Load(void** i_Data) {
     LOADLINKID_Z(&m_Object);
     LOADLINKID_Z(&m_UserDefine);
     LOADLINKID_Z(&m_RadiosityBitmap);
-    LOADLINKID_Z(&m_UnkObjPtr_0x158);
+    LOADLINKID_Z(&m_RadiosityNormalBitmap);
     l_U16 = GetWorldMatrixId();
     LOADRANGE_Z(m_InverseWorldMatrix, m_CollideSeadRect);
     SetWorldMatrixId(l_U16);

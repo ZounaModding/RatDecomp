@@ -3,10 +3,6 @@
 #include "MeshMorph_Z.h"
 #include "Object_Z.h"
 
-typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;
-typedef DynArray_Z<Vec2f, 32, FALSE, FALSE, 32> Vec2fDA;
-typedef DynArray_Z<TBVtx, 32, FALSE, FALSE, 4> TBVtxDA;
-
 class Points_Z : public Object_Z {
 public:
     Points_Z();
@@ -32,7 +28,8 @@ protected:
 
 class PointsDatas_Z : public ObjectDatas_Z {
 public:
-    virtual ~PointsDatas_Z();
+    virtual ~PointsDatas_Z() { }
+
     virtual void FreeLightCacheEntry(U16 a1);
 };
 

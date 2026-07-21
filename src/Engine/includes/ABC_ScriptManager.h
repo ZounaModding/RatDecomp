@@ -121,4 +121,9 @@ private:
     CategoryDataBnkLinkArray m_LinkedCategoryDataReserve;
 };
 
+// External functions
+
+void InitEngineScriptClasses();
+Extern_Z void InitGameScriptClasses();
+
 #endif

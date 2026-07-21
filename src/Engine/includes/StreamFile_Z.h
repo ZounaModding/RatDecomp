@@ -18,11 +18,6 @@
 #define STR_FILE_LOAD_STAGE_LOADDONE 7
 #define STR_FILE_LOAD_STAGE_FINISHED 8
 
-#define STR_LOAD_STAGE_INIT 0
-#define STR_LOAD_STAGE_PROCESSING 1
-#define STR_LOAD_STAGE_UNK_2 2
-#define STR_LOAD_STAGE_ERROR 3
-
 #define STR_FILE_ERROR_NONE 0
 
 #define BF_HEADER_FLAG_COMPRESSED (1 << 0) // Does the bigfile have compressed objects

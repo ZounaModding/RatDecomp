@@ -34,11 +34,14 @@ typedef struct BINK {
 
 typedef void* (*BINKMEMALLOC)(U32 bytes);
 typedef void (*BINKMEMFREE)(void* ptr);
+typedef void* (*BINKSNDOPEN)(void* param);
 
-#ifdef __MWERKS__ // TODO: Fix this, it should be if it's c++
+#ifdef __cplusplus
 extern "C" void BinkSetMemory(BINKMEMALLOC a, BINKMEMFREE f);
+extern "C" S32 BinkSetSoundSystem(BINKSNDOPEN open, void* param);
 #else
 void BinkSetMemory(BINKMEMALLOC a, BINKMEMFREE f);
+S32 BinkSetSoundSystem(BINKSNDOPEN open, void* param);
 #endif
 
 #endif

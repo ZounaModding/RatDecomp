@@ -262,12 +262,12 @@ void ObjectMove_Z::Abort() {
 }
 
 Bool ObjectMove_Z::UpdateCollisionLineFlag(const ColLineResult_Z& i_Result, const Vec3f& i_Pos, S32 i_Index) {
-    UpdateCollisionMsg(i_Result.m_NodePtr, i_Result.m_Intersection, i_Result.m_Flag, 0);
+    UpdateCollisionMsg(i_Result.m_Node, i_Result.m_Intersection, i_Result.m_Flag, 0);
     return TRUE;
 }
 
 Bool ObjectMove_Z::UpdateCollisionSphereFlag(const ColSphereResult_Z& i_Result, const Vec3f& i_Pos) {
-    UpdateCollisionMsg(i_Result.m_NodePtr, i_Result.m_Intersection, i_Result.m_Flag, 0);
+    UpdateCollisionMsg(i_Result.m_Node, i_Result.m_Intersection, i_Result.m_Flag, 0);
     return TRUE;
 }
 

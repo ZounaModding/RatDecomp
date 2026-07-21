@@ -2,6 +2,7 @@
 #define _MESHMORPH_Z_H_
 #include "Name_Z.h"
 #include "Math_Z.h"
+#include "DynArray_Z.h"
 
 struct MorphTarget_Z {
     Name_Z m_MeshName;

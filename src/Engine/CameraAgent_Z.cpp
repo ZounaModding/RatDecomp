@@ -19,7 +19,7 @@ BEGIN_BEHAVIOR
             return FALSE;
         }
         ABC_Agent* l_Agent = (ABC_Agent*)GETPTR(m_Sender);
-        if (l_Agent->HasFlag(0x1000000)) {
+        if (l_Agent->HasFlag(FL_AGENT_CAMERA_NO_SUSPEND)) {
             return FALSE;
         }
         Suspend();

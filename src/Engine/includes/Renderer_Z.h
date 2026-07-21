@@ -9,6 +9,7 @@
 #include "Viewport_Z.h"
 #include "StaticArray_Z.h"
 #include "GameManager_Z.h"
+#include "MatrixCache_Z.h"
 
 #define RATIO_SCREEN_STANDARD (4.f / 3.f)
 #define RATIO_SCREEN_WIDESCREEN (16.f / 9.f)
@@ -192,6 +193,12 @@ struct CacheState_Z {
     S32 m_MaxInUseNb;
 };
 
+inline void Mat4x4Buffer_Z::GetState(CacheState_Z& o_State) {
+    o_State.m_TotalNb = m_TotalMatNb;
+    o_State.m_InUseNb = m_TotalMatNb - m_FreeMatNb;
+    o_State.m_MaxInUseNb = m_MaxInUseMatNb;
+}
+
 struct PrimitiveInfo_Z;
 struct ObjConstant_Z;
 class Node_Z;
@@ -311,6 +318,20 @@ public:
 
     inline Float GetScreenRatio() {
         return ScreenRatio;
+    }
+
+    static Float GetDefaultNear();
+
+    Double GetFreq() {
+        if (gData.m_GameFlag & FL_GAME_PAL) {
+            return 50.0;
+        }
+        return 60.0;
+    }
+
+    void GetSize(S32& o_SizeX, S32& o_SizeY) {
+        o_SizeX = m_SizeX;
+        o_SizeY = m_SizeY;
     }
 
     virtual ~Renderer_Z();

@@ -846,7 +846,7 @@ void AnimFrame_Z::UpdateNoteTrack(Node_Z* i_Node) {
                 break;
             }
             case msg_anim_set_anim:
-                if (l_Agent && l_Agent->HasFlag(0x80)) {
+                if (l_Agent && l_Agent->HasFlag(FL_AGENT_ANIMATED)) {
                     PlayAnim_Z* l_PlayAnim = ((AnimatedAgent_Z*)l_Agent)->GetPlayAnim();
                     l_PlayAnim->SetAnim(gData.ClassMgr->U32ToHandle(l_Msg->m_U32Param), 0, TRUE, 0.0f);
                 }

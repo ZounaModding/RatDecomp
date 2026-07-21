@@ -11,6 +11,14 @@
 #include "Camera_Z.h"
 #include "Node_Z.h"
 
+#define FL_CLIPPLANE_NEAR (1 << 0)
+#define FL_CLIPPLANE_SIDES (1 << 1)
+#define FL_CLIPPLANE_FAR (1 << 2)
+
+Bool WSphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Sphere_Z& i_Sphere, U32& o_Flag);
+Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, DrawInfo_Z& io_DrawInfo, Node_Z* i_Node);
+Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Mat4x4& i_Matrix, const Sphere_Z& i_Sphere, ClipSphere_Z& o_ClipSphere, Float i_Scale);
+
 class Renderer_Z;
 
 class Viewport_Z {
@@ -25,6 +33,10 @@ public:
 
     void SetRenderer(Renderer_Z* i_Renderer) {
         m_Renderer = i_Renderer;
+    }
+
+    Renderer_Z* GetRenderer() const {
+        return m_Renderer;
     }
 
     Float GetHSize() const {

@@ -41,5 +41,3 @@ Bool ResourceObject_Z::MarkHandles() {
     m_ResObjLink.MarkHandles();
     return TRUE;
 }
-
-void ResourceObject_Z::Load(void** i_Data) { }

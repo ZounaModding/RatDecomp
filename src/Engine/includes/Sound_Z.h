@@ -3,17 +3,6 @@
 #include "ResourceObject_Z.h"
 #include "Types_Z.h"
 
-// union SoundFlags_Z {
-//     struct {
-//         U8 PAUSED : 1,
-//             LOOPING : 1,
-//             Stereo : 1,
-//             padding : 5;
-//     } data;
-
-//     U8 Flags;
-// };
-
 #define FL_SOUND_PAUSED (1 << 0)
 #define FL_SOUND_LOOPING (1 << 1)
 #define FL_SOUND_STEREO (1 << 2)

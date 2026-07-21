@@ -5,6 +5,7 @@
 
 class Skel_Z : public ObjectDatas_Z {
 public:
+    Skel_Z();
     virtual ~Skel_Z();
     virtual void Load(void** i_Data);
     virtual void EndLoad();

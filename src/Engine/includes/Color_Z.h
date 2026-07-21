@@ -1,6 +1,7 @@
 #ifndef _COLOR_Z_H_
 #define _COLOR_Z_H_
 #include "Types_Z.h"
+#include "DynArray_Z.h"
 
 struct Color {
     Color() { }
@@ -53,5 +54,17 @@ struct ColorU8 {
     U8 b;
     U8 a;
 };
+
+class ByteColor {
+public:
+    ByteColor() { }
+
+    U8 r;
+    U8 g;
+    U8 b;
+    U8 a;
+};
+
+typedef DynArray_Z<ByteColor, 32, FALSE, FALSE> ByteColorDA;
 
 #endif

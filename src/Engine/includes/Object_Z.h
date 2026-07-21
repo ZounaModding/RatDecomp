@@ -86,6 +86,15 @@ enum ObjectType {
 
 #define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0) // 0x100000 - LOD is a skin
 
+// Mesh_Z flags
+
+#define FL_IS_MESH_UNK_0x100000 (FL_OBJECT_LAST << 0) // 0x100000 - Unknown
+#define FL_IS_MESH_UNK_0x200000 (FL_OBJECT_LAST << 1) // 0x200000 - Unknown
+
+// Skin_Z flags
+
+#define FL_IS_SKIN_UNK_0x100000 (FL_OBJECT_LAST << 0) // 0x100000 - Unknown
+
 // Spline_Z flags
 
 #define FL_IS_SPLINE_TRACK (FL_OBJECT_LAST << 0)      // 0x100000 - Spline is a track
@@ -119,7 +128,9 @@ public:
 
     virtual void Load(void** i_Data);
     virtual Bool MarkHandles();
-    virtual void UpdatePointers(Object_Z* i_Obj, S32 i_Param = -1);
+
+    virtual void UpdatePointers(Object_Z* i_Obj, S32 i_Param = -1) { }
+
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
     virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual void HideObject(S32 i_Index);
@@ -132,9 +143,17 @@ public:
         m_DefaultColor = i_Color;
     }
 
+    inline const Color& GetDfltColor() const {
+        return m_DefaultColor;
+    }
+
     virtual void SetDfltColorNoAlpha(const Color& i_Color);
     virtual void SetDfltColorAlpha(Float i_Alpha);
     virtual void FreeLightCacheEntry(U16 i_Index);
+
+    inline Bool IsFlag(const U32 i_Flag) const {
+        return (m_Flag & i_Flag) ? TRUE : FALSE;
+    }
 
 protected:
     U32 m_Flag;

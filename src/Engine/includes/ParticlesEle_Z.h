@@ -8,4 +8,11 @@ struct ParticlesEle_Z {
 
 typedef DynArray_Z<ParticlesEle_Z, 1> ParticlesEle_ZDA;
 
+class ParticlesDataEle_Z {
+public:
+    U8 m_Unk_0x0[288];
+};
+
+typedef DynArray_Z<ParticlesDataEle_Z, 1> ParticlesDataEle_ZDA;
+
 #endif // _PARTICLESELE_Z_H_

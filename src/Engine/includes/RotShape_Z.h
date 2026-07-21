@@ -21,7 +21,9 @@ typedef DynArray_Z<RotShape_Z, 32> RotShape_ZDA;
 class RotShape_Z : public Points_Z {
 public:
     RotShape_Z();
-    virtual ~RotShape_Z();
+
+    virtual ~RotShape_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();

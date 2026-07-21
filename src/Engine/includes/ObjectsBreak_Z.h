@@ -4,8 +4,6 @@
 #include "ObjectThrow_ZHdl.h"
 #include "DynPtrArray_Z.h"
 
-typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;
-
 class ObjectsBreak_Z : public ObjectsBounce_Z {
 public:
     ObjectsBreak_Z() {

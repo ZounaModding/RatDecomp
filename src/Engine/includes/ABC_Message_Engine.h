@@ -33,7 +33,7 @@ enum {
     msg_anim_play_dialog = 25,                // 0x19 - Maybe not rtc exclusive RtcScriptAgent_G::GlobalTrackMessage maybe subtitles
     msg_anim_stop_dialog = 26,                // 0x1A - MonopolyX360SUB.xdb
     msg_anim_load_dialog = 27,                // 0x1B - Maybe not rtc exclusive RtcScriptAgent_G::GlobalTrackMessage maybe subtitles
-    msg_anim_unknown_skel_collide = 28,       // 0x1C - MonopolyX360SUB.xdb
+    msg_anim_Unk_skel_collide = 28,           // 0x1C - MonopolyX360SUB.xdb
     msg_anim_hit_skel_collide = 29,           // 0x1D - Player_G::CheckHit
     msg_anim_particles_efx = 30,              // 0x1E - Creatures_G::ParticlesEfx, RtcScriptAgent_G::RtcParticlesEfx
     msg_anim_particles_efx_pause = 31,        // 0x1F - Creatures_G::ParticlesEfxPause

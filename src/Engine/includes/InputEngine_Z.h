@@ -72,12 +72,36 @@ public:
     }
 
     virtual ~InputPlatForm_Z();
-    virtual Bool Init();
+
+    void SetControl(S32 i_ControlIdx, S32 i_ButtonId, S32 i_SecondaryButtonId) {
+        m_ActionButtonMappings[i_ControlIdx].m_ButtonId = i_ButtonId;
+        m_ActionButtonMappings[i_ControlIdx].m_SecondaryButtonId = i_SecondaryButtonId;
+    }
+
+    virtual Bool Init() {
+        m_UnkBool_0x24 = FALSE;
+        m_UnkBool_0x25 = TRUE;
+        m_IsPaused = FALSE;
+
+        m_ActionButtonMappings.SetSize(INPUT_ACTION_COUNT);
+
+        for (S32 i = 0; i != INPUT_ACTION_COUNT; ++i) {
+            SetControl(i, -1, -1);
+            m_ActionButtonMappings[i].m_ControlMode = FALSE;
+        }
+
+        return TRUE;
+    }
+
     virtual void Minimize();
 
     virtual void Shut() { }
 
-    virtual void AddDevice();
+    virtual void AddDevice() {
+        // TODO: Finish matching
+        m_Devices.Add();
+    }
+
     virtual void ResetPads();
     virtual void RemoveDevice(S32 a1);
     virtual void UpdateInput(Float i_DeltaTime);
@@ -91,10 +115,10 @@ public:
     virtual void EnableVibration(S32 a1, Bool a2);
     virtual void Vibration(S32 a1, U8 a2, U8 a3);
     virtual void SetEcoMode(S32 a1, Bool a2);
-    virtual void GetDeviceStatus(S32 a1, S32 a2);
+    virtual S32 GetDeviceStatus(S32 a1, S32 a2);
     virtual void GetPCStringFromInput(Char* a1, S32 a2, S32 a3);
-    virtual void GetControls(InputDevice_Z* a1, void* a2, Bool a3);
-    virtual void GetControl(InputDevice_Z* a1, S32 a2, void* a3, Bool a4);
+    virtual void GetControls(InputDevice_Z* i_Device, void* i_ControllerData, Bool i_Unknown);
+    virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown);
 
     S32 FindButtonId(Name_Z i_ButtonName);
 };

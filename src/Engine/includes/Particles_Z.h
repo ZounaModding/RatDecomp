@@ -49,7 +49,11 @@ public:
     virtual void CloneEle(const ParticlesEle_ZDA& o_Elements, const Sphere_Z& i_BSphere);
 
 protected:
-    U8 m_Pad_0x28[56];
+    Sphere_Z m_BSphere;
+    Float m_UnkFloat_0x40;
+    Float m_UnkFloat_0x44;
+    ParticlesDataEle_ZDA m_ParticleEmittersData;
+    Vec3fDA m_WorldSpacePlanes;
 };
 
 #endif // _PARTICLES_Z_H_

@@ -16,7 +16,7 @@ Node_Z::Node_Z()
     m_LightData = NULL;
     m_HFogData = NULL;
     m_RadiosityBitmap = NULL;
-    m_UnkObjPtr_0x158 = NULL;
+    m_RadiosityNormalBitmap = NULL;
     m_Flag = FL_NODE_COLLIDE;
     m_DisplaySeadRect.Set(-1, -1, -1, -1);
     m_CollideSeadRect.Set(-1, -1, -1, -1);

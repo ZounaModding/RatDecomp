@@ -41,8 +41,8 @@ Bool Material_Z::MarkHandles() {
     }
     else {
         for (S32 i = 0; i < mtl_nb_params; i++) {
-            if (gData.ClassMgr->GetPtr(m_BmapHdls[i]) != NULL) {
-                gData.ClassMgr->GetPtr(m_BmapHdls[i])->MarkHandles();
+            if (m_BmapHdls[i].IsValid()) {
+                m_BmapHdls[i]->MarkHandles();
             }
         }
         return TRUE;

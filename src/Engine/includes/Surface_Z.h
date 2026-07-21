@@ -24,6 +24,7 @@ struct Edge {
 };
 
 typedef DynArray_Z<Edge, 32, FALSE, TRUE> EdgeDA;
+typedef DynArray_Z<Patch, 32, TRUE, TRUE> PatchDA;
 
 class Surface_Z : public Points_Z {
 public:
@@ -42,7 +43,8 @@ public:
     void GetQuadPatchCtrlPoint(const Patch& i_Patch, QuadCtrlPoint_Z& o_QuadCtrlPoint);
 
 protected:
-    U8 m_Pad_0xa0[24];
+    U8 m_Pad_0xa0[16];
+    PatchDA m_PatchTab;
     EdgeDA m_EdgeTab;
     U8 m_Pad_0xc0[48];
 };

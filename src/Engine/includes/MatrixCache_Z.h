@@ -9,12 +9,15 @@ struct MatDbId {
     U16 Id[2];
 };
 
+struct CacheState_Z;
+
 class Mat4x4Buffer_Z {
 public:
     Mat4x4Buffer_Z();
     void RemoveMatrix(U16 i_Id);
     U16 GetNewMatrix();
     U16 GetAMatrix();
+    void GetState(CacheState_Z& o_State);
 
     inline Mat4x4* GetMatrix(U16 i_Id) {
         U32 l_Id = m_MatIdArray[i_Id].Id[m_CurBuffer];

@@ -22,15 +22,13 @@
 #include "Sound_Z.h"
 #include "FlareGC_Z.h"
 #include "GCMovieManipulator_Z.h"
-#include "ParticlesManager_Z.h"
 #include "TextureManager_Z.h"
 #include "ARAM_Z.h"
 #include "GCRenderer_Z.h"
 #include "GCInput_Z.h"
 #include "GCSoundManager_Z.h"
 #include "GCMovie_Z.h"
-#include <os.h>
-#include <vi.h>
+#include <dolphin.h>
 
 #ifdef __MWERKS__
 #include "Sys_Z.h"
