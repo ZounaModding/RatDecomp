@@ -4,8 +4,10 @@
 #include "Types_Z.h"
 #include "Name_Z.h"
 #include "DynArray_Z.h"
+#include "DynPtrArray_Z.h"
 #include "HashTable_Z.h"
-//#include "Global_Z.h"
+#include "Streaming_Z.h"
+#include "BnkLinkArray_Z.h"
 
 #define HANDLEREC_GRANULARITY 16384
 #define HANDLE_NULL BaseObject_ZHdl()
@@ -13,6 +15,20 @@
 #define HANDLE_MARKED_FALSE 0
 #define HANDLE_MARKED_TRUE 1
 #define HANDLE_MARKED_UNK 2
+
+#define HDL_STR_LOAD_STAGE_ABORT -1
+#define HDL_STR_LOAD_STAGE_INIT 1
+#define HDL_STR_LOAD_STAGE_READ_HEADER 2
+#define HDL_STR_LOAD_STAGE_PARSE_HEADER 3
+#define HDL_STR_LOAD_STAGE_READ_TOC 4
+#define HDL_STR_LOAD_STAGE_READ_BLOCKS 5
+#define HDL_STR_LOAD_STAGE_READ_REQUESTED_BLOCKS 39
+#define HDL_STR_LOAD_STAGE_LOAD_RESOURCES 6
+#define HDL_STR_LOAD_STAGE_LOAD_REQUESTED_RESOURCES 40
+#define HDL_STR_LOAD_STAGE_ENDLOAD 7
+#define HDL_STR_LOAD_STAGE_AFTERENDLOAD 8
+#define HDL_STR_LOAD_STAGE_LOADDONE 9
+#define HDL_STR_LOAD_STAGE_FINISHED 10
 
 class BaseObject_Z;
 class BaseObject_ZHdl;
@@ -116,6 +132,10 @@ public:
         return m_RealID.Ref.Key;
     }
 
+    int GetGlobalID() const {
+        return m_RealID.GblID;
+    }
+
     Bool IsValid() const {
         BaseObject_Z* l_Ptr = *this;
         return l_Ptr != NULL;
@@ -125,6 +145,7 @@ public:
         return m_RealID.GblID == i_Other.m_RealID.GblID;
     }
 
+    inline BaseObject_Z* operator->() const;
     operator BaseObject_Z*() const;
 
     operator Bool() const {
@@ -163,16 +184,95 @@ struct HandleRec_Z {
     S16 m_xRamBlock;
 };
 
+struct StrFileToc_Z {
+    U32 m_Flag;
+    Name_Z m_Name;
+    S32 m_DependenciesIdx;
+    S32 m_BlockStartIdx;
+    S32 m_BlockEndIdx;
+};
+
+struct StrFileHeader_Z {
+    Char m_HeaderText[256];
+    S32 m_TableOfContentsCount;
+    S32 m_DependencyCount;
+    S32 m_TocAndDependenciesBlockCount;
+    S32 m_DataBlockStart;
+    S32 m_DataBlockEnd;
+    U32 m_Unk_0x114;
+    U32 m_Unk_0x118;
+    U32 m_Unk_0x11c;
+    U32 m_WorkingBufferSize[2];
+    U8 m_Pad_0x128[1752];
+} Aligned_Z(128);
+
+struct RscQueue_Z {
+    S32 m_TocRscIndex;
+    S32 m_BlockStartIdx;
+    S32 m_BlockEndIdx;
+    RscQueue_Z* m_Next;
+    RscQueue_Z* m_Prev;
+};
+
+struct RscOrder_Z {
+    Float m_Priority;
+    RscOrder_Z* m_Next;
+    RscOrder_Z* m_Prev;
+    RscQueue_Z* m_QueuedRsc;
+};
+
+struct StrWorkingBuffer_Z {
+    U8* m_Data;
+    S32 m_BlockStartIdx;
+    S32 m_BlockEndIdx;
+    RscOrder_Z* m_CurRscOrder;
+};
+
 class HandleStream_Z {
 public:
+    HandleStream_Z() {
+        m_WorkingBufferLastOperationCount = 0;
+        m_StreamStage = 0;
+    }
+
+    void Open(const Char* i_FileName);
     void Draw(DrawInfo_Z& i_DrawInfo);
     void Update(Float i_DeltaTime);
 
+    void Queue(S32 i_TocIdx, Float i_Priority, Bool i_QueueDependencies);
+    void Remove(RscOrder_Z* i_First, RscOrder_Z* i_End);
+    void QueueRsc(RscQueue_Z** io_Queue, S32 i_TocRscIndex);
+    RscOrder_Z* QueueZ(Float i_Priority);
+    Bool Read();
+    Bool GetHeader();
+
 private:
-    U8 m_Pad_0x0[0x234];
-};
+    DynArray_Z<StrFileToc_Z, 1, FALSE, FALSE> m_TableOfContentsDA;
+    S32DA m_DependencyDA;
+    S32 m_StreamStage;
+    S32 m_Unk_0x14;
+    U32 m_CurBuffer;
+    StreamX_Z m_Str;
+    StrWorkingBuffer_Z m_WorkingBuffers[2];
+    BnkLinkArray_Z<RscQueue_Z> m_RscQueueBank;
+    RscOrder_Z* m_HeadRscOrder;
+    BnkLinkArray_Z<RscOrder_Z> m_RscOrderBank;
+    String_Z<ARRAY_CHAR_MAX> m_StrFileName;
+    DynPtrArray_Z<BaseObject_Z*, 32> m_Resources;
+    S32 m_PendingResources;
+    U32 m_Unk_0x180;
+    U32 m_Unk_0x184;
+    U32 m_Unk_0x188;
+    U32 m_Unk_0x18c;
+    StrWorkingBuffer_Z m_WorkingBufferLastOperations[10];
+    S32 m_WorkingBufferLastOperationCount;
+
+    static StrFileHeader_Z gStrFileHeader;
+} Aligned_Z(16);
 
 class HandleManager_Z {
+    friend class HandleStream_Z;
+
 public:
     static HandleStream_Z HandleStream;
 
@@ -220,6 +320,7 @@ public:
 
     BaseObject_Z* GetPtr(const BaseObject_ZHdl& i_Hdl) const;
     BaseObject_Z* GetPtrXRam(const HandleRec_Z& i_HandleRec) const;
+    Bool RemovedXRamResource(S32 i_Handle, U8 i_Flag);
     BaseObject_ZHdl U32ToHandle(S32 i_Value);
     S32 HandleToU32(const BaseObject_ZHdl& i_Hdl);
     void MarkU32Handle(U32 i_Hdl);

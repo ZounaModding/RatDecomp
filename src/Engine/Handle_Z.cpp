@@ -19,8 +19,10 @@
 #include "Console_Z.h"
 #include "Renderer_Z.h"
 #include "Timer_Z.h"
+#include "LowMemory_Z.h"
 
 HandleStream_Z HandleManager_Z::HandleStream;
+StrFileHeader_Z HandleStream_Z::gStrFileHeader;
 
 HandleManager_Z::HandleManager_Z() {
     m_NbFree = 0;
@@ -441,8 +443,503 @@ BaseObject_ZHdl HandleManager_Z::U32ToHandle(S32 i_Hdl) {
     return l_Hdl;
 }
 
+Bool HandleManager_Z::RemovedXRamResource(S32 i_Handle, U8 i_Flag) {
+    BaseObject_ZHdl l_GblID = U32ToHandle(i_Handle);
+    S32 l_ID = l_GblID.GetID();
+    Bool l_KeyOk = FALSE;
+    if (l_ID < m_HandleRecDA.GetSize() && l_GblID.GetKey() == m_HandleRecDA[l_ID].m_Key) {
+        l_KeyOk = TRUE;
+    }
+    ASSERTLE_Z(l_KeyOk, "", 661, "CheckKey(aGblID.Ref.ID,aGblID.Ref.Key)");
+
+    HandleRec_Z& l_HandleRec = m_HandleRecDA[l_ID];
+    U8 l_Flag = l_HandleRec.m_Flag;
+    if (l_Flag & i_Flag) {
+        l_HandleRec.m_ObjPtr->Clean();
+        l_HandleRec.m_Flag &= ~i_Flag;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+BaseObject_Z* HandleManager_Z::GetPtrXRam(const HandleRec_Z& i_HandleRec) const {
+    HandleRec_Z& l_HandleRec = (HandleRec_Z&)i_HandleRec;
+    U8 l_Flag = l_HandleRec.m_Flag;
+    if (l_Flag & HandleRec_Z::RSC_XRAM) {
+        if (l_Flag & HandleRec_Z::RSC_XRAM_LOADED) {
+            gData.XRamMgr->LockBlockAt(l_HandleRec.m_xRamBlock, gData.m_FrameCount);
+        }
+        else {
+            void* l_Data = gData.XRamMgr->Get(l_HandleRec.m_xRamBlock, gData.m_FrameCount);
+            U8* l_Buffer = (U8*)l_Data;
+            if (!l_Buffer) {
+                return NULL;
+            }
+
+            l_HandleRec.m_Flag |= HandleRec_Z::RSC_XRAM_LOADED;
+            l_HandleRec.m_ObjPtr->Load(&l_Data);
+            l_HandleRec.m_ObjPtr->EndLoadLinks();
+            l_HandleRec.m_ObjPtr->AfterEndLoad();
+            gData.XRamMgr->EndGet(l_Buffer);
+        }
+    }
+    return l_HandleRec.m_ObjPtr;
+}
+
 void HandleStream_Z::Draw(DrawInfo_Z& i_DrawInfo) {
+    if (!m_StreamStage) {
+        return;
+    }
+
+    Float l_Width;
+    Float l_WorkingHeight;
+    Float l_WorkingOffset;
+    Float l_ColorStep;
+    Float l_Near = Renderer_Z::GetDefaultNear();
+    Vec2f l_CurRscTopLeft;
+    Vec2f l_StartTopLeft;
+    Vec2f l_CurRscBottomRight;
+    Vec2f l_EndBottomRight;
+    Color l_Blue;
+    Color l_Magenta;
+    Color l_RscColors[2];
+
+    l_StartTopLeft.x = 10.0f;
+    l_StartTopLeft.y = 100.0f;
+    l_EndBottomRight.x = i_DrawInfo.m_VpSizeX - 10.0f;
+    l_EndBottomRight.y = 130.0f;
+    l_Width = l_EndBottomRight.x - 10.0f;
+
+    l_CurRscTopLeft.x = 10.0f;
+    l_CurRscTopLeft.y = 100.0f;
+    l_CurRscBottomRight.x = l_EndBottomRight.x;
+    l_CurRscBottomRight.y = 130.0f;
+
+    l_Blue.r = 0.0f;
+    l_Blue.g = 0.0f;
+    l_Blue.b = 0.5f;
+    l_Blue.a = 0.6f;
+    l_RscColors[0].r = 1.0f;
+    l_RscColors[0].g = 0.0f;
+    l_RscColors[0].b = 0.0f;
+    l_RscColors[0].a = 1.0f;
+    l_RscColors[1].r = 1.0f;
+    l_RscColors[1].g = 1.0f;
+    l_RscColors[1].b = 0.0f;
+    l_RscColors[1].a = 1.0f;
+
+    gData.MainRdr->DrawQuad(l_StartTopLeft, l_EndBottomRight, l_Blue, l_Near);
+
+    Float l_TotalDataBytes = (Float)(gStrFileHeader.m_DataBlockEnd - gStrFileHeader.m_DataBlockStart);
+    for (S32 i = 0; i < m_TableOfContentsDA.GetSize(); i++) {
+        S32 l_BlockEnd = m_TableOfContentsDA[i].m_BlockEndIdx;
+        S32 l_BlockStart = m_TableOfContentsDA[i].m_BlockStartIdx;
+        l_CurRscBottomRight.x = l_Width * (Float)l_BlockEnd / l_TotalDataBytes + l_StartTopLeft.x;
+        l_CurRscTopLeft.x = l_Width * (Float)l_BlockStart / l_TotalDataBytes + l_StartTopLeft.x;
+        gData.MainRdr->DrawQuad(l_CurRscTopLeft, l_CurRscBottomRight, l_RscColors[m_TableOfContentsDA[i].m_BlockStartIdx & 1], l_Near);
+    }
+
+    l_Magenta.r = 1.0f;
+    l_Magenta.g = 1.0f;
+    l_Magenta.b = 0.0f;
+    l_Magenta.a = 1.0f;
+
+    l_WorkingHeight = 5.0f;
+    l_WorkingOffset = 2.0f;
+    l_ColorStep = 0.1f;
+    S32 l_Operation = m_WorkingBufferLastOperationCount - 1;
+    S32 l_OperationOffset = l_Operation * sizeof(StrWorkingBuffer_Z);
+    while (l_Operation >= 0) {
+        StrWorkingBuffer_Z* l_WorkingBuffer = (StrWorkingBuffer_Z*)((U8*)m_WorkingBufferLastOperations + l_OperationOffset);
+        l_CurRscTopLeft.y = l_StartTopLeft.y - l_WorkingHeight;
+        l_CurRscBottomRight.y = l_StartTopLeft.y;
+        S32 l_BlockEnd = l_WorkingBuffer->m_BlockEndIdx;
+        S32 l_BlockStart = l_WorkingBuffer->m_BlockStartIdx;
+        l_CurRscTopLeft.x = l_Width * (Float)l_BlockStart / l_TotalDataBytes + l_StartTopLeft.x;
+        l_CurRscBottomRight.x = l_Width * (Float)l_BlockEnd / l_TotalDataBytes + l_StartTopLeft.x;
+        gData.MainRdr->DrawQuad(l_CurRscTopLeft, l_CurRscBottomRight, l_Magenta, l_Near);
+
+        l_CurRscTopLeft.y = l_EndBottomRight.y;
+        l_CurRscBottomRight.y = l_EndBottomRight.y + l_WorkingOffset;
+        gData.MainRdr->DrawQuad(l_CurRscTopLeft, l_CurRscBottomRight, l_Magenta, l_Near);
+
+        l_Magenta.r -= l_ColorStep;
+        l_Magenta.g -= l_ColorStep;
+        l_OperationOffset -= sizeof(StrWorkingBuffer_Z);
+        l_Operation--;
+    }
+}
+
+Float Renderer_Z::GetDefaultNear() {
+    return Renderer_ZDefaultNear;
+}
+
+void HandleStream_Z::Open(const Char* i_FileName) {
+    m_StrFileName = i_FileName;
+    m_Resources.Empty();
+    m_StreamStage = HDL_STR_LOAD_STAGE_INIT;
+    m_Str.Reset();
+    gData.Cons->EnableFlag(FL_CONSOLE_PAUSED);
 }
 
 void HandleStream_Z::Update(Float i_DeltaTime) {
+    if (!m_StreamStage) {
+        return;
+    }
+
+    m_Str.Update();
+    if (m_Str.GetLoadStage() == STR_LOAD_STAGE_PROCESSING || m_Str.GetLoadStage() == STR_LOAD_STAGE_UNK_2) {
+        return;
+    }
+
+    switch (m_StreamStage) {
+        case HDL_STR_LOAD_STAGE_INIT:
+            m_Str.Open(m_StrFileName);
+            m_StreamStage++;
+            return;
+
+        case HDL_STR_LOAD_STAGE_READ_HEADER:
+            m_Str.Process(&gStrFileHeader, 0, 1);
+            m_StreamStage++;
+            return;
+
+        case HDL_STR_LOAD_STAGE_PARSE_HEADER:
+            if (GetHeader()) {
+                m_StreamStage++;
+            }
+            else {
+                m_StreamStage--;
+            }
+            return;
+
+        case HDL_STR_LOAD_STAGE_READ_TOC: {
+            m_TableOfContentsDA.SetSize(gStrFileHeader.m_TableOfContentsCount);
+            m_DependencyDA.SetSize(gStrFileHeader.m_DependencyCount);
+
+            S32* l_DependencyArray = m_DependencyDA.GetArrayPtr();
+            void* l_Dependencies = Sys_Z::MemCpyFrom(
+                m_TableOfContentsDA.GetArrayPtr(), m_WorkingBuffers[0].m_Data, m_TableOfContentsDA.GetSize() * sizeof(StrFileToc_Z)
+            );
+            Sys_Z::MemCpyFrom(l_DependencyArray, l_Dependencies, m_DependencyDA.GetSize() * sizeof(S32));
+
+            for (S32 i = 0; i < m_TableOfContentsDA.GetSize(); i++) {
+                Queue(i, 0.0f, FALSE);
+            }
+            m_StreamStage++;
+            m_CurBuffer = 0;
+            return;
+        }
+
+        case HDL_STR_LOAD_STAGE_READ_BLOCKS:
+        case HDL_STR_LOAD_STAGE_READ_REQUESTED_BLOCKS:
+            if (Read()) {
+                m_StreamStage++;
+            }
+            return;
+
+        case HDL_STR_LOAD_STAGE_LOAD_RESOURCES:
+        case HDL_STR_LOAD_STAGE_LOAD_REQUESTED_RESOURCES: {
+            S32 l_BlockStart = m_WorkingBuffers[m_CurBuffer].m_BlockStartIdx;
+            S32 l_BlockEnd = m_WorkingBuffers[m_CurBuffer].m_BlockEndIdx;
+            RscQueue_Z* l_QueuedRsc = m_WorkingBuffers[m_CurBuffer].m_CurRscOrder->m_QueuedRsc;
+            RscQueue_Z* l_FirstLoaded = NULL;
+
+            while (l_QueuedRsc) {
+                if (l_QueuedRsc->m_BlockEndIdx > l_BlockEnd) {
+                    break;
+                }
+                if (l_QueuedRsc->m_BlockStartIdx >= l_BlockStart) {
+                    if (!l_FirstLoaded) {
+                        l_FirstLoaded = l_QueuedRsc;
+                    }
+
+                    BigFileRscHeader_Z* l_Header = (BigFileRscHeader_Z*)(m_WorkingBuffers[m_CurBuffer].m_Data + (l_QueuedRsc->m_BlockStartIdx - l_BlockStart) * 0x800);
+                    BigFileRsc_Z l_Resource;
+                    l_Resource.m_Header = l_Header;
+                    l_Resource.m_Flag = m_StreamStage != HDL_STR_LOAD_STAGE_LOAD_REQUESTED_RESOURCES;
+
+                    if (l_Resource.m_Flag) {
+                        if (gData.ClassMgr->LoadResource(l_Resource)) {
+                            m_Resources.Add(l_Resource.m_Rsc);
+                        }
+                    }
+                    else {
+                        gData.ClassMgr->LoadResourceData(l_Resource);
+                        l_Resource.m_Rsc->EndLoadLinks();
+                        l_Resource.m_Rsc->AfterEndLoad();
+                    }
+                }
+                l_QueuedRsc = l_QueuedRsc->m_Next;
+            }
+
+            if (l_FirstLoaded) {
+                if (l_FirstLoaded->m_Prev) {
+                    l_FirstLoaded->m_Prev->m_Next = l_QueuedRsc;
+                    if (l_QueuedRsc) {
+                        if (l_QueuedRsc->m_Prev) {
+                            l_QueuedRsc->m_Prev->m_Next = NULL;
+                        }
+                        l_QueuedRsc->m_Prev = l_FirstLoaded->m_Prev;
+                    }
+                }
+                else {
+                    if (l_QueuedRsc) {
+                        if (l_QueuedRsc->m_Prev) {
+                            l_QueuedRsc->m_Prev->m_Next = NULL;
+                        }
+                        l_QueuedRsc->m_Prev = NULL;
+                    }
+                    m_WorkingBuffers[m_CurBuffer].m_CurRscOrder->m_QueuedRsc = l_QueuedRsc;
+                    if (!m_WorkingBuffers[m_CurBuffer].m_CurRscOrder->m_QueuedRsc) {
+                        Remove(m_WorkingBuffers[m_CurBuffer].m_CurRscOrder, m_WorkingBuffers[m_CurBuffer].m_CurRscOrder->m_Next);
+                    }
+                }
+
+                if (l_FirstLoaded) {
+                    RscQueue_Z* l_Next;
+                    do {
+                        l_Next = l_FirstLoaded->m_Next;
+                        m_RscQueueBank.Release(l_FirstLoaded);
+                        l_FirstLoaded = l_Next;
+                    } while (l_Next);
+                }
+            }
+
+            m_CurBuffer = 1 - m_CurBuffer;
+            if (Read()) {
+                return;
+            }
+            if (m_StreamStage != HDL_STR_LOAD_STAGE_LOAD_RESOURCES) {
+                return;
+            }
+            m_PendingResources = m_Resources.GetSize();
+            m_StreamStage++;
+            return;
+        }
+
+        default: {
+            Float l_Before = GetAbsoluteTime();
+            while (i_DeltaTime > 0.0f && m_PendingResources--) {
+                switch (m_StreamStage) {
+                    case HDL_STR_LOAD_STAGE_ENDLOAD:
+                        m_Resources[m_PendingResources]->EndLoad();
+                        break;
+                    case HDL_STR_LOAD_STAGE_AFTERENDLOAD:
+                        m_Resources[m_PendingResources]->AfterEndLoad();
+                        break;
+                    case HDL_STR_LOAD_STAGE_LOADDONE:
+                        m_Resources[m_PendingResources]->LoadDone();
+                        break;
+                }
+
+                Float l_After = GetAbsoluteTime();
+                i_DeltaTime -= l_After - l_Before;
+                l_Before = l_After;
+            }
+
+            if (m_PendingResources < 0) {
+                m_StreamStage++;
+                m_PendingResources = m_Resources.GetSize();
+            }
+            if (m_StreamStage != HDL_STR_LOAD_STAGE_FINISHED) {
+                return;
+            }
+            gData.Cons->DisableFlag(FL_CONSOLE_PAUSED);
+            m_StreamStage = HDL_STR_LOAD_STAGE_READ_REQUESTED_BLOCKS;
+            return;
+        }
+    }
+}
+
+void HandleStream_Z::Queue(S32 i_TocIdx, Float i_Priority, Bool i_QueueDependencies) {
+    RscOrder_Z* l_Order = QueueZ(i_Priority);
+    QueueRsc(&l_Order->m_QueuedRsc, i_TocIdx);
+
+    if (i_QueueDependencies) {
+        S32 l_DependencyIdx = m_TableOfContentsDA.GetArrayPtr()[i_TocIdx].m_DependenciesIdx;
+        if (l_DependencyIdx < 0) {
+            return;
+        }
+        S32* l_Dependency = m_DependencyDA.GetArrayPtr() + l_DependencyIdx;
+        S32 l_DependencyCount = *l_Dependency++;
+        while (l_DependencyCount--) {
+            i_TocIdx = *l_Dependency++;
+            ClassManager_Z* l_ClassManager = gData.ClassMgr;
+            S32 l_NameId = m_TableOfContentsDA[i_TocIdx].m_Name.GetID();
+            S32 l_HandleId = l_ClassManager->IsResourceRef(l_NameId);
+            HandleRec_Z& l_HandleRec = l_ClassManager->m_HandleRecDA[l_HandleId];
+
+            U8 l_Flag = l_HandleRec.m_Flag;
+            if ((l_Flag & HandleRec_Z::RSC_STR) && !(l_Flag & HandleRec_Z::RSC_STR_DONE) && !(l_Flag & HandleRec_Z::RSC_STR_LOADING)) {
+                l_HandleRec.m_Flag = l_Flag | HandleRec_Z::RSC_STR_LOADING;
+                QueueRsc(&l_Order->m_QueuedRsc, i_TocIdx);
+            }
+        }
+    }
+}
+
+void HandleStream_Z::Remove(RscOrder_Z* i_First, RscOrder_Z* i_End) {
+    if (i_First) {
+        if (i_First->m_Prev) {
+            i_First->m_Prev->m_Next = i_End;
+            if (i_End) {
+                if (i_End->m_Prev) {
+                    i_End->m_Prev->m_Next = NULL;
+                }
+                i_End->m_Prev = i_First->m_Prev;
+            }
+        }
+        else {
+            if (i_End) {
+                if (i_End->m_Prev) {
+                    i_End->m_Prev->m_Next = NULL;
+                }
+                i_End->m_Prev = NULL;
+            }
+            m_HeadRscOrder = i_End;
+        }
+    }
+
+    RscOrder_Z* l_Order = i_First;
+    if (!l_Order) {
+        return;
+    }
+
+    RscOrder_Z* l_Next;
+    do {
+        l_Next = l_Order->m_Next;
+        m_RscOrderBank.Release(l_Order);
+        l_Order = l_Next;
+    } while (l_Next);
+}
+
+void HandleStream_Z::QueueRsc(RscQueue_Z** io_Queue, S32 i_TocRscIndex) {
+    StrFileToc_Z* l_TocRsc = &m_TableOfContentsDA[i_TocRscIndex];
+    RscQueue_Z* l_Current = *io_Queue;
+    RscQueue_Z* l_Previous = NULL;
+    while (l_Current) {
+        if (l_Current->m_BlockStartIdx > l_TocRsc->m_BlockStartIdx) {
+            break;
+        }
+        l_Previous = l_Current;
+        l_Current = l_Current->m_Next;
+    }
+
+    RscQueue_Z* l_NewRsc = m_RscQueueBank.Get();
+    l_NewRsc->m_TocRscIndex = i_TocRscIndex;
+    l_NewRsc->m_BlockStartIdx = l_TocRsc->m_BlockStartIdx;
+    l_NewRsc->m_BlockEndIdx = l_TocRsc->m_BlockEndIdx;
+
+    if (!*io_Queue) {
+        l_NewRsc->m_Prev = NULL;
+        *io_Queue = l_NewRsc;
+    }
+    else if (l_Previous) {
+        l_NewRsc->m_Next = l_Previous->m_Next;
+        l_NewRsc->m_Prev = l_Previous;
+        if (l_Previous->m_Next) {
+            l_Previous->m_Next->m_Prev = l_NewRsc;
+        }
+        l_Previous->m_Next = l_NewRsc;
+    }
+    else {
+        l_NewRsc->m_Next = *io_Queue;
+        l_NewRsc->m_Prev = NULL;
+        (*io_Queue)->m_Prev = l_NewRsc;
+        *io_Queue = l_NewRsc;
+    }
+}
+
+RscOrder_Z* HandleStream_Z::QueueZ(Float i_Priority) {
+    RscOrder_Z* l_Current = m_HeadRscOrder;
+    RscOrder_Z* l_Previous = NULL;
+    while (l_Current) {
+        if (l_Current->m_Priority > i_Priority) {
+            break;
+        }
+        l_Previous = l_Current;
+        l_Current = l_Current->m_Next;
+    }
+
+    RscOrder_Z* l_NewOrder = m_RscOrderBank.Get();
+    l_NewOrder->m_Priority = i_Priority;
+    l_NewOrder->m_QueuedRsc = NULL;
+
+    if (!m_HeadRscOrder) {
+        l_NewOrder->m_Prev = NULL;
+        m_HeadRscOrder = l_NewOrder;
+    }
+    else if (l_Previous) {
+        l_NewOrder->m_Next = l_Previous->m_Next;
+        l_NewOrder->m_Prev = l_Previous;
+        if (l_Previous->m_Next) {
+            l_Previous->m_Next->m_Prev = l_NewOrder;
+        }
+        l_Previous->m_Next = l_NewOrder;
+    }
+    else {
+        l_NewOrder->m_Next = m_HeadRscOrder;
+        l_NewOrder->m_Prev = NULL;
+        m_HeadRscOrder->m_Prev = l_NewOrder;
+        m_HeadRscOrder = l_NewOrder;
+    }
+    return l_NewOrder;
+}
+
+static inline Bool s_IsWorkingBufferHistoryFull(S32 i_Count) {
+    return !(10 - i_Count);
+}
+
+Bool HandleStream_Z::Read() {
+    if (!m_HeadRscOrder || !m_HeadRscOrder->m_QueuedRsc) {
+        return FALSE;
+    }
+
+    m_CurBuffer &= 1;
+    m_WorkingBuffers[m_CurBuffer].m_CurRscOrder = m_HeadRscOrder;
+    RscQueue_Z* l_QueuedRsc = m_HeadRscOrder->m_QueuedRsc;
+    m_WorkingBuffers[m_CurBuffer].m_BlockStartIdx = l_QueuedRsc->m_BlockStartIdx;
+
+    U32 l_CurBuffer = m_CurBuffer;
+    U32 l_WorkingBufferSize = gStrFileHeader.m_WorkingBufferSize[l_CurBuffer];
+    S32 l_MaxEnd = (S32)l_WorkingBufferSize / 0x800 + m_WorkingBuffers[l_CurBuffer].m_BlockStartIdx;
+    while (l_QueuedRsc && l_QueuedRsc->m_BlockEndIdx <= l_MaxEnd) {
+        m_WorkingBuffers[l_CurBuffer].m_BlockEndIdx = l_QueuedRsc->m_BlockEndIdx;
+        break;
+    }
+
+    m_Str.Process(m_WorkingBuffers[m_CurBuffer].m_Data, m_WorkingBuffers[m_CurBuffer].m_BlockStartIdx + gStrFileHeader.m_DataBlockStart, m_WorkingBuffers[m_CurBuffer].m_BlockEndIdx - m_WorkingBuffers[m_CurBuffer].m_BlockStartIdx);
+
+    Bool l_FullHistory = s_IsWorkingBufferHistoryFull(m_WorkingBufferLastOperationCount);
+    if (l_FullHistory) {
+        memcpy(m_WorkingBufferLastOperations, m_WorkingBufferLastOperations + 1, (m_WorkingBufferLastOperationCount - 1) * sizeof(StrWorkingBuffer_Z));
+        m_WorkingBufferLastOperationCount--;
+    }
+
+    StrWorkingBuffer_Z* l_WorkingBuffer = &m_WorkingBuffers[m_CurBuffer];
+    S32 l_Operation = m_WorkingBufferLastOperationCount;
+    if (l_Operation < 10) {
+        m_WorkingBufferLastOperations[l_Operation] = *l_WorkingBuffer;
+        m_WorkingBufferLastOperationCount++;
+    }
+    return TRUE;
+}
+
+Bool HandleStream_Z::GetHeader() {
+    if (strcmp(gStrFileHeader.m_HeaderText, gData.ClassMgr->GetBigFileHeaderText())) {
+        if (gStrFileHeader.m_HeaderText[0]) {
+            ASSERTL_Z(FALSE, "Wrong version of BigFile.. Rebuild them", 1256);
+        }
+        ASSERTL_Z(FALSE, "BigFile not found..", 1259);
+        return FALSE;
+    }
+
+    MemManager.m_FreeMemCached = s_GetFreeMem();
+    s_GetLargestFree();
+    m_WorkingBuffers[0].m_Data = (U8*)AllocEndAlignL_Z(gStrFileHeader.m_WorkingBufferSize[0], 0x4fd, 0x80);
+    MemManager.m_FreeMemCached = s_GetFreeMem();
+    s_GetLargestFree();
+    m_WorkingBuffers[1].m_Data = (U8*)AllocEndAlignL_Z(gStrFileHeader.m_WorkingBufferSize[1], 0x501, 0x80);
+    m_Str.Process(m_WorkingBuffers[0].m_Data, 1, gStrFileHeader.m_TocAndDependenciesBlockCount);
+    return TRUE;
 }
