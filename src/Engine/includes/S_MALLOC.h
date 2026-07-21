@@ -26,7 +26,7 @@ U32 s_ShowUnMarkedMem();
 U32 s_GetAllocatedMem();
 void s_ShowMostNbMalloc();
 U32 s_getnbfindalloc(void*, void*);
-U32 s_getfindalloc(S32, Char*, void*, void*);
+void s_getfindalloc(S32, Char*, void*, void*);
 void s_findalloc(void* i_Start, void* i_End);
 Bool s_VerifyMem();
 U32 s_GetFreeMem();
@@ -47,26 +47,32 @@ void* s_realloc(void* i_Ptr, U32 i_NewSize);
 
 //---- Global variables ----//
 
+// Allocator diagnostics.
+U32 MAXnbFreeBlocks;
+U32 RealAllocatedMem;
+
 // Arena bounds.
-U32 EndOfMemory;
 void* StartOfMemory;
+U32 EndOfMemory;
+
+// Allocator state.
+Bool IsReallocating;
+// Set when a bucket is close to running out of tracking slots.
+Bool NeedToExtend;
+Bool HasAllocatedFreeBlock;
 
 // Address inside the arena used as a threshold for allocation strategy.
 // It is initialized around 4/5 into the arena, aligned down to 8 bytes.
 U32 BestFitLimit;
 
-// Allocator state / diagnostics.
-Bool IsReallocating;
-Bool HasAllocatedFreeBlock;
-U32 RealAllocatedMem;
-U32 MAXnbFreeBlocks;
-
 // Active free-list manager and backing table for bucket entries.
 s_FREE_MEM_BUCKETS* FreeBuckets;
-s_MEM_BLOCK* TMPmem[s_MEM_BUCKET_COUNT * s_MEM_BUCKET_INITIAL_BLOCKS];
 
-// Set when a bucket is close to running out of tracking slots.
-Bool NeedToExtend;
+// Unreferenced variable, present in the original object between FreeBuckets
+// and TMPmem. Its real name and type are unknown (only size is).
+static U32 s_UnusedGlobal;
+
+s_MEM_BLOCK* TMPmem[s_MEM_BUCKET_COUNT * s_MEM_BUCKET_INITIAL_BLOCKS];
 
 //---- Structure definitions ----//
 
@@ -120,6 +126,22 @@ struct s_MEM_BLOCK {
         return (U32)l_NextBlock;
     } // Fully inlined
 
+    Bool IsValid() {
+        Bool l_IsValid;
+
+        if ((U32)this < (U32)StartOfMemory) {
+            l_IsValid = FALSE;
+        }
+        else if ((U32)this >= EndOfMemory) {
+            l_IsValid = FALSE;
+        }
+        else {
+            l_IsValid = TRUE;
+        }
+
+        return l_IsValid;
+    } // Fully inlined
+
     void SetSizeBitsFromMask(U32 i_Mask) {
         m_EncodedSize.m_SizeBits = 0;
 
@@ -140,21 +162,32 @@ struct s_MEM_BLOCK {
         return l_NextBlock;
     } // Matched 100%
 
-    s_MEM_BLOCK* MergeNext() {
-        return this;
+    void MergeNext() {
+        s_MEM_BLOCK* l_NextBlock = GetNext();
+
+        if (!l_NextBlock) {
+            return;
+        }
+
+        s_MEM_BLOCK* l_NextNextBlock = l_NextBlock->GetNext();
+        SetNext(l_NextNextBlock);
+
+        if (l_NextNextBlock) {
+            l_NextNextBlock->SetPrev(this);
+        }
     } // Matched 100%
 
     s_MEM_BLOCK* GetPrev() {
-        s_MEM_BLOCK* l_PrevBlock = (s_MEM_BLOCK*)((m_BlockFlags.m_BlockValue - s_MEM_BLOCK_ENCODE_BIAS) << 2);
-        if (l_PrevBlock) {
-            l_PrevBlock = (s_MEM_BLOCK*)((U32)l_PrevBlock | 0x80000000);
-        }
-        return l_PrevBlock;
+        return (s_MEM_BLOCK*)((m_BlockFlags.m_BlockValue - s_MEM_BLOCK_ENCODE_BIAS) << 2);
     } // Matched 100%
 
     U32 GetFree() {
         return m_BlockFlags.m_IsFree;
     } // Matched 100%
+
+    U32 GetMarked() {
+        return m_BlockFlags.m_IsMarked;
+    } // Fully inlined
 
     U32 GetAlignDecal() {
         U32 l_Align = 1 << (m_EncodedSize.m_SizeBits + 2);
@@ -168,9 +201,43 @@ struct s_MEM_BLOCK {
         return 0;
     } // Matched 100%
 
+    U32 GetAlignment() {
+        return 1 << (m_EncodedSize.m_SizeBits + 2);
+    } // Fully inlined
+
+    void GetReallocBlockSizes(U32 i_Size, U32& o_BlockSize, U32& o_CurrentSize) {
+        i_Size += s_MEM_BLOCK_HEADER_SIZE;
+        o_BlockSize = i_Size + GetAlignDecal();
+        o_CurrentSize = GetSize();
+    } // Fully inlined
+
     U32 GetSize() {
-        return GetMaxAddress() - (U32)this;
+        s_MEM_BLOCK* l_NextBlock = GetNext();
+
+        if (!l_NextBlock) {
+            l_NextBlock = (s_MEM_BLOCK*)EndOfMemory;
+        }
+
+        return (U32)l_NextBlock - (U32)this;
     } // Matched 100%
+
+    U32 GetBlockEnd() {
+        U32 l_BlockEnd = (U32)this;
+        l_BlockEnd += GetSize();
+        return l_BlockEnd;
+    } // Fully inlined
+
+    U32 GetMaxAddress(U32 i_EndOfMemory) {
+        s_MEM_BLOCK* l_NextBlock = GetNext();
+        if (!l_NextBlock) {
+            l_NextBlock = (s_MEM_BLOCK*)i_EndOfMemory;
+        }
+        return (U32)l_NextBlock;
+    } // Fully inlined
+
+    U32 GetSize(U32 i_EndOfMemory) {
+        return GetMaxAddress(i_EndOfMemory) - (U32)this;
+    } // Fully inlined
 
     static void* GetRealPtr(void* i_Ptr) {
         U32 l_Decal = *((U32*)i_Ptr - 1);
@@ -217,7 +284,7 @@ struct s_MEM_BLOCK {
             U32 l_Bits = m_EncodedSize.m_SizeBits;
 
             if (l_AlignMask & (1 << l_Bits)) {
-                return;
+                break;
             }
 
             m_EncodedSize.m_SizeBits = l_Bits + 1;
@@ -308,6 +375,7 @@ struct s_FREE_MEM_BUCKETS {
 
     void AddBlockToBucket(S32 i_BucketIdx, s_MEM_BLOCK* i_Block) {
         S32 l_Count = m_BucketFreeBlocks[i_BucketIdx];
+        s_MEM_BLOCK** l_BucketTrack;
 
         // Ask for bucket expansion if this bucket is nearly full.
         if (l_Count >= (m_BucketTotalBlocks - 6)) {
@@ -315,7 +383,7 @@ struct s_FREE_MEM_BUCKETS {
         }
 
         // Locate this bucket's slice in the flat block table.
-        s_MEM_BLOCK** l_BucketTrack = m_BucketBlocks + (m_BucketTotalBlocks * i_BucketIdx);
+        l_BucketTrack = m_BucketBlocks + (m_BucketTotalBlocks * i_BucketIdx);
 
         S32 l_InsertIdx;
 
@@ -347,12 +415,30 @@ struct s_FREE_MEM_BUCKETS {
     } // Fully inlined
 
     S32 FindFreeBucket(S32 i_MinSize) {
-        for (S32 l_Idx = FindBucket(i_MinSize); l_Idx < s_MEM_BUCKET_COUNT; l_Idx++) {
+        S32 l_Idx = FindBucket(i_MinSize);
+
+        for (; l_Idx < s_MEM_BUCKET_COUNT; l_Idx++) {
             if (m_BucketFreeBlocks[l_Idx]) {
                 return l_Idx;
             }
         }
         return -1;
+    } // Fully inlined
+
+    s_MEM_BLOCK* FindBestBlock(S32 i_MinSize) {
+        S32 l_BucketIdx = FindFreeBucket(i_MinSize);
+
+        if (l_BucketIdx >= 0) {
+            for (; l_BucketIdx < s_MEM_BUCKET_COUNT; l_BucketIdx++) {
+                s_MEM_BLOCK* l_Block = FindBlock(l_BucketIdx, i_MinSize);
+
+                if (l_Block) {
+                    return l_Block;
+                }
+            }
+        }
+
+        return NULL;
     } // Fully inlined
 
     s_MEM_BLOCK* FindFirstBlock(S32 i_MinSize) {
@@ -387,22 +473,119 @@ struct s_FREE_MEM_BUCKETS {
         return l_Block;
     } // Fully inlined
 
-    s_MEM_BLOCK* FindBestBlock(S32 i_MinSize) {
-        S32 l_BucketIdx = FindFreeBucket(i_MinSize);
-
-        if (l_BucketIdx >= 0) {
-            while (l_BucketIdx < s_MEM_BUCKET_COUNT) {
-                s_MEM_BLOCK* l_Block = FindBlock(l_BucketIdx, i_MinSize);
-
-                if (l_Block) {
-                    return l_Block;
-                }
-
-                l_BucketIdx++;
+    s_MEM_BLOCK* FindLastBlock() {
+        for (S32 i = s_MEM_BUCKET_COUNT - 1; i >= 0; i--) {
+            if (m_BucketFreeBlocks[i]) {
+                return m_BucketBlocks[m_BucketTotalBlocks * i];
             }
         }
 
         return NULL;
+    } // Fully inlined
+
+    S32 GetNbFreeBlocks() {
+        S32 l_Total = 0;
+
+        for (S32 i = 0; i < s_MEM_BUCKET_COUNT; i++) {
+            l_Total += m_BucketFreeBlocks[i];
+        }
+
+        return l_Total;
+    } // Fully inlined
+
+    S32 GetFreeMem() {
+        S32 l_Total = 0;
+        s_MEM_BLOCK** l_Track;
+
+        for (S32 i = 0; i < s_MEM_BUCKET_COUNT; i++) {
+            S32 l_Count = m_BucketFreeBlocks[i];
+            l_Track = m_BucketBlocks + m_BucketTotalBlocks * i;
+
+            for (S32 j = 0; j < l_Count; j++) {
+                l_Total += (*l_Track)->GetSize();
+                l_Track++;
+            }
+        }
+
+        return l_Total;
+    } // Fully inlined
+
+    U32 GetLargestFreeBlock() {
+        U32 l_LargestSize = 0;
+        s_MEM_BLOCK** l_Track;
+        s_MEM_BLOCK* l_Block;
+
+        for (S32 i = s_MEM_BUCKET_COUNT - 1; i >= 0; i--) {
+            S32 l_Count = m_BucketFreeBlocks[i];
+            l_Track = m_BucketBlocks + m_BucketTotalBlocks * i;
+
+            for (S32 j = 0; j < l_Count; j++) {
+                l_Block = *l_Track;
+                U32 l_Size = l_Block->GetSize();
+
+                if (l_Size > l_LargestSize) {
+                    l_LargestSize = l_Size;
+                }
+
+                l_Track++;
+            }
+
+            if (l_Count) {
+                break;
+            }
+        }
+
+        return l_LargestSize;
+    } // Fully inlined
+
+    Bool TestIntegrity() {
+        for (S32 i = 0; i < s_MEM_BUCKET_COUNT; i++) {
+            S32 l_Count = m_BucketFreeBlocks[i];
+
+            for (S32 j = 0; j < l_Count; j++) {
+                s_MEM_BLOCK* l_Block = m_BucketBlocks[m_BucketTotalBlocks * i + j];
+
+                if (!s_QuickTestIntegrity(l_Block)) {
+                    return FALSE;
+                }
+            }
+        }
+
+        return TRUE;
+    } // Fully inlined
+
+    Bool TestBlock(s_MEM_BLOCK* i_Block) {
+        if (i_Block->GetFree()) {
+            if (s_GetInBucket(FindBucket(i_Block->GetSize()), i_Block) == -1) {
+                return FALSE;
+            }
+        }
+        else if (s_GetInBucket(FindBucket(i_Block->GetSize()), i_Block) != -1) {
+            return FALSE;
+        }
+
+        return TRUE;
+    } // Fully inlined
+
+    void RemoveBlockInline(s_MEM_BLOCK* i_Block) {
+        S32 l_BucketIdx = FindBucket(i_Block->GetSize());
+
+        i_Block->m_BlockFlags.m_IsFree = FALSE;
+
+        S32 l_BlockIdx = s_GetInBucket(l_BucketIdx, i_Block);
+        m_BucketFreeBlocks[l_BucketIdx]--;
+        S32 l_Count = m_BucketFreeBlocks[l_BucketIdx];
+        s_MEM_BLOCK** l_BucketTrack = m_BucketBlocks + m_BucketTotalBlocks * l_BucketIdx;
+
+        if (l_BlockIdx < l_Count) {
+            s_MEM_BLOCK** l_Current = l_BucketTrack + l_BlockIdx;
+            s_MEM_BLOCK** l_End = l_BucketTrack + l_Count;
+
+            while (l_Current < l_End) {
+                *l_Current = l_Current[1];
+                l_Current++;
+            }
+        }
     } // Fully inlined
 
     void Extend();

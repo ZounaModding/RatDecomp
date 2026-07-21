@@ -886,6 +886,7 @@ RscOrder_Z* HandleStream_Z::QueueZ(Float i_Priority) {
     return l_NewOrder;
 }
 
+// $SABE: This is probably not the correct way (it's probably a class inline)
 static inline Bool s_IsWorkingBufferHistoryFull(S32 i_Count) {
     return !(10 - i_Count);
 }
