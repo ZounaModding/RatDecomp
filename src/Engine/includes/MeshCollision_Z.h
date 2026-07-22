@@ -37,11 +37,14 @@ public:
 class AABBNode_Z {
 public:
     Vec3f m_Min;
+
     union {
         U16 m_ChildIds[2];
         AABBNode_Z* m_FirstChild;
     };
+
     Vec3f m_Max;
+
     union {
         U16 m_FaceRange[2];
         AABBNode_Z* m_SecondChild;

@@ -1,4 +1,22 @@
 #ifndef _LEVELAGENT_G_H_
 #define _LEVELAGENT_G_H_
-#include "Types_Z.h"
+#include "Agent_Z.h"
+// clang-format off
+
+BEGIN_AGENT_CLASS(LevelAgent_G, Agent_Z, 28)
+public:
+    LevelAgent_G();
+
+    virtual ~LevelAgent_G() {}
+    virtual void Init();
+
+    DECL_BHV(BhvToLevel);
+    DECL_BHV(BhvChangeLevel);
+    DECL_BHV(BhvToMenu);
+
+private:
+    // TODO: fields - see decomp_dump/types.h `struct LevelAgent_G` for Ghidra's inferred layout
+END_AGENT_CLASS
+
+// clang-format on
 #endif // _LEVELAGENT_G_H_

@@ -1,4 +1,24 @@
 #ifndef _IT_FISH_G_H_
 #define _IT_FISH_G_H_
-#include "Types_Z.h"
+#include "MovingAgent_Z.h"
+#include "DynPtrArray_Z.h"
+// clang-format off
+
+BEGIN_AGENT_CLASS(IT_FISH_G, MovingAgent_Z, 17)
+public:
+    IT_FISH_G();
+
+    virtual ~IT_FISH_G() {}
+    virtual void Init();
+    void AddToStaticList();
+    void RemoveFromStaticList();
+
+    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
+
+private:
+    static DynPtrArray_Z<IT_FISH_G*> instances;
+    // TODO: fields - see decomp_dump/types.h `struct IT_FISH_G` for Ghidra's inferred layout
+END_AGENT_CLASS
+
+// clang-format on
 #endif // _IT_FISH_G_H_

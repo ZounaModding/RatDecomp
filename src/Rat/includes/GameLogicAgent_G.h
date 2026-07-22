@@ -1,4 +1,22 @@
 #ifndef _GAMELOGICAGENT_G_H_
 #define _GAMELOGICAGENT_G_H_
-#include "Types_Z.h"
+#include "LogicAgent_G.h"
+// clang-format off
+
+BEGIN_AGENT_CLASS(GameLogicAgent_G, LogicAgent_G, 18)
+public:
+    GameLogicAgent_G();
+
+    virtual ~GameLogicAgent_G() {}
+    virtual void Init();
+
+    DECL_BHV(ActivateGame);
+    DECL_BHV(GameReseted);
+    DECL_BHV(StopPauseGameBhv);
+
+private:
+    // TODO: fields - see decomp_dump/types.h `struct GameLogicAgent_G` for Ghidra's inferred layout
+END_AGENT_CLASS
+
+// clang-format on
 #endif // _GAMELOGICAGENT_G_H_

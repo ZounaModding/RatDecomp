@@ -1,0 +1,17 @@
+#include "DetectVolumeAgent_G.h"
+
+// clang-format off
+
+BEGIN_INIT_AGENT_CLASS(DetectVolumeAgent_G, VolumeAgent_Z)
+END_INIT_AGENT_CLASS
+
+// clang-format on
+
+DetectVolumeAgent_G::DetectVolumeAgent_G() {
+    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (DetectVolumeAgent_G::DetectVolumeAgent_G)
+}
+
+void DetectVolumeAgent_G::Init() {
+    VolumeAgent_Z::Init();
+    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (DetectVolumeAgent_G::Init)
+}
