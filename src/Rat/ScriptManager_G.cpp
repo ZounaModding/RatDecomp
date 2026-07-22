@@ -11,7 +11,6 @@
 #include "Renderer_Z.h"
 #include "TextGameDraw_G.h"
 
-Extern_Z void ShutGameScriptClasses();
 ExternC_Z int stricmp(const Char* i_String1, const Char* i_String2);
 
 ScriptManager_G::ScriptManager_G() {
@@ -100,14 +99,10 @@ void ScriptManager_G::Init() {
 
     ResetAdvancement();
 
-    Vec3f l_Color1(SPECIAL_VISION_COLOR_1_R, SPECIAL_VISION_COLOR_1_G,
-                   SPECIAL_VISION_COLOR_1_B);
-    Vec3f l_Color2(SPECIAL_VISION_COLOR_2_INTENSITY, SPECIAL_VISION_COLOR_2_INTENSITY,
-                   SPECIAL_VISION_COLOR_2_INTENSITY);
-    Vec3f l_Color3(SPECIAL_VISION_HIGHLIGHT_R, SPECIAL_VISION_HIGHLIGHT_G,
-                   SPECIAL_VISION_HIGHLIGHT_B);
-    Vec3f l_Color4(SPECIAL_VISION_HIGHLIGHT_R, SPECIAL_VISION_HIGHLIGHT_G,
-                   SPECIAL_VISION_HIGHLIGHT_B);
+    Vec3f l_Color1(SPECIAL_VISION_COLOR_1_R, SPECIAL_VISION_COLOR_1_G, SPECIAL_VISION_COLOR_1_B);
+    Vec3f l_Color2(SPECIAL_VISION_COLOR_2_INTENSITY, SPECIAL_VISION_COLOR_2_INTENSITY, SPECIAL_VISION_COLOR_2_INTENSITY);
+    Vec3f l_Color3(SPECIAL_VISION_HIGHLIGHT_R, SPECIAL_VISION_HIGHLIGHT_G, SPECIAL_VISION_HIGHLIGHT_B);
+    Vec3f l_Color4(SPECIAL_VISION_HIGHLIGHT_R, SPECIAL_VISION_HIGHLIGHT_G, SPECIAL_VISION_HIGHLIGHT_B);
     gData.MainRdr->SetSpecialVisionColor(l_Color1, l_Color2, l_Color3, l_Color4);
 }
 
@@ -165,7 +160,6 @@ void ScriptManager_G::MarkHandles() {
 
     MarkValidHandle_Z(m_OmniHdlForFX);
     MarkValidHandle_Z(m_OmniNodeHdlForFX);
-
 }
 
 void ScriptManager_G::Update(Float i_DeltaTime) {
@@ -190,6 +184,10 @@ void ScriptManager_G::ResetAdvancement() {
     CheckUnlock(TRUE);
 }
 
+void ScriptManager_G::CheckUnlock(Bool i_Force) { }
+
+void ScriptManager_G::ResetObjectTextInfo(CloneClassTextInfoDA& io_TextInfos) { }
+
 void PlayerSaveStruct_G::Reset() {
     m_MaxHealth = PLAYER_DEFAULT_MAX_HEALTH;
     m_Health = PLAYER_DEFAULT_HEALTH;
@@ -198,10 +196,7 @@ void PlayerSaveStruct_G::Reset() {
 
 // $SABE: Never thought I'd commit an array of slurs to a repo, let's hope this is not against GitHub's TOS.
 Char* arrayMotsPasJoli[] = {
-    "ALA", "GAY", "SEX", "ANL", "GOD", "SHT", "ASS", "HOE", "SPC", "BCH", "HOR", "SPK", "BUM", "JAP", "SUC",
-    "BUT", "JEW", "SUK", "CNT", "JIZ", "SUX", "COC", "KOC", "THC", "COX", "KOK", "TIT", "COK", "KKK", "VAG",
-    "CUM", "KNT", "WHR", "DAM", "KYK", "WOP", "DIC", "LEZ", "XXX", "DIK", "LSD", "DIX", "NGR", "DYK", "NIG",
-    "FAG", "NIP", "FOB", "NUT", "FUC", "PCP", "FUK", "PEE", "FUQ", "POO", "FUX", "PUS", "END"
+    "ALA", "GAY", "SEX", "ANL", "GOD", "SHT", "ASS", "HOE", "SPC", "BCH", "HOR", "SPK", "BUM", "JAP", "SUC", "BUT", "JEW", "SUK", "CNT", "JIZ", "SUX", "COC", "KOC", "THC", "COX", "KOK", "TIT", "COK", "KKK", "VAG", "CUM", "KNT", "WHR", "DAM", "KYK", "WOP", "DIC", "LEZ", "XXX", "DIK", "LSD", "DIX", "NGR", "DYK", "NIG", "FAG", "NIP", "FOB", "NUT", "FUC", "PCP", "FUK", "PEE", "FUQ", "POO", "FUX", "PUS", "END"
 };
 
 Bool ScriptManager_G::IsMotPasJoli(Char* i_Text) {

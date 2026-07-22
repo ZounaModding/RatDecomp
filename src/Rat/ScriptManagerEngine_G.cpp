@@ -22,8 +22,7 @@
 void ScriptManager_G::ReadEnumFromFiles() {
 }
 
-void ScriptManager_G::NoteTrackInterpMessage(StaticArray_Z<Param_Z, 16, 1, 1>& i_Params,
-                                             Message_Z& i_Message) {
+void ScriptManager_G::NoteTrackInterpMessage(StaticArray_Z<Param_Z, 16, 1, 1>& i_Params, Message_Z& i_Message) {
 }
 
 U32 ScriptManager_G::MateriaRemoveColFlag(const Char* i_Flag) {
@@ -82,8 +81,8 @@ void ScriptManager_G::UpdateIndependentResources(const World_ZHdl& i_WorldHdl) {
     S32 l_GameId = gData.GameMgr->GetGameIdByWorld(i_WorldHdl);
     if (l_GameId >= 0) {
         gData.GameMgr->GetGame(l_GameId)->SendMessage(
-            GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS, msg_anim_framelink,
-            -1.0f);
+            GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS, msg_anim_framelink, -1.0f
+        );
     }
 }
 
@@ -98,40 +97,38 @@ void ScriptManager_G::UpdateOmnis(Float i_DeltaTime) {
             if (l_FXOmni.m_Time > l_FXOmni.m_Duration) {
                 l_FXOmni.m_OmniHdl->SetActive(FALSE);
                 l_FXOmni.m_IsActive = FALSE;
-            } else {
+            }
+            else {
                 Vec3f l_Color = l_FXOmni.m_Color;
                 Float l_Ratio = l_FXOmni.m_Time / l_FXOmni.m_Duration;
 
                 switch (l_FXOmni.m_Type) {
-                case FX_OMNI_INTERP_LINEAR: {
-                    Float l_Factor = 1.0f - l_Ratio;
-                    l_Color *= l_Factor;
-                    break;
-                }
-                case FX_OMNI_INTERP_SINE: {
-                    Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
-                    l_Color *= l_Factor;
-                    break;
-                }
-                case FX_OMNI_INTERP_DOUBLE_SINE: {
-                    Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
-                    l_Factor = O_Sin(0.5f * Pi * l_Factor);
-                    l_Color *= l_Factor;
-                    break;
-                }
-                case FX_OMNI_INTERP_DOUBLE_SINE_BLINK: {
-                    Float l_Blink = 0.0f;
-                    if (l_Ratio < FX_OMNI_BLINK_FIRST_END ||
-                        (l_Ratio >= FX_OMNI_BLINK_SECOND_START &&
-                         l_Ratio < FX_OMNI_BLINK_SECOND_END) ||
-                        l_Ratio >= FX_OMNI_BLINK_FINAL_START) {
-                        l_Blink = 1.0f;
+                    case FX_OMNI_INTERP_LINEAR: {
+                        Float l_Factor = 1.0f - l_Ratio;
+                        l_Color *= l_Factor;
+                        break;
                     }
-                    Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
-                    l_Factor = O_Sin(0.5f * Pi * l_Factor);
-                    l_Color *= l_Factor * l_Blink;
-                    break;
-                }
+                    case FX_OMNI_INTERP_SINE: {
+                        Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
+                        l_Color *= l_Factor;
+                        break;
+                    }
+                    case FX_OMNI_INTERP_DOUBLE_SINE: {
+                        Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
+                        l_Factor = O_Sin(0.5f * Pi * l_Factor);
+                        l_Color *= l_Factor;
+                        break;
+                    }
+                    case FX_OMNI_INTERP_DOUBLE_SINE_BLINK: {
+                        Float l_Blink = 0.0f;
+                        if (l_Ratio < FX_OMNI_BLINK_FIRST_END || (l_Ratio >= FX_OMNI_BLINK_SECOND_START && l_Ratio < FX_OMNI_BLINK_SECOND_END) || l_Ratio >= FX_OMNI_BLINK_FINAL_START) {
+                            l_Blink = 1.0f;
+                        }
+                        Float l_Factor = O_Sin(0.5f * Pi * (1.0f - l_Ratio));
+                        l_Factor = O_Sin(0.5f * Pi * l_Factor);
+                        l_Color *= l_Factor * l_Blink;
+                        break;
+                    }
                 }
 
                 l_FXOmni.m_OmniHdl->SetColor(l_Color);

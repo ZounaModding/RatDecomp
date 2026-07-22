@@ -27,7 +27,10 @@
 
 class LoadingDraw_C : public ManipulatorDraw_Z {
 public:
-    LoadingDraw_C() : m_LoadingHatSpinTimer(0.0f), m_LoadingHatSpinCount(0) { }
+    LoadingDraw_C()
+        : m_LoadingHatSpinTimer(0.0f)
+        , m_LoadingHatSpinCount(0) { }
+
     virtual ~LoadingDraw_C() { }
 
     virtual void Init();

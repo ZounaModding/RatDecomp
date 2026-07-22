@@ -156,14 +156,14 @@ public:
 };
 
 #define MarkValidHandle_Z(i_Handle)          \
-    do {                                      \
-        if (i_Handle.IsValid()) {             \
+    do {                                     \
+        if (i_Handle.IsValid()) {            \
             GETPTR(i_Handle)->MarkHandles(); \
-        }                                     \
+        }                                    \
     } while (0)
 
-#define MarkHandle_Z(i_Handle)               \
-    do {                                      \
+#define MarkHandle_Z(i_Handle)           \
+    do {                                 \
         GETPTR(i_Handle)->MarkHandles(); \
     } while (0)
 

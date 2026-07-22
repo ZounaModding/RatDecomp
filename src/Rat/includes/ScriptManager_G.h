@@ -110,8 +110,11 @@ public:
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, S32 i_StreamId);
     virtual void Update(Float i_DeltaTime);
     virtual Bool Minimize();
+
     virtual void SetPlayer(S32 i_PlayerId, ABC_AgentHdl i_PlayerHdl) { }
+
     virtual ABC_AgentHdl GetPlayer(S32 i_PlayerId) { return ABC_AgentHdl(); }
+
     virtual void ResetGame(Game_ZHdl& i_GameHdl) { }
 
     // $SABE: Param names might be bs, done by codex
@@ -192,15 +195,25 @@ public:
     void SetLevelObjectsFromSave();
 
     CTFGameMgr_G& GetCTFGameMgr() { return m_ScriptGameMgr; }
+
     ArrayLang& GetArrayLang() { return m_ArrayLang; }
+
     BaseInGameDatas_GHdl& GetInGameDatas() { return m_InGameDatasHdl; }
+
     LevelData_GHdl GetCurrentLevelData() { return m_CurrentLevelHdl; }
+
     LevelAgent_GHdl& GetLevelAgent() { return m_LevelAgentHdl; }
+
     LoadingDraw_CHdl& GetLoadingDraw() { return m_LoadingDrawHdl; }
+
     MissionManager_GHdl& GetMissionManager() { return m_MissionManagerHdl; }
+
     MemoryCardManager_CHdl& GetMcMgr() { return m_MemoryCardMgrHdl; }
+
     MusicManager_GHdl& GetMusicMgr() { return m_MusicMgrHdl; }
+
     PaddleChecker_GHdl& GetPaddleMgr() { return m_PaddleCheckerHdl; }
+
     void IncreaseHealthMax(S32 i_Amount) { m_PlayerSaveStruct.IncreaseHealthMax(i_Amount); }
 
 private:

@@ -105,6 +105,7 @@ public:
     StreamAgent_ZHdl* GetStreamAgent() { return &m_StreamAgentHdl; }
 
     Float GetTime() { return m_ScriptTime; }
+
     Bool IsPaused() const { return m_IsPaused; }
 
     inline void EndPause() {
@@ -125,6 +126,8 @@ private:
 // External functions
 
 void InitEngineScriptClasses();
+
 Extern_Z void InitGameScriptClasses();
+Extern_Z void ShutGameScriptClasses();
 
 #endif

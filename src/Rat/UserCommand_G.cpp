@@ -12,7 +12,8 @@ void RegisterUserCommand() {
 Bool SetLoadingDraw() {
     if (strcmp(gData.Cons->GetStrParam(1), "OFF") == 0) {
         gScriptMgr->GetLoadingDraw()->StopAnimLoading(FALSE);
-    } else {
+    }
+    else {
         gScriptMgr->GetLoadingDraw()->StopAnimLoading(TRUE);
     }
     return TRUE;

@@ -6,6 +6,7 @@
 class ScriptInputManager_Z : public InputEngine_Z {
 public:
     virtual ~ScriptInputManager_Z() { }
+
     virtual void Update(Float i_DeltaTime);
 };
 

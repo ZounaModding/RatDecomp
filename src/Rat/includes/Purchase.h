@@ -51,11 +51,17 @@ class GamemodePurchase : public Purchase {
 };
 
 class DreamPurchase : public SologamePurchase { };
+
 class CookingsessionPurchase : public SologamePurchase { };
+
 class SlidePurchase : public SologamePurchase { };
+
 class ChampionshipPurchase : public MultiPlayerPurchase { };
+
 class MultigamePurchase : public MultiPlayerPurchase { };
+
 class ImagePurchase : public MediaPurchase { };
+
 class RoughPurchase : public MediaPurchase { };
 
 class CheatPurchase : public Purchase {

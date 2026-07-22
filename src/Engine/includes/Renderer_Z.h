@@ -410,7 +410,7 @@ public:
 
     virtual S32 PushDraw(const PrimitiveInfo_Z* i_PrimInfo, S32 i_Unk) { return -1; }
 
-    virtual void PushMatrix(const Mat4x4* i_Matrix) {};
+    virtual void PushMatrix(const Mat4x4* i_Matrix) { };
 
     virtual void SetDLight(const DrawInfo_Z& i_DrawInfo) { }
 
@@ -462,7 +462,7 @@ public:
     virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4);
     virtual void DrawImage(Bitmap_ZHdl& a1);
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);
-    virtual void Draw2DQuad(const Vec2f& a1, const Vec2f& a2, const Vec2f& a3, const Vec2f& a4, const Color& a5, const Color& a6, Float a7) {};
+    virtual void Draw2DQuad(const Vec2f& a1, const Vec2f& a2, const Vec2f& a3, const Vec2f& a4, const Color& a5, const Color& a6, Float a7) { };
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5);
     virtual void DrawQuad(Vec2f& i_Pos, Vec2f& i_BottomRight, Color& i_Color, Float i_Z);
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6);

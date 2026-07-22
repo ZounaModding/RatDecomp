@@ -78,6 +78,7 @@ public:
 
     void InitConfiguration();
     void AddTime(Float i_DeltaTime);
+
     CInputDef_G* GetInputDef() { return &m_InputDef; }
 
 private:

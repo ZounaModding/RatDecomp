@@ -94,8 +94,7 @@ public:
     S32 GetSizeChar(const Char* i_Char);
     U32 GetSizeStr(const Char* i_Text);
     void DrawString(FontParam_Z& i_Params);
-    void DrawString(Char* i_Text, S32 i_X, S32 i_Y, const Color& i_TopColor, const Color& i_BottomColor,
-                    Float i_Scale, Float i_Z);
+    void DrawString(Char* i_Text, S32 i_X, S32 i_Y, const Color& i_TopColor, const Color& i_BottomColor, Float i_Scale, Float i_Z);
 
     static BaseObject_Z* NewObject() { return NewL_Z(161) Fonts_Z; }
 

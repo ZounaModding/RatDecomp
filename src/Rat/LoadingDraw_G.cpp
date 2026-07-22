@@ -34,8 +34,7 @@ void LoadingDraw_C::Init() {
 
     Bitmap_ZHdl l_BitmapHdl(gData.ClassMgr->NewObject("Bitmap_Z"));
     Bitmap_Z* l_Bitmap = l_BitmapHdl;
-    l_Bitmap->InitBmap(LOADING_HAT_BITMAP_SIZE, LOADING_HAT_BITMAP_SIZE, BM_8888,
-                       (U8*)imageTGA, NULL);
+    l_Bitmap->InitBmap(LOADING_HAT_BITMAP_SIZE, LOADING_HAT_BITMAP_SIZE, BM_8888, (U8*)imageTGA, NULL);
     l_Bitmap->EnableFlag(FL_BITMAP_UNK_0x8);
     l_Bitmap->SetTransp(BM_TRANSP_ONE);
     m_LoadingHatMaterial->SetBitmap(l_BitmapHdl);
@@ -136,7 +135,8 @@ void LoadingDraw_C::Draw(const DrawInfo_Z& i_DrawInfo) {
 
     if (m_LevelLoadingScreenEnabled) {
         MaterialAnim_ZHdl l_LoadingBitmapHdl = gData.SystemDatas->GetMaterialByName(
-            Name_Z(Name_Z::GetID("LOADING_BITMAP", 0)));
+            Name_Z(Name_Z::GetID("LOADING_BITMAP", 0))
+        );
         ResourceObject_ZHdl l_LoadingBitmapCheckHdl;
         l_LoadingBitmapCheckHdl = l_LoadingBitmapHdl;
         if (l_LoadingBitmapCheckHdl.IsValid()) {
@@ -155,9 +155,7 @@ void LoadingDraw_C::Draw(const DrawInfo_Z& i_DrawInfo) {
             m_LevelLoadingScreenFadeOutTimer = 0.0f;
         }
         if (m_LevelLoadingScreenFadeOutTimer < LOADING_SCREEN_FADE_OUT_DURATION) {
-            DrawLoadingBitmap(i_DrawInfo.m_Vp,
-                              1.0f - m_LevelLoadingScreenFadeOutTimer /
-                                         LOADING_SCREEN_FADE_OUT_DURATION);
+            DrawLoadingBitmap(i_DrawInfo.m_Vp, 1.0f - m_LevelLoadingScreenFadeOutTimer / LOADING_SCREEN_FADE_OUT_DURATION);
         }
     }
 
@@ -180,19 +178,15 @@ void LoadingDraw_C::Draw(const DrawInfo_Z& i_DrawInfo) {
     Color l_BottomColor;
     Color l_TopColor;
     Vec3f l_ColorIntensity;
-    if ((l_SpinParity != 0 && l_SpinRatio < LOADING_HAT_SPIN_HALF) ||
-        (l_SpinParity == 0 && l_SpinRatio > LOADING_HAT_SPIN_HALF)) {
-        l_ColorIntensity.Set(LOADING_DRAW_BRIGHT_INTENSITY, LOADING_DRAW_BRIGHT_INTENSITY,
-                             LOADING_DRAW_BRIGHT_INTENSITY);
+    if ((l_SpinParity != 0 && l_SpinRatio < LOADING_HAT_SPIN_HALF) || (l_SpinParity == 0 && l_SpinRatio > LOADING_HAT_SPIN_HALF)) {
+        l_ColorIntensity.Set(LOADING_DRAW_BRIGHT_INTENSITY, LOADING_DRAW_BRIGHT_INTENSITY, LOADING_DRAW_BRIGHT_INTENSITY);
     }
     else {
-        l_ColorIntensity.Set(LOADING_DRAW_DIM_INTENSITY, LOADING_DRAW_DIM_INTENSITY,
-                             LOADING_DRAW_DIM_INTENSITY);
+        l_ColorIntensity.Set(LOADING_DRAW_DIM_INTENSITY, LOADING_DRAW_DIM_INTENSITY, LOADING_DRAW_DIM_INTENSITY);
     }
     l_TopColor.Set(l_ColorIntensity.x, l_ColorIntensity.y, l_ColorIntensity.z, 1.0f);
     l_BottomColor.Set(l_ColorIntensity.x, l_ColorIntensity.y, l_ColorIntensity.z, 1.0f);
-    l_Renderer->Draw2DQuad(l_BottomLeft, l_TopRight, l_UvTopLeft, l_UvBottomRight, l_BottomColor,
-                           l_TopColor, LOADING_DRAW_Z_OFFSET);
+    l_Renderer->Draw2DQuad(l_BottomLeft, l_TopRight, l_UvTopLeft, l_UvBottomRight, l_BottomColor, l_TopColor, LOADING_DRAW_Z_OFFSET);
 
     S32 l_FontId = gData.SystemDatas->GetFontId(fontName);
     if (l_FontId >= 0) {
@@ -210,8 +204,7 @@ void LoadingDraw_C::Draw(const DrawInfo_Z& i_DrawInfo) {
         l_TextBottomColor.b = LOADING_DRAW_BRIGHT_INTENSITY;
         l_TextBottomColor.a = 1.0f;
         Float l_TextX = LOADING_HAT_TEXT_X;
-        l_Font->DrawString(l_Text, (S32)l_TextX, (S32)l_BottomLeft.y, l_TextBottomColor,
-                           l_TextTopColor, 1.0f, LOADING_DRAW_Z_OFFSET);
+        l_Font->DrawString(l_Text, (S32)l_TextX, (S32)l_BottomLeft.y, l_TextBottomColor, l_TextTopColor, 1.0f, LOADING_DRAW_Z_OFFSET);
     }
 }
 
@@ -230,7 +223,8 @@ Bool LoadingDraw_C::DrawLoadingBitmap(const Viewport_Z* i_Viewport, Float i_Alph
     l_UvBottomRight.y = 1.0f;
 
     MaterialAnim_ZHdl l_MaterialAnimHdl = gData.SystemDatas->GetMaterialByName(
-        Name_Z(Name_Z::GetID("LOADING_BITMAP", 0)));
+        Name_Z(Name_Z::GetID("LOADING_BITMAP", 0))
+    );
     if (l_MaterialAnimHdl.IsValid()) {
         MaterialAnim_Z* l_MaterialAnim = l_MaterialAnimHdl;
         ResourceObject_ZHdl l_MaterialHdl;
@@ -248,23 +242,21 @@ Bool LoadingDraw_C::DrawLoadingBitmap(const Viewport_Z* i_Viewport, Float i_Alph
             l_Color.g = LOADING_DRAW_BRIGHT_INTENSITY;
             l_Color.b = LOADING_DRAW_BRIGHT_INTENSITY;
             l_Color.a = i_Alpha;
-            l_Renderer->Draw2DQuad(l_BottomLeft, l_TopRight, l_UvTopLeft, l_UvBottomRight, l_Color,
-                                   l_Color, LOADING_DRAW_Z_OFFSET);
+            l_Renderer->Draw2DQuad(l_BottomLeft, l_TopRight, l_UvTopLeft, l_UvBottomRight, l_Color, l_Color, LOADING_DRAW_Z_OFFSET);
 
             LevelData_GHdl l_LevelDataHdl = gScriptMgr->GetCurrentLevelData();
             if (l_LevelDataHdl.IsValid()) {
                 MaterialLib* l_LoadingLib = l_LevelDataHdl->GetMaterialLib(
-                    Name_Z(Name_Z::GetID("LOADING", 0)));
+                    Name_Z(Name_Z::GetID("LOADING", 0))
+                );
                 S32 l_TextId;
                 if (l_LoadingLib != NULL && (l_TextId = l_LoadingLib->m_TextId) >= 0) {
                     S32 l_FontId = gData.SystemDatas->GetFontId(fontName);
                     if (l_FontId >= 0) {
                         Fonts_Z* l_Font = gData.SystemDatas->GetFont(l_FontId);
                         U32 l_TextWidth = l_Font->GetSizeStr(TT(l_TextId));
-                        Float l_TextX =
-                            (Float)((S32)(0.5f * (Float)(l_SizeX - l_TextWidth)));
-                        Float l_TextY =
-                            (Float)((S32)(LOADING_SCREEN_TEXT_Y_RATIO * (Float)l_SizeY));
+                        Float l_TextX = (Float)((S32)(0.5f * (Float)(l_SizeX - l_TextWidth)));
+                        Float l_TextY = (Float)((S32)(LOADING_SCREEN_TEXT_Y_RATIO * (Float)l_SizeY));
                         FontParam_Z l_Params;
                         l_Params.m_ZOffset = LOADING_DRAW_Z_OFFSET;
                         l_Params.m_BottomColor.r = LOADING_DRAW_BRIGHT_INTENSITY;
