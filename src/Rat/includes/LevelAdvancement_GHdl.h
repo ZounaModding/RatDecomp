@@ -1,6 +1,7 @@
 #ifndef _LEVELADVANCEMENT_GHDL_H_
 #define _LEVELADVANCEMENT_GHDL_H_
 #include "Handle_Z.h"
+#include "Program_Z.h"
 
 class LevelAdvancement_G;
 

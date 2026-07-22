@@ -39,6 +39,10 @@ public:
         m_MaterialHdl = i_MaterialHdl;
     }
 
+    inline const Material_ZHdl& GetMaterial() const {
+        return m_MaterialHdl;
+    }
+
     Bool IsAnimated() {
         return !(m_PlayFlag & FL_MTL_NOT_ANIMATED);
     }

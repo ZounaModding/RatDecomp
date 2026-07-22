@@ -1,6 +1,7 @@
 #ifndef _LEVELDATA_GHDL_H_
 #define _LEVELDATA_GHDL_H_
 #include "Handle_Z.h"
+#include "Program_Z.h"
 
 class LevelData_G;
 

@@ -12,6 +12,7 @@ public:
     virtual void Init();
     void AddToStaticList();
     void RemoveFromStaticList();
+    static void ResetAll();
 
     // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
 

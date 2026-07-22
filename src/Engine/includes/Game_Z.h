@@ -17,6 +17,11 @@ Bool Cmd_RemoveSubLevel();
 Bool Cmd_LoadSubData();
 Bool Cmd_RemoveSubData();
 
+#define GAME_MESSAGE_TARGET_PLAYER_LOD_AGENTS (1 << 0)
+#define GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS (1 << 1)
+#define GAME_MESSAGE_TARGET_RTC_AGENTS (1 << 2)
+#define GAME_MESSAGE_TARGET_GAME_AGENTS (1 << 3)
+
 class Game_Z : public BaseObject_Z {
     friend class GameManager_Z;
 
@@ -45,6 +50,7 @@ public:
     void SetGamePlayerNb(S32 i_Nb, Bool i_IsMono, const Name_Z& i_CameraAgentClass);
     S32 GetSubId(S32 i_SubDataId, S32 i_Unk);
     void AddSubLevel(const SubWorld_ZHdl& i_SubWorldHdl, S32 i_SubLevelId);
+    void SendMessage(U32 i_Target, abc_message i_Message, Float i_Param);
 
     const World_ZHdl& GetWorld() const {
         return m_WorldHdl;

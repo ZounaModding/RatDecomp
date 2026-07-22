@@ -4,6 +4,8 @@
 #include "Agent_Z.h"
 #include "AnimatedAgent_Z.h"
 #include "DynPtrArray_Z.h"
+
+#define PLATFORM_ANIM_DURATION_DISABLED -1.0f
 // clang-format off
 
 BEGIN_AGENT_CLASS(ObjectAgent_G, BaseAgent_G, 17)
@@ -56,6 +58,8 @@ public:
 
     virtual ~PLTF02_GROUP() {}
     virtual void Init();
+
+    static Float animDefaultDuration;
 
     // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
 

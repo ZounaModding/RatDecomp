@@ -1,4 +1,0 @@
-#ifndef _BASEINGAMEDATAS_TEXT_G_H_
-#define _BASEINGAMEDATAS_TEXT_G_H_
-#include "Types_Z.h"
-#endif // _BASEINGAMEDATAS_TEXT_G_H_

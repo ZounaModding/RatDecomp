@@ -59,7 +59,6 @@ private:
     S32 m_Unk_0x8;
     void* m_Data;
     Bool m_Loaded;
-    U8 m_Pad_0x11[3];
 };
 
 enum GC_MC_CARD_STATUS {

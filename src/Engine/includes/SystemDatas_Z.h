@@ -19,6 +19,13 @@ public:
     void MarkHandles();
     Bool Minimize();
 
+    Fonts_Z* GetFont(S32 i_FontId) const {
+        if (i_FontId < 0 || i_FontId >= m_FontHdls.GetSize()) {
+            return NULL;
+        }
+        return m_FontHdls[i_FontId];
+    }
+
     inline LightData_ZHdl& GetDefaultLight() {
         return m_DefaultLightDataHdl;
     }

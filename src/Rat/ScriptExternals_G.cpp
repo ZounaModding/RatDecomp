@@ -1,3 +1,5 @@
-#include "ScriptManager_G.h"
+#include "LevelAgent_G.h"
 
-void InitGameScriptClasses() { }
+void InitGameScriptClasses() {
+    INIT_AGENT_CLASS(LevelAgent_G);
+}

@@ -1,6 +1,7 @@
 #ifndef _LOGICLEVEL_GHDL_H_
 #define _LOGICLEVEL_GHDL_H_
 #include "Handle_Z.h"
+#include "Program_Z.h"
 
 class LogicLevel_G;
 

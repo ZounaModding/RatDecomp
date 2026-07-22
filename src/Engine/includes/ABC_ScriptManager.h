@@ -105,6 +105,7 @@ public:
     StreamAgent_ZHdl* GetStreamAgent() { return &m_StreamAgentHdl; }
 
     Float GetTime() { return m_ScriptTime; }
+    Bool IsPaused() const { return m_IsPaused; }
 
     inline void EndPause() {
         m_IsPaused = FALSE;

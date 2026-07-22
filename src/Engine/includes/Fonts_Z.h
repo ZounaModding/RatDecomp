@@ -55,6 +55,32 @@ struct CharDesc_Z {
     Vec2f m_TexCoordBottomRight;
 };
 
+struct FontParam_Z {
+    FontParam_Z() {
+        m_BorderColor = COLOR_BLACK;
+        m_MarginMult2 = 1.0f;
+        m_HasBorder = FALSE;
+        m_BorderOffset = 1.0f;
+        m_BottomBoundY = -1.0f;
+        m_TopBoundY = -1.0f;
+        m_ZOffset = 1.0f;
+    }
+
+    Char* m_Text;
+    Bool m_HasBorder;
+    Float m_BorderOffset;
+    Color m_BorderColor;
+    Float m_TopBoundY;
+    Float m_BottomBoundY;
+    Vec2f m_BottomLeftPos;
+    Color m_BottomColor;
+    Color m_TopColor;
+    Float m_MarginMult1;
+    Float m_MarginMult2;
+    Float m_ZOffset;
+    Vec2f m_FinalBottomLeftPos;
+};
+
 class Fonts_Z : public ResourceObject_Z {
 public:
     Fonts_Z() { }
@@ -66,11 +92,15 @@ public:
     virtual Bool MarkHandles();
     Bool GetCharDesc(const Char* i_Char, CharDesc_Z& o_CharDesc);
     S32 GetSizeChar(const Char* i_Char);
+    U32 GetSizeStr(const Char* i_Text);
+    void DrawString(FontParam_Z& i_Params);
+    void DrawString(Char* i_Text, S32 i_X, S32 i_Y, const Color& i_TopColor, const Color& i_BottomColor,
+                    Float i_Scale, Float i_Z);
 
     static BaseObject_Z* NewObject() { return NewL_Z(161) Fonts_Z; }
 
 private:
-    Material_ZHdlDA m_MaterialDA; // $VIOLET: Fix the stupid and dumb Material_ZHdl issues you were having
+    Material_ZHdlDA m_MaterialDA;
     HashTableBase_Z<FontGlyphHash_Z> m_FontGlyphHashHT;
 };
 

@@ -12,6 +12,7 @@ public:
     virtual void Init();
     void AddToStaticList();
     void RemoveFromStaticList();
+    static void ResetAll();
 
     DECL_BHV(CheckRespawn);
     DECL_BHV(EnterTeleportZone);

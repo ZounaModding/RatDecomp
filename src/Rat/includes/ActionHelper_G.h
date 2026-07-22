@@ -3,6 +3,7 @@
 #include "Game_ZHdl.h"
 #include "Manipulator_Z.h"
 #include "Math_Z.h"
+#include "Node_ZHdl.h"
 
 class ActionHelperInfos;
 class SubParticlesActionHelper;
@@ -67,7 +68,11 @@ struct ActionHelperInfos {
 // $SABE: Action helper "manager"
 class ActionHelper_G : public ManipulatorSceneDraw_Z {
 public:
+    static BaseObject_Z* NewObject() { return NewL_Z(123) ActionHelper_G; }
+
     Bool Minimize();
+    void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
+    void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
 
 private:
     virtual void Init();

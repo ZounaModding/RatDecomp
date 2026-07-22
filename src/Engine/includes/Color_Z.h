@@ -29,6 +29,8 @@ struct Color {
     Float a;
 };
 
+Extern_Z const Color COLOR_BLACK;
+
 struct ColorU8 {
     ColorU8() { }
 

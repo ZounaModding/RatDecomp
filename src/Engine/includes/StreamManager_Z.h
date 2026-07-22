@@ -94,7 +94,7 @@ public:
     Bool Read(void* i_Buffer, S32 i_StartOffset, S32 i_BytesToRead, BaseStream_Z* i_Stream, S32 i_UserDefined);
     Bool Close(BaseStream_Z* i_Stream, Bool i_CloseAllReadsForFile);
 
-    S32 GetLastError() {
+    U32 GetLastError() {
         return m_LastError;
     }
 

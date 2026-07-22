@@ -48,8 +48,8 @@ void Friends_G::RemoveFromStaticList() {
     for (S32 i = 0; i < instances.GetSize(); i++) {
         if (instances[i] == this) {
             instances.Remove(i);
-            instances.Minimize();
-            return;
+            break;
         }
     }
+    instances.Minimize();
 }
