@@ -4,7 +4,8 @@
 
 class IT_Condition : public Manipulator_Z {
 public:
-    virtual ~IT_Condition();
+    virtual ~IT_Condition() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

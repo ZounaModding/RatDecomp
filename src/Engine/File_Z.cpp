@@ -134,6 +134,10 @@ U32 File_Z::GetSize() {
     return m_Size;
 }
 
+Bool File_Z::ReadString(Char* o_Str) {
+    return FALSE;
+}
+
 Bool File_Z::ReadLine(Char* o_Line) {
     if (IsEOF()) {
         return FALSE;
@@ -182,4 +186,8 @@ Bool File_Z::GotoNextString() {
         break;
     }
     return !IsEOF();
+}
+
+Bool File_Z::DoFileExists(const Char* i_FilePath) {
+    return FALSE;
 }

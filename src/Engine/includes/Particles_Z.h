@@ -10,7 +10,9 @@ class ParticlesData_Z;
 class Particles_Z : public Object_Z {
 public:
     Particles_Z();
-    virtual ~Particles_Z();
+
+    virtual ~Particles_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();
@@ -42,7 +44,9 @@ protected:
 class ParticlesData_Z : public ObjectDatas_Z {
 public:
     ParticlesData_Z();
-    virtual ~ParticlesData_Z();
+
+    virtual ~ParticlesData_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
     virtual void Draw(DrawInfo_Z& i_DrawInfo);

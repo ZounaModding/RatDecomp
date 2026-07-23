@@ -12,7 +12,6 @@ typedef DynArray_Z<SeadEntry_Z, 32, FALSE> SeadEntry_ZDA;
 class SeadHandle_Z {
 public:
     SeadHandle_Z();
-    ~SeadHandle_Z();
 
     void GetSize(Vec2f& o_Min, Vec2f& o_Max);
 

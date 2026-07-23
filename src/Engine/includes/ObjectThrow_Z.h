@@ -10,7 +10,8 @@ class ObjectMoveSphereColl_Z;
 
 class ObjectThrow_Z : public ObjectMove_Z {
 public:
-    virtual ~ObjectThrow_Z();
+    virtual ~ObjectThrow_Z() { }
+
     virtual void Init();
 
     virtual void Reset();
@@ -25,16 +26,25 @@ public:
     virtual void SetNodeObject(const Node_ZHdl& i_NodeHdl, S32 i_Index);
     virtual void FatherUnLinked(S32 i_Index);
     virtual void Abort();
-    virtual void GetSLidingSlopeAngle();
-    virtual void GetSLidingMaxSlopeAngle();
-    virtual void GetReflexLimitAngle();
-    virtual void GetHCollMinAngle();
+
+    virtual void GetSLidingSlopeAngle() { }
+
+    virtual void GetSLidingMaxSlopeAngle() { }
+
+    virtual void GetReflexLimitAngle() { }
+
+    virtual void GetHCollMinAngle() { }
+
     virtual void UnLinkThrow(ObjectMoveData_Z* i_MoveData);
     virtual void EndLiveTimeObject();
-    virtual void Bounce(const ColLineResult_Z& i_Result);
+
+    virtual void Bounce(const ColLineResult_Z& i_Result) { }
+
     virtual void UpdateCollision(const ColLineResult_Z& i_Result, ObjectMoveSphereColl_Z& io_SphereColl, Float i_DeltaTime, S32 i_Index);
-    virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos);
-    virtual void SetNodeDepl(const Vec3f& i_Displacement, Float i_DeltaTime);
+
+    virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos) { }
+
+    virtual void SetNodeDepl(const Vec3f& i_Displacement, Float i_DeltaTime) { }
 
     static BaseObject_Z* NewObject() { return NewL_Z(140) ObjectThrow_Z; }
 

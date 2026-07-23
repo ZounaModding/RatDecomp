@@ -9,13 +9,17 @@ class SequenceAnim_ZHdl;
 class PlayAnim_Z : public Manipulator_Z {
 public:
     virtual void Init();
-    virtual ~PlayAnim_Z();
+
+    virtual ~PlayAnim_Z() { }
+
     virtual Bool MarkHandles();
     virtual void Reset();
     virtual void ActionOnActivate();
     virtual void ActionOnDeactivate();
     virtual void Update(Float i_DeltaTime);
-    virtual void SetSequenceManager(const SequenceAnim_ZHdl& a1);
+
+    virtual void SetSequenceManager(const SequenceAnim_ZHdl& a1) { }
+
     virtual void AddConicForce(const Vec3f& a1, const Vec3f& a2, Float a3, Float a4, Float a5, Float a6, Float a7);
     virtual void AddSphericForce(const Sphere_Z& a1, Float a2, Float a3);
 

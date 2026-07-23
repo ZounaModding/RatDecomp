@@ -36,6 +36,49 @@ Node_Z::Node_Z()
     SetWorldMatrixPtr();
 }
 
+Node_Z::~Node_Z() {
+}
+
+Bool Node_Z::MarkHandles() {
+    return FALSE;
+}
+
+Node_ZHdl& Node_Z::GetRoot() {
+}
+
+void Node_Z::AddSon(const Node_ZHdl& i_Son, Bool i_IsWorldRelative, Bool i_Changed) {
+}
+
+void Node_Z::Remove(Bool a1, Bool a2) {
+}
+
+void Node_Z::Update() {
+}
+
+void Node_Z::Changed() {
+}
+
 void Node_Z::SetTranslation(const Vec3f& i_Translation) {
     m_Translation = i_Translation;
+}
+
+void Node_Z::SetRotation(const Quat& i_Rotation) {
+}
+
+void Node_Z::SetScale(Float i_Scale) {
+}
+
+void Node_Z::SetFromWorldTransRot(const Vec3f& i_Trans, const Quat& i_Rot) {
+}
+
+void Node_Z::SetFromWorldTrans(const Vec3f& i_Trans) {
+}
+
+void Node_Z::SetFromWorldTransScale(const Vec3f& i_Trans, Float i_Scale) {
+}
+
+void Node_Z::SetFromWorldScale(Float i_Scale) {
+}
+
+void Node_Z::SetFromWorldTransRotScale(const Vec3f& i_Trans, const Quat& i_Rot, const Float& i_Scale) {
 }

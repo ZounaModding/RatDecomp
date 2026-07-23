@@ -43,39 +43,53 @@ public:
 
     virtual void NoteTrackInterpMessage(StaticArray_Z<Param_Z, 16, 1, 1>&, Message_Z&) { }
 
-    virtual void NoteTrackGlobalFlag(Message_Z& a1);
+    virtual void NoteTrackGlobalFlag(Message_Z& a1) { }
 
     virtual U32 MateriaInterpColFlag(const Char* a1) { return 0; }
 
-    virtual U32 MateriaInterpRdrFlag(const Char* a1);
+    virtual U32 MateriaInterpRdrFlag(const Char* a1) {
+        return 0;
+    }
 
     virtual U32 MateriaInterpObjFlag(const Char* a1) { return 0; }
 
     virtual U32 MateriaRemoveColFlag(const Char* a1) { return 0; }
 
-    virtual void MateriaRemoveRdrFlag(const Char* a1);
-    virtual void MateriaRemoveObjFlag(const Char* a1);
-    virtual void InterGraphFlag(const Char* a1);
-    virtual void InterGraphFlag(U64 a1);
-    virtual void GameSet(const Game_ZHdl& i_GameHdl);
-    virtual void GameAgentSet(const Game_ZHdl& i_GameHdl);
+    virtual void MateriaRemoveRdrFlag(const Char* a1) { }
+
+    virtual void MateriaRemoveObjFlag(const Char* a1) { }
+
+    virtual void InterGraphFlag(const Char* a1) { }
+
+    virtual void InterGraphFlag(U64 a1) { }
+
+    virtual void GameSet(const Game_ZHdl& i_GameHdl) { }
+
+    virtual void GameAgentSet(const Game_ZHdl& i_GameHdl) { }
+
     virtual void RemoveGame(const Game_ZHdl& i_GameHdl);
     virtual void GameRemoved();
-    virtual void GameReseted(const Game_ZHdl& i_GameHdl);
-    virtual void ActivateGame(const Game_ZHdl& i_GameHdl);
-    virtual void ViewportDone(const Game_ZHdl& i_GameHdl);
-    virtual void WorldAdded(const World_ZHdl& a1);
+
+    virtual void GameReseted(const Game_ZHdl& i_GameHdl) { }
+
+    virtual void ActivateGame(const Game_ZHdl& i_GameHdl) { }
+
+    virtual void ViewportDone(const Game_ZHdl& i_GameHdl) { }
+
+    virtual void WorldAdded(const World_ZHdl& a1) { }
 
     virtual void UpdateIndependentResources(const World_ZHdl& a1) { }
 
     virtual void InterpKeyframeMsg(const RegMessage_Z& a1) { };
-    virtual void StreamRestored(const Node_ZHdl& a1);
+
+    virtual void StreamRestored(const Node_ZHdl& a1) { }
 
     virtual void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2) { }
 
     virtual void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& a2) { }
 
-    virtual void StreamDone(const Game_ZHdl& i_GameHdl, S32 a2);
+    virtual void StreamDone(const Game_ZHdl& i_GameHdl, S32 a2) { }
+
     virtual void Update(Float i_DeltaTime);
     virtual Bool Minimize();
 

@@ -71,3 +71,24 @@ S32 Fonts_Z::GetSizeChar(const Char* i_Char) {
     }
     return (S32)((l_Result->m_TexCoordBottomRight.x - l_Result->m_TexCoordTopLeft.x));
 }
+
+U32 Fonts_Z::GetSizeStr(const Char* i_Text) {
+    return 0;
+}
+
+void Fonts_Z::Load(void** i_Data) {
+}
+
+void Fonts_Z::EndLoad() {
+}
+
+void Fonts_Z::AfterEndLoad() {
+}
+
+Bool LoadFont() {
+    return FALSE;
+}
+
+Bool RemoveFont() {
+    return FALSE;
+}

@@ -22,3 +22,34 @@ RtcAgent_Z::RtcAgent_Z() {
     m_ViewportId = NONE_VIEWPORT;
     EnableFlag(FL_AGENT_RTC);
 }
+
+void RtcAgent_Z::Init() {
+}
+
+void RtcAgent_Z::Reset() {
+}
+
+void RtcAgent_Z::Suspend() {
+}
+
+void RtcAgent_Z::Restore() {
+}
+
+void RtcAgent_Z::RegisterWithGame(Game_ZHdl& a1) {
+}
+
+void RtcAgent_Z::UnRegisterFromGame(Game_ZHdl& a1) {
+}
+
+Bool RtcAgent_Z::MarkHandles() {
+    return FALSE;
+}
+
+void RtcAgent_Z::Start(S32 a1) {
+}
+
+void RtcAgent_Z::End() {
+}
+
+void RtcAgent_Z::Shut() {
+}

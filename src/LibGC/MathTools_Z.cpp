@@ -109,12 +109,6 @@ Float O_Tan(Float i_Angle) {
     return l_Sin / l_Cos;
 }
 
-void O_SinCos(Vec2f& o_Result, Float i_Angle) {
-    Float l_SinAngle = i_Angle - 1.5707963267948966;
-    o_Result.x = O_SinCore(l_SinAngle);
-    o_Result.y = O_CosCore(i_Angle);
-}
-
 Float O_ACos(Float i_Value) {
     Float l_ClampedValue = Clamp<Float>(i_Value, -1.0f, 1.0f);
     Float l_Delta = 1.0f - (Float)Abs(l_ClampedValue);
@@ -142,4 +136,10 @@ Float O_ACos(Float i_Value) {
         l_TableValue = Pi - l_TableValue;
     }
     return l_TableValue;
+}
+
+void O_SinCos(Vec2f& o_Result, Float i_Angle) {
+    Float l_SinAngle = i_Angle - 1.5707963267948966;
+    o_Result.x = O_SinCore(l_SinAngle);
+    o_Result.y = O_CosCore(i_Angle);
 }

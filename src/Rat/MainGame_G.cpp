@@ -35,6 +35,11 @@ void GameProgramInit() {
     l_ScriptManager->GetCTFGameMgr().GetInputDef()->InitInputs();
 }
 
+// TODO: Match properly
+void GetFlagsFromGame() {
+    gData.m_GameFlag |= FL_GAME_UNK_0x800 | FL_GAME_UNK_0x1000 | FL_GAME_UNK_0x2000;
+}
+
 void RegisterGameClasses() {
     REGISTER_CLASS("CameraUser_Z", "Manipulator_Z", CameraUser_Z::NewObject);
 

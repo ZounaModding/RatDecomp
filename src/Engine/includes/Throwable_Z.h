@@ -13,17 +13,17 @@ public:
     virtual ~Throwable_Z() {}
     virtual void Init();
     virtual void Reset();
-    virtual void GetCollisionMessageContactActive(int& a1);
-    virtual void GetCollisionMessageContactPassive(int& a1);
-    virtual void SetCollisionMessageContactActive(int a1);
-    virtual void SetCollisionMessageContactPassive(int a1);
+    virtual Bool GetCollisionMessageContactActive(abc_message& o_Msg);
+    virtual Bool GetCollisionMessageContactPassive(abc_message& o_Msg);
+    virtual void SetCollisionMessageContactActive(abc_message i_Msg) { } 
+    virtual void SetCollisionMessageContactPassive(abc_message i_Msg) { } 
 
     DECL_BHV(CheckThrown);
 
     virtual void ResetCollisionMessages();
-    virtual void UnLinked();
-    virtual void ThrowBegin();
-    virtual void ThrowEnd();
+    virtual void UnLinked() { } 
+    virtual void ThrowBegin() { } 
+    virtual void ThrowEnd() { } 
     virtual void GetThrowParameters(ObjectMoveData_Z* a1);
 
     ObjectThrow_ZHdl GetObjectThrow() {

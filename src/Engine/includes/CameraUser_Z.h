@@ -5,8 +5,11 @@
 class CameraUser_Z : public Manipulator_Z {
 public:
     virtual void Init();
-    virtual ~CameraUser_Z();
-    virtual void Update(Float i_DeltaTime);
+
+    virtual ~CameraUser_Z() { }
+
+    virtual void Update(Float i_DeltaTime) { }
+
     virtual void Wheel(Float i_DeltaTime);
 
     static BaseObject_Z* NewObject() {

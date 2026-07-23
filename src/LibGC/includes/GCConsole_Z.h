@@ -23,12 +23,15 @@ private:
 public:
     GCConsole_Z();
 
-    virtual ~GCConsole_Z();
+    virtual ~GCConsole_Z() { }
+
     virtual Bool InitConsole();
     virtual void CloseConsole();
     virtual void Update(Float a1);
     virtual void Flush();
-    virtual void DisplayStatus(U32 a1, const Char* a2);
+
+    virtual void DisplayStatus(U32 a1, const Char* a2) { }
+
     virtual void SaveMessage(const Char* a1);
 
     void InitConsoleSystem();

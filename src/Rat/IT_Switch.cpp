@@ -30,10 +30,11 @@ void IT_Switch::RemoveFromStaticList() {
 }
 
 IT_Switch::IT_Switch() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Switch::IT_Switch)
 }
 
 void IT_Switch::Init() {
     AnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Switch::Init)
+}
+
+void IT_Switch::ResetAll() {
 }

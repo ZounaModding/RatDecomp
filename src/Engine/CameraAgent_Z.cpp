@@ -31,3 +31,28 @@ CameraAgent_Z::CameraAgent_Z() {
     m_Flags |= FL_AGENT_CAMERA;
     m_ViewportId = NONE_VIEWPORT;
 }
+
+void CameraAgent_Z::Init() {
+}
+
+void CameraAgent_Z::Reset() {
+}
+
+void CameraAgent_Z::Suspend() {
+}
+
+void CameraAgent_Z::Restore() {
+}
+
+Bool CameraAgent_Z::MarkHandles() {
+    return FALSE;
+}
+
+void CameraAgent_Z::SetViewport(S32 m_ViewportId) {
+}
+
+void CameraAgent_Z::RegisterWithGame(Game_ZHdl& a1) {
+}
+
+void CameraAgent_Z::UnRegisterFromGame(Game_ZHdl& a1) {
+}

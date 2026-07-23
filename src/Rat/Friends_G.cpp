@@ -10,26 +10,7 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 Friends_G::Friends_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (Friends_G::Friends_G)
 }
-
-void Friends_G::Init() {
-    Creatures_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (Friends_G::Init)
-}
-
-// clang-format off
-
-BEHAVIOR(Friends_G,CheckContextualSound)
-    CATEGORY(cat_default)
-BEGIN_BEHAVIOR
-    CONDITION
-        Message(msg_contextual_sound_1)
-    ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(Friends_G::CheckContextualSound)
-END_BEHAVIOR
-
-// clang-format on
 
 DynPtrArray_Z<Friends_G*> Friends_G::instances;
 
@@ -52,4 +33,28 @@ void Friends_G::RemoveFromStaticList() {
         }
     }
     instances.Minimize();
+    FIXDEBUGINLINING_Z();
+    FIXDEBUGINLINING_Z();
+    FIXDEBUGINLINING_Z();
 }
+
+Friends_G::~Friends_G() {
+    RemoveFromStaticList();
+}
+
+void Friends_G::Init() {
+    Creatures_G::Init();
+}
+
+// clang-format off
+
+BEHAVIOR(Friends_G,CheckContextualSound)
+    CATEGORY(cat_default)
+BEGIN_BEHAVIOR
+    CONDITION
+        Message(msg_contextual_sound_1)
+    ACTION
+        ;
+END_BEHAVIOR
+
+// clang-format on

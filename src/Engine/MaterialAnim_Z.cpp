@@ -18,6 +18,9 @@ Bool MaterialAnim_Z::MarkHandles() {
     return TRUE;
 }
 
+void MaterialAnim_Z::Clone(MaterialAnim_ZHdl& i_MaterialAnimHdl) {
+}
+
 void MaterialAnim_Z::Update(Float i_DeltaTime) {
     if (m_PlayFlag & FL_MTL_PLAY) {
         m_CurTime += i_DeltaTime;
@@ -39,4 +42,7 @@ void MaterialAnim_Z::Update(Float i_DeltaTime) {
             l_MatUser->Update(l_Material);
         }
     }
+}
+
+void MaterialAnim_Z::SetAnimTime(Float i_Time) {
 }

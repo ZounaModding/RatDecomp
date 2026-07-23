@@ -2,9 +2,12 @@
 #define _SPLINEZONE_Z_H_
 #include "Object_Z.h"
 
+class Bitmap_Z;
+
 class SplineZone_Z : public Object_Z {
 public:
-    virtual ~SplineZone_Z();
+    virtual ~SplineZone_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clean();
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);

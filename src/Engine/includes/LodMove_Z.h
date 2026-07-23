@@ -4,7 +4,8 @@
 
 class LodMove_Z : public ObjectThrow_Z {
 public:
-    virtual ~LodMove_Z();
+    virtual ~LodMove_Z() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
@@ -20,20 +21,34 @@ public:
     virtual void SetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot, S32 i_Index);
     virtual void EndCollisionNode(bool i_Abort, S32 i_Index);
     virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos);
-    virtual void GetCameraId();
-    virtual void SetCameraAgent(Agent_ZHdl& i_AgentHdl);
-    virtual void SetCameraDirFromZone(Vec3f& i_Dir);
-    virtual void SetCameraPos(Vec3f& i_Pos);
-    virtual void GetCameraDirFromZone();
-    virtual void GetCameraPos();
-    virtual void GetCameraNodeDisable();
-    virtual void SetCameraNodeDisable(Node_ZHdl& i_NodeHdl);
+
+    virtual void GetCameraId() { }
+
+    virtual void SetCameraAgent(Agent_ZHdl& i_AgentHdl) { }
+
+    virtual void SetCameraDirFromZone(Vec3f& i_Dir) { }
+
+    virtual void SetCameraPos(Vec3f& i_Pos) { }
+
+    virtual void GetCameraDirFromZone() { }
+
+    virtual void GetCameraPos() { }
+
+    virtual void GetCameraNodeDisable() { }
+
+    virtual void SetCameraNodeDisable(Node_ZHdl& i_NodeHdl) { }
+
     virtual void UpdateCollisionCling(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, Vec3f& io_NewPos, Vec3f& io_Dir, Vec3f& io_Orient, Float i_DeltaTime);
-    virtual void ClingEdgeBack();
-    virtual void ClingEdgeAddY();
-    virtual void ClingEdgeRayAdd();
-    virtual void ClingEdgeLenMin();
-    virtual void ClingEdgeLandDist();
+
+    virtual void ClingEdgeBack() { }
+
+    virtual void ClingEdgeAddY() { }
+
+    virtual void ClingEdgeRayAdd() { }
+
+    virtual void ClingEdgeLenMin() { }
+
+    virtual void ClingEdgeLandDist() { }
 
     static BaseObject_Z* NewObject() { return NewL_Z(138) LodMove_Z; }
 

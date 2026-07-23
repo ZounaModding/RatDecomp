@@ -8,13 +8,11 @@ END_INIT_AGENT_CLASS
 
 // clang-format on
 
-IT_Break::IT_Break() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Break::IT_Break)
-}
-
 void IT_Break::Init() {
     Agent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Break::Init)
+}
+
+void IT_Break::ResetAll() {
 }
 
 DynPtrArray_Z<IT_Break*> IT_Break::instances;
@@ -37,4 +35,7 @@ void IT_Break::RemoveFromStaticList() {
         }
     }
     instances.Minimize();
+}
+
+IT_Break::IT_Break() {
 }

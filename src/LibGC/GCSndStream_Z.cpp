@@ -8,6 +8,10 @@
 #include <dolphin/os/OSCache.h>
 #include <mix.h>
 
+S32 GCSndStream_Z::Stream(S32 i_Size, S32 i_Offset) {
+    return 0;
+}
+
 void GCSndStream_Z::Opened(S32 i_Error, S32 i_Size, S32 i_Offset) {
     if (!i_Error) {
         StreamSwap();

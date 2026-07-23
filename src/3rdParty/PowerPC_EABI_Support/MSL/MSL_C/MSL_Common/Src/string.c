@@ -244,3 +244,64 @@ char* strrchr(const char* str, int c) {
 
     return chr ? NULL : (char*)p;
 }
+
+char* strpbrk(const char* str, const char* c) {
+    unsigned char map[32] = {0};
+    const unsigned char* p = (const unsigned char*)c - 1;
+    int ch;
+
+    while (ch = *++p) {
+        map[(unsigned char)ch >> 3] |= 1 << (ch & 7);
+    }
+
+    str--;
+
+    while (ch = *(const unsigned char*)++str) {
+        if (map[(unsigned char)ch >> 3] & (1 << (ch & 7))) {
+            return (char*)str;
+        }
+    }
+
+    return 0;
+}
+
+// TODO: Fix regswaps
+char* strstr(const char* str, const char* substr) {
+    const unsigned char* substrU;
+    const unsigned char* p;
+    unsigned long first;
+    const unsigned char* q;
+    const unsigned char* r;
+    unsigned long c1;
+    unsigned long c2;
+
+    p = (const unsigned char*)str - 1;
+    substrU = (const unsigned char*)substr;
+
+    if (!substr) {
+        return (char*)str;
+    }
+
+    first = *substrU;
+
+    if (!first) {
+        return (char*)str;
+    }
+
+    while (c1 = *++p) {
+        if (c1 == first) {
+            q = p - 1;
+            r = substrU - 1;
+
+            do {
+                c1 = *++q;
+            } while (c1 == (c2 = *++r) && c1);
+
+            if (!c2) {
+                return (char*)p;
+            }
+        }
+    }
+
+    return 0;
+}

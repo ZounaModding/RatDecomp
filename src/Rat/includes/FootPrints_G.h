@@ -4,7 +4,8 @@
 
 class FootPrints_G : public ManipulatorSceneDraw_Z {
 public:
-    virtual ~FootPrints_G();
+    virtual ~FootPrints_G() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

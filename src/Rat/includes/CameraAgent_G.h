@@ -11,9 +11,7 @@ public:
     virtual void Init();
 
     DECL_BHV(CameraAgentQuartier);
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct CameraAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

@@ -10,11 +10,7 @@ public:
 
     virtual ~LightVolAnimatedAgent_Z() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct LightVolAnimatedAgent_Z` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(GangAgent_G, LightVolAnimatedAgent_Z, 24)
@@ -30,7 +26,6 @@ public:
 
 private:
     static DynPtrArray_Z<GangAgent_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct GangAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(RepulseAnimatedAgent_G, LightVolAnimatedAgent_Z, 54)
@@ -42,11 +37,8 @@ public:
     void AddToStaticList();
     void RemoveFromStaticList();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<RepulseAnimatedAgent_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct RepulseAnimatedAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

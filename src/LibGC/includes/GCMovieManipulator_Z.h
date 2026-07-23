@@ -8,7 +8,9 @@ class GCMovieManipulator_Z : public MovieManipulator_Z {
 
 public:
     GCMovieManipulator_Z();
-    virtual ~GCMovieManipulator_Z();
+
+    virtual ~GCMovieManipulator_Z() { }
+
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
     virtual void Open(const Char* a1, U32 a2);
     virtual void Stop(bool a1);

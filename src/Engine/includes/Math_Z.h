@@ -649,7 +649,6 @@ struct Mat4x4 {
     }
 
     Mat4x4(const Mat3x3& _Mat);
-    Mat4x4(const Mat4x4& _Mat);
 
     const Mat3x3& m3() const {
         return *(Mat3x3*)m;

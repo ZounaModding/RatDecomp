@@ -10,6 +10,12 @@ MaterialManager_Z::MaterialManager_Z() {
     RegisterMaterialUser(FL_MTL_CODE_EAU_DYNAMIC, WaterHeightMap_Z::NewObject);
 }
 
+MaterialManager_Z::~MaterialManager_Z() {
+}
+
+void MaterialManager_Z::MarkHandles() {
+}
+
 void MaterialManager_Z::Update(Float i_DeltaTime) {
     if (m_IsPaused) {
         return;

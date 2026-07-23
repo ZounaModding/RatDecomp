@@ -13,11 +13,8 @@ public:
     void AddToStaticList();
     void RemoveFromStaticList();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<V_RAFT*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct V_RAFT` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(V_Book, V_RAFT, 65)
@@ -26,11 +23,7 @@ public:
 
     virtual ~V_Book() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct V_Book` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(V_RAFTM, V_RAFT, 93)
@@ -39,11 +32,7 @@ public:
 
     virtual ~V_RAFTM() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct V_RAFTM` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

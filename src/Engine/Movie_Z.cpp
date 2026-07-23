@@ -23,6 +23,12 @@ Bool Movie_Z::Init() {
     return TRUE;
 }
 
+void Movie_Z::Shut() {
+}
+
+void Movie_Z::Play(const Char* i_FilePath, U32 i_Flags) {
+}
+
 Bool Movie_Z::IsPlaying() {
     for (S32 i = 0; i < m_MovieManipHdls.GetSize(); i++) {
         if (m_MovieManipHdls[i].IsValid()) {
@@ -43,4 +49,20 @@ U32 Movie_Z::GetLastError() {
         }
     }
     return MOVIE_ERROR_NONE;
+}
+
+void Movie_Z::Pause(Bool i_Pause) {
+}
+
+void Movie_Z::Skip(Float i_SkipTime) {
+}
+
+void Movie_Z::MarkHandles() {
+}
+
+void Movie_Z::RemoveManip(const MovieManipHdl& i_ManipHdl) {
+}
+
+Bool Cmd_PlayMovie() {
+    return FALSE;
 }

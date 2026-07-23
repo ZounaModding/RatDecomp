@@ -25,7 +25,8 @@ class RtcPlayer_Z : public ManipulatorDraw_Z {
 public:
     RtcPlayer_Z();
 
-    virtual ~RtcPlayer_Z();
+    virtual ~RtcPlayer_Z() { }
+
     virtual void Init();
     virtual Bool MarkHandles();
     virtual void Reset();

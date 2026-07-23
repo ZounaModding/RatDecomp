@@ -19,7 +19,8 @@ public:
     virtual void AfterEndLoad();
     virtual void LoadDone();
     virtual Bool MarkHandles();
-    virtual void Draw(DrawInfo_Z& i_DrawInfo);
+
+    virtual void Draw(DrawInfo_Z& i_DrawInfo) { }
 
     virtual void* GetUser3D(U32 i_Idx) {
         return NULL;

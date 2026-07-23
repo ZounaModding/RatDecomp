@@ -7,7 +7,10 @@ Mesh_Z::Mesh_Z() {
     EnableFlag(FL_IS_MESH_UNK_0x100000 | FL_IS_MESH_UNK_0x200000);
 }
 
-Bool MeshData_Z::IsBSphere(Node_Z* i_Node, Frustrum_Z& i_Frustrum, DrawInfo_Z& i_DrawInfo) {
+Mesh_Z::~Mesh_Z() {
+}
+
+Bool Mesh_Z::MarkHandles() {
     return FALSE;
 }
 
@@ -17,4 +20,8 @@ void MeshData_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_Object
     MeshData_Z* l_Data = (MeshData_Z*)GETPTR(o_ObjectDatasHdl);
     l_Data->m_Flag = m_Flag;
     l_Data->m_MeshVolume.Clone(m_MeshVolume);
+}
+
+Bool MeshData_Z::IsBSphere(Node_Z* i_Node, Frustrum_Z& i_Frustrum, DrawInfo_Z& i_DrawInfo) {
+    return FALSE;
 }

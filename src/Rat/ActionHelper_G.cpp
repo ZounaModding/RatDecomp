@@ -18,3 +18,15 @@ Bool ActionHelper_G::Minimize() {
     m_ActionHelperDA.Minimize();
     return TRUE;
 }
+
+void ActionHelper_G::Update(Float i_DeltaTime) {
+}
+
+void ActionHelper_G::Draw(const DrawInfo_Z& i_DrawInfo) {
+}
+
+void ActionHelper_G::StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl) {
+}
+
+void ActionHelper_G::StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl) {
+}

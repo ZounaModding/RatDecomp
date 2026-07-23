@@ -1,5 +1,8 @@
 #include "SurfaceGC_Z.h"
 
+SurfaceGC_Z::~SurfaceGC_Z() {
+}
+
 void SurfaceGC_Z::Load(void** i_Data) {
     Surface_Z::Load(i_Data);
     S32 l_NbPatch = m_PatchTab.GetSize();

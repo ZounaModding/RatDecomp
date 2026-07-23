@@ -15,7 +15,10 @@ public:
     DECL_BHV(BhvToMenu);
 
 private:
-    // TODO: fields - see decomp_dump/types.h `struct LevelAgent_G` for Ghidra's inferred layout
+    
+
+public:
+    void InitClass();
 END_AGENT_CLASS
 
 // clang-format on

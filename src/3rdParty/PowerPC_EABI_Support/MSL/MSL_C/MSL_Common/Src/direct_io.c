@@ -119,3 +119,8 @@ size_t __fwrite(const void* buffer, size_t size, size_t count, FILE* stream) {
 
     return ((bytes_written + size - 1) / size);
 }
+
+// TODO: Match
+size_t fread(void* buffer, size_t size, size_t count, FILE* stream) {
+    return 0;
+}

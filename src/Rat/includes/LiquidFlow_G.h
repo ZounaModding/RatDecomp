@@ -4,7 +4,8 @@
 
 class LiquidFlow_G : public ManipulatorSceneDraw_Z {
 public:
-    virtual ~LiquidFlow_G();
+    virtual ~LiquidFlow_G() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

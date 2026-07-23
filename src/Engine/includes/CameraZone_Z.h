@@ -4,7 +4,8 @@
 
 class CameraZone_Z : public SplineZone_Z {
 public:
-    virtual ~CameraZone_Z();
+    virtual ~CameraZone_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clean();
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);

@@ -39,12 +39,10 @@ IT_BallWalk_G::~IT_BallWalk_G() {
 }
 
 IT_BallWalk_G::IT_BallWalk_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_BallWalk_G::IT_BallWalk_G)
 }
 
 void IT_BallWalk_G::Init() {
     MovingAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_BallWalk_G::Init)
 }
 
 // clang-format off
@@ -55,7 +53,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_respawn)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(IT_BallWalk_G::CheckRespawn)
+        ;
 END_BEHAVIOR
 
 // clang-format on

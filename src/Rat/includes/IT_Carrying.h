@@ -19,7 +19,6 @@ public:
 
 private:
     static DynPtrArray_Z<IT_Carrying*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct IT_Carrying` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

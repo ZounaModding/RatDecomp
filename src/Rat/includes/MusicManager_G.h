@@ -4,7 +4,8 @@
 
 class MusicManager_G : public Manipulator_Z {
 public:
-    virtual ~MusicManager_G();
+    virtual ~MusicManager_G() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

@@ -15,3 +15,6 @@ BoneNode_Z::~BoneNode_Z() {
         SetInverseWorldMatrixId(0);
     }
 }
+
+void BoneNode_Z::MarkHandles() {
+}

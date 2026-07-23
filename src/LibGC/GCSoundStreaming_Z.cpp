@@ -15,6 +15,12 @@ void GCSoundManager_Z::CloseStreamBF() {
     m_SoundBF.Close();
 }
 
+void GCSoundManager_Z::LoadStreamSound(const Char* a1) {
+}
+
+void GCSoundManager_Z::PlayStreamSound(const Char* a1, U32 a2, const Node_ZHdl& a3, BoneNode_Z* a4, ABC_AgentHdl a5, int a6) {
+}
+
 void GCSoundManager_Z::StopStreamSound(const Char* i_Name) {
     U32 l_StreamType = Name_Z::GetID(".SGC");
     for (S32 i = 0; i < SND_MGR_MAX_TRACKS; i++) {
@@ -22,6 +28,25 @@ void GCSoundManager_Z::StopStreamSound(const Char* i_Name) {
             StopSound(i);
         }
     }
+}
+
+void GCSoundManager_Z::IsStreamPlaying(const Char* a1) {
+}
+
+void GCSoundManager_Z::IsAnyStreamPlaying() {
+}
+
+void GCSoundManager_Z::GetStreamSoundDuration(const Char* a1) {
+}
+
+void GCSoundManager_Z::GetLipSyncFromStream(const Node_ZHdl& a1) {
+}
+
+void GCSoundManager_Z::GetTrackTime(S32 a1) {
+}
+
+S32 GCSoundManager_Z::LoadMusic(const Char* a1) {
+    return 0;
 }
 
 void GCSoundManager_Z::StopMusic(Float i_FadeOutTime) {
@@ -37,6 +62,9 @@ void GCSoundManager_Z::StopMusic(Float i_FadeOutTime) {
 
 Bool GCSoundManager_Z::IsMusicPlaying() {
     return m_MusicTrackIdx != -1;
+}
+
+void GCSoundManager_Z::GetMusicTime() {
 }
 
 void GCSoundManager_Z::PlayMusic(const Char* i_FilePath, U32 i_Flag, Float i_StopTime, Float i_FadeInTime) {

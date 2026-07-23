@@ -215,6 +215,10 @@ Bool ConsoleInterp_Z::PushCommand(const Char* i_CommandLine, Bool i_TopOfStack) 
     }
 }
 
+Bool ConsoleInterp_Z::PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& i_CommandString) {
+    return FALSE;
+}
+
 // TODO: Finish matching
 Bool FileInterp_Z::ReplaceParams(Char* i_CommandString, String_Z<CONSOLE_STATIC_COMMAND_LEN_MAX>& o_ReplacedCommandString) {
     String_Z<80> l_Temp;

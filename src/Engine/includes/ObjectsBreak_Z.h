@@ -10,7 +10,9 @@ public:
     }
 
     virtual void Init();
-    virtual ~ObjectsBreak_Z();
+
+    virtual ~ObjectsBreak_Z() { }
+
     virtual void Reset();
     virtual void Update(Float a1);
     virtual void Update(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, Float a4, S32 a5);
@@ -31,7 +33,9 @@ public:
     virtual Bool ParentLink(S32 a1);
     virtual void RestoreStartingPos(S32 a1);
     virtual void StoreStartingPos(S32 a1);
-    virtual void ChangeLink(const Node_ZHdl& a1, Node_Z* a2, bool a3, S32 a4);
+
+    virtual void ChangeLink(const Node_ZHdl& a1, Node_Z* a2, bool a3, S32 a4) { }
+
     virtual void UpdateCollisionNode(SeadZone_Z& a1, const Vec3f& a2, const Sphere_Z& a3, Vec3f& a4, Vec3f& a5, S32 a6, bool a7);
     virtual void IsVisible();
     virtual void SetNodeObjectNb(S32 a1);

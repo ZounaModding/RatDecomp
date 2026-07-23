@@ -9,6 +9,7 @@
 #include "ABC_ScriptManager.h"
 #include "Camera_ZHdl.h"
 #include "SystemDatas_Z.h"
+#include "ObjectsGameClip_ZHdl.h"
 
 void Game_Z::Init() {
     m_NbPlayer = 0;

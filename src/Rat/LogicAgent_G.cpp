@@ -11,12 +11,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 LogicAgent_G::LogicAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (LogicAgent_G::LogicAgent_G)
 }
 
 void LogicAgent_G::Init() {
     Agent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (LogicAgent_G::Init)
 }
 
 // clang-format off
@@ -27,7 +25,7 @@ BEGIN_BEHAVIOR
     CONDITION
         result_FALSE /* TODO: message not found in ABC_Message_Engine.h / ABC_Message_Game.h cross-refs - check decomp_dump/Rat/*.cpp.ghidra.c (LogicAgent_G::ActivateGame) for `ABC_Agent::Message(this, N)` */
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(LogicAgent_G::ActivateGame)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(LogicAgent_G,BlockedFaderBhv)
@@ -36,7 +34,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_block_fader)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(LogicAgent_G::BlockedFaderBhv)
+        ;
 END_BEHAVIOR
 
 // clang-format on

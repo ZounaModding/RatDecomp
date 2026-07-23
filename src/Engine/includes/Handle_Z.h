@@ -322,7 +322,8 @@ public:
 
     virtual void InvalidClassSize(S16 const a1) const { }
 
-    virtual void RemoveResource(const BaseObject_ZHdl& a1);
+    virtual void RemoveResource(const BaseObject_ZHdl& a1) { }
+
     virtual S32 ChangeHandleName(const BaseObject_ZHdl& i_Hdl, const Name_Z& i_Name);
     virtual void DeleteHandle(const BaseObject_ZHdl& a1);
 
@@ -373,5 +374,8 @@ public:
         m_UnkBool_SetsDeltaTimeTo30fps_0x34 = i_Value;
     }
 };
+
+Bool CheckHandles();
+Bool AsynchCheckHandles();
 
 #endif

@@ -35,7 +35,8 @@ public:
     virtual void FreeSound(void* a1);
     virtual void StopSound(S32 a1);
     virtual void GetTrackTime(S32 a1);
-    virtual void GetDlgDTime(S32 a1);
+
+    virtual void GetDlgDTime(S32 a1) { }
 
 private:
     S32 m_MusicTrackIdx;

@@ -29,10 +29,8 @@ void IT_Bumper::RemoveFromStaticList() {
 }
 
 IT_Bumper::IT_Bumper() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Bumper::IT_Bumper)
 }
 
 void IT_Bumper::Init() {
     LightVolAnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Bumper::Init)
 }

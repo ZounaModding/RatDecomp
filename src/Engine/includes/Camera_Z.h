@@ -77,8 +77,10 @@ private:
 
 public:
     void UpdateInverseWorldMatrix(Node_Z* i_Node);
-    virtual ~Camera_Z();
-    virtual void Load(void** a1);
+
+    virtual ~Camera_Z() { }
+
+    virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
     virtual void UpdateObject(Node_Z* a1, ObjectDatas_Z* a2);

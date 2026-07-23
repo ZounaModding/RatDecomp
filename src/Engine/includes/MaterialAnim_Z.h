@@ -20,7 +20,9 @@ class MaterialAnim_ZHdl;
 class MaterialAnim_Z : public ResourceObject_Z {
 public:
     MaterialAnim_Z();
-    virtual ~MaterialAnim_Z();
+
+    virtual ~MaterialAnim_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();

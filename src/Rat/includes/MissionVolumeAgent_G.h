@@ -14,11 +14,8 @@ public:
     void RemoveFromStaticList();
     MissionVolumeAgent_G * CheckAnims();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<MissionVolumeAgent_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct MissionVolumeAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

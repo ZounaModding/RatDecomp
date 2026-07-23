@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 CheckpointVolAgent_G::CheckpointVolAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (CheckpointVolAgent_G::CheckpointVolAgent_G)
 }
 
 void CheckpointVolAgent_G::Init() {
     VolumeDelayedStart_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (CheckpointVolAgent_G::Init)
 }
 
 DynPtrArray_Z<CheckpointVolAgent_G*> CheckpointVolAgent_G::STC_Instances;

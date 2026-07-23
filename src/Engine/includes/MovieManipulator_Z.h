@@ -20,8 +20,10 @@ public:
     virtual void Retry();
     virtual void Skip(Float i_SkipTime);
     virtual void IsAnyButton();
-    virtual void SetError(U32 i_ErrorCode);
-    virtual void HandleBinkCopyToBuffer();
+
+    virtual void SetError(U32 i_ErrorCode) { }
+
+    virtual void HandleBinkCopyToBuffer() { }
 
 protected:
     S32 m_Width;

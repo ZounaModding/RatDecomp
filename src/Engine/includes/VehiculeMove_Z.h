@@ -4,7 +4,8 @@
 
 class VehiculeMove_Z : public LodMove_Z {
 public:
-    virtual ~VehiculeMove_Z();
+    virtual ~VehiculeMove_Z() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);

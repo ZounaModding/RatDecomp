@@ -17,3 +17,13 @@ ObjectBankManager_Z::ObjectBankManager_Z() {
         m_NodeHdls[i] = gData.ClassMgr->NewObject(l_ClassName, l_NodeName);
     }
 }
+
+ObjectBankManager_Z::~ObjectBankManager_Z() {
+}
+
+void ObjectBankManager_Z::MarkHandles() {
+}
+
+Bool ObjectBankManager_Z::Minimize() {
+    return FALSE;
+}

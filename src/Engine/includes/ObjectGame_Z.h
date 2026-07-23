@@ -7,16 +7,26 @@
 
 class ObjectGame_Z : public Manipulator_Z {
 public:
-    virtual ~ObjectGame_Z();
-    virtual void Init();
-    virtual Bool MarkHandles();
-    virtual void Reset();
+    virtual ~ObjectGame_Z() { }
+
+    virtual void Init() { }
+
+    virtual Bool MarkHandles() {
+        return FALSE;
+    }
+
+    virtual void Reset() { }
+
     virtual void ActionOnActivate();
     virtual void ActionOnDeactivate();
-    virtual void AddGameObject(const ObjectMove_ZHdl& i_ObjectMoveHdl);
-    virtual void RemoveGameObject(const ObjectMove_ZHdl& i_ObjectMoveHdl);
-    virtual void UnregistredFromGame(const Agent_ZHdl& i_AgentHdl);
-    virtual void SetGame(const Game_ZHdl& i_GameHdl);
+
+    virtual void AddGameObject(const ObjectMove_ZHdl& i_ObjectMoveHdl) { }
+
+    virtual void RemoveGameObject(const ObjectMove_ZHdl& i_ObjectMoveHdl) { }
+
+    virtual void UnregistredFromGame(const Agent_ZHdl& i_AgentHdl) { }
+
+    virtual void SetGame(const Game_ZHdl& i_GameHdl) { }
 
     inline void SetNbVp(U32 i_NbVp) {
         m_NbVp = i_NbVp;

@@ -13,11 +13,8 @@ public:
     void AddToStaticList();
     void RemoveFromStaticList();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<IT_COLLECT_G*> STC_Instances;
-    // TODO: fields - see decomp_dump/types.h `struct IT_COLLECT_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

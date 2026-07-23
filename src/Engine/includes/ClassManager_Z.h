@@ -86,10 +86,13 @@ public:
     virtual void CloseBigFile();
     virtual void OpenBigFileStream(const Char* a1);
     virtual void CloseBigFileStream();
-    virtual void ShutBigFile();
+
+    virtual void ShutBigFile() { }
+
     virtual void GetResourceObject(const Char* a1);
     virtual void AssumeGetResourceObject(const Char* a1);
-    virtual void ExcludeFromSaving(const BaseObject_ZHdl& a1);
+
+    virtual void ExcludeFromSaving(const BaseObject_ZHdl& a1) { }
 
     void LoadLinkId(void* i_ID, void** i_Data);
     void UpdateLinkFromId(BaseObject_ZHdl& i_Hdl, S32 i_ID);

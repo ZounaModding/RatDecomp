@@ -1,6 +1,7 @@
 #ifndef _AGENT_Z_H_
 #define _AGENT_Z_H_
 #include "ABC_Agent.h"
+#include "ABC_Message_Engine.h"
 #include "Node_ZHdl.h"
 #include "Game_ZHdl.h"
 #include "Agent_ZHdl.h"
@@ -16,18 +17,18 @@ public:
     virtual void UseNode(Node_ZHdl& a1);
     virtual void RegisterWithGame(Game_ZHdl& a1);
     virtual void UnRegisterFromGame(Game_ZHdl& a1);
-    virtual void AuthorizeInteractionWith(Agent_ZHdl& a1, U64 a2);
-    virtual void GetCollisionMessageIn(int& a1);
-    virtual void GetCollisionMessageOut(int& a1);
-    virtual void GetCollisionMessageContactActive(int& a1);
-    virtual void GetCollisionMessageContactPassive(int& a1);
-    virtual void SetCollisionMessageContactActive(int a1);
-    virtual void SetCollisionMessageContactPassive(int a1);
-    virtual void GetCollisionMessageAction(int& a1);
-    virtual void SetCollisionMessageAction(int a1);
-    virtual void RemoveObjectMove(S32 a1);
-    virtual void AddObjectMove(S32 a1);
-    virtual void GetDisplayValue(const Name_Z& a1, const Name_Z& a2);
+    virtual void AuthorizeInteractionWith(Agent_ZHdl& a1, U64 a2) {}
+    virtual Bool GetCollisionMessageIn(abc_message& o_Msg) { return FALSE; }
+    virtual Bool GetCollisionMessageOut(abc_message& o_Msg) { return FALSE; }
+    virtual Bool GetCollisionMessageContactActive(abc_message& o_Msg) { return FALSE; }
+    virtual Bool GetCollisionMessageContactPassive(abc_message& o_Msg) { return FALSE; }
+    virtual void SetCollisionMessageContactActive(abc_message i_Msg) {}
+    virtual void SetCollisionMessageContactPassive(abc_message i_Msg) {}
+    virtual Bool GetCollisionMessageAction(abc_message& o_Msg) { return FALSE; }
+    virtual void SetCollisionMessageAction(abc_message i_Msg) {}
+    virtual void RemoveObjectMove(S32 a1) {}
+    virtual void AddObjectMove(S32 a1) {}
+    virtual void GetDisplayValue(const Name_Z& a1, const Name_Z& a2) {}
 
 protected:
     Float m_MaxSqrDistActive;

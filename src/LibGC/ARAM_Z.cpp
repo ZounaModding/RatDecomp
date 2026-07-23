@@ -153,3 +153,10 @@ void XRamManager_Z::EndGet(U8* i_Data) {
 }
 
 template U32 Min<U32>(U32 i_V1, U32 i_V2);
+
+void* AramManager_Alloc(S32 i_Size) {
+    return NULL;
+}
+
+void AramManager_Free(void* i_Ptr) {
+}

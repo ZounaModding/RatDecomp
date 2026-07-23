@@ -71,7 +71,7 @@ public:
         m_IsPaused = FALSE;
     }
 
-    virtual ~InputPlatForm_Z();
+    virtual ~InputPlatForm_Z() { }
 
     void SetControl(S32 i_ControlIdx, S32 i_ButtonId, S32 i_SecondaryButtonId) {
         m_ActionButtonMappings[i_ControlIdx].m_ButtonId = i_ButtonId;
@@ -102,32 +102,53 @@ public:
         m_Devices.Add();
     }
 
-    virtual void ResetPads();
-    virtual void RemoveDevice(S32 a1);
+    virtual void ResetPads() { }
+
+    virtual void RemoveDevice(S32 a1) { }
+
     virtual void UpdateInput(Float i_DeltaTime);
-    virtual void IsButtonPressed(U8 a1);
+
+    virtual void IsButtonPressed(U8 a1) { }
+
     virtual void IsAnyButton(U32 a1);
-    virtual void ChangeActionMapping(U32 a1, S32* a2, S32* a3);
+
+    virtual void ChangeActionMapping(U32 a1, S32* a2, S32* a3) { }
+
     virtual void SetControl(S32 i_RemapIdx, Name_Z i_PrimaryButtonName, Name_Z i_SecondaryButtonName);
     virtual void SetControlMode(S32 i_RemapIdx, Bool i_ControlMode);
-    virtual void EnableJoystick(S32 a1);
-    virtual void DisableJoystick(S32 a1);
-    virtual void EnableVibration(S32 a1, Bool a2);
-    virtual void Vibration(S32 a1, U8 a2, U8 a3);
+
+    virtual void EnableJoystick(S32 a1) { }
+
+    virtual void DisableJoystick(S32 a1) { }
+
+    virtual void EnableVibration(S32 a1, Bool a2) { }
+
+    virtual void Vibration(S32 a1, U8 a2, U8 a3) { }
+
     virtual void SetEcoMode(S32 a1, Bool a2);
-    virtual S32 GetDeviceStatus(S32 a1, S32 a2);
-    virtual void GetPCStringFromInput(Char* a1, S32 a2, S32 a3);
+
+    virtual S32 GetDeviceStatus(S32 a1, S32 a2) {
+        return 0;
+    }
+
+    virtual void GetPCStringFromInput(Char* a1, S32 a2, S32 a3) { }
+
     virtual void GetControls(InputDevice_Z* i_Device, void* i_ControllerData, Bool i_Unknown);
-    virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown);
+
+    virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown) {
+        return 0.0f;
+    }
 
     S32 FindButtonId(Name_Z i_ButtonName);
 };
 
 class InputEngine_Z {
 public:
-    virtual ~InputEngine_Z();
-    virtual void Update(Float i_DeltaTime);
-    virtual void Minimize();
+    virtual ~InputEngine_Z() { }
+
+    virtual void Update(Float i_DeltaTime) { }
+
+    virtual void Minimize() { }
 
 protected:
     S32DA m_OldInput; // JIMMY DWARF

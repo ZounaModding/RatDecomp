@@ -36,6 +36,9 @@ void GameManager_Z::Update(Float i_DeltaTime) {
     }
 }
 
+void GameManager_Z::MarkHandles() {
+}
+
 S32 GameManager_Z::GetGameIdByWorld(const World_ZHdl& i_WorldHdl) {
     for (S32 i = 0; i < GetNbGame(); i++) {
         Game_Z* l_Game = m_GameHdls[i];

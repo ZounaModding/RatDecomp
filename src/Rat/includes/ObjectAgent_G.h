@@ -5,7 +5,6 @@
 #include "AnimatedAgent_Z.h"
 #include "DynPtrArray_Z.h"
 
-#define PLATFORM_ANIM_DURATION_DISABLED -1.0f
 // clang-format off
 
 BEGIN_AGENT_CLASS(ObjectAgent_G, BaseAgent_G, 17)
@@ -14,11 +13,7 @@ public:
 
     virtual ~ObjectAgent_G() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct ObjectAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(IT_BREAKBASE_G, Agent_Z, 66)
@@ -32,10 +27,8 @@ public:
 
     DECL_BHV(FireInside);
     DECL_BHV(GenerateObject);
-
 private:
     static DynPtrArray_Z<IT_BREAKBASE_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct IT_BREAKBASE_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(IT_TIMED_PLATFORM_G, AnimatedAgent_Z, 108)
@@ -49,7 +42,6 @@ public:
     DECL_BHV(CheckRespawn);
 
 private:
-    // TODO: fields - see decomp_dump/types.h `struct IT_TIMED_PLATFORM_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 BEGIN_AGENT_CLASS(PLTF02_GROUP, AnimatedAgent_Z, 116)
@@ -60,11 +52,7 @@ public:
     virtual void Init();
 
     static Float animDefaultDuration;
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct PLTF02_GROUP` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

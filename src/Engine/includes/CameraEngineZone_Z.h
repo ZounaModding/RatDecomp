@@ -8,7 +8,9 @@ class World_Z;
 class CameraEngineZone_Z : public CameraEngine_Z {
 public:
     virtual void Init();
-    virtual ~CameraEngineZone_Z();
+
+    virtual ~CameraEngineZone_Z() { }
+
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
     virtual void InterpMessage(const int& a1, Float a2);

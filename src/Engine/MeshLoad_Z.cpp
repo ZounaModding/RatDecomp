@@ -3,6 +3,9 @@
 #include "ClassManager_Z.h"
 #include "Main_Z.h"
 
+void Mesh_Z::Load(void** i_Data) {
+}
+
 void Mesh_Z::EndLoad() {
     Object_Z::EndLoad();
     for (S32 i = 0; i < m_Materials.GetSize(); i++) {
@@ -25,6 +28,9 @@ void Mesh_Z::EndLoadLinks() {
     for (S32 i = 0; i < m_Materials.GetSize(); i++) {
         m_ResObjLink.UpdateLinkFromId(m_Materials[i], m_Materials[i].GetGlobalID());
     }
+}
+
+void Mesh_Z::Clean() {
 }
 
 void MeshData_Z::Load(void** i_Data) {

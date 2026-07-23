@@ -14,7 +14,6 @@ public:
     DECL_BHV(ReallyStartMenu);
 
 private:
-    // TODO: fields - see decomp_dump/types.h `struct MenuLogicAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

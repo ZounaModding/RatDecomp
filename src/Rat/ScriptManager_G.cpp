@@ -28,6 +28,11 @@ ScriptManager_G::~ScriptManager_G() {
     }
 }
 
+Bool ScriptManager_G::Minimize() {
+    m_TextGameDrawMgrHdl->Minimize();
+    return TRUE;
+}
+
 void ScriptManager_G::Init() {
     ABC_ScriptManager::Init();
     InitGameScriptClasses();
@@ -106,11 +111,6 @@ void ScriptManager_G::Init() {
     gData.MainRdr->SetSpecialVisionColor(l_Color1, l_Color2, l_Color3, l_Color4);
 }
 
-Bool ScriptManager_G::Minimize() {
-    m_TextGameDrawMgrHdl->Minimize();
-    return TRUE;
-}
-
 void ScriptManager_G::Shut() {
     ABC_ScriptManager::Shut();
     ShutGameScriptClasses();
@@ -171,6 +171,9 @@ void ScriptManager_G::Update(Float i_DeltaTime) {
     }
 }
 
+void ScriptManager_G::RemoveLogicAgent(const Game_ZHdl& i_GameHdl) {
+}
+
 void ScriptManager_G::ResetAdvancement() {
     m_AbilityFlag = 0;
     m_PlayerSaveStruct.Reset();
@@ -188,16 +191,16 @@ void ScriptManager_G::CheckUnlock(Bool i_Force) { }
 
 void ScriptManager_G::ResetObjectTextInfo(CloneClassTextInfoDA& io_TextInfos) { }
 
+// $SABE: Never thought I'd commit an array of slurs to a repo, let's hope this is not against GitHub's TOS.
+Char* arrayMotsPasJoli[] = {
+    "ALA", "GAY", "SEX", "ANL", "GOD", "SHT", "ASS", "HOE", "SPC", "BCH", "HOR", "SPK", "BUM", "JAP", "SUC", "BUT", "JEW", "SUK", "CNT", "JIZ", "SUX", "COC", "KOC", "THC", "COX", "KOK", "TIT", "COK", "KKK", "VAG", "CUM", "KNT", "WHR", "DAM", "KYK", "WOP", "DIC", "LEZ", "XXX", "DIK", "LSD", "DIX", "NGR", "DYK", "NIG", "FAG", "NIP", "FOB", "NUT", "FUC", "PCP", "FUK", "PEE", "FUQ", "POO", "FUX", "PUS", "END"
+};
+
 void PlayerSaveStruct_G::Reset() {
     m_MaxHealth = PLAYER_DEFAULT_MAX_HEALTH;
     m_Health = PLAYER_DEFAULT_HEALTH;
     m_Lives = PLAYER_DEFAULT_LIVES;
 }
-
-// $SABE: Never thought I'd commit an array of slurs to a repo, let's hope this is not against GitHub's TOS.
-Char* arrayMotsPasJoli[] = {
-    "ALA", "GAY", "SEX", "ANL", "GOD", "SHT", "ASS", "HOE", "SPC", "BCH", "HOR", "SPK", "BUM", "JAP", "SUC", "BUT", "JEW", "SUK", "CNT", "JIZ", "SUX", "COC", "KOC", "THC", "COX", "KOK", "TIT", "COK", "KKK", "VAG", "CUM", "KNT", "WHR", "DAM", "KYK", "WOP", "DIC", "LEZ", "XXX", "DIK", "LSD", "DIX", "NGR", "DYK", "NIG", "FAG", "NIP", "FOB", "NUT", "FUC", "PCP", "FUK", "PEE", "FUQ", "POO", "FUX", "PUS", "END"
-};
 
 Bool ScriptManager_G::IsMotPasJoli(Char* i_Text) {
     Char** l_Word = &arrayMotsPasJoli[0];

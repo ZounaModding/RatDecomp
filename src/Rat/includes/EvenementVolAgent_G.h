@@ -12,9 +12,7 @@ public:
 
     DECL_BHV(BhvCheckActionDansVolume);
     DECL_BHV(BhvWaitExplosion);
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct EvenementVolAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

@@ -4,7 +4,8 @@
 
 class SubWorld_Z : public ResourceObject_Z {
 public:
-    virtual ~SubWorld_Z();
+    virtual ~SubWorld_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();

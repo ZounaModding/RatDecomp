@@ -120,7 +120,9 @@ public:
     virtual void QueryFile(Char* a1);
     virtual void QueryFileDateAndSize(Char* a1, SaveDate_Z* a2, S32* a3);
     virtual void GetDirectory(FileInfo_Z* a1, S32 a2);
-    virtual void GetActualFileSize(S32 a1);
+
+    virtual void GetActualFileSize(S32 a1) { }
+
     virtual void CardSync(S32& a1, S32& a2);
     virtual void FormatCard();
     virtual void FormatCardA();

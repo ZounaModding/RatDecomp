@@ -17,3 +17,6 @@ void VizQueryStreamList_Z::SetVtxDesc() {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
 }
+
+void FlareDataGC_Z::UpdatePointers(Object_Z* i_Obj, S32 i_Param) {
+}

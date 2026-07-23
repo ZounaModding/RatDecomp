@@ -7,7 +7,13 @@ WarpGC_Z::WarpGC_Z() {
     m_TextureCoordinates[3].Set(1.0f, 1.0f);
 }
 
+WarpGC_Z::~WarpGC_Z() {
+}
+
 void WarpGC_Z::EndLoad() {
     Warp_Z::EndLoad();
     BuildDisplayList();
+}
+
+void WarpGC_Z::BuildDisplayList() {
 }

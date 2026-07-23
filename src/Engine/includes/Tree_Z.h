@@ -4,7 +4,8 @@
 
 class Tree_Z : public Object_Z {
 public:
-    virtual ~Tree_Z();
+    virtual ~Tree_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();

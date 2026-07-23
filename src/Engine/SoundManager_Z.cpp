@@ -34,8 +34,18 @@ SoundManager_Z::SoundManager_Z() {
     m_NbTracksFailedToPlay = 0;
 }
 
+void SoundManager_Z::Shut() {
+}
+
 Bool SoundManager_Z::Init() {
     return TRUE;
+}
+
+Bool SoundManager_Z::Minimize() {
+    return TRUE;
+}
+
+void SoundManager_Z::Clean() {
 }
 
 void SoundManager_Z::FreeTrack(S32 i_TrackIdx) {
@@ -68,6 +78,24 @@ Bool Track_Z::Release() {
     m_OcclusionFactor = 1.0f;
 
     return l_Used;
+}
+
+void SoundManager_Z::SetPitchRatio(Float a1, const Sound_ZHdl& a2, const Node_ZHdl& a3, BoneNode_Z* a4, S32 a5) {
+}
+
+void SoundManager_Z::SetVolumeFactor(Float i_Volume, const Sound_ZHdl& i_SoundHdl, const Node_ZHdl& i_NodeHdl, BoneNode_Z* i_BoneNode, S32 i_UnkS32) {
+}
+
+void SoundManager_Z::PlaySound(Sound_ZHdl& i_SoundHdl, U32 i_Flag, const Node_ZHdl& i_NodeHdl, BoneNode_Z* i_BoneNode) {
+}
+
+void SoundManager_Z::StopSound(Sound_ZHdl& i_SoundHdl, const Node_ZHdl& i_NodeHdl, Float i_UnkFloat) {
+}
+
+void SoundManager_Z::UpdateTrack(Float a1, S32 a2, Float& a3, Float& a4, Vec3f& a5) {
+}
+
+void SoundManager_Z::Compute3DVirtualization(S32 a1, Float& a2, Float& a3, Float& a4, Vec3f& a5) {
 }
 
 void SoundManager_Z::Update(Float i_DeltaTime) {
@@ -121,4 +149,8 @@ Bool Cmd_CloseSBF() {
 
 Bool Cmd_PlayDialog() {
     return TRUE;
+}
+
+const Char* SoundManager_Z::GetUsedTrackString() {
+    return NULL;
 }

@@ -5,7 +5,8 @@
 
 class MaterialObj_Z : public ResourceObject_Z {
 public:
-    virtual ~MaterialObj_Z();
+    virtual ~MaterialObj_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual Bool MarkHandles();

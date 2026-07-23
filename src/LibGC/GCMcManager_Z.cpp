@@ -3,7 +3,6 @@
 #include "Memory_Z.h"
 #include "File_Z.h"
 #include "StreamManager_Z.h"
-#include "String_Z.h"
 
 ExternC_Z int sprintf(Char* i_Buffer, const Char* i_Format, ...);
 
@@ -38,6 +37,9 @@ GCMcManager_Z::GCMcManager_Z() {
     m_CardData[GC_MC_SLOT_B].Reset();
 }
 
+GCMcManager_Z::~GCMcManager_Z() {
+}
+
 Bool GCMcManager_Z::Init() {
     File_Z l_File;
     m_IsBusy = FALSE;
@@ -49,6 +51,9 @@ Bool GCMcManager_Z::Init() {
     m_CommandToRun = GC_MC_CMD_FINISHED;
     m_Unk_0x158 = 0;
     return TRUE;
+}
+
+void GCMcManager_Z::Shut() {
 }
 
 void GCMcManager_Z::Update(Float i_DeltaTime) {
@@ -113,6 +118,57 @@ void GCMcManager_Z::SetTitleName(Char* i_TitleName) {
     }
 }
 
+void GCMcManager_Z::IsNewCardConnected() {
+}
+
+void GCMcManager_Z::CreateDirectoryA() {
+}
+
+void GCMcManager_Z::FormatCardA() {
+}
+
+void GCMcManager_Z::QueryFileDateAndSize(Char* a1, SaveDate_Z* a2, S32* a3) {
+}
+
+void GCMcManager_Z::CalculateSpaceNeededForOneFile(S32 a1) {
+}
+
+void GCMcManager_Z::RefreshCard() {
+}
+
+void GCMcManager_Z::ResetManageMC() {
+}
+
+void GCMcManager_Z::LoadFileA(Char* a1, void* a2, S32 a3) {
+}
+
+void GCMcManager_Z::SaveFileA(Char* a1, void* a2, S32 a3) {
+}
+
+void GCMcManager_Z::DelFile(Char* a1) {
+}
+
+void GCMcManager_Z::DelFileA(Char* a1) {
+}
+
+void GCMcManager_Z::RegisterAgentAndMessage(ABC_Agent* a1, int a2) {
+}
+
+void GCMcManager_Z::GetDirectory(FileInfo_Z* a1, S32 a2) {
+}
+
+void GCMcManager_Z::SaveFile(Char* a1, void* a2, S32 a3) {
+}
+
+void GCMcManager_Z::LoadFile(Char* a1, void* a2, S32 a3) {
+}
+
+void GCMcManager_Z::CardSync(S32& a1, S32& a2) {
+}
+
+void GCMcManager_Z::RefreshCards() {
+}
+
 U32 GCMcManager_Z::GetCardStatus() {
     GCCardData_Z& l_CardData = m_CardData[m_UseSlot];
     if (l_CardData.m_Type == 2) {
@@ -128,6 +184,21 @@ U32 GCMcManager_Z::GetCardStatus() {
         return GC_MC_CARD_STATUS_UNFORMATTED;
     }
     return GC_MC_CARD_STATUS_UNKNOWN;
+}
+
+void GCMcManager_Z::GetCardFreeSpace() {
+}
+
+void GCMcManager_Z::CalculateSpaceNeeded(S32 a1, S32* a2) {
+}
+
+void GCMcManager_Z::QueryFile(Char* a1) {
+}
+
+void GCMcManager_Z::FormatCard() {
+}
+
+void GCMcManager_Z::UnFormatCard() {
 }
 
 U32 GCMcManager_Z::_MountCard() {

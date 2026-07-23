@@ -87,8 +87,6 @@ Bool LoadFont();
 Bool RemoveFont();
 Bool LoadSysRtc();
 Bool RemoveSysRtc();
-Bool CheckHandles();
-Bool AsynchCheckHandles();
 Bool InitRandomSeed();
 Bool SetBlockFrame();
 Bool SetTimeFactor();

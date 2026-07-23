@@ -4,10 +4,14 @@
 
 class PermanentDraw : public BaseInGameDatas_G {
 public:
-    PermanentDraw();
-    virtual ~PermanentDraw();
+    PermanentDraw() { }
+
+    virtual ~PermanentDraw() { }
+
     virtual void Init();
-    virtual void Update(Float i_DeltaTime);
+
+    virtual void Update(Float i_DeltaTime) { }
+
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
 
     static BaseObject_Z* NewObject() { return NewL_Z(24) PermanentDraw; }

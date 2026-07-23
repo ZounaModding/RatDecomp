@@ -40,7 +40,14 @@ ClassManager_Z::ClassManager_Z() {
 ClassManager_Z::~ClassManager_Z() {
 }
 
+S32 ClassManager_Z::CheckHandles() {
+    return 0;
+}
+
 void ClassManager_Z::Minimize() {
+}
+
+void ClassManager_Z::ClearMark() {
 }
 
 void ClassManager_Z::RegisterClass(const Char* i_ClassName, const Char* i_ParentClassName, NewObjectProc i_NewObject) {
@@ -75,6 +82,9 @@ Bool ClassManager_Z::IsObjectInherit(const Name_Z& i_ClassName, const Name_Z& i_
         l_ClassId = GetClassIndex(m_ClassList[l_ClassId].m_ParentClassName);
     }
     return FALSE;
+}
+
+Name_Z& ClassManager_Z::GetClassName(const BaseObject_ZHdl& i_Hdl) {
 }
 
 const BaseObject_ZHdl& ClassManager_Z::NewObject(const Name_Z& i_ClassName, const Name_Z& i_Name) {
@@ -116,4 +126,23 @@ const BaseObject_ZHdl& ClassManager_Z::NewObject(S16 i_ClassId, const Name_Z& i_
 const BaseObject_ZHdl& ClassManager_Z::NewResource(const Name_Z& i_ClassName, const Name_Z& i_Name) {
     S16 l_ClassId = GetClassIndex(i_ClassName);
     return CreateNewHandle(m_ClassList[l_ClassId].m_NewObject(), i_Name, l_ClassId, HandleRec_Z::RSC);
+}
+
+void ClassManager_Z::InvalidClassSize(S16 a1) const {
+}
+
+Bool ClassManager_Z::GetFile(const Char* i_Path, File_Z& i_File) {
+    return FALSE;
+}
+
+Bool CheckHandles() {
+    return FALSE;
+}
+
+Bool AsynchCheckHandles() {
+    return FALSE;
+}
+
+Bool CloneClass() {
+    return FALSE;
 }

@@ -14,7 +14,8 @@ public:
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
     virtual Bool GetCollisionLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
     virtual Bool GetCollisionMovingSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual void UpdateBSphere(const ObjectDatas_ZHdl& i_DataHdl);
+
+    virtual void UpdateBSphere(const ObjectDatas_ZHdl& i_DataHdl) { }
 
 protected:
     U8 m_Pad_0x80[24];

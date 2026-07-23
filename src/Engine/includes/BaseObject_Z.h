@@ -26,8 +26,11 @@ public:
     virtual void AfterEndLoad() { };
     virtual void LoadDone() { };
     virtual void LoadLinks(void** i_Data);
-    virtual void EndLoadLinks();
-    virtual void Clean();
+
+    virtual void EndLoadLinks() { }
+
+    virtual void Clean() { }
+
     virtual Bool MarkHandles();
 
     void SetHandle(S32 i_ID, S8 i_Key);

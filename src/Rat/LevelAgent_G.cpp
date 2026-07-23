@@ -12,12 +12,6 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 LevelAgent_G::LevelAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (LevelAgent_G::LevelAgent_G)
-}
-
-void LevelAgent_G::Init() {
-    Agent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (LevelAgent_G::Init)
 }
 
 // clang-format off
@@ -28,7 +22,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_to_level)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(LevelAgent_G::BhvToLevel)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(LevelAgent_G,BhvChangeLevel)
@@ -37,7 +31,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_change_level)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(LevelAgent_G::BhvChangeLevel)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(LevelAgent_G,BhvToMenu)
@@ -46,7 +40,11 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_to_menu)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(LevelAgent_G::BhvToMenu)
+        ;
 END_BEHAVIOR
 
 // clang-format on
+
+void LevelAgent_G::Init() {
+    Agent_Z::Init();
+}

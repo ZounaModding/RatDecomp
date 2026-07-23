@@ -8,10 +8,8 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 VolumeDelayedStart_G::VolumeDelayedStart_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (VolumeDelayedStart_G::VolumeDelayedStart_G)
 }
 
 void VolumeDelayedStart_G::Init() {
     VolumeAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (VolumeDelayedStart_G::Init)
 }

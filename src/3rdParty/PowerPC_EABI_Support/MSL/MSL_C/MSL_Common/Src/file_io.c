@@ -93,3 +93,8 @@ int __msl_strnicmp(const char* str1, const char* str2, int n) {
 
     return 0;
 }
+
+// TODO: Match
+FILE* fopen(const char* i_FilePath, const char* i_Mode) {
+    return 0;
+}

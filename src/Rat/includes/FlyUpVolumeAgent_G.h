@@ -13,11 +13,8 @@ public:
     void AddToStaticList();
     void RemoveFromStaticList();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<FlyUpVolumeAgent_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct FlyUpVolumeAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

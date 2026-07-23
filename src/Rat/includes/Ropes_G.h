@@ -4,7 +4,8 @@
 
 class Ropes_G : public ManipulatorSceneDraw_Z {
 public:
-    virtual ~Ropes_G();
+    virtual ~Ropes_G() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

@@ -9,11 +9,7 @@ public:
 
     virtual ~FXVolumeAgent_G() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct FXVolumeAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

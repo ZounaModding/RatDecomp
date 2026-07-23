@@ -30,7 +30,8 @@ typedef DynArray_Z<ObjTextDraw_G, 4> ObjTextDraw_GDA;
 
 class TextGameDraw_G : public ManipulatorSceneDraw_Z {
 public:
-    virtual ~TextGameDraw_G();
+    virtual ~TextGameDraw_G() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);

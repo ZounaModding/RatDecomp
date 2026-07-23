@@ -10,12 +10,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 LightVolAnimatedAgent_Z::LightVolAnimatedAgent_Z() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (LightVolAnimatedAgent_Z::LightVolAnimatedAgent_Z)
 }
 
 void LightVolAnimatedAgent_Z::Init() {
     AnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (LightVolAnimatedAgent_Z::Init)
 }
 
 // clang-format off
@@ -49,12 +47,10 @@ void GangAgent_G::RemoveFromStaticList() {
 }
 
 GangAgent_G::GangAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (GangAgent_G::GangAgent_G)
 }
 
 void GangAgent_G::Init() {
     LightVolAnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (GangAgent_G::Init)
 }
 
 // clang-format off
@@ -65,7 +61,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_end_check_player)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(GangAgent_G::CheckPlayerDist)
+        ;
 END_BEHAVIOR
 
 // clang-format on
@@ -100,10 +96,8 @@ void RepulseAnimatedAgent_G::RemoveFromStaticList() {
 }
 
 RepulseAnimatedAgent_G::RepulseAnimatedAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (RepulseAnimatedAgent_G::RepulseAnimatedAgent_G)
 }
 
 void RepulseAnimatedAgent_G::Init() {
     LightVolAnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (RepulseAnimatedAgent_G::Init)
 }

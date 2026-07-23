@@ -75,7 +75,7 @@ typedef DynArray_Z<AnimationConcatMtl_Z, 32, FALSE, FALSE> AnimationConcatMtl_ZD
 
 class Animation_Z : public ResourceObject_Z {
 public:
-    Animation_Z();
+    Animation_Z() { }
 
     // clang-format off
     virtual ~Animation_Z() { }

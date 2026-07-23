@@ -29,7 +29,8 @@ public:
 
 class RotShapeGC_Z : public RotShape_Z {
 public:
-    virtual ~RotShapeGC_Z();
+    virtual ~RotShapeGC_Z() { }
+
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
 
     static BaseObject_Z* NewObject() {

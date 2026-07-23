@@ -10,3 +10,13 @@ Agent_Z::Agent_Z() {
     m_MaxSqrDistActive = User_DefaultAgentMaxSqrDistActive;
     m_MinSqrDistActive = User_DefaultAgentMinSqrDistActive;
 }
+
+void Agent_Z::Init() { }
+
+void Agent_Z::Reset() { }
+
+void Agent_Z::UseNode(Node_ZHdl& a1) { }
+
+void Agent_Z::RegisterWithGame(Game_ZHdl& a1) { }
+
+void Agent_Z::UnRegisterFromGame(Game_ZHdl& a1) { }

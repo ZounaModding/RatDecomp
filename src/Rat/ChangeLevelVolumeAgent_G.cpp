@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 ChangeLevelVolumeAgent_G::ChangeLevelVolumeAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (ChangeLevelVolumeAgent_G::ChangeLevelVolumeAgent_G)
 }
 
 void ChangeLevelVolumeAgent_G::Init() {
     VolumeAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (ChangeLevelVolumeAgent_G::Init)
 }
 
 DynPtrArray_Z<ChangeLevelVolumeAgent_G*> ChangeLevelVolumeAgent_G::instances;

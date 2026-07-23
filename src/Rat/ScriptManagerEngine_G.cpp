@@ -52,7 +52,28 @@ void ScriptManager_G::RemoveGame(const Game_ZHdl& i_GameHdl) {
     m_PointJumpMgrHdl->Minimize();
 }
 
-void ScriptManager_G::StreamDone(const Game_ZHdl& i_GameHdl, S32 i_StreamId) {
+void ScriptManager_G::ActivateGame(const Game_ZHdl& i_GameHdl) {
+}
+
+void ScriptManager_G::GameSet(const Game_ZHdl& i_GameHdl) {
+}
+
+void ScriptManager_G::GameReseted(const Game_ZHdl& i_GameHdl) {
+    IT_Break::ResetAll();
+    IT_Carrying::ResetAll();
+    IT_Switch::ResetAll();
+}
+
+void ScriptManager_G::UpdateIndependentResources(const World_ZHdl& i_WorldHdl) {
+    S32 l_GameId = gData.GameMgr->GetGameIdByWorld(i_WorldHdl);
+    if (l_GameId >= 0) {
+        gData.GameMgr->GetGame(l_GameId)->SendMessage(
+            GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS, msg_anim_framelink, -1.0f
+        );
+    }
+}
+
+void ScriptManager_G::GameAgentSet(const Game_ZHdl& i_GameHdl) {
 }
 
 void ScriptManager_G::StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl) {
@@ -71,19 +92,19 @@ void ScriptManager_G::StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl
     ParseHierarchy(i_NodeHdl, TRUE);
 }
 
-void ScriptManager_G::GameReseted(const Game_ZHdl& i_GameHdl) {
-    IT_Break::ResetAll();
-    IT_Carrying::ResetAll();
-    IT_Switch::ResetAll();
+void ScriptManager_G::StreamDone(const Game_ZHdl& i_GameHdl, S32 i_StreamId) {
 }
 
-void ScriptManager_G::UpdateIndependentResources(const World_ZHdl& i_WorldHdl) {
-    S32 l_GameId = gData.GameMgr->GetGameIdByWorld(i_WorldHdl);
-    if (l_GameId >= 0) {
-        gData.GameMgr->GetGame(l_GameId)->SendMessage(
-            GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS, msg_anim_framelink, -1.0f
-        );
-    }
+void ScriptManager_G::RemoveAIDummies(const Game_ZHdl& i_GameHdl) {
+}
+
+void ScriptManager_G::GetAIDummies(const Game_ZHdl& i_GameHdl) {
+}
+
+void ScriptManager_G::CheckNodeOnAIDummies(const Node_ZHdl& i_NodeHdl) {
+}
+
+void ScriptManager_G::InterpKeyframeMsg(const RegMessage_Z& i_Message) {
 }
 
 void ScriptManager_G::UpdateOmnis(Float i_DeltaTime) {
@@ -142,6 +163,9 @@ void ScriptManager_G::UpdateOmnis(Float i_DeltaTime) {
     }
 }
 
+void ScriptManager_G::DeleteOmniForFX() {
+}
+
 void ScriptManager_G::UpdatePlatForms(Float i_DeltaTime) {
     Float l_Duration = PLTF02_GROUP::animDefaultDuration;
     if (IsPaused()) {
@@ -153,4 +177,7 @@ void ScriptManager_G::UpdatePlatForms(Float i_DeltaTime) {
             m_SynchedPlatformsTime -= l_Duration;
         }
     }
+}
+
+void ScriptManager_G::ParseHierarchy(const Node_ZHdl& i_NodeHdl, Bool i_Add) {
 }

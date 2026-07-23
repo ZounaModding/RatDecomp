@@ -80,6 +80,7 @@
 #include "TriangleCache_Z.h"
 #include "Timer_Z.h"
 #include "KSys_Z.h"
+#include "Main_Z.h"
 
 ExternC_Z void exit(int);
 
@@ -431,6 +432,30 @@ void RegisterGlobalCommands() {
 Bool AddJoyStick() {
     gData.InputMgr->AddDevice();
     return TRUE;
+}
+
+Bool ExitApp() {
+    return FALSE;
+}
+
+Bool SetFrame() {
+    return FALSE;
+}
+
+Bool SetBlockFrame() {
+    return FALSE;
+}
+
+Bool PrintFreeMem() {
+    return FALSE;
+}
+
+Bool SetTimeFactor() {
+    return FALSE;
+}
+
+Bool InitRandomSeed() {
+    return FALSE;
 }
 
 // Globals methods

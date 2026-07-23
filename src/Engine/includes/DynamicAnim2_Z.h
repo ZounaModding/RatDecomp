@@ -8,14 +8,18 @@ class Skel_Z;
 
 class DynamicAnim2_Z : public Manipulator_Z {
 public:
-    virtual ~DynamicAnim2_Z();
+    virtual ~DynamicAnim2_Z() { }
+
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
-    virtual void SetNode(Node_Z* i_Node);
+
+    virtual void SetNode(Node_Z* i_Node) { }
+
     virtual void SetSkel(Skel_Z* i_Skel);
     virtual void AddConicForce(const Vec3f& a1, const Vec3f& a2, Float a3, Float a4, Float a5, Float a6, Float a7);
     virtual void AddSphericForce(const Sphere_Z& a1, Float a2, Float a3);
-    virtual void SetVColGroundNormal(const Vec3f& a1);
+
+    virtual void SetVColGroundNormal(const Vec3f& a1) { }
 
     static BaseObject_Z* NewObject() {
         return NewL_Z(146) DynamicAnim2_Z;

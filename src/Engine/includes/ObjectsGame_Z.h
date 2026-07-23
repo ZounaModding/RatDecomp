@@ -5,7 +5,8 @@
 
 class ObjectsGame_Z : public ObjectGame_Z {
 public:
-    virtual ~ObjectsGame_Z();
+    virtual ~ObjectsGame_Z() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void ActionOnActivate();

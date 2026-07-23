@@ -112,6 +112,18 @@ void PathKDBToSys(const Char* i_KName, Char* o_SysName) {
 void PathSysToDB(const Char* i_SysName, Char* o_KName) {
 }
 
+Bool SetDBPath() {
+    return FALSE;
+}
+
+Bool SetDFPath() {
+    return FALSE;
+}
+
+Bool SetBFPath() {
+    return FALSE;
+}
+
 Bool EnableBF() {
     if (gData.Cons->GetNbParam() < 2) {
         return FALSE;

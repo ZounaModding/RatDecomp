@@ -11,12 +11,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 EvenementVolAgent_G::EvenementVolAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (EvenementVolAgent_G::EvenementVolAgent_G)
 }
 
 void EvenementVolAgent_G::Init() {
     VolumeDelayedStart_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (EvenementVolAgent_G::Init)
 }
 
 // clang-format off
@@ -27,7 +25,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_action_in_event_volume)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(EvenementVolAgent_G::BhvCheckActionDansVolume)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(EvenementVolAgent_G,BhvWaitExplosion)
@@ -36,7 +34,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_explosion_event_volume)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(EvenementVolAgent_G::BhvWaitExplosion)
+        ;
 END_BEHAVIOR
 
 // clang-format on

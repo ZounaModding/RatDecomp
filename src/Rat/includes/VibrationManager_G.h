@@ -4,7 +4,8 @@
 
 class VibrationManager_C : public Manipulator_Z {
 public:
-    virtual ~VibrationManager_C();
+    virtual ~VibrationManager_C() { }
+
     virtual void Init();
     virtual void Reset();
     virtual void ActionOnDeactivate();

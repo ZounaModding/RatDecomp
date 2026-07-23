@@ -10,6 +10,15 @@ static void WriteFloat(Float i_Value, Float& o_Destination) {
     l_Destination[3] = l_Source[3];
 }
 
+void GCRenderer_Z::DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Float a4) {
+}
+
+void GCRenderer_Z::DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6) {
+}
+
+void GCRenderer_Z::DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5) {
+}
+
 void GCRenderer_Z::Draw2DQuad(
     const Vec2f& i_PosBottomLeft,
     const Vec2f& i_PosTopRight,
@@ -174,6 +183,21 @@ void GCRenderer_Z::Draw2DQuad(
     m_Draw2D.CloseRequest();
 }
 
+void GCRenderer_Z::DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4) {
+}
+
+void GCRenderer_Z::DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4) {
+}
+
+void GCRenderer_Z::DrawString(const Vec2f& a1, const Char* a2, const Color& a3, Float a4, Float a5) {
+}
+
+void GCRenderer_Z::DrawString(const Vec3f& a1, const Char* a2, Bool a3) {
+}
+
+void GCRenderer_Z::DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4) {
+}
+
 U8* Draw2D_Z::Request(Material_Z* i_Material, Bool i_Transparent, S32 i_VertexCount) {
     S32 l_RequestedVertexCount = i_VertexCount + 2;
     U16 l_DrawState = ds_zonly;
@@ -227,6 +251,9 @@ void Draw2D_Z::CloseRequest() {
 
 void Draw2D_Z::Init() {
     ASSERTLE_Z(m_Vtx2DBufferDA.GetSize() == 0, "", 529, "Vtx2DBufferDA.GetSize()==0");
+}
+
+void Draw2D_Z::Shut() {
 }
 
 void Draw2D_Z::UnLock() {

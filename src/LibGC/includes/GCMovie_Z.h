@@ -15,7 +15,8 @@ public:
         m_UnkS32_0x300 = 0;
     }
 
-    virtual ~GCMovie_Z();
+    virtual ~GCMovie_Z() { }
+
     virtual Bool Init();
     virtual void Shut();
     virtual void Play(const Char* a1, U32 a2);

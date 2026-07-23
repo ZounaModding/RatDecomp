@@ -31,6 +31,10 @@ Mat4x4Buffer_Z::Mat4x4Buffer_Z() {
     REGISTERCOMMAND("GetMatrixUsage", GetMatrixUsage);
 }
 
+U16 Mat4x4Buffer_Z::GetAMatrix() {
+    return 0;
+}
+
 U16 Mat4x4Buffer_Z::GetNewMatrix() {
     if (!m_FreeMatNb) {
         GetMatrixUsage();
@@ -73,4 +77,11 @@ U16 Mat4x4Buffer_Z::GetNewMatrix() {
     m_MatIdArray[l_MatDbIdx].Id[m_CurBuffer] = l_MatIdx;
 
     return l_MatDbIdx;
+}
+
+void Mat4x4Buffer_Z::RemoveMatrix(U16 i_Id) {
+}
+
+Bool GetMatrixUsage() {
+    return FALSE;
 }

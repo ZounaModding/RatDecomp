@@ -6,7 +6,12 @@
 struct Color {
     Color() { }
 
-    Color(Float i_Red, Float i_Green, Float i_Blue, Float i_Alpha);
+    Color(Float i_Red, Float i_Green, Float i_Blue, Float i_Alpha) {
+        r = i_Red;
+        g = i_Green;
+        b = i_Blue;
+        a = i_Alpha;
+    }
 
     Color& operator=(const Color& i_Color) {
         r = i_Color.r;

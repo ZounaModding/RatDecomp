@@ -330,6 +330,220 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
     }
 }
 
-void Bitmap_Z::SetUniversal(U8* i_Datas) { }
+void Bitmap_Z::SetUniversal(U8* i_Datas) {
+    U8* l_Datas;
+    S32 l_Size = m_SizeX * m_SizeY;
+
+    switch (m_Format) {
+        case BM_4: {
+            U32 l_BlockCountX = m_SizeX / 8;
+            U32 l_BlockCountY = m_SizeY / 8;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size / 2,
+                "BITMAP_DATA_ALLOC",
+                745,
+                128
+            );
+
+            U8* l_Dest = l_Datas;
+            U32 l_LineSize = m_SizeX / 2;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX) * 4;
+
+                    for (U32 l_Y = 0; l_Y < 8; l_Y++) {
+                        for (U32 l_X = 0; l_X < 4; l_X++) {
+                            U8 l_Value = i_Datas[l_SrcOffset + l_X];
+
+                            *l_Dest++ = ((l_Value & 0x0f) << 4) | ((l_Value & 0xf0) >> 4);
+                        }
+
+                        l_SrcOffset += l_LineSize;
+                    }
+                }
+            }
+        } break;
+
+        case BM_8: {
+            U32 l_BlockCountX = m_SizeX / 8;
+            U32 l_BlockCountY = m_SizeY / 4;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size,
+                "BITMAP_DATA_ALLOC",
+                772,
+                128
+            );
+
+            U8* l_Dest = l_Datas;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX * 2) * 4;
+
+                    for (U32 l_Y = 0; l_Y < 4; l_Y++) {
+                        for (U32 l_X = 0; l_X < 8; l_X++) {
+                            *l_Dest++ = i_Datas[l_SrcOffset + l_X];
+                        }
+
+                        l_SrcOffset += m_SizeX;
+                    }
+                }
+            }
+        } break;
+
+        case BM_4444: {
+            U32 l_BlockCountX = m_SizeX / 4;
+            U32 l_BlockCountY = m_SizeY / 4;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size * 2,
+                "BITMAP_DATA_ALLOC",
+                798,
+                128
+            );
+
+            U32 l_DestOffset = 0;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX) * 4;
+
+                    for (U32 l_Y = 0; l_Y < 4; l_Y++) {
+                        for (U32 l_X = 0; l_X < 4; l_X++) {
+                            U16 l_Value = ((U16*)i_Datas)[l_SrcOffset + l_X];
+
+                            l_Value = (l_Value & 0x0fff) | ((l_Value & 0xe000) >> 1);
+
+                            *(U16*)(l_Datas + l_DestOffset) = l_Value;
+                            l_DestOffset += 2;
+                        }
+
+                        l_SrcOffset += m_SizeX;
+                    }
+                }
+            }
+        } break;
+
+        case BM_888: {
+            U32 l_BlockCountX = m_SizeX / 4;
+            U32 l_BlockCountY = m_SizeY / 4;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size * 4,
+                "BITMAP_DATA_ALLOC",
+                829,
+                128
+            );
+
+            U32 l_DestOffset = 0;
+            U32 l_LineSkip = (m_SizeX - 4) * 3;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX) * 12;
+
+                    for (U32 l_Y = 0; l_Y < 4; l_Y++) {
+                        for (U32 l_X = 0; l_X < 4; l_X++) {
+                            l_Datas[l_DestOffset] = i_Datas[l_SrcOffset];
+
+                            l_Datas[l_DestOffset + 1] = i_Datas[l_SrcOffset + 1];
+
+                            l_Datas[l_DestOffset + 0x20] = i_Datas[l_SrcOffset + 2];
+
+                            l_Datas[l_DestOffset + 0x21] = 0xff;
+
+                            l_DestOffset += 2;
+                            l_SrcOffset += 3;
+                        }
+
+                        l_SrcOffset += l_LineSkip;
+                    }
+
+                    l_DestOffset += 0x20;
+                }
+            }
+        } break;
+
+        case BM_5551:
+        case BM_565: {
+            U32 l_BlockCountX = m_SizeX / 4;
+            U32 l_BlockCountY = m_SizeY / 4;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size * 2,
+                "BITMAP_DATA_ALLOC",
+                866,
+                128
+            );
+
+            U32 l_DestOffset = 0;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX) * 4;
+
+                    for (U32 l_Y = 0; l_Y < 4; l_Y++) {
+                        for (U32 l_X = 0; l_X < 4; l_X++) {
+                            *(U16*)(l_Datas + l_DestOffset) = ((U16*)i_Datas)[l_SrcOffset + l_X];
+
+                            l_DestOffset += 2;
+                        }
+
+                        l_SrcOffset += m_SizeX;
+                    }
+                }
+            }
+        } break;
+
+        case BM_8888: {
+            U32 l_BlockCountX = m_SizeX / 4;
+            U32 l_BlockCountY = m_SizeY / 4;
+
+            l_Datas = (U8*)AllocContiguousAlignCL_Z(
+                l_Size * 4,
+                "BITMAP_DATA_ALLOC",
+                895,
+                128
+            );
+
+            U32 l_DestOffset = 0;
+            U32 l_LineSkip = (m_SizeX - 4) * 4;
+
+            for (U32 l_BlockY = 0; l_BlockY < l_BlockCountY; l_BlockY++) {
+                for (U32 l_BlockX = 0; l_BlockX < l_BlockCountX; l_BlockX++) {
+                    U32 l_SrcOffset = (l_BlockY * m_SizeX + l_BlockX) * 16;
+
+                    for (U32 l_Y = 0; l_Y < 4; l_Y++) {
+                        for (U32 l_X = 0; l_X < 4; l_X++) {
+                            l_Datas[l_DestOffset] = i_Datas[l_SrcOffset + 3];
+
+                            l_Datas[l_DestOffset + 1] = i_Datas[l_SrcOffset + 2];
+
+                            l_Datas[l_DestOffset + 0x20] = i_Datas[l_SrcOffset + 1];
+
+                            l_Datas[l_DestOffset + 0x21] = i_Datas[l_SrcOffset];
+
+                            l_DestOffset += 2;
+                            l_SrcOffset += 4;
+                        }
+
+                        l_SrcOffset += l_LineSkip;
+                    }
+
+                    l_DestOffset += 0x20;
+                }
+            }
+        } break;
+
+        default:
+            ASSERTL_Z(FALSE, "Bitmap_Z::SetUniversal", 929);
+            break;
+    }
+
+    SetDatas(l_Datas);
+}
 
 #pragma dont_inline off

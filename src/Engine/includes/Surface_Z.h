@@ -38,7 +38,10 @@ public:
     virtual Bool GetCollisionLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
     virtual Bool GetClingLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ClingLineResult_Z& o_Result);
     virtual Bool GetCollisionMovingSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual U32 GetNbNormals() const;
+
+    virtual U32 GetNbNormals() const {
+        return 0;
+    }
 
     void GetQuadPatchCtrlPoint(const Patch& i_Patch, QuadCtrlPoint_Z& o_QuadCtrlPoint);
 
@@ -51,7 +54,8 @@ protected:
 
 class SurfaceDatas_Z : public PointsDatas_Z {
 public:
-    virtual ~SurfaceDatas_Z();
+    virtual ~SurfaceDatas_Z() { }
+
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
 
     static BaseObject_Z* NewObject() {

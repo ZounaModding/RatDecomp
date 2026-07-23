@@ -9,11 +9,7 @@ public:
 
     virtual ~EndMissionVolumeAgent_G() {}
     virtual void Init();
-
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct EndMissionVolumeAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

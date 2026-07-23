@@ -141,6 +141,10 @@ U32 FileHdl_Z::GetSize() {
     return l_Size;
 }
 
+U32 FileHdl_Z::GetCurPos() {
+    return 0;
+}
+
 Bool FileHdl_Z::Close() {
     Bool l_Result = TRUE;
 

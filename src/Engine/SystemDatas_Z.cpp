@@ -7,6 +7,7 @@
 #include "LightData_Z.h"
 #include "MaterialObj_Z.h"
 #include "Fonts_Z.h"
+#include "Main_Z.h"
 
 SystemDatas_Z::SystemDatas_Z() {
     m_DefaultMaterialAnimHdl = gData.ClassMgr->NewResource(Name_Z("MaterialAnim_Z"), Name_Z("DefaultMaterialAnim"));
@@ -80,6 +81,13 @@ SystemDatas_Z::SystemDatas_Z() {
 
 SystemDatas_Z::~SystemDatas_Z() { }
 
+void SystemDatas_Z::MarkHandles() {
+}
+
+Bool SystemDatas_Z::Minimize() {
+    return FALSE;
+}
+
 MaterialAnim_ZHdl SystemDatas_Z::GetMaterialByName(const Name_Z& i_Name) {
     MaterialAnim_ZHdl l_MatHdl;
     for (S32 i = 0; !l_MatHdl.IsValid() && i < m_MaterialObjHdls.GetSize(); i++) {
@@ -98,4 +106,28 @@ S32 SystemDatas_Z::GetFontId(const Name_Z& i_Name) {
         }
     }
     return -1;
+}
+
+Bool LoadMaterialLib() {
+    return FALSE;
+}
+
+Bool LoadObjectLib() {
+    return FALSE;
+}
+
+Bool RemoveObjectLib() {
+    return FALSE;
+}
+
+Bool RemoveMaterialLib() {
+    return FALSE;
+}
+
+Bool LoadSysRtc() {
+    return FALSE;
+}
+
+Bool RemoveSysRtc() {
+    return FALSE;
 }

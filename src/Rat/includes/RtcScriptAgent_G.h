@@ -16,9 +16,7 @@ public:
     DECL_BHV(CheckEndOfGoto);
     DECL_BHV(RtcParticlesEfx);
     DECL_BHV(RtcWaitPreLoad);
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct RtcScriptAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

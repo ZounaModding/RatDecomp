@@ -25,3 +25,14 @@ int stricmp(const char* str1, const char* str2) {
 int strnicmp(const char* str1, const char* str2, int n) {
     return __msl_strnicmp(str1, str2, n);
 }
+
+char* strupr(char* str) {
+    char* p = str;
+
+    while (*p) {
+        *p = toupper(*p);
+        ++p;
+    }
+
+    return str;
+}

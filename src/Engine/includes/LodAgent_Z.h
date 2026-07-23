@@ -9,12 +9,12 @@ public:
 
     virtual ~LodAgent_Z() {}
     virtual void Init();
-    virtual void SetPlayerId(S32 a1);
-    virtual void SetTeamId(S32 a1);
-    virtual void SetViewportId(S32 a1);
-    virtual void GetViewportId();
-    virtual void SetInputId(S32 a1);
-    virtual void GetInputId();
+    virtual void SetPlayerId(S32 a1) { } 
+    virtual void SetTeamId(S32 a1) { } 
+    virtual void SetViewportId(S32 a1) { } 
+    virtual void GetViewportId() { } 
+    virtual void SetInputId(S32 a1) { } 
+    virtual void GetInputId() { }
 private:
 END_AGENT_CLASS
 

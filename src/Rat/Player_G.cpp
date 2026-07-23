@@ -37,12 +37,10 @@ void Player_G::RemoveFromStaticList() {
 }
 
 Player_G::Player_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (Player_G::Player_G)
 }
 
 void Player_G::Init() {
     Friends_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (Player_G::Init)
 }
 
 // clang-format off
@@ -53,7 +51,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_warp_color_check)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(Player_G::CheckWarpColor)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(Player_G,CheckSoundClothe)
@@ -62,7 +60,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_sound_clothe)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(Player_G::CheckSoundClothe)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(Player_G,CheckAnimEvent)
@@ -71,7 +69,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_event)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(Player_G::CheckAnimEvent)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(Player_G,CheckHit)
@@ -80,7 +78,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_anim_hit_skel_collide)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(Player_G::CheckHit)
+        ;
 END_BEHAVIOR
 
 // clang-format on

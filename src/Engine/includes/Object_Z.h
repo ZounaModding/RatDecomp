@@ -133,11 +133,16 @@ public:
 
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
     virtual void Draw(DrawInfo_Z& i_DrawInfo);
-    virtual void HideObject(S32 i_Index);
-    virtual void UnHideObject(S32 i_Index);
-    virtual void SetShadowData(Node_Z* i_Node, const Vec3f& i_Origin, const ColLineResult_Z& i_Result, Float i_Radius);
-    virtual void UpdateShadowData(Node_Z* i_Node, const Vec3f& i_Origin, Float i_Radius);
-    virtual void UpdateReflectData(Node_Z* i_Node, const Vec3f& i_Origin);
+
+    virtual void HideObject(S32 i_Index) { }
+
+    virtual void UnHideObject(S32 i_Index) { }
+
+    virtual void SetShadowData(Node_Z* i_Node, const Vec3f& i_Origin, const ColLineResult_Z& i_Result, Float i_Radius) { }
+
+    virtual void UpdateShadowData(Node_Z* i_Node, const Vec3f& i_Origin, Float i_Radius) { }
+
+    virtual void UpdateReflectData(Node_Z* i_Node, const Vec3f& i_Origin) { }
 
     virtual void SetDfltColor(const Color& i_Color) {
         m_DefaultColor = i_Color;
@@ -147,9 +152,11 @@ public:
         return m_DefaultColor;
     }
 
-    virtual void SetDfltColorNoAlpha(const Color& i_Color);
-    virtual void SetDfltColorAlpha(Float i_Alpha);
-    virtual void FreeLightCacheEntry(U16 i_Index);
+    virtual void SetDfltColorNoAlpha(const Color& i_Color) { }
+
+    virtual void SetDfltColorAlpha(Float i_Alpha) { }
+
+    virtual void FreeLightCacheEntry(U16 i_Index) { }
 
     inline Bool IsFlag(const U32 i_Flag) const {
         return (m_Flag & i_Flag) ? TRUE : FALSE;
@@ -179,7 +186,8 @@ public:
 
     virtual void DrawReceiveShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data, S32 i_ObjID) { }
 
-    virtual void DrawCastingShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
+    virtual void DrawCastingShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data) { }
+
     virtual void UpdateObject(Node_Z* i_Node, ObjectDatas_Z* i_Data);
 
     virtual Bool GetCollisionVLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Vec4f& i_Vec, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag) {

@@ -65,7 +65,8 @@ private:
 
 class HFogData_Z : public ObjectDatas_Z {
 public:
-    virtual ~HFogData_Z();
+    virtual ~HFogData_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
 

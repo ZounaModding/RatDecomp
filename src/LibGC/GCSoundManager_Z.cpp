@@ -54,6 +54,12 @@ Bool GCSoundManager_Z::Init() {
     return TRUE;
 }
 
+void GCSoundManager_Z::Shut() {
+}
+
+void GCSoundManager_Z::Reset() {
+}
+
 void GCSoundManager_Z::Draw(DrawInfo_Z& i_DrawInfo) {
     SoundManager_Z::Draw(i_DrawInfo);
 
@@ -62,12 +68,30 @@ void GCSoundManager_Z::Draw(DrawInfo_Z& i_DrawInfo) {
     }
 }
 
+void SoundManager_Z::CloseFrame() {
+}
+
+void GCSoundManager_Z::SetMuteState(U32 a1) {
+}
+
+void GCSoundManager_Z::PlaySound(Sound_ZHdl& a1, U32 a2, const Node_ZHdl& a3, BoneNode_Z* a4) {
+}
+
+void GCSoundManager_Z::CheckTrack(S32 a1) {
+}
+
+void GCSoundManager_Z::StopSound(S32 a1) {
+}
+
 void GCSoundManager_Z::Update(Float i_DeltaTime) {
+}
+
+void GCSoundManager_Z::Clean() {
 }
 
 Bool GCSoundManager_Z::Minimize() {
     return TRUE;
 }
 
-void SoundManager_Z::CloseFrame() {
+void GCSoundManager_Z::FreeSound(void* a1) {
 }

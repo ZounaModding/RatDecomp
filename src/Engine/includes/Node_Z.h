@@ -49,7 +49,9 @@ public:
 
     inline Node_Z* GetNext() const { return m_Next; }
 
-    Object_Z* GetObject(Bool) const;
+    Object_Z* GetObject(Bool) const {
+        return NULL;
+    }
 
     Object_Z* GetObjectA() const { return m_Object; }
 

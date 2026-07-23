@@ -41,8 +41,96 @@ void RegisterDebugCommand() {
     REGISTERCOMMAND("DrawMemGraph", DrawMemGraph);
 }
 
+Bool DisplayMemStatus() {
+    return FALSE;
+}
+
+Bool DrawMemGraph() {
+    return FALSE;
+}
+
+Bool DeltaTime() {
+    return FALSE;
+}
+
+Bool ScreenShot() {
+    return FALSE;
+}
+
+Bool SwitchScreenMode() {
+    return FALSE;
+}
+
+Bool SetGammaRamp() {
+    return FALSE;
+}
+
+Bool SetBrightness() {
+    return FALSE;
+}
+
+Bool SetContrast() {
+    return FALSE;
+}
+
+Bool SetGAmma() {
+    return FALSE;
+}
+
+Bool SwapStartButton() {
+    return FALSE;
+}
+
+Bool BoxPatchClip() {
+    return FALSE;
+}
+
+Bool SetPosPerso() {
+    return FALSE;
+}
+
 Bool EnablePopupMenu() {
     return TRUE;
+}
+
+Bool EnableProfiler() {
+    return FALSE;
+}
+
+Bool EnableDmaProfiler() {
+    return FALSE;
+}
+
+Bool EnableDebugMouse() {
+    return FALSE;
+}
+
+Bool DisableMouseForCamera() {
+    return FALSE;
+}
+
+Bool CleanTempPic() {
+    return FALSE;
+}
+
+Bool DisplayFps() {
+    return FALSE;
+}
+
+Bool EnableVSync() {
+    return FALSE;
+}
+
+Bool DisplayStream() {
+    return FALSE;
+}
+
+Bool DoSkelDynamic() {
+    return FALSE;
+}
+
+Bool DisplayFrame() {
+    return FALSE;
 }
 
 Bool DisableConsole() {
@@ -58,6 +146,38 @@ Bool DisableConsole() {
         gData.DisableEngineFlag(FL_DISABLE_CONSOLE);
     }
     return TRUE;
+}
+
+Bool DisableIngameConsole() {
+    return FALSE;
+}
+
+Bool DisableAssert() {
+    return FALSE;
+}
+
+Bool DisableMusic() {
+    return FALSE;
+}
+
+Bool DisableMovie() {
+    return FALSE;
+}
+
+Bool SkipMovie() {
+    return FALSE;
+}
+
+Bool EnableL2R2() {
+    return FALSE;
+}
+
+Bool CheckMemoryEveryFrame() {
+    return FALSE;
+}
+
+Bool NbHandle() {
+    return FALSE;
 }
 
 Bool EnableBloomEffect() {
@@ -84,4 +204,8 @@ Bool EnableBloomEffect() {
         }
     }
     return TRUE;
+}
+
+Bool DrawMemInfos() {
+    return FALSE;
 }

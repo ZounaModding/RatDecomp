@@ -7,6 +7,10 @@ Bool GCRenderer_Z::SetLights(const DrawInfo_Z& i_DrawInfo, const Color& i_Color)
     return SetLight(i_DrawInfo, i_Color);
 }
 
+Bool GCRenderer_Z::SetLight(const DrawInfo_Z& i_DrawInfo, const Color& i_Color) {
+    return FALSE;
+}
+
 void GCRenderer_Z::SetRadiosity(Node_Z* i_Node) {
     m_ActiveBitmaps[BITMAP_RADIOSITY] = i_Node->GetRadiosityBmap();
     Bitmap_Z* l_Bitmap;
@@ -87,4 +91,7 @@ void GCRenderer_Z::NoFog() {
 void GCRenderer_Z::NoOmnis() {
     m_CurOmniLightMask = GX_LIGHT_NULL;
     m_CurOmniLightCount = 0;
+}
+
+void GCRenderer_Z::SetOmnis(const DrawInfo_Z& i_DrawInfo) {
 }

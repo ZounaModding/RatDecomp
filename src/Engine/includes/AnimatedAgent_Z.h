@@ -18,9 +18,9 @@ public:
     virtual void UseNode(Node_ZHdl& a1);
     virtual void RegisterWithGame(Game_ZHdl& a1);
     virtual void UnRegisterFromGame(Game_ZHdl& a1);
-    virtual void GetCollisionMessageAction(int& a1);
-    virtual void SetCollisionMessageAction(int a1);
-    virtual void Drop();
+    virtual Bool GetCollisionMessageAction(abc_message& o_Msg);
+    virtual void SetCollisionMessageAction(abc_message i_Msg);
+    virtual void Drop() {}
 
     PlayAnim_Z* GetPlayAnim() { return m_PlayAnimHdl; }
 

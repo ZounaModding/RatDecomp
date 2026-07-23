@@ -6,7 +6,9 @@
 class LightData_Z : public ObjectDatas_Z {
 public:
     LightData_Z();
-    virtual ~LightData_Z();
+
+    virtual ~LightData_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
 

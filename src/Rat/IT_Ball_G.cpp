@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 IT_BALL::IT_BALL() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_BALL::IT_BALL)
 }
 
 void IT_BALL::Init() {
     IT_DYNBASE_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_BALL::Init)
 }
 
 DynPtrArray_Z<IT_BALL*> IT_BALL::instances;

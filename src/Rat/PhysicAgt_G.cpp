@@ -8,7 +8,6 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 IT_DYNBASE_G::IT_DYNBASE_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_DYNBASE_G::IT_DYNBASE_G)
 }
 
 DynPtrArray_Z<IT_DYNBASE_G*> IT_DYNBASE_G::instances;

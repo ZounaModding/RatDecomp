@@ -32,10 +32,12 @@ public:
 
     typedef DynArray_Z<SubInterp_Z, 8, FALSE, TRUE> SubInterp_ZDA;
 
-    Game_Z();
+    Game_Z() { }
 
     virtual void Init();
-    virtual ~Game_Z();
+
+    virtual ~Game_Z() { }
+
     virtual Bool MarkHandles();
 
     static BaseObject_Z* NewObject() { return NewL_Z(149) Game_Z; }

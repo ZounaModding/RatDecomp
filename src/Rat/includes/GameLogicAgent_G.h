@@ -13,9 +13,7 @@ public:
     DECL_BHV(ActivateGame);
     DECL_BHV(GameReseted);
     DECL_BHV(StopPauseGameBhv);
-
 private:
-    // TODO: fields - see decomp_dump/types.h `struct GameLogicAgent_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

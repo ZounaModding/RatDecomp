@@ -8,7 +8,7 @@ BEGIN_AGENT_CLASS(Friends_G, Creatures_G, 14)
 public:
     Friends_G();
 
-    virtual ~Friends_G() {}
+    virtual ~Friends_G();
     virtual void Init();
     void AddToStaticList();
     void RemoveFromStaticList();
@@ -17,7 +17,6 @@ public:
 
 private:
     static DynPtrArray_Z<Friends_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct Friends_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

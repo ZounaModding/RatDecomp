@@ -187,16 +187,27 @@ public:
 
     virtual void EnableFolder(U32 a1);
     virtual void DisableFolder(U32 a1);
-    virtual void EnableFlag(U32 i_Flag);
+
+    virtual void EnableFlag(U32 i_Flag) { }
+
     virtual void DisableFlag(U32 i_Flag);
     virtual void Update(Float a1);
     virtual void Draw(DrawInfo_Z& i_DrawInfo);
-    virtual PopupMenu_Z* GetPopupMenu() const;
-    virtual void Flush();
-    virtual void DisplayStatus(U32 a1, const Char* a2);
+
+    virtual PopupMenu_Z* GetPopupMenu() const {
+        return NULL;
+    }
+
+    virtual void Flush() { }
+
+    virtual void DisplayStatus(U32 a1, const Char* a2) { }
+
     virtual void MessageStatus(U32 a1, const Char* a2, ...);
-    virtual void SaveMessage(const Char* a1);
-    virtual void SaveWarningMessage(const Char* a1);
+
+    virtual void SaveMessage(const Char* a1) { }
+
+    virtual void SaveWarningMessage(const Char* a1) { }
+
     virtual void MessageError(Bool a1, U64 a2, const Char* a3, va_list& i_Args);
 
     static void PrintBoxString(const Char*, const Char*, ...);

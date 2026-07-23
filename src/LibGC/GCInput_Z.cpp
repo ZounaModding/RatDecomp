@@ -13,12 +13,18 @@ GCInput_Z::GCInput_Z() {
     REGISTERCOMMANDC("AddInputDevice", AddInputDevice, "Adds a gamepad.");
 }
 
+GCInput_Z::~GCInput_Z() {
+}
+
 Bool GCInput_Z::Init() {
     InputPlatForm_Z::Init();
     PADSetAnalogMode(3);
     PADInit();
     AddDevice();
     return TRUE;
+}
+
+void GCInput_Z::Shut() {
 }
 
 void GCInput_Z::AddDevice() {
@@ -29,6 +35,9 @@ void GCInput_Z::AddDevice() {
     m_Devices.Add();
     m_Devices[l_DeviceIdx].m_Status = 0;
     m_Devices[l_DeviceIdx].Reset();
+}
+
+void GCInput_Z::RemoveDevice(S32 a1) {
 }
 
 void GCInput_Z::UpdateInput(Float i_DeltaTime) {
@@ -57,6 +66,13 @@ void GCInput_Z::ResetPad(S16 i_PadIdx) {
             PADReset(PAD_CHAN3_BIT);
             break;
     }
+}
+
+void InputPlatForm_Z::Minimize() {
+    m_Devices.Minimize();
+    m_ActionButtonMappings.Minimize();
+    m_RegisteredInputActionContexts.Minimize();
+    m_ActiveInputActionContexts.Minimize();
 }
 
 Float GCInput_Z::GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown) {
@@ -210,6 +226,12 @@ Bool GCInput_Z::UpdatePaddle(S16 i_PadIdx) {
     return FALSE;
 }
 
+void GCInput_Z::Vibration(S32 a1, U8 a2, U8 a3) {
+}
+
+void GCInput_Z::IsButtonPressed(U8 a1) {
+}
+
 S32 GCInput_Z::GetDeviceStatus(S32 i_DeviceIdx, S32 i_Unused) {
     if (i_DeviceIdx >= 0 && i_DeviceIdx < 4) {
         return m_Devices[i_DeviceIdx].m_Status;
@@ -218,9 +240,5 @@ S32 GCInput_Z::GetDeviceStatus(S32 i_DeviceIdx, S32 i_Unused) {
     return 1;
 }
 
-void InputPlatForm_Z::Minimize() {
-    m_Devices.Minimize();
-    m_ActionButtonMappings.Minimize();
-    m_RegisteredInputActionContexts.Minimize();
-    m_ActiveInputActionContexts.Minimize();
+void GCInput_Z::ResetPads() {
 }

@@ -23,7 +23,8 @@ class SuperSpray_Z : public PlayParticles_Z {
 public:
     SuperSpray_Z() { }
 
-    virtual ~SuperSpray_Z();
+    virtual ~SuperSpray_Z() { }
+
     virtual void Reset();
     virtual void Update(Float a1);
     virtual void Replay();

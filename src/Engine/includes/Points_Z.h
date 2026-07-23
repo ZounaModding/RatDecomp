@@ -30,7 +30,7 @@ class PointsDatas_Z : public ObjectDatas_Z {
 public:
     virtual ~PointsDatas_Z() { }
 
-    virtual void FreeLightCacheEntry(U16 a1);
+    virtual void FreeLightCacheEntry(U16 a1) { }
 };
 
 #endif

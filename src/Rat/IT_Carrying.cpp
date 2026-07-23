@@ -13,10 +13,12 @@ END_INIT_AGENT_CLASS
 
 void IT_Carrying::Init() {
     Throwable_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Carrying::Init)
 }
 
 DynPtrArray_Z<IT_Carrying*> IT_Carrying::instances;
+
+void IT_Carrying::ResetAll() {
+}
 
 // TODO: Finish matching
 void IT_Carrying::AddToStaticList() {
@@ -38,10 +40,6 @@ void IT_Carrying::RemoveFromStaticList() {
     instances.Minimize();
 }
 
-IT_Carrying::IT_Carrying() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_Carrying::IT_Carrying)
-}
-
 // clang-format off
 
 BEHAVIOR(IT_Carrying,CheckRespawn)
@@ -50,7 +48,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_check_respawn_specific)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(IT_Carrying::CheckRespawn)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(IT_Carrying,EnterTeleportZone)
@@ -59,7 +57,10 @@ BEGIN_BEHAVIOR
     CONDITION
         result_FALSE /* TODO: message not found in ABC_Message_Engine.h / ABC_Message_Game.h cross-refs - check decomp_dump/Rat/*.cpp.ghidra.c (IT_Carrying::EnterTeleportZone) for `ABC_Agent::Message(this, N)` */
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(IT_Carrying::EnterTeleportZone)
+        ;
 END_BEHAVIOR
 
 // clang-format on
+
+IT_Carrying::IT_Carrying() {
+}

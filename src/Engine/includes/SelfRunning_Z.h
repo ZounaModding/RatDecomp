@@ -16,7 +16,9 @@ struct SelfRunningKey {
 class SelfRunning_Z : public Manipulator_Z {
 public:
     SelfRunning_Z();
-    virtual ~SelfRunning_Z();
+
+    virtual ~SelfRunning_Z() { }
+
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
 

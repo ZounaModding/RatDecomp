@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 IT_FISH_G::IT_FISH_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_FISH_G::IT_FISH_G)
 }
 
 void IT_FISH_G::Init() {
     MovingAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_FISH_G::Init)
 }
 
 DynPtrArray_Z<IT_FISH_G*> IT_FISH_G::instances;

@@ -5,9 +5,13 @@
 class SkinGC_Z : public Skin_Z {
 public:
     SkinGC_Z();
-    virtual ~SkinGC_Z();
+
+    virtual ~SkinGC_Z() { }
+
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
-    virtual void DrawReceiveShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data, S32 i_ObjID);
+
+    virtual void DrawReceiveShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data, S32 i_ObjID) { }
+
     virtual void DrawCastingShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);
     virtual void UpdateBSphere(const ObjectDatas_ZHdl& i_DataHdl);
 

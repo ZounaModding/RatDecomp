@@ -26,7 +26,8 @@ class FlareDataGC_Z : public ObjectDatas_Z {
 public:
     static VizQueryStreamList_Z VizQueryStreamList;
 
-    virtual ~FlareDataGC_Z();
+    virtual ~FlareDataGC_Z() { }
+
     virtual void UpdatePointers(Object_Z* i_Obj, S32 i_Param = -1);
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
 

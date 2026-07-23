@@ -92,6 +92,10 @@ S32 GCRenderer_Z::PushVizQuery(DrawInfo_Z& i_DrawInfo, const Vec3f& i_VertexPosS
     return l_Result;
 }
 
+Bool GCRenderer_Z::DrawExtPrimitive(ExtPrimitiveInfo_Z* i_ExtPrimInfo) {
+    return FALSE;
+}
+
 // TODO: Finish matching
 U16 GCRenderer_Z::SortRendererDatas(SortElem_Z* i_List) {
     U16 l_Head[256];
@@ -520,4 +524,10 @@ void GCRenderer_Z::InitBlock(DrawInfo_Z& i_DrawInfo) {
     m_LightCacheState1.m_MaxInUseNb = Max(m_LightCacheState1.m_InUseNb, m_LightCacheState1.m_MaxInUseNb);
     m_LightCacheState1.m_TotalNb = (U32)(m_ARamAllocator.m_EndAddress - m_ARamAllocator.m_StartAddress) >> 10;
     m_ARamAllocator.Init();
+}
+
+void GCRenderer_Z::SpecialWarpZone(DrawInfo_Z& i_DrawInfo) {
+}
+
+void GCRenderer_Z::RadialMBlur(DrawInfo_Z& i_DrawInfo) {
 }

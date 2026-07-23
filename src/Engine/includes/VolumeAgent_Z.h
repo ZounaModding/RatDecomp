@@ -16,9 +16,9 @@ public:
     virtual void StartAnims();
     virtual void ResetAnims();
     virtual void Entering(const Agent_ZHdl& i_AgentHdl);
-    virtual void Inside(const Agent_ZHdl& i_AgentHdl);
-    virtual void Exiting(const Agent_ZHdl& i_AgentHdl);
-    virtual void Staying(const Agent_ZHdl& i_AgentHdl);
+    virtual void Inside(const Agent_ZHdl& i_AgentHdl) { } 
+    virtual void Exiting(const Agent_ZHdl& i_AgentHdl) { } 
+    virtual void Staying(const Agent_ZHdl& i_AgentHdl) { } 
 
     Float GetFloatParam(S32 i_Index);
     Node_ZHdl& GetNodeParam(S32 i_Index) const;

@@ -458,11 +458,11 @@ Bool SetLOdTexture() {
     return TRUE;
 }
 
-Bool SetMAxAnisotropy() {
+Bool SetTExtureFiltering() {
     return TRUE;
 }
 
-Bool SetTExtureFiltering() {
+Bool SetMAxAnisotropy() {
     return TRUE;
 }
 
@@ -487,3 +487,21 @@ Bool StartRenderBench() {
 }
 
 #pragma dont_inline reset
+
+Float Renderer_Z::Renderer_ZDefaultNear = 0.0f;
+
+Float Renderer_Z::ScreenRatio = 0.0f;
+
+void Renderer_Z::SetLightFactor(Float a1, Float a2, Float a3) {
+}
+
+void Renderer_Z::GetLightFactor(Float& a1, Float& a2, Float& a3) {
+}
+
+void Renderer_Z::ApplyDirectionalOnVertex(Vertex3D* a1, Vec3f& a2, LightData_Z& a3) {
+}
+
+Float Renderer_Z::Renderer_ZCurrentNear = 0.0f;
+
+void Renderer_Z::ApplyFogOnVertex(Vertex3D* a1, Vec4f& a2) {
+}

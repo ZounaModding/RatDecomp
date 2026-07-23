@@ -28,3 +28,9 @@ void Node_Z::Load(void** i_Data) {
     LOAD_Z(l_Float);
     SetEnd(l_Float);
 }
+
+void Node_Z::EndLoad() {
+}
+
+void Node_Z::AfterEndLoad() {
+}

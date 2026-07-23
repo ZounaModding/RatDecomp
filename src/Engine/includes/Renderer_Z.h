@@ -311,7 +311,9 @@ protected:
 
 public:
     Renderer_Z();
-    static void SwitchScreen(ScreenType i_ScreenType);
+
+    static void SwitchScreen(ScreenType i_ScreenType) { }
+
     void SetSize(S32 i_SizeX, S32 i_SizeY);
 
     Viewport_Z& GetViewport(S32 i_ViewportID) { return m_Viewports[i_ViewportID]; }
@@ -337,7 +339,8 @@ public:
     virtual ~Renderer_Z();
     virtual Bool Init(S32 i_SizeX, S32 i_SizeY);
     virtual void Shut();
-    virtual void Reset();
+
+    virtual void Reset() { }
 
     virtual void UpdateResource() { }
 
@@ -357,13 +360,15 @@ public:
 
     virtual void SetViewMatrix(Bool i_Unk) { }
 
-    virtual void DrawTransparent(DrawInfo_Z& i_DrawInfo);
+    virtual void DrawTransparent(DrawInfo_Z& i_DrawInfo) { }
 
     virtual void DrawPostRenderEffects(DrawInfo_Z& i_DrawInfo) { }
 
     virtual void InitViewport(U32 i_NbViewports);
-    virtual void ClearZBuffer(S32 i_X, S32 i_Y, S32 i_Width, S32 i_Height);
-    virtual void ClearFrameBuffer(S32 a1, S32 a2, S32 a3, S32 a4);
+
+    virtual void ClearZBuffer(S32 i_X, S32 i_Y, S32 i_Width, S32 i_Height) { }
+
+    virtual void ClearFrameBuffer(S32 a1, S32 a2, S32 a3, S32 a4) { }
 
     virtual void GetRendererParams(Float& o_HSize, Float& o_VSize, Float& o_UnkParam_0, Float& o_HCenter, Float& o_VCenter) {
         o_HSize = m_HSize;
@@ -395,8 +400,9 @@ public:
 
     virtual Color& GetClearColor() { return m_ClearColor; }
 
-    virtual void MoveScreenOrigin(S32 a1, S32 a2);
-    virtual void SetDOF_Depth(Float i_DofDepth);
+    virtual void MoveScreenOrigin(S32 a1, S32 a2) { }
+
+    virtual void SetDOF_Depth(Float i_DofDepth) { }
 
     virtual void PushOrder(Float i_Order) { }
 
@@ -423,7 +429,8 @@ public:
     virtual void SetActiveMaterial(Material_Z* i_Material) { m_ActiveMaterial = i_Material; }
 
     virtual void SetBlankMaterial();
-    virtual void SetActiveTexture(Bitmap_Z* i_Bitmap, S32 i_Unk);
+
+    virtual void SetActiveTexture(Bitmap_Z* i_Bitmap, S32 i_Unk) { }
 
     virtual void FreeTexture(S16 i_TexId) { }
 
@@ -442,8 +449,9 @@ public:
         o_SpecialVisionColor2 = m_SpecialVisionColor4;
     }
 
-    virtual void SetSpecialVisionColor(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, const Vec3f& a4);
-    virtual U32 GetTextureSize();
+    virtual void SetSpecialVisionColor(const Vec3f& a1, const Vec3f& a2, const Vec3f& a3, const Vec3f& a4) { }
+
+    virtual U32 GetTextureSize() { return 0; }
 
     virtual Float GetPercentAlloc(S32 i_Unk) { return 0.0f; }
 
@@ -455,29 +463,44 @@ public:
 
     virtual void ApplyDirectionalOnVertex(Vertex3D* a1, Vec3f& a2, LightData_Z& a3);
     virtual void ApplyFogOnVertex(Vertex3D* a1, Vec4f& a2);
-    virtual void DrawFace(Vertex3D& a1, Vertex3D& a2, Vertex3D& a3);
-    virtual void DrawStrip(Vertex3D* a1, U32 a2, Bool a3);
-    virtual void DrawStripAfterScene(Vertex3D* a1, U32 a2, Bool a3);
-    virtual void DrawLine(const Vec3f& a1, const Vec3f& a2, const Color& a3, Bool a4, Bool a5);
-    virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4);
-    virtual void DrawImage(Bitmap_ZHdl& a1);
-    virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);
+
+    virtual void DrawFace(Vertex3D& a1, Vertex3D& a2, Vertex3D& a3) { }
+
+    virtual void DrawStrip(Vertex3D* a1, U32 a2, Bool a3) { }
+
+    virtual void DrawStripAfterScene(Vertex3D* a1, U32 a2, Bool a3) { }
+
+    virtual void DrawLine(const Vec3f& a1, const Vec3f& a2, const Color& a3, Bool a4, Bool a5) { }
+
+    virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4) { }
+
+    virtual void DrawImage(Bitmap_ZHdl& a1) { }
+
+    virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3) { }
+
     virtual void Draw2DQuad(const Vec2f& a1, const Vec2f& a2, const Vec2f& a3, const Vec2f& a4, const Color& a5, const Color& a6, Float a7) { };
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5);
-    virtual void DrawQuad(Vec2f& i_Pos, Vec2f& i_BottomRight, Color& i_Color, Float i_Z);
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6);
+
+    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5) { }
+
+    virtual void DrawQuad(Vec2f& i_Pos, Vec2f& i_BottomRight, Color& i_Color, Float i_Z) { }
+
+    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6) { }
 
     virtual void DrawTri(Vec2f& i_Point1, Vec2f& i_Point2, Vec2f& i_Point3, Color& i_Color, Float i_Z) { }
 
-    virtual void Draw2DQuad(Vec2f* a1, Vec3f* a2, Vec2f* a3, Float a4, Float a5);
-    virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4);
-    virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4);
+    virtual void Draw2DQuad(Vec2f* a1, Vec3f* a2, Vec2f* a3, Float a4, Float a5) { }
+
+    virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4) { }
+
+    virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4) { }
 
     virtual void EnableZBuffer(Bool i_Enable) { }
 
-    virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Scale, Float i_Z);
-    virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3);
-    virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4);
+    virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Scale, Float i_Z) { }
+
+    virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3) { }
+
+    virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4) { }
 
     virtual void SetShadowMapRect(Vec2f& i_ShadowMapRectPoint1, Vec2f& i_ShadowMapRectPoint2, Vec2f& i_ShadowMapRectPoint3) {
         m_ShadowMapRectPoint1 = i_ShadowMapRectPoint1;
@@ -489,7 +512,7 @@ public:
         return 0;
     }
 
-    virtual void MakeScreenShot(Char* i_FilePath);
+    virtual void MakeScreenShot(Char* i_FilePath) { }
 
     virtual void MakeAVI(S32 a1, S32 a2) {
         EnableEffectFlag(FL_EFFECT_MAKE_AVI);

@@ -2,8 +2,10 @@
 #include "ABC_ScriptManager.h"
 #include "StreamAgent_Z.h"
 
-void ClassManager_Z::GetNameFromId(U32 i_ID, Name_Z& o_Name) {
-    o_Name.m_ID = i_ID;
+void ClassManager_Z::OpenBigFileStream(const Char* a1) {
+}
+
+void ClassManager_Z::CloseBigFileStream() {
 }
 
 Bool ClassManager_Z::OpenBigFile(const Char* i_BfName, const Name_Z& i_StreamAgentClassName, Bool i_Unused) {
@@ -40,8 +42,46 @@ Bool ClassManager_Z::OpenBigFile(const Char* i_BfName, const Name_Z& i_StreamAge
     return TRUE;
 }
 
+void ClassManager_Z::CloseBigFile() {
+}
+
+void ClassManager_Z::LoadResourceData(BigFileRsc_Z& i_Resource) {
+}
+
+Bool ClassManager_Z::LoadResource(BigFileRsc_Z& i_Resource) {
+    return FALSE;
+}
+
 // $SABE: Stubbed out in MASTER
 void ClassManager_Z::OpenBigFileName(const String_Z<ARRAY_CHAR_MAX>& i_NameFilePath) { }
+
+void ClassManager_Z::LoadName(Name_Z&, void**) {
+}
+
+void ClassManager_Z::GetNameFromId(U32 i_ID, Name_Z& o_Name) {
+    o_Name.m_ID = i_ID;
+}
+
+const String_Z<ARRAY_CHAR_MAX>& ClassManager_Z::GetNameStrFromId(const Name_Z& i_Name) const {
+}
+
+void ClassManager_Z::LoadLink(BaseObject_ZHdl& i_Hdl, void** i_Data) {
+}
+
+void ClassManager_Z::LoadLinkId(void* i_ID, void** i_Data) {
+}
+
+void ClassManager_Z::UpdateLinkFromId(BaseObject_ZHdl& i_Hdl, S32 i_ID) {
+}
+
+void ClassManager_Z::UpdateLink(BaseObject_ZHdl& i_Hdl) {
+}
+
+void ClassManager_Z::GetResourceObject(const Char* a1) {
+}
+
+void ClassManager_Z::AssumeGetResourceObject(const Char* a1) {
+}
 
 Bool OpenBF() {
     if (gData.Cons->GetNbParam() < 2) {
@@ -57,4 +97,16 @@ Bool OpenBF() {
     }
 
     return gData.ClassMgr->OpenBigFile(gData.Cons->GetStrParam(1), l_StreamAgentClassName, FALSE);
+}
+
+Bool OpenBFS() {
+    return FALSE;
+}
+
+Bool ForceBF() {
+    return FALSE;
+}
+
+Bool CloseBF() {
+    return FALSE;
 }

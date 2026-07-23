@@ -47,3 +47,20 @@ BEGIN_BEHAVIOR
 END_BEHAVIOR
 
 // clang-format on
+
+void Throwable_Z::Reset() {
+}
+
+void Throwable_Z::ResetCollisionMessages() {
+}
+
+Bool Throwable_Z::GetCollisionMessageContactActive(abc_message& o_Msg) {
+    return FALSE;
+}
+
+Bool Throwable_Z::GetCollisionMessageContactPassive(abc_message& o_Msg) {
+    return FALSE;
+}
+
+void Throwable_Z::GetThrowParameters(ObjectMoveData_Z* a1) {
+}

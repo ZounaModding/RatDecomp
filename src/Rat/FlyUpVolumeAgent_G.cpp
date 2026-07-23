@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 FlyUpVolumeAgent_G::FlyUpVolumeAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (FlyUpVolumeAgent_G::FlyUpVolumeAgent_G)
 }
 
 void FlyUpVolumeAgent_G::Init() {
     VolumeAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (FlyUpVolumeAgent_G::Init)
 }
 
 DynPtrArray_Z<FlyUpVolumeAgent_G*> FlyUpVolumeAgent_G::instances;

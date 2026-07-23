@@ -4,12 +4,13 @@
 
 class WanderingPath_G : public BaseObject_Z {
 public:
-    virtual ~WanderingPath_G();
+    virtual ~WanderingPath_G() { }
+
     virtual void Init();
 
     static BaseObject_Z* NewObject() { return NewL_Z(105) WanderingPath_G; }
 
-    void Minimize();
+    void Minimize() { }
 
 private:
     U8 m_Unk_0xc[0xc];

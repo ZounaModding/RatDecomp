@@ -34,12 +34,10 @@ void GuardAgent_G::RemoveFromStaticList() {
 }
 
 GuardAgent_G::GuardAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (GuardAgent_G::GuardAgent_G)
 }
 
 void GuardAgent_G::Init() {
     AnimatedAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (GuardAgent_G::Init)
 }
 
 // clang-format off
@@ -50,7 +48,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_end_check_player)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(GuardAgent_G::CheckSight)
+        ;
 END_BEHAVIOR
 
 BEHAVIOR(GuardAgent_G,CheckBlind)
@@ -59,7 +57,7 @@ BEGIN_BEHAVIOR
     CONDITION
         Message(msg_start_blind)
     ACTION
-        ;// TODO: implement - see decomp_dump/Rat/\*\.cpp\.ghidra\.c \(GuardAgent_G::CheckBlind)
+        ;
 END_BEHAVIOR
 
 // clang-format on

@@ -5,7 +5,9 @@
 class PaddleChecker_G : public Manipulator_Z {
 public:
     PaddleChecker_G();
-    virtual ~PaddleChecker_G();
+
+    virtual ~PaddleChecker_G() { }
+
     virtual void Init();
     virtual void Update(Float i_DeltaTime);
 

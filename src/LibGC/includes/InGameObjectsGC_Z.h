@@ -4,7 +4,8 @@
 
 class InGameObjectsGC_Z : public InGameObjects_Z {
 public:
-    virtual ~InGameObjectsGC_Z();
+    virtual ~InGameObjectsGC_Z() { }
+
     virtual void Draw(const Viewport_Z* i_Viewport);
 
     static BaseObject_Z* NewObject() {

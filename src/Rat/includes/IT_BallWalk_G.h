@@ -17,7 +17,6 @@ public:
 
 private:
     static DynPtrArray_Z<IT_BallWalk_G*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct IT_BallWalk_G` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

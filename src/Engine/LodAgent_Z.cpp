@@ -13,3 +13,6 @@ LodAgent_Z::LodAgent_Z() {
     m_MaxSqrDistActive = -1.0f;
     m_MinSqrDistActive = -1.0f;
 }
+
+void LodAgent_Z::Init() {
+}

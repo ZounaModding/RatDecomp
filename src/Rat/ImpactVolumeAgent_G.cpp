@@ -30,10 +30,8 @@ void ImpactVolumeAgent_G::RemoveFromStaticList() {
 }
 
 ImpactVolumeAgent_G::ImpactVolumeAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (ImpactVolumeAgent_G::ImpactVolumeAgent_G)
 }
 
 void ImpactVolumeAgent_G::Init() {
     VolumeAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (ImpactVolumeAgent_G::Init)
 }

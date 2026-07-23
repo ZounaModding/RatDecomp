@@ -113,3 +113,6 @@ Bool MeshGC_Z::DrawWithMaterials(DrawInfo_Z& i_DrawInfo, StreamList_Z& i_StreamL
 
     return l_Result;
 }
+
+void MeshGC_Z::DrawCastingShadow(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data) {
+}

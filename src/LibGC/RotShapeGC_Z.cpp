@@ -8,3 +8,6 @@ void RotShapeGCData_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_
     RotShapeData_Z::Clone(o_ObjectDatasHdl, o_ObjectHdl);
     UpdatePointers(o_ObjectHdl, -1);
 }
+
+void RotShapeGCData_Z::UpdatePointers(Object_Z* i_Obj, S32 i_Param) {
+}

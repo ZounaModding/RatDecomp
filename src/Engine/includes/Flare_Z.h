@@ -5,7 +5,9 @@
 class Flare_Z : public Object_Z {
 public:
     Flare_Z();
-    virtual ~Flare_Z();
+
+    virtual ~Flare_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void EndLoad();
     virtual void AfterEndLoad();

@@ -33,3 +33,19 @@ Bool GCMovie_Z::Init() {
     BinkSetSoundSystem(BinkOpenAX, &l_AramCallbacks);
     return TRUE;
 }
+
+void GCMovie_Z::Shut() {
+}
+
+void GCMovie_Z::PlayMovie(const Char* a1, U32 a2) {
+}
+
+void GCMovie_Z::Play(const Char* a1, U32 a2) {
+}
+
+void GCMovie_Z::StopMovie() {
+}
+
+Bool PlayCautionMovie() {
+    return TRUE;
+}

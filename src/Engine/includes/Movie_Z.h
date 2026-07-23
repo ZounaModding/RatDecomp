@@ -24,21 +24,32 @@ class Movie_Z {
     Color m_Color;
 
 public:
-    virtual ~Movie_Z();
+    virtual ~Movie_Z() { }
+
     virtual Bool Init();
     virtual void Shut();
     virtual void Play(const Char* i_FilePath, U32 i_Flags);
     virtual void Pause(Bool i_Pause);
     virtual void Skip(Float i_SkipTime);
-    virtual void GetExtension();
-    virtual void PlayMovie(const Char* i_FilePath, U32 i_Flags);
-    virtual void StopMovie();
-    virtual void SwitchFullScreen();
-    virtual void DisplayChanged();
-    virtual void PaintVideo();
+
+    virtual void GetExtension() { }
+
+    virtual void PlayMovie(const Char* i_FilePath, U32 i_Flags) { }
+
+    virtual void StopMovie() { }
+
+    virtual void SwitchFullScreen() { }
+
+    virtual void DisplayChanged() { }
+
+    virtual void PaintVideo() { }
+
     virtual void MarkHandles();
-    virtual void Update(Float i_DeltaTime);
-    virtual void Draw(DrawInfo_Z& i_DrawInfo);
+
+    virtual void Update(Float i_DeltaTime) { }
+
+    virtual void Draw(DrawInfo_Z& i_DrawInfo) { }
+
     virtual void RemoveManip(const MovieManipHdl& i_ManipHdl);
 
     Bool IsPlaying();

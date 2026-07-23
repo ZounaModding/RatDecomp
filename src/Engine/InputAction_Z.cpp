@@ -10,3 +10,6 @@ S32 InputActionContext_Z::AddAction(S32 i_ActionId) {
 InputAction_Z& InputActionContext_Z::GetAction(S32 i_ActionIdx) {
     return m_Actions[(U16)i_ActionIdx];
 }
+
+void InputActionContext_Z::Update(Float i_DeltaTime) {
+}

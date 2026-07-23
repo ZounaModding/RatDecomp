@@ -4,6 +4,9 @@
 ParticlesGCData_Z::ParticlesGCData_Z() {
 }
 
+ParticlesGCData_Z::~ParticlesGCData_Z() {
+}
+
 void ParticlesGCData_Z::EndLoad() {
     ParticlesData_Z::EndLoad();
 

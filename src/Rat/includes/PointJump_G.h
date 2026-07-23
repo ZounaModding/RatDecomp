@@ -4,10 +4,12 @@
 
 class PointJump_G : public Manipulator_Z {
 public:
-    virtual ~PointJump_G();
+    virtual ~PointJump_G() { }
+
     virtual void Init();
     virtual void Reset();
-    virtual void Update(Float i_DeltaTime);
+
+    virtual void Update(Float i_DeltaTime) { }
 
     static BaseObject_Z* NewObject() { return NewL_Z(53) PointJump_G; }
 

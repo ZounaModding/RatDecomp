@@ -19,7 +19,8 @@ enum FXOmniInterpType {
 
 class InGameFX_G : public ManipulatorSceneDraw_Z {
 public:
-    virtual ~InGameFX_G();
+    virtual ~InGameFX_G() { }
+
     virtual void Update(Float i_DeltaTime);
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
 

@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 ConditionVolumeAgent_G::ConditionVolumeAgent_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (ConditionVolumeAgent_G::ConditionVolumeAgent_G)
 }
 
 void ConditionVolumeAgent_G::Init() {
     VolumeAgent_Z::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (ConditionVolumeAgent_G::Init)
 }
 
 DynPtrArray_Z<ConditionVolumeAgent_G*> ConditionVolumeAgent_G::STC_Instances;

@@ -17,13 +17,16 @@ class Ghost_Z : public Manipulator_Z {
 public:
     Ghost_Z();
 
-    virtual ~Ghost_Z();
+    virtual ~Ghost_Z() { }
+
     virtual Bool MarkHandles();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
     virtual void ResetGhost();
     virtual void UpdateBestGhost();
-    virtual void GetPlayerState(Float a1);
+
+    virtual void GetPlayerState(Float a1) { }
+
     virtual void Save(Float a1);
     virtual void Play(Float a1);
     virtual void StartSave(const Node_ZHdl& a1);

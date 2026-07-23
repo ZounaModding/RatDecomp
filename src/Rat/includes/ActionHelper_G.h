@@ -76,7 +76,9 @@ public:
 
 private:
     virtual void Init();
-    virtual ~ActionHelper_G();
+
+    virtual ~ActionHelper_G() { }
+
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);

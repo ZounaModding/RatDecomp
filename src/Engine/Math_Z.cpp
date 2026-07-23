@@ -80,37 +80,6 @@ Vec3f::Vec3f(const Quat& Q) {
     *this *= w;
 }
 
-Mat4x4& Mat4x4::operator*=(const Mat4x4& _m) {
-    Mat4x4 Temp;
-
-    for (int i = 0; i < 4; i++) {
-        Temp.m[0][i] = m[0][i] * _m.m[0][0] + m[1][i] * _m.m[0][1] + m[2][i] * _m.m[0][2] + m[3][i] * _m.m[0][3];
-
-        Temp.m[1][i] = m[0][i] * _m.m[1][0] + m[1][i] * _m.m[1][1] + m[2][i] * _m.m[1][2] + m[3][i] * _m.m[1][3];
-
-        Temp.m[2][i] = m[0][i] * _m.m[2][0] + m[1][i] * _m.m[2][1] + m[2][i] * _m.m[2][2] + m[3][i] * _m.m[2][3];
-
-        Temp.m[3][i] = m[0][i] * _m.m[3][0] + m[1][i] * _m.m[3][1] + m[2][i] * _m.m[3][2] + m[3][i] * _m.m[3][3];
-    }
-
-    *this = Temp;
-    return *this;
-}
-
-Mat4x4 Mat4x4::operator*(const Mat4x4& _m) const {
-    Mat4x4 Temp;
-    for (int i = 0; i < 4; i++) {
-        Temp.m[0][i] = m[0][i] * _m.m[0][0] + m[1][i] * _m.m[0][1] + m[2][i] * _m.m[0][2] + m[3][i] * _m.m[0][3];
-
-        Temp.m[1][i] = m[0][i] * _m.m[1][0] + m[1][i] * _m.m[1][1] + m[2][i] * _m.m[1][2] + m[3][i] * _m.m[1][3];
-
-        Temp.m[2][i] = m[0][i] * _m.m[2][0] + m[1][i] * _m.m[2][1] + m[2][i] * _m.m[2][2] + m[3][i] * _m.m[2][3];
-
-        Temp.m[3][i] = m[0][i] * _m.m[3][0] + m[1][i] * _m.m[3][1] + m[2][i] * _m.m[3][2] + m[3][i] * _m.m[3][3];
-    }
-    return Temp;
-}
-
 void Mat4x4::SetTRS(const Vec3f& Trans, const Quat& Rot, const Vec3f& Scale) {
     Mat4x4 ScaleMat, RotMat, TransMat;
 

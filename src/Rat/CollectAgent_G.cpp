@@ -8,12 +8,10 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 IT_COLLECT_G::IT_COLLECT_G() {
-    // TODO: field initialization - see decomp_dump/Rat/*.cpp.ghidra.c (IT_COLLECT_G::IT_COLLECT_G)
 }
 
 void IT_COLLECT_G::Init() {
     ObjectAgent_G::Init();
-    // TODO: ActivateBhv(...) calls - see decomp_dump/Rat/*.cpp.ghidra.c (IT_COLLECT_G::Init)
 }
 
 DynPtrArray_Z<IT_COLLECT_G*> IT_COLLECT_G::STC_Instances;

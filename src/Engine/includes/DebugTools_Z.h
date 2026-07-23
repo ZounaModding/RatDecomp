@@ -129,6 +129,7 @@ enum GameFlags {
     FL_GAME_UNK_0x400 = 1 << 10,  // 0x400
     FL_GAME_UNK_0x800 = 1 << 11,  // 0x800
     FL_GAME_UNK_0x1000 = 1 << 12, // 0x1000
+    FL_GAME_UNK_0x2000 = 1 << 13, // 0x2000
     FL_GAME_2_FRAMES = 1 << 15    // 0x8000
 };
 

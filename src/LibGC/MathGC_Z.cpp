@@ -1,13 +1,5 @@
 #include "MathGC_Z.h"
 
-void BuildLookAtLH(const Vec3f& i_Position, const Vec3f& i_Target, const Vec3f& i_Up, Mat4x4& o_Matrix) {
-}
-
-Mat4x4& Mat4x4::operator*=(const Mat4x4& i_Matrix) {
-    ConcatMat4x4(*this, i_Matrix, *this);
-    return *this;
-}
-
 Quat Quat::operator*(const Quat& i_Quat) const {
     Quat l_Quat;
     l_Quat.w = w * i_Quat.w - v * i_Quat.v;
@@ -29,6 +21,20 @@ Vec4f Mat4x4::operator*(const Vec4f& i_Vec) const {
     l_Vec.z = m[0][2] * l_X + m[1][2] * i_Vec.y + m[2][2] * l_Z + m[3][2];
     l_Vec.w = 1.0f;
     return l_Vec;
+}
+
+Mat4x4& Mat4x4::operator*=(const Mat4x4& i_Matrix) {
+    ConcatMat4x4(*this, i_Matrix, *this);
+    return *this;
+}
+
+Mat4x4 Mat4x4::operator*(const Mat4x4& i_Matrix) const {
+    Mat4x4 l_Mat;
+    ConcatMat4x4(*this, i_Matrix, l_Mat);
+    return l_Mat;
+}
+
+void BuildLookAtLH(const Vec3f& i_Position, const Vec3f& i_Target, const Vec3f& i_Up, Mat4x4& o_Matrix) {
 }
 
 #ifdef __MWERKS__

@@ -14,11 +14,8 @@ public:
     void RemoveFromStaticList();
     static void ResetAll();
 
-    // TODO: remaining public members - see decomp_dump/Rat/*.cpp.ghidra.c
-
 private:
     static DynPtrArray_Z<IT_Break*> instances;
-    // TODO: fields - see decomp_dump/types.h `struct IT_Break` for Ghidra's inferred layout
 END_AGENT_CLASS
 
 // clang-format on

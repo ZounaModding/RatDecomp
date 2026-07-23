@@ -20,9 +20,13 @@ public:
     void Heartbeat(Float i_DeltaTime);
     virtual void Init();
     virtual ~Manipulator_Z();
-    virtual void Reset();
-    virtual void ActionOnActivate();
-    virtual void ActionOnDeactivate();
+
+    virtual void Reset() { }
+
+    virtual void ActionOnActivate() { }
+
+    virtual void ActionOnDeactivate() { }
+
     virtual void Update(Float i_DeltaTime) = 0;
 
     inline ActivableGroup_Z GetGroup() const { return m_ManipGroup; }
@@ -44,7 +48,7 @@ public:
 
     virtual ~ManipulatorDraw_Z() { }
 
-    virtual void Update(Float i_DeltaTime);
+    virtual void Update(Float i_DeltaTime) { }
 
     virtual void Draw(const Viewport_Z* i_Vp) { }
 
@@ -66,7 +70,9 @@ public:
     virtual ~ManipulatorSceneDraw_Z() { }
 
     virtual void Update(Float i_DeltaTime);
-    virtual void BeforeDraw(const DrawInfo_Z& i_DrawInfo);
+
+    virtual void BeforeDraw(const DrawInfo_Z& i_DrawInfo) { }
+
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
 };
 

@@ -24,7 +24,9 @@ typedef DynArray_Z<Spline, 32, FALSE, TRUE> SplineDA;
 class Spline_Z : public Object_Z {
 public:
     Spline_Z();
-    virtual ~Spline_Z();
+
+    virtual ~Spline_Z() { }
+
     virtual void Load(void** i_Data);
     virtual void Clean();
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data);

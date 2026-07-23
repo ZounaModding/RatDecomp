@@ -1263,3 +1263,7 @@ int sprintf(char* s, const char* format, ...) {
     va_start(args, format);
     return vsnprintf(s, 0xFFFFFFFF, format, args);
 }
+
+int vsprintf(char* s, const char* format, va_list arg) {
+    return vsnprintf(s, 0xFFFFFFFF, format, arg);
+}

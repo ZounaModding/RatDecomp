@@ -48,6 +48,12 @@ void InputPlatForm_Z::SetControlMode(S32 i_RemapIdx, Bool i_ControlMode) {
     m_ActionButtonMappings[i_RemapIdx].m_ControlMode = i_ControlMode;
 }
 
+void InputPlatForm_Z::GetControls(InputDevice_Z* i_Device, void* i_ControllerData, Bool i_Unknown) {
+}
+
+void InputPlatForm_Z::IsAnyButton(U32 a1) {
+}
+
 void InputPlatForm_Z::UpdateInput(Float i_DeltaTime) {
     S32 l_Input = m_ActiveInputActionContexts.FindFirst();
     while (l_Input > -1) {
@@ -56,4 +62,7 @@ void InputPlatForm_Z::UpdateInput(Float i_DeltaTime) {
         }
         l_Input = m_ActiveInputActionContexts.FindNext(l_Input);
     }
+}
+
+void InputPlatForm_Z::SetEcoMode(S32 a1, Bool a2) {
 }
