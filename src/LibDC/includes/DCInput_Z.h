@@ -1,0 +1,25 @@
+#ifndef _DCINPUT_Z_H_
+#define _DCINPUT_Z_H_
+#include "InputEngine_Z.h"
+
+class DCInput_Z : public InputPlatForm_Z {
+public:
+    DCInput_Z();
+    virtual ~DCInput_Z();
+    virtual Bool Init();
+    virtual void Shut();
+    virtual void AddDevice();
+    virtual void ResetPads();
+    virtual void RemoveDevice(S32 a1);
+    virtual void UpdateInput(Float a1);
+    virtual void IsButtonPressed(U8 a1);
+    virtual void Vibration(S32 a1, U8 a2, U8 a3);
+    virtual S32 GetDeviceStatus(S32 a1, S32 a2);
+    virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown);
+    virtual void ResetPad(S16 a1);
+    Bool UpdatePaddle(S16 i_PadIdx);
+
+private:
+};
+
+#endif // _GCINPUT_Z_H_
