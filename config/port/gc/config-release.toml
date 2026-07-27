@@ -1,0 +1,25 @@
+[platform]
+name = "GameCube source-only Release"
+backend = "gc"
+default_profile = "all-source"
+output_subdir = "port-gc-release"
+output_name = "rat_gc"
+emit_map = true
+linker_template = "config/port/gc/port.lcf.in"
+
+[lcf]
+origin = "0x80003100"
+stack_size = "0x10000"
+arena_hi = "0x81700000"
+
+[flags]
+# Per-library and per-object compiler flags remain canonical in configure.py.
+# These arrays are only source-build-specific additions/removals.
+#
+# GAMECUBE_Z and NONMATCHING_Z already come from configure.py for every GC
+# source build; COMPLIANT_Z is a Dreamcast concern. Only the config-specific
+# flags belong here.
+gc_append = [
+]
+gc_remove = []
+link = []

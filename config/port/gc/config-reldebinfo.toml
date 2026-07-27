@@ -1,0 +1,41 @@
+[platform]
+name = "GameCube source-only RelDebInfo"
+backend = "gc"
+default_profile = "all-source"
+output_subdir = "port-gc-reldebinfo"
+output_name = "rat_gc_reldebinfo"
+emit_map = true
+linker_template = "config/port/gc/port.lcf.in"
+
+[lcf]
+origin = "0x80003100"
+stack_size = "0x10000"
+arena_hi = "0x81700000"
+
+[flags]
+# Per-library and per-object compiler flags remain canonical in configure.py.
+# These arrays are only source-build-specific additions/removals.
+#
+# GAMECUBE_Z and NONMATCHING_Z already come from configure.py for every GC
+# source build; COMPLIANT_Z is a Dreamcast concern. Only put flags here that
+# every compiler accepts: gc_append is applied to every object before the
+# mwcc/prodg rule is chosen. Compiler-specific flags go in the overrides below.
+gc_append = []
+gc_remove = []
+link = []
+
+# -sym is Metrowerks-only and the bink lib builds with ProDG, spanning
+# 3rdParty/bink, 3rdParty/shared/memory and 3rdParty/shared/time. Scoping the
+# symbols to the Zouna trees instead of excluding ProDG by path keeps a new
+# ProDG source from breaking the build.
+[[overrides]]
+pattern = "src/Engine/**"
+append = ["-sym on"]
+
+[[overrides]]
+pattern = "src/LibGC/**"
+append = ["-sym on"]
+
+[[overrides]]
+pattern = "src/Rat/**"
+append = ["-sym on"]

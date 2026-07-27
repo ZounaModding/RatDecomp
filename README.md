@@ -89,6 +89,22 @@ sudo xattr -rd com.apple.quarantine '/Applications/Wine Crossover.app'
   ninja
   ```
 
+Running `configure.py` without additional arguments always configures
+the normal GameCube matching/decompilation build. Source-only GameCube and
+Dreamcast builds use the same source inventory through additional arguments:
+
+```sh
+# Source-only GameCube
+python configure.py --platform gc --build-mode source --build-config <debug|release|reldebinfo>
+ninja
+
+# Dreamcast/KallistiOS
+python configure.py --platform dc --build-config <debug|release|reldebinfo>
+ninja
+```
+
+See [Unified matching and source-only builds](docs/source-builds.md).
+
 # Diffing
 
 Once the initial build succeeds, an `objdiff.json` should exist in the project root.

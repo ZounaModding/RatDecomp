@@ -1,0 +1,57 @@
+[platform]
+name = "Dreamcast Release"
+backend = "dreamcast"
+default_profile = "all-source"
+output_subdir = "port-dc-release"
+output_name = "rat_dc"
+emit_map = true
+emit_binary = true
+kos_base_env = "KOS_BASE"
+kos_library = "lib/dreamcast/libkallisti.a"
+build_kos = false
+
+[tools]
+cc = "kos-cc"
+cxx = "kos-c++"
+as = "kos-as"
+ld = "kos-c++"
+objcopy = "kos-objcopy"
+make = "make"
+
+[flags]
+common = [
+    "-DDREAMCAST_Z=1",
+    "-DCOMPLIANT_Z=1",
+    "-DNONMATCHING_Z=1",
+    "-O2",
+    "-g0",
+
+    "-ffunction-sections",
+    "-fdata-sections",
+]
+
+c = [
+    "-std=gnu99",
+]
+
+cxx = [
+    "-std=gnu++11",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-strict-aliasing",
+]
+
+asm = []
+
+link = [
+    "-Wl,--gc-sections",
+]
+
+includes = [
+    "-Iinclude",
+    "-Isrc/LibDC/includes",
+    "-Isrc/Engine/includes",
+    "-Isrc/Rat/includes",
+]
+
+libraries = []

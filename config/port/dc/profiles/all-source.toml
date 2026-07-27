@@ -1,0 +1,18 @@
+[profile]
+name = "all-source"
+description = "All configured common game/engine and Dreamcast platform sources."
+include = [
+    "src/Engine/**",
+    "src/Rat/**",
+    "src/LibDC/**",
+]
+exclude = [
+    "src/LibGC/**",
+    "src/Engine/S_MALLOC.cpp",
+    "src/Engine/Memory_Z.cpp",
+    "src/Engine/Movie_Z.cpp",
+    "src/Engine/MovieManipulator_Z.cpp",
+]
+allow_missing = ["src/**"]
+extra_sources = []
+

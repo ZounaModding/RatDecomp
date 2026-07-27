@@ -14,6 +14,8 @@
 # fmt: off
 
 import argparse
+import os
+import shutil
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -33,7 +35,93 @@ VERSIONS = [
     "GLLE78",  # 0
 ]
 
-parser = argparse.ArgumentParser()
+def _build_combinations_help() -> str:
+    """Summarise the available platform/config/profile combinations.
+
+    Discovered from config/port rather than hardcoded so --help cannot drift
+    when a config or profile is added.
+    """
+
+    root = Path(__file__).resolve().parent
+    lines = ["build combinations:"]
+
+    for platform, label, mode in (
+        ("gc", "GameCube", "--build-mode matching (default) or source"),
+        ("dc", "Dreamcast", "--build-mode source (only mode supported)"),
+    ):
+        base = root / "config" / "port" / platform
+        if not base.is_dir():
+            continue
+        configs = sorted(p.stem[len("config-"):] for p in base.glob("config-*.toml"))
+        profiles = sorted(p.stem for p in (base / "profiles").glob("*.toml"))
+        lines.append(f"  --platform {platform:<4} {label}, {mode}")
+        if configs:
+            lines.append(f"      --build-config  {', '.join(configs)}")
+        if profiles:
+            lines.append(f"      --profile       {', '.join(profiles)}")
+
+    lines += [
+        "",
+        "  --build-config selects config/port/<platform>/config-<name>.toml and",
+        "  --profile selects config/port/<platform>/profiles/<name>.toml, so the",
+        "  lists above are whatever those directories currently hold.",
+        "",
+        "  --romdisk / --no-romdisk is Dreamcast only. It defaults on for the debug",
+        "  build config and off for every other one.",
+        "",
+        "  Matching-build extras (GameCube only): --map, --debug, --non-matching.",
+        "",
+        "examples:",
+        "  python configure.py --platform gc",
+        "  python configure.py --platform gc --build-mode source --build-config debug",
+        "  python configure.py --platform dc",
+        "  python configure.py --platform dc --build-config release --romdisk",
+        "  python configure.py --platform dc --profile loading-hat --validate-only",
+    ]
+    return "\n".join(lines)
+
+
+parser = argparse.ArgumentParser(
+    epilog=_build_combinations_help(),
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+)
+parser.add_argument(
+    "--platform",
+    choices=["gc", "dc"],
+    default="gc",
+    help="target platform (default: gc)",
+)
+parser.add_argument(
+    "--build-mode",
+    choices=["matching", "source"],
+    help="matching decomp build or source-only port build (default: matching for GC, source for DC)",
+)
+parser.add_argument(
+    "--profile",
+    help="source-build profile name or TOML path (source mode only)",
+)
+parser.add_argument(
+    "--platform-config",
+    metavar="TOML",
+    type=Path,
+    help="override config/port/<platform>/config.toml (source mode only)",
+)
+parser.add_argument(
+    "--validate-only",
+    action="store_true",
+    help="validate a source-only platform/profile selection without generating Ninja",
+)
+parser.add_argument(
+    "--build-config",
+    choices=["debug", "release", "reldebinfo"],
+    help="source-build configuration",
+)
+parser.add_argument(
+    "--romdisk",
+    action=argparse.BooleanOptionalAction,
+    default=None,
+    help="embed the Dreamcast romdisk (default: on for debug, off otherwise)",
+)
 parser.add_argument(
     "mode",
     choices=["configure", "progress"],
@@ -122,6 +210,30 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
+build_mode = args.build_mode or ("source" if args.platform == "dc" else "matching")
+if args.platform == "dc" and build_mode != "source":
+    parser.error("Dreamcast currently supports only --build-mode source")
+if build_mode == "source" and args.mode != "configure":
+    parser.error("the progress mode is available only for the matching GC build")
+if build_mode == "source" and args.non_matching:
+    parser.error("--non-matching is a matching-build option; source mode already compiles every selected source")
+if build_mode == "matching" and args.platform != "gc":
+    parser.error("matching builds are currently available only for GameCube")
+if build_mode == "matching" and (args.profile or args.platform_config or args.validate_only):
+    parser.error("--profile, --platform-config and --validate-only are source-build options")
+
+source_build_config = args.build_config or "debug"
+
+source_platform_config = args.platform_config
+
+if build_mode == "source" and source_platform_config is None:
+    source_platform_config = (
+        Path("config")
+        / "port"
+        / args.platform
+        / f"config-{source_build_config}.toml"
+    )
+
 config = ProjectConfig()
 config.version = str(args.version)
 version_num = VERSIONS.index(config.version)
@@ -133,7 +245,7 @@ config.objdiff_path = args.objdiff
 config.binutils_path = args.binutils
 config.compilers_path = args.compilers
 config.generate_map = True # Always do map cause it's annoying to pass --map every time
-config.non_matching = args.non_matching
+config.non_matching = args.non_matching if build_mode == "matching" else False
 config.sjiswrap_path = args.sjiswrap
 config.progress = args.progress
 if not is_windows():
@@ -210,6 +322,7 @@ cflags_base = [
     f"-DBUILD_VERSION={version_num}",
     f"-DVERSION_{config.version}",
     "-D__GEKKO__",
+    "-DGAMECUBE_Z",
     "-O4,p",
 ]
 cflags_bink_base = [
@@ -290,7 +403,8 @@ cflags_rat_base = [
     "-rostr",
 ]
 
-if config.non_matching:
+# Source builds compile every TU from source, so this is unconditional there;
+if config.non_matching or build_mode == "source":
     cflags_rat_base.extend(["-DNONMATCHING_Z"])
 
 # Debug flags
@@ -562,7 +676,6 @@ config.libs = [
             Object(Matching, "3rdParty/PowerPC_EABI_Support/Runtime/Src/runtime.c"),
             Object(NonMatching, "3rdParty/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp"),
             Object(NonMatching, "3rdParty/PowerPC_EABI_Support/Runtime/Src/Gecko_ExceptionPPC.cp"),
-            Object(Matching, "3rdParty/PowerPC_EABI_Support/Runtime/Src/GCN_Mem_Alloc.c", extra_cflags=["-str reuse,nopool,readonly"]),
         ],
     },
     {
@@ -1353,6 +1466,55 @@ config.libs = [
     }
 ]
 
+def _discover_objects(lib_dir: str) -> List[Object]:
+    """Every buildable source under src/<lib_dir>, in sorted order.
+
+    Port layers have no original binary to match, so listing them by hand only
+    creates a second place to forget. Matching status is meaningless here and is
+    always NonMatching; the profiles in config/port/<platform>/profiles still
+    decide which of these actually get built.
+    """
+
+    root = Path("src") / lib_dir
+    suffixes = {".c", ".cc", ".cp", ".cpp", ".cxx", ".s", ".S"}
+    sources = sorted(
+        path.relative_to("src").as_posix()
+        for path in root.rglob("*")
+        if path.is_file() and path.suffix in suffixes
+    )
+    if not sources:
+        raise SystemExit(f"No buildable sources found under {root}")
+    return [Object(NonMatching, source) for source in sources]
+
+
+# Platform-specific source inventory.
+#
+# The GameCube build keeps the original full library list unchanged.
+# Dreamcast keeps only platform-independent engine/game sources and replaces
+# LibGC, Dolphin SDK, MetroTRK, PPC runtime, and NGC Bink with LibDC/KOS.
+if args.platform == "dc":
+    libs_by_name = {
+        library["lib"]: library
+        for library in config.libs
+    }
+
+    config.libs = [
+        libs_by_name["Engine"],
+        {
+            "lib": "LibDC",
+
+            # These fields are required by the shared project description,
+            # but the Dreamcast source backend uses config/port/dc/config.toml
+            # for its actual GCC/KOS flags.
+            "mw_version": config.linker_version,
+            "cflags": [],
+            "progress_category": "game",
+
+            "objects": _discover_objects("LibDC"),
+        },
+        libs_by_name["Game"],
+    ]
+
 
 # Optional callback to adjust link order. This can be used to add, remove, or reorder objects.
 # This is called once per module, with the module ID and the current link order.
@@ -1383,11 +1545,391 @@ config.progress_categories = [
 ]
 config.progress_each_module = args.verbose
 
-if args.mode == "configure":
-    # Write build.ninja and objdiff.json
+
+def _mwcc_include_dirs() -> list[str]:
+    """Include directories MWCC receives as `-i`/`-ir`, which clang cannot parse.
+
+    Derived from the cflags above so the clangd config cannot drift from the build.
+    """
+    dirs: list[str] = []
+    for flag in (*cflags_base, *cflags_rat_base):
+        for prefix in ("-ir ", "-i "):
+            if flag.startswith(prefix):
+                path = flag[len(prefix) :].strip()
+                if path not in dirs:
+                    dirs.append(path)
+                break
+    return dirs
+
+
+def _dreamcast_include_roots() -> Dict[str, str] | None:
+    """System include roots for the generated .clangd, derived from the environment.
+
+    The Dreamcast build already locates KallistiOS through KOS_BASE, so reusing
+    it keeps the generated file free of machine-specific paths. Returns None when
+    the toolchain cannot be located, so a missing SDK produces a .clangd without
+    include paths rather than one pointing at somebody else's install.
+    """
+
+    from tools.source_build import _native_environment_path
+
+    def resolve(name: str) -> Path | None:
+        raw = os.environ.get(name)
+        if not raw:
+            return None
+        try:
+            path = _native_environment_path(raw, name)
+        except RuntimeError:
+            return None
+        return path if path.is_dir() else None
+
+    kos = resolve("KOS_BASE")
+    if kos is None:
+        return None
+
+    # KOS_CC_BASE when the shell exports it, otherwise the sibling of KOS_BASE
+    # that DreamSDK and a manual KallistiOS build both lay out the same way.
+    sh_elf = resolve("KOS_CC_BASE")
+    if sh_elf is None and (kos.parent / "sh-elf").is_dir():
+        sh_elf = kos.parent / "sh-elf"
+    if sh_elf is None:
+        return None
+
+    # Discovered rather than pinned so a toolchain upgrade does not need an edit.
+    versions = sorted(
+        (path for path in (sh_elf / "sh-elf" / "include" / "c++").glob("*") if path.is_dir()),
+        key=lambda path: path.name,
+        reverse=True,
+    )
+    if not versions:
+        return None
+
+    return {
+        "kos": kos.as_posix(),
+        "kos_ports": (kos.parent / "kos-ports").as_posix(),
+        "sh_elf": (sh_elf / "sh-elf" / "include").as_posix(),
+        "cxx": versions[0].as_posix(),
+    }
+
+
+def _clangd_config_text(*, dreamcast: bool) -> str:
+    lines = [
+        "# Generated by configure.py. Re-run configure.py to switch the active clangd build.",
+        "Diagnostics:",
+        "  Suppress:",
+        "    - ms_attributes_not_enabled",
+        "    - asm_unknown_register_name",
+        "    - asm_invalid_input_constraint",
+        "    - asm_invalid_output_constraint",
+        "",
+        "---",
+        "",
+        "CompileFlags:",
+        "  CompilationDatabase: .",
+    ]
+
+    if not dreamcast:
+        # MWCC spells include paths `-i dir` / `-ir dir`, which clang drops
+        # wholesale, leaving every project header unresolvable. Restate them as
+        # -I and strip the Metrowerks-only switches clang would choke on.
+        lines.extend(
+            [
+                "",
+                "---",
+                "",
+                "If:",
+                "  PathMatch:",
+                "    - src/.*",
+                "",
+                "CompileFlags:",
+                "  Compiler: clang++",
+                "",
+                "  Remove:",
+                "    - --target=*",
+                "    - -proc*",
+                "    - -align*",
+                "    - -enum*",
+                "    - -fp*",
+                "    - -Cpp_exceptions*",
+                "    - -pragma*",
+                "    - -maxerrors*",
+                "    - -nodefaults",
+                "    - -nosyspath",
+                "    - -str*",
+                "    - -multibyte",
+                # -O* rather than -O4* to also catch MWCC's -O3,p and ProDG's
+                # -G0; optimisation level is irrelevant to a syntax-only parse.
+                "    - -O*",
+                "    - -G0",
+                "    - -rostr",
+                "    - -pool*",
+                "    - -schedule*",
+                "    - -inline*",
+                "    - -use_lmw_stmw*",
+                "    - -lang=*",
+                "    - -RTTI*",
+                "    - -sym*",
+                "    - -common*",
+                "    - -char*",
+                "    - -sdata*",
+                "    - -i",
+                "    - -ir",
+                "    - -i *",
+                "    - -ir *",
+                "",
+                "  Add:",
+                # 32-bit big-endian PPC so MSL's headers agree with clang's
+                # builtins; on the 64-bit host size_t collides as
+                # 'unsigned long' vs 'unsigned long long'.
+                "    - --target=powerpc-unknown-eabi",
+                # MWCC 2.7 predates C++11: writable string literals and
+                # 'register' are legal, and clang 18 would default to C++17.
+                "    - -std=gnu++03",
+                "    - -nostdlibinc",
+                "    - -ferror-limit=0",
+                # dolphin/os.h marks OSReport and friends __declspec(weak).
+                "    - -fdeclspec",
+                # The dolphin SDK uses 'register', removed in C++17.
+                "    - -Wno-register",
+            ]
+        )
+        lines.extend(f"    - -I{path}" for path in _mwcc_include_dirs())
+
+    if dreamcast:
+        lines.extend(
+            [
+                "",
+                "---",
+                "",
+                "If:",
+                "  PathMatch:",
+                "    - src/LibDC/.*",
+                "    - src/Engine/.*",
+                "    - src/Rat/.*",
+                "",
+                "CompileFlags:",
+                "  Compiler: clang++",
+                "",
+                "  Remove:",
+                "    - --target=*",
+                "",
+                "  Add:",
+                "    - --target=i386-unknown-none-elf",
+                "    - -nostdlibinc",
+                "    - -nostdinc++",
+                "    - -ferror-limit=0",
+                "",
+                "    - -D_arch_dreamcast=1",
+                "    - -D_arch_sub_pristine=1",
+                "    - -D__DREAMCAST__=1",
+                "    - -D__sh__=1",
+                "    - -D__SH4__=1",
+                "    - -D__ELF__=1",
+                "",
+            ]
+        )
+
+        roots = _dreamcast_include_roots()
+        if roots is None:
+            lines.extend(
+                [
+                    "    # System include paths are derived from KOS_BASE, which was not",
+                    "    # resolvable when configure.py last ran. Re-run it from the",
+                    "    # DreamSDK/KallistiOS shell to pick up the KOS and newlib headers.",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    "    - -isystem",
+                    f"    - {roots['kos']}/include",
+                    "    - -isystem",
+                    f"    - {roots['kos']}/kernel/arch/dreamcast/include",
+                    "    - -isystem",
+                    f"    - {roots['kos']}/addons/include",
+                    "    - -isystem",
+                    f"    - {roots['kos_ports']}/include",
+                    "",
+                    "    # Generic libstdc++ headers.",
+                    "    - -isystem",
+                    f"    - {roots['cxx']}",
+                    "",
+                    "    # Target-specific libstdc++ headers.",
+                    "    - -isystem",
+                    f"    - {roots['cxx']}/sh-elf",
+                    "    - -isystem",
+                    f"    - {roots['cxx']}/backward",
+                    "",
+                    "    # Newlib C headers must follow the libstdc++ wrappers.",
+                    "    - -isystem",
+                    f"    - {roots['sh_elf']}",
+                ]
+            )
+
+    return "\n".join(lines) + "\n"
+
+
+def activate_clangd_build(
+    repo_root: Path,
+    source_database: Path,
+    configuration_name: str,
+    *,
+    dreamcast: bool,
+) -> None:
+    source_database = source_database.resolve()
+    active_database = (repo_root / "compile_commands.json").resolve()
+
+    if not source_database.is_file():
+        print(
+            f"warning: clangd database was not generated: {source_database}",
+            file=sys.stderr,
+        )
+        return
+
+    if source_database != active_database:
+        source_bytes = source_database.read_bytes()
+        if not active_database.is_file() or active_database.read_bytes() != source_bytes:
+            active_database.write_bytes(source_bytes)
+
+    # .clangd cannot test which macros are present in compile_commands.json.
+    # Generate the Dreamcast-only fragment only while a DC build is active.
+    clangd_path = repo_root / ".clangd"
+    clangd_text = _clangd_config_text(dreamcast=dreamcast)
+    if not clangd_path.is_file() or clangd_path.read_text(encoding="utf-8") != clangd_text:
+        clangd_path.write_text(
+            clangd_text,
+            encoding="utf-8",
+            newline="\n",
+        )
+
+    stamp_path = repo_root / ".cache" / "clangd-active-build.txt"
+    previous_configuration = ""
+    if stamp_path.is_file():
+        previous_configuration = stamp_path.read_text(encoding="utf-8").strip()
+
+    if previous_configuration != configuration_name:
+        shutil.rmtree(repo_root / ".cache" / "clangd" / "index", ignore_errors=True)
+
+    stamp_path.parent.mkdir(parents=True, exist_ok=True)
+    stamp_path.write_text(configuration_name + "\n", encoding="utf-8", newline="\n")
+
+    print(f"Active clangd build: {configuration_name}")
+    print(f"Compilation database: {active_database}")
+
+
+def activate_ninja_build(repo_root: Path, generated_ninja: Path) -> None:
+    """Make plain `ninja` delegate to the selected source-build manifest.
+
+    Do not include/subninja the generated manifest here. Some Ninja versions
+    use the root invocation's bookkeeping database in that arrangement, while
+    direct `ninja -f <manifest>` builds use the configuration-local database.
+    A tiny launcher keeps each source configuration's .ninja_log and
+    .ninja_deps isolated and still lets the user run plain `ninja`.
+    """
+    generated_ninja = generated_ninja.resolve()
+    active_manifest = (repo_root / "build.ninja").resolve()
+
+    if generated_ninja == active_manifest:
+        return
+
+    try:
+        relative_manifest = generated_ninja.relative_to(repo_root.resolve()).as_posix()
+    except ValueError:
+        raise RuntimeError(
+            f"generated Ninja manifest is outside the repository: {generated_ninja}"
+        )
+
+    wrapper_text = (
+        "# Generated by configure.py. Re-run configure.py to switch the active build.\n"
+        "ninja_required_version = 1.3\n"
+        "builddir = build/.active-ninja\n"
+        f"active_manifest = {relative_manifest}\n"
+        "\n"
+        "rule active_ninja\n"
+        "  command = ninja -f $active_manifest $active_target\n"
+        "  description = ACTIVE NINJA $active_target\n"
+        "  pool = console\n"
+        "\n"
+        "# A phony edge with no inputs is always dirty. This intentionally invokes\n"
+        "# the selected nested Ninja each time; the nested build performs the real\n"
+        "# incremental dependency and command-line checks.\n"
+        "build __active_ninja_always: phony\n"
+        "\n"
+        "build all: active_ninja __active_ninja_always | $active_manifest\n"
+        "  active_target = all\n"
+        "build compile: active_ninja __active_ninja_always | $active_manifest\n"
+        "  active_target = compile\n"
+        "\n"
+        "default all\n"
+    )
+
+    if (
+        not active_manifest.is_file()
+        or active_manifest.read_text(encoding="utf-8") != wrapper_text
+    ):
+        active_manifest.write_text(
+            wrapper_text,
+            encoding="utf-8",
+            newline="\n",
+        )
+
+    print(f"Active Ninja build: {relative_manifest}")
+    print("Build with: ninja")
+
+
+repo_root = Path(__file__).resolve().parent
+
+if build_mode == "source":
+    from tools.source_build import SourceBuildOptions, generate_source_build
+
+    generated_ninja = generate_source_build(
+        config,
+        SourceBuildOptions(
+            platform=args.platform,
+            profile=args.profile,
+            platform_config=source_platform_config,
+            base_build_dir=args.build_dir,
+            build_config=source_build_config,
+            romdisk=args.romdisk,
+            validate_only=args.validate_only,
+            verbose=args.verbose,
+        ),
+        repo_root=repo_root,
+    )
+
+    if not args.validate_only:
+        generated_ninja = (
+            generated_ninja
+            if generated_ninja.is_absolute()
+            else repo_root / generated_ninja
+        )
+        activate_clangd_build(
+            repo_root,
+            generated_ninja.parent / "compile_commands.json",
+            (
+                f"{args.platform}-source:"
+                f"{args.profile or 'default'}:"
+                f"{source_build_config}"
+            ),
+            dreamcast=args.platform == "dc",
+        )
+        activate_ninja_build(repo_root, generated_ninja)
+
+        # generate_source_build may intentionally avoid rewriting build.ninja
+        # when its contents are unchanged. If configure.py itself is newer,
+        # Ninja would otherwise keep rerunning the regeneration edge because
+        # the manifest remains older than one of its inputs.
+        generated_ninja.touch()
+elif args.mode == "configure":
+    # Default behavior: normal GameCube matching/decompilation build.
     generate_build(config)
+    activate_clangd_build(
+        repo_root,
+        repo_root / "compile_commands.json",
+        "gc-non-matching" if config.non_matching else "gc-matching",
+        dreamcast=False,
+    )
 elif args.mode == "progress":
-    # Print progress and write progress.json
     calculate_progress(config)
 else:
     sys.exit("Unknown mode: " + args.mode)

@@ -1,0 +1,20 @@
+[profile]
+name = "all-source"
+description = "Compile every configured repository source object without matching/extracted fallbacks."
+include = [
+    "src/**",
+]
+exclude = [
+    "src/LibDC/**",
+]
+
+# Bink builds with ProDG here as it does in the matching build: the lib carries
+# mw_version = "ProDG/3.5" in configure.py, and source_build.py routes any unit
+# whose mw_version contains "prodg" to the ngccc.exe rule rather than mwcc.
+# Without it Movie_Z::Init and GCMovie_Z::Init leave BinkAllocate, BinkFree,
+# BinkOpenAX, BinkSetMemory and BinkSetSoundSystem undefined at link.
+
+# Compile every source that is actually present. Missing declarations are
+# reported rather than satisfied by original binary objects.
+allow_missing = ["src/**"]
+
