@@ -41,12 +41,7 @@ Bool RestartReset = TRUE;
 Extern_Z void GetFlagsFromGame();
 Extern_Z void MathInitTables();
 
-ExternC_Z void OSInit();
-ExternC_Z void DVDInit();
-ExternC_Z void OSReport(const Char* __msg, ...);
 ExternC_Z void __start();
-
-ExternC_Z void exit(S32 __status);
 ExternC_Z void* OSGetArenaHi();
 ExternC_Z void* OSGetArenaLo();
 ExternC_Z U8 _stack_end[];
@@ -251,15 +246,15 @@ void RegisterLowLevelClasses() {
 
 // TODO: Finish matching
 void LowLevelInitProgram() {
-    NewMgrInit_Z(gData.XRamMgr, AramManager_Z, 429);
-    NewMgrInitArgs_Z(gData.MainRdr, GCRenderer_Z, 430, 640, 480);
-    NewMgrInit_Z(gData.TextureMgr, TextureManager_Z, 431);
-    NewMgrInit_Z(gData.InputMgr, GCInput_Z, 433);
-    NewMgrInit_Z(gData.SoundMgr, GCSoundManager_Z, 437);
-    NewMgrInit_Z(gData.MovieMgr, GCMovie_Z, 438);
-    NewMgrInit_Z(gData.SavingMgr, GCMcManager_Z, 440);
-    NewMgr_Z(gData.SurfaceCache, SurfaceCache_Z, 445);
-    NewMgr_Z(gData.GCParticlesManager, GCParticlesManager_Z("GCParticlesManager_Z"), 446);
+    NewMgrInitL_Z(gData.XRamMgr, AramManager_Z, 429);
+    NewMgrInitArgsL_Z(gData.MainRdr, GCRenderer_Z, 430, 640, 480);
+    NewMgrInitL_Z(gData.TextureMgr, TextureManager_Z, 431);
+    NewMgrInitL_Z(gData.InputMgr, GCInput_Z, 433);
+    NewMgrInitL_Z(gData.SoundMgr, GCSoundManager_Z, 437);
+    NewMgrInitL_Z(gData.MovieMgr, GCMovie_Z, 438);
+    NewMgrInitL_Z(gData.SavingMgr, GCMcManager_Z, 440);
+    NewMgrL_Z(gData.SurfaceCache, SurfaceCache_Z, 445);
+    NewMgrL_Z(gData.GCParticlesManager, GCParticlesManager_Z("GCParticlesManager_Z"), 446);
 }
 
 void LowLevelUpdateProgram(Float i_DeltaTime) {

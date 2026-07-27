@@ -1,7 +1,6 @@
 #include "__va_arg.h"
 #include "Types_Z.h"
-
-ExternC_Z S32 vsprintf(const Char* i_Buf, const Char* i_Format, va_list i_Args);
+#include <stdio.h>
 
 S32 Vsprintf(Char* i_Buf, const Char* i_Format, Char* i_Args) {
     // $VIOLET: might not be va_list. idk man

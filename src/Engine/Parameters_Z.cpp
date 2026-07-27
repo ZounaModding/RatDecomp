@@ -1,11 +1,10 @@
 #include "Parameters_Z.h"
-#include "GCMain_Z.h"
-#include "String_Z.h"
+#include "Program_Z.h"
+#include <String_Z.h>
 #include "Console_Z.h"
 
 Float ParameterValues[0x4000];
 S32 ParametersLoaded = -1;
-Extern_Z GCGlobals gData;
 
 void AddParameters(int i_Index, Float i_Value) {
     if (ParametersLoaded == -1) {

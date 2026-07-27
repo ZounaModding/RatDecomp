@@ -3,13 +3,8 @@
 #include "Assert_Z.h"
 #include "GCMain_Z.h"
 #include <os.h>
-// $VIOLET: TODO: Actually implement these in file_io.c
-ExternC_Z FILE* fopen(const Char* i_FilePath, const Char* i_Mode);
-ExternC_Z int fclose(FILE* i_File);
-ExternC_Z size_t fread(void* i_Buffer, size_t i_Size, size_t i_Count, FILE* i_File);
-ExternC_Z int fseek(FILE* i_File, unsigned long i_Offset, int i_Origin);
-ExternC_Z long ftell(FILE* i_File);
-ExternC_Z Char* strstr(const Char* i_String, const Char* i_SubString);
+#include <direct_io.h>
+#include <FILE_POS.h>
 
 Bool FileHdl_Z::Open(const Char* i_FilePath, U32 i_Flags) {
     ASSERTL_Z(!IsOpened(), "", 6);
@@ -126,6 +121,11 @@ S32 FileHdl_Z::Read(void* i_Buffer, S32 i_Size) {
     return i_Size;
 }
 
+S32 FileHdl_Z::Write(const void* i_Buffer, S32 i_Size) {
+    fwrite(i_Buffer, 1, i_Size, m_File);
+    return i_Size;
+}
+
 U32 FileHdl_Z::GetSize() {
     S32 l_Size;
     if (m_File) {
@@ -141,8 +141,8 @@ U32 FileHdl_Z::GetSize() {
     return l_Size;
 }
 
-U32 FileHdl_Z::GetCurPos() {
-    return 0;
+S32 FileHdl_Z::GetCurPos() {
+    return -1;
 }
 
 Bool FileHdl_Z::Close() {
@@ -162,6 +162,26 @@ Bool FileHdl_Z::Close() {
 
     m_CurrentPos = 0;
     return l_Result;
+}
+
+Bool FileHdl_Z::DoFileExists(const Char* i_FilePath) {
+    Char l_RealName[128];
+    if (GetRealFileName(i_FilePath, l_RealName)) {
+        S32 l_EntryNum = DVDConvertPathToEntrynum(l_RealName);
+        return l_EntryNum >= 0;
+    }
+    FILE* l_File = fopen(l_RealName, "rb");
+    if (l_File) {
+        fclose(l_File);
+    }
+    return l_File;
+}
+
+S32 FileHdl_Z::GetFileDate(const Char* i_FilePath) {
+    return -1;
+}
+
+void FileHdl_Z::SetFileDate(const Char* i_FilePath, S32 i_Date) {
 }
 
 U32 FileHdl_Z::Seek(S32 i_Offset, S32 i_Origin) {
@@ -210,8 +230,8 @@ Bool FileHdl_Z::GetRealFileName(const Char* i_FilePath, Char* o_RealName) {
     strupr(l_RealName);
 
     l_FileNameLength = strlen(l_RealName);
-    if (gData.m_GameFlag & FL_GAME_UNK_0x800) {
-        if ((gData.m_GameFlag & FL_GAME_UNK_0x400)) {
+    if (gData.m_GameFlag & FL_GAME_USE_CD) {
+        if ((gData.m_GameFlag & FL_GAME_SCRIPT_ANY_FS)) {
             if (strstr(l_RealName + (l_FileNameLength -= 4), ".TSC")) {
                 return FALSE;
             }

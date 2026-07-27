@@ -2,7 +2,7 @@
 #define _FILE_Z_H_
 #include "Types_Z.h"
 #include "FileHdl_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 
 #define FL_FILE_RDONLY (U32)(1 << 0)
 #define FL_FILE_WRONLY (U32)(1 << 1)

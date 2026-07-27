@@ -1,7 +1,5 @@
 #include "AnimationManager_Z.h"
-#include "String_Z.h"
-
-ExternC_Z int sprintf(char* i_Buf, const char* i_Format, ...);
+#include <String_Z.h>
 
 static String_Z<ARRAY_CHAR_MAX> DefaultStringAnimationMgr;
 

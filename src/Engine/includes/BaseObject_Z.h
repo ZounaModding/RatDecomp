@@ -2,7 +2,7 @@
 #define _BASEOBJECT_Z_H_
 #include "Name_Z.h"
 #include "Handle_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 #include "ABC_Message_Engine.h"
 
 class ABC_Agent;

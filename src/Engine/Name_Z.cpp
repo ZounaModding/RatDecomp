@@ -1,12 +1,10 @@
 #include "Name_Z.h"
-#include "GCMain_Z.h"
 #include "Types_Z.h"
 Extern_Z U8 g_ChartoLower[256];
 Extern_Z Float Random();
-ExternC_Z void OSReport(const char* msg, ...);
 
 // clang-format off
-S32 Crc32Tab[] = {
+U32 Crc32Tab[] = {
     0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9,
     0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005,
     0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61,

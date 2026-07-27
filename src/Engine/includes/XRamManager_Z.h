@@ -2,6 +2,7 @@
 #define _XRAMMANAGER_Z_H_
 
 #include "Types_Z.h"
+#include "Memory_Z.h"
 
 class XRamManager_Z {
 public:
@@ -10,7 +11,7 @@ public:
     ~XRamManager_Z();
 
     virtual Bool Init() {
-        return FALSE;
+        return TRUE;
     }
 
     virtual void Shut() { }
@@ -43,7 +44,9 @@ public:
         return NULL;
     }
 
-    virtual void EndGet(U8* i_Data);
+    virtual void EndGet(U8* i_Data) {
+        Free_Z(i_Data);
+    }
 
     virtual void Read(U8* a1, S32 a2, U32 a3, Bool a4) { }
 

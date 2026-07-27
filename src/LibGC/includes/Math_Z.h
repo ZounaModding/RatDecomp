@@ -4,8 +4,8 @@
 #include "Types_Z.h"
 #include "Color_Z.h"
 #include "DynArray_Z.h"
-
-ExternC_Z void memset(void* __s, S32 __c, U32 __n);
+#include <string.h>
+#include <cmath.h>
 
 const Float Float_Eps = 1.e-6f;
 const Float Float_Eps_2 = 1.e-12f;
@@ -834,16 +834,30 @@ inline Double Abs(Float i_Value) {
 }
 
 template <typename T>
-inline void FastSmooth(const T& i_Current, const T& i_Target, Float i_Rate, Float i_DeltaTime, T& o_Result) {
-    Float l_Inv = 1.0f - 1.0f / i_Rate;
-    Float l_Factor = 2.0f * i_DeltaTime * (i_Rate / 30.0f) * 1.0f * l_Inv;
+void FastSmooth(
+    const T& i_Current,
+    const T& i_Target,
+    Float i_Rate,
+    Float i_DeltaTime,
+    T& o_Result
+) {
     Float l_Weight = 1.0f;
-    if (l_Factor <= 1.0f) {
-        l_Weight = i_DeltaTime * (i_Rate / 30.0f) * (1.0f - l_Factor) * l_Inv;
-        if (1.0f < l_Weight) {
+    Float l_Rate = i_Rate / 0.033f;
+    Float l_Inv = l_Weight - l_Weight / i_Rate;
+
+    Float l_Factor = 0.5f * (i_DeltaTime * (l_Rate * (l_Weight * l_Inv)));
+
+    if (l_Factor > 1.0f) {
+        l_Weight = 1.0f;
+    }
+    else {
+        l_Weight = i_DeltaTime * (l_Rate * ((1.0f - l_Factor) * l_Inv));
+
+        if (l_Weight > 1.0f) {
             l_Weight = 1.0f;
         }
     }
+
     o_Result = (i_Target - i_Current) * l_Weight + i_Current;
 }
 

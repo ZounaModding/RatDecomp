@@ -2,7 +2,7 @@
 #define _CONSOLE_Z_H_
 #include "Types_Z.h"
 #include "DynArray_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 #include "Name_Z.h"
 #include "PopupMenu_Z.h"
 #include "HashTable_Z.h"

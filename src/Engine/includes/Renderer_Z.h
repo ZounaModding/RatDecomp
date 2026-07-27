@@ -322,7 +322,9 @@ public:
         return ScreenRatio;
     }
 
-    static Float GetDefaultNear();
+    static Float GetDefaultNear() {
+        return Renderer_ZDefaultNear;
+    }
 
     Double GetFreq() {
         if (gData.m_GameFlag & FL_GAME_PAL) {
@@ -482,7 +484,7 @@ public:
 
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5) { }
 
-    virtual void DrawQuad(Vec2f& i_Pos, Vec2f& i_BottomRight, Color& i_Color, Float i_Z) { }
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_Color, Float i_Z) { }
 
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6) { }
 
@@ -496,7 +498,7 @@ public:
 
     virtual void EnableZBuffer(Bool i_Enable) { }
 
-    virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Scale, Float i_Z) { }
+    virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Z, Float i_Scale) { }
 
     virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3) { }
 

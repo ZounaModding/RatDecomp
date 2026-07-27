@@ -1,7 +1,7 @@
 #ifndef _STREAMMANAGER_Z_H_
 #define _STREAMMANAGER_Z_H_
 #include "Assert_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 #include "FileHdl_Z.h"
 #include "Mutex_Z.h"
 #include "StaticArray_Z.h"

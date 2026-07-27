@@ -5,11 +5,9 @@
 #include "Main_Z.h"
 #include "Program_Z.h"
 #include "SoundManager_Z.h"
+#include "Console_Z.h"
 
 static const Char s_Unused_1422[] = "Empty Text";
-
-ExternC_Z Char* strstr(Char* str, const char* substr);
-ExternC_Z int strcpy(Char* dest, const Char* src);
 
 #define LANG_TO_STRING(Lang) "PATCH_STR_" #Lang
 

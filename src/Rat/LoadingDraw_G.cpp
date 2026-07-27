@@ -18,8 +18,6 @@
 #include "SystemDatas_Z.h"
 #include "Viewport_Z.h"
 
-ExternC_Z int sprintf(char* i_Buf, const char* i_Format, ...);
-
 U32 imageTGA[LOADING_HAT_BITMAP_PIXEL_COUNT] = {
 #include "LoadingDraw_G.inc"
 };

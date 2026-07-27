@@ -1,17 +1,7 @@
 #include "ClassManager_Z.h"
 #include "Console_Z.h"
 #include "Program_Z.h"
-
-#ifdef __MWERKS__ // TODO: Should check for GC instead of metrowerks
-#define BIGFILE_EXTENSION ".DGC"
-#define BIGFILE_NAME_EXTENSION ".NGC"
-#define BIGFILE_PLATFORM_VERSION ".01"
-#else
-// $SABE: If this gets hit define a bigfile extension and version for the platform you're building on
-#define BIGFILE_EXTENSION ".DXX"
-#define BIGFILE_NAME_EXTENSION ".NXX"
-#define BIGFILE_PLATFORM_VERSION ".99"
-#endif
+#include "Platform_Z.h"
 
 #define BIGFILE_STREAM_EXTENSION ".STR"
 
@@ -90,6 +80,9 @@ Name_Z& ClassManager_Z::GetClassName(const BaseObject_ZHdl& i_Hdl) {
 const BaseObject_ZHdl& ClassManager_Z::NewObject(const Name_Z& i_ClassName, const Name_Z& i_Name) {
     S16 l_ClassId = GetClassIndex(i_ClassName);
     if (l_ClassId < 0) {
+#ifdef DEBUG_Z
+        Report_Z("ClassManager: NewObject of unregistered class %08lx\n", i_ClassName.GetID());
+#endif
         return m_NullHandle;
     }
     return NewObject(l_ClassId, i_Name);
@@ -98,6 +91,9 @@ const BaseObject_ZHdl& ClassManager_Z::NewObject(const Name_Z& i_ClassName, cons
 const BaseObject_ZHdl& ClassManager_Z::NewObject(const Name_Z& i_ClassName) {
     S16 l_ClassId = GetClassIndex(i_ClassName);
     if (l_ClassId < 0) {
+#ifdef DEBUG_Z
+        Report_Z("ClassManager: NewObject of unregistered class %08lx\n", i_ClassName.GetID());
+#endif
         return m_NullHandle;
     }
     String_Z<ARRAY_CHAR_MAX> l_ObjectNameString;
@@ -109,6 +105,9 @@ const BaseObject_ZHdl& ClassManager_Z::NewObject(const Name_Z& i_ClassName) {
 const BaseObject_ZHdl& ClassManager_Z::NewObject(const Char* i_ClassName) {
     S16 l_ClassId = GetClassIndex(i_ClassName);
     if (l_ClassId < 0) {
+#ifdef DEBUG_Z
+        Report_Z("ClassManager: NewObject of unregistered class \"%s\"\n", i_ClassName);
+#endif
         return m_NullHandle;
     }
     String_Z<ARRAY_CHAR_MAX> l_ObjectNameString;
@@ -125,6 +124,14 @@ const BaseObject_ZHdl& ClassManager_Z::NewObject(S16 i_ClassId, const Name_Z& i_
 
 const BaseObject_ZHdl& ClassManager_Z::NewResource(const Name_Z& i_ClassName, const Name_Z& i_Name) {
     S16 l_ClassId = GetClassIndex(i_ClassName);
+#ifdef BUGFIXES_Z
+    if (l_ClassId < 0) {
+#ifdef DEBUG_Z
+        Report_Z("ClassManager: NewResource of unregistered class %08lx\n", i_ClassName.GetID());
+#endif
+        return m_NullHandle;
+    }
+#endif
     return CreateNewHandle(m_ClassList[l_ClassId].m_NewObject(), i_Name, l_ClassId, HandleRec_Z::RSC);
 }
 

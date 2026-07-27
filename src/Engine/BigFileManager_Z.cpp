@@ -1,6 +1,7 @@
 #include "ClassManager_Z.h"
 #include "ABC_ScriptManager.h"
 #include "StreamAgent_Z.h"
+#include "Console_Z.h"
 
 void ClassManager_Z::OpenBigFileStream(const Char* a1) {
 }

@@ -124,13 +124,18 @@ enum MaterialFlags {
 };
 
 enum GameFlags {
-    FL_GAME_NONE = 0 << 0,        // 0
-    FL_GAME_PAL = 1 << 7,         // 0x80
-    FL_GAME_UNK_0x400 = 1 << 10,  // 0x400
-    FL_GAME_UNK_0x800 = 1 << 11,  // 0x800
-    FL_GAME_UNK_0x1000 = 1 << 12, // 0x1000
-    FL_GAME_UNK_0x2000 = 1 << 13, // 0x2000
-    FL_GAME_2_FRAMES = 1 << 15    // 0x8000
+    FL_GAME_NONE = 0 << 0,           // 0
+    FL_GAME_UNK_0x1 = 1 << 0,        // 0x1
+    FL_GAME_PAL = 1 << 7,            // 0x80
+    FL_GAME_UNK_0x100 = 1 << 8,      // 0x100
+    FL_GAME_SCRIPT_ANY_FS = 1 << 10, // 0x400 - Can load .tsc from any filesystem
+    FL_GAME_USE_CD = 1 << 11,        // 0x800 - Use CD for file loading
+    FL_GAME_UNK_0x1000 = 1 << 12,    // 0x1000
+    FL_GAME_UNK_0x2000 = 1 << 13,    // 0x2000
+    FL_GAME_UNK_0x4000 = 1 << 14,    // 0x4000
+    FL_GAME_2_FRAMES = 1 << 15,      // 0x8000
+    FL_GAME_UNK_0x20000 = 1 << 17,   // 0x20000
+    FL_GAME_UNK_0x40000 = 1 << 18    // 0x40000
 };
 
 #endif // _DEBUGTOOLS_Z_H_

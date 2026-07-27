@@ -2,15 +2,9 @@
 #define _STRING_Z_H_
 #include "Types_Z.h"
 #include "Assert_Z.h"
+#include <string.h>
+#include <stdio.h>
 
-ExternC_Z U32 strlen(const Char* str);
-ExternC_Z char* strupr(Char* str);
-ExternC_Z int strcmp(const Char* str1, const Char* str2);
-ExternC_Z int strncmp(const Char* str1, const Char* str2, int n);
-ExternC_Z int strcpy(Char* dest, const Char* src);
-ExternC_Z int strcat(Char* dest, const Char* src);
-ExternC_Z int vsprintf(const Char* i_Buf, const Char* i_Format, va_list i_Args);
-ExternC_Z int strncpy(Char* dest, const Char* src, S32 count);
 Bool fstricmp(const Char* a1, const Char* a2);
 void fsprintfID(Char* a1, U32 a2, U32 a3);
 
@@ -63,8 +57,8 @@ public:
         } while (i_Size);
     }
 
-    S32 StrnCpy(const Char* i_Src, S32 i_Count) {
-        return strncpy(m_Str, i_Src, i_Count);
+    void StrnCpy(const Char* i_Src, int i_Count) {
+        strncpy(m_Str, i_Src, i_Count);
     }
 
     void Sprintf(const Char* i_Format, ...) {
@@ -74,7 +68,7 @@ public:
         va_start(l_Args, i_Format);
         vsprintf(m_Str, i_Format, l_Args);
 
-        va_end(args);
+        va_end(l_Args);
         return;
     }
 

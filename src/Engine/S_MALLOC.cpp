@@ -1,8 +1,7 @@
 #include "S_MALLOC.h"
 #include "Assert_Z.h"
 #include "Sys_Z.h"
-
-ExternC_Z int sprintf(Char* i_Buffer, const Char* i_Format, ...);
+#include <stdio.h>
 
 void s_FREE_MEM_BUCKETS::Extend() {
     if (IsReallocating) {

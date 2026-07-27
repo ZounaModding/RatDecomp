@@ -3,9 +3,8 @@
 
 #include "BaseObject_Z.h"
 #include "Main_Z.h"
-#include "GCConsole_Z.h"
 #include "LowMemory_Z.h"
-#include "GCMain_Z.h"
+#include "Platform_Z.h"
 
 #define BIGFILE_MAJOR_VERSION "1"
 #define BIGFILE_MINOR_VERSION 6
@@ -13,7 +12,8 @@
 #define BIGFILE_VERSION_STRING "v" BIGFILE_MAJOR_VERSION ".%02d%s%s"
 #define BIGFILE_VERSION_COPYRIGHT " - Asobo Studio - Internal Cross Technology"
 
-Extern_Z GCGlobals gData;
+PlatformGlobals_Z gData;
+
 Extern_Z S32 User_NbMatrix;
 Extern_Z Float User_MaxSqrDistActive;
 Extern_Z Float User_DefaultAgentMaxSqrDistActive;

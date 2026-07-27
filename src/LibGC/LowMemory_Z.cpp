@@ -1,8 +1,6 @@
 #include "LowMemory_Z.h"
 #include "Memory_Z.h"
-ExternC_Z void memset(void* dest, S32 c, S32 n);
-ExternC_Z void* OSGetArenaLo();
-ExternC_Z void* OSGetArenaHi();
+#include <os.h>
 
 ExternC_Z void* __sys_alloc(S32 i_Size) {
     return AllocAlignL_Z(i_Size, 13, 32);

@@ -1,9 +1,6 @@
-#include "GCMain_Z.h"
 #include "Material_Z.h"
 #include "ResourceObject_Z.h"
 #include "Sys_Z.h"
-
-Extern_Z GCGlobals gData;
 
 void Material_Z::Load(void** i_Data) {
     LOADRANGE_Z(m_DiffuseColor, m_Flag);

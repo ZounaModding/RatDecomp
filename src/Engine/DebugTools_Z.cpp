@@ -1,8 +1,7 @@
 #include "DebugTools_Z.h"
 #include "Program_Z.h"
 #include "Renderer_Z.h"
-
-ExternC_Z int stricmp(const char* String1, const char* String2);
+#include "Console_Z.h"
 
 void RegisterDebugCommand() {
     REGISTERCOMMAND("BoxPatchClip", BoxPatchClip);
@@ -114,7 +113,19 @@ Bool CleanTempPic() {
 }
 
 Bool DisplayFps() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        gData.ToggleEngineFlag(FL_DISPLAY_FPS);
+        return TRUE;
+    }
+    if (gData.Cons->IsParamFloat(1)) {
+        if (gData.Cons->GetParamFloat(1) == 0.0f) {
+            gData.DisableEngineFlag(FL_DISPLAY_FPS);
+        }
+        else {
+            gData.EnableEngineFlag(FL_DISPLAY_FPS);
+        }
+    }
+    return TRUE;
 }
 
 Bool EnableVSync() {

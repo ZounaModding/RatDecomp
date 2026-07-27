@@ -1,6 +1,7 @@
 #ifndef _MEMORY_Z_H_
 #define _MEMORY_Z_H_
 #include "Types_Z.h"
+#include <string.h>
 
 Extern_Z U32 s_GetFreeMem();
 Extern_Z U32 s_GetAllocatedMem();
@@ -108,10 +109,17 @@ U32 MemoryGraphColor();
 void operator delete(void* i_Ptr);
 void operator delete[](void* i_Ptr);
 
+#ifndef COMPLIANT_Z
 void* operator new(U32 i_Size);
 void* operator new(U32 i_Size, void* i_Ptr);
 void* operator new(U32 i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line);
 void* operator new[](U32 i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line);
+#else
+void* operator new(size_t i_Size);
+void* operator new(size_t i_Size, void* i_Ptr);
+void* operator new(size_t i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line);
+void* operator new[](size_t i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line);
+#endif
 
 void* Z_Alloc(U32 i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line, U32 i_Align);
 void* Z_AllocEnd(U32 i_Size, const Char* i_Comment, const Char* i_File, S32 i_Line, U32 i_Align);
@@ -123,8 +131,8 @@ void Z_FreeContiguous(void* i_Ptr);
 #define New_Z new ("Anonymous New", __FILE__, __LINE__)
 //#define NewF_Z new(__FUNCTION__, __FILE__, __LINE__)
 #define NewC_Z(Comment) new (Comment, __FILE__, __LINE__)
-#define NewL_Z(Line) new ("Anonymous New", __FILE__, Line)
-#define NewCL_Z(Comment, Line) new (Comment, __FILE__, Line)
+#define NewL_Z(Line) new ("Anonymous New", __FILE__, SrcLine_Z(Line))
+#define NewCL_Z(Comment, Line) new (Comment, __FILE__, SrcLine_Z(Line))
 //#define NewFL_Z(Line) new(__FUNCTION__, __FILE__, Line)
 
 #undef Delete_Z
@@ -132,45 +140,41 @@ void Z_FreeContiguous(void* i_Ptr);
 
 #define Alloc_Z(Size) Z_Alloc(Size, "Anonymous Alloc", __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
 #define AllocC_Z(Size, Comment) Z_Alloc(Size, Comment, __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
-#define AllocL_Z(Size, Line) Z_Alloc(Size, "Anonymous Alloc", __FILE__, Line, _ALLOCDEFAULTALIGN)
-#define AllocCL_Z(Size, Comment, Line) Z_Alloc(Size, Comment, __FILE__, Line, _ALLOCDEFAULTALIGN)
+#define AllocL_Z(Size, Line) Z_Alloc(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
+#define AllocCL_Z(Size, Comment, Line) Z_Alloc(Size, Comment, __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
 
 #define AllocEnd_Z(Size) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
 #define AllocEndC_Z(Size, Comment) Z_AllocEnd(Size, Comment, __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
-#define AllocEndL_Z(Size, Line) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, Line, _ALLOCDEFAULTALIGN)
-#define AllocEndCL_Z(Size, Comment, Line) Z_AllocEnd(Size, Comment, __FILE__, Line, _ALLOCDEFAULTALIGN)
+#define AllocEndL_Z(Size, Line) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
+#define AllocEndCL_Z(Size, Comment, Line) Z_AllocEnd(Size, Comment, __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
 
 #define AllocContiguous_Z(Size) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
 #define AllocContiguousC_Z(Size, Comment) Z_AllocContiguous(Size, Comment, __FILE__, __LINE__, _ALLOCDEFAULTALIGN)
-#define AllocContiguousL_Z(Size, Line) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, Line, _ALLOCDEFAULTALIGN)
-#define AllocContiguousCL_Z(Size, Comment, Line) Z_AllocContiguous(Size, Comment, __FILE__, Line, _ALLOCDEFAULTALIGN)
+#define AllocContiguousL_Z(Size, Line) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
+#define AllocContiguousCL_Z(Size, Comment, Line) Z_AllocContiguous(Size, Comment, __FILE__, SrcLine_Z(Line), _ALLOCDEFAULTALIGN)
 
 #define Realloc_Z(Ptr, Size) Z_Realloc(Ptr, Size, "Anonymous Alloc", __FILE__, __LINE__)
 #define ReallocC_Z(Ptr, Size, Comment) Z_Realloc(Ptr, Size, Comment, __FILE__, __LINE__)
-#define ReallocL_Z(Ptr, Size, Line) Z_Realloc(Ptr, Size, "Anonymous Alloc", __FILE__, Line)
-#define ReallocCL_Z(Ptr, Size, Comment, Line) Z_Realloc(Ptr, Size, Comment, __FILE__, Line)
+#define ReallocL_Z(Ptr, Size, Line) Z_Realloc(Ptr, Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line))
+#define ReallocCL_Z(Ptr, Size, Comment, Line) Z_Realloc(Ptr, Size, Comment, __FILE__, SrcLine_Z(Line))
 
 #define Free_Z(Ptr) Z_Free(Ptr)
 #define FreeContiguous_Z(Ptr) Z_FreeContiguous(Ptr)
 
 #define AllocAlign_Z(Size, Align) Z_Alloc(Size, "Anonymous Alloc", __FILE__, __LINE__, Align)
 #define AllocAlignC_Z(Size, Comment, Align) Z_Alloc(Size, Comment, __FILE__, __LINE__, Align)
-#define AllocAlignL_Z(Size, Line, Align) Z_Alloc(Size, "Anonymous Alloc", __FILE__, Line, Align)
-#define AllocAlignCL_Z(Size, Comment, Line, Align) Z_Alloc(Size, Comment, __FILE__, Line, Align)
+#define AllocAlignL_Z(Size, Line, Align) Z_Alloc(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), Align)
+#define AllocAlignCL_Z(Size, Comment, Line, Align) Z_Alloc(Size, Comment, __FILE__, SrcLine_Z(Line), Align)
 
 #define AllocEndAlign_Z(Size, Align) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, __LINE__, Align)
 #define AllocEndAlignC_Z(Size, Comment, Align) Z_AllocEnd(Size, Comment, __FILE__, __LINE__, Align)
-#define AllocEndAlignL_Z(Size, Line, Align) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, Line, Align)
-#define AllocEndAlignCL_Z(Size, Comment, Line, Align) Z_AllocEnd(Size, Comment, __FILE__, Line, Align)
+#define AllocEndAlignL_Z(Size, Line, Align) Z_AllocEnd(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), Align)
+#define AllocEndAlignCL_Z(Size, Comment, Line, Align) Z_AllocEnd(Size, Comment, __FILE__, SrcLine_Z(Line), Align)
 
 #define AllocContiguousAlign_Z(Size, Align) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, __LINE__, Align)
 #define AllocContiguousAlignC_Z(Size, Comment, Align) Z_AllocContiguous(Size, Comment, __FILE__, __LINE__, Align)
-#define AllocContiguousAlignL_Z(Size, Line, Align) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, Line, Align)
-#define AllocContiguousAlignCL_Z(Size, Comment, Line, Align) Z_AllocContiguous(Size, Comment, __FILE__, Line, Align)
-
-// $SABE: Don't know where to put this
-ExternC_Z void* memcpy(void* dest, const void* src, int n);
-ExternC_Z void* memmove(void* dest, const void* src, int n);
+#define AllocContiguousAlignL_Z(Size, Line, Align) Z_AllocContiguous(Size, "Anonymous Alloc", __FILE__, SrcLine_Z(Line), Align)
+#define AllocContiguousAlignCL_Z(Size, Comment, Line, Align) Z_AllocContiguous(Size, Comment, __FILE__, SrcLine_Z(Line), Align)
 
 #ifdef __MWERKS__
 #define builtin_memcpy(dest, src, n) __memcpy(dest, src, n);

@@ -1,6 +1,6 @@
 #ifndef _HANDLE_Z_H_
 #define _HANDLE_Z_H_
-#include "String_Z.h"
+#include <String_Z.h>
 #include "Types_Z.h"
 #include "Name_Z.h"
 #include "DynArray_Z.h"
@@ -34,8 +34,6 @@ class BaseObject_Z;
 class BaseObject_ZHdl;
 class HandleManager_Z;
 class DrawInfo_Z;
-class GCGlobals;
-Extern_Z GCGlobals gData;
 
 #define GETPTR(h) gData.ClassMgr->GetPtr(h)
 

@@ -2,14 +2,15 @@
 #define _MAIN_Z_H_
 #include "Error_Z.h"
 #include "Name_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 #include "DebugTools_Z.h"
 #include "Types_Z.h"
 #include "Language_Z.h"
+#include <stdlib.h>
 
 #define WhereAmI_Z(wai) strcpy(WhereAmI, "_CoreMainLoop(): " wai)
 
-#define NewMgr_Z(mgr, class, line)                       \
+#define NewMgrL_Z(mgr, class, line)                      \
     do {                                                 \
         MemManager.m_FreeMemCached = s_GetFreeMem();     \
         if (!mgr) {                                      \
@@ -18,7 +19,7 @@
         }                                                \
     } while (0)
 
-#define NewMgrInit_Z(mgr, class, line)                                                                           \
+#define NewMgrInitL_Z(mgr, class, line)                                                                          \
     do {                                                                                                         \
         MemManager.m_FreeMemCached = s_GetFreeMem();                                                             \
         if (!mgr) {                                                                                              \
@@ -31,7 +32,7 @@
         }                                                                                                        \
     } while (0)
 
-#define NewMgrInitArgs_Z(mgr, class, line, ...)                                                                  \
+#define NewMgrInitArgsL_Z(mgr, class, line, ...)                                                                 \
     do {                                                                                                         \
         MemManager.m_FreeMemCached = s_GetFreeMem();                                                             \
         if (!mgr) {                                                                                              \
@@ -44,7 +45,9 @@
         }                                                                                                        \
     } while (0)
 
-ExternC_Z void memset(void* __s, S32 __c, U32 __n);
+#define NewMgr_Z(mgr, class) NewMgrL_Z(mgr, class, __LINE__)
+#define NewMgrInit_Z(mgr, class) NewMgrInitL_Z(mgr, class, __LINE__)
+#define NewMgrInitArgs_Z(mgr, class, ...) NewMgrInitArgsL_Z(mgr, class, __LINE__, __VA_ARGS__)
 
 // Extern Platform Functions
 

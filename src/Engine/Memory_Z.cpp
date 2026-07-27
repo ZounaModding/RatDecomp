@@ -1,6 +1,7 @@
 #include "Memory_Z.h"
 #include "Assert_Z.h"
 #include "Program_Z.h"
+#include "Console_Z.h"
 
 Extern_Z void s_free(void* i_Ptr);
 Extern_Z void* s_malloc(U32 i_Size, U32 i_Align);
@@ -10,7 +11,6 @@ void s_ShowMostNbMalloc();
 void* s_findalloc(void* i_RangeStart, void* i_RangeEnd);
 U32 s_getnbfindalloc(void* i_RangeStart, void* i_RangeEnd);
 void* s_getfindalloc(S32 i_AllocId, Char* l_ResultDescription, void* i_RangeStart, void* i_RangeEnd);
-ExternC_Z S32 sprintf(const Char* i_Buf, const Char* i_Format, ...);
 Extern_Z Bool s_VerifyMem();
 Extern_Z void* s_malloc_end(U32 i_Size, U32 i_Align);
 

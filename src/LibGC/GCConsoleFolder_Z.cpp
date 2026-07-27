@@ -1,7 +1,5 @@
 #include "GCConsole_Z.h"
 
-ExternC_Z int sprintf(Char* i_Buffer, const Char* i_Format, ...);
-
 void GCConsole_Z::InitFolders() {
     m_FolderDA.SetSize(4);
 

@@ -1,7 +1,7 @@
 #ifndef _GCSOUNDBF_H_
 #define _GCSOUNDBF_H_
 #include "BaseStream_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 
 class SBFEntry {
 public:

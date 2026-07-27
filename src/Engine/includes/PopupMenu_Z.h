@@ -1,7 +1,7 @@
 #ifndef _POPUPMENU_Z_H_
 #define _POPUPMENU_Z_H_
 #include "Types_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 #include "DynArray_Z.h"
 
 #define ID_WIREFRAME 40000

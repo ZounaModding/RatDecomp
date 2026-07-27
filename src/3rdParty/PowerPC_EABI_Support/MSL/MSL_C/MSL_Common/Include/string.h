@@ -14,6 +14,8 @@ void* __memrchr(const void* ptr, int ch, size_t count);
 void* memchr(const void* ptr, int ch, size_t count);
 void* memmove(void* dst, const void* src, size_t n);
 char* strrchr(const char* str, int c);
+char* strpbrk(const char* str, const char* c);
+char* strstr(const char* str, const char* substr);
 char* strchr(const char* str, int c);
 int strncmp(const char* str1, const char* str2, size_t n);
 int strcmp(const char* str1, const char* str2);

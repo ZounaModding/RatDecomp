@@ -2,8 +2,6 @@
 #include "Memory_Z.h"
 #include "Sys_Z.h"
 
-ExternC_Z int sprintf(char* i_Buf, const char* i_Format, ...);
-
 File_Z::File_Z() {
     m_Buffer = NULL;
     m_Size = 0;

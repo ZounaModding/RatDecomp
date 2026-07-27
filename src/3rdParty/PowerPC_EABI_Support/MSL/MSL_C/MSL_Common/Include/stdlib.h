@@ -3,6 +3,8 @@
 
 #include "abort_exit.h"
 #include "arith.h"
+#include "strtold.h"
 #include "strtoul.h"
+#include "rand.h"
 
 #endif

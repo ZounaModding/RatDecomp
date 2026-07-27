@@ -35,9 +35,33 @@ void GameProgramInit() {
     l_ScriptManager->GetCTFGameMgr().GetInputDef()->InitInputs();
 }
 
-// TODO: Match properly
+static Char* FlagsString = "PATCH_FLAGS_p_D_B_L";
+
 void GetFlagsFromGame() {
-    gData.m_GameFlag |= FL_GAME_UNK_0x800 | FL_GAME_UNK_0x1000 | FL_GAME_UNK_0x2000;
+    gData.m_GameFlag = 0;
+    gData.m_GameFlag |= FL_GAME_UNK_0x4000;
+    gData.m_GameFlag |= FL_GAME_UNK_0x20000;
+    gData.m_GameFlag |= FL_GAME_UNK_0x40000;
+    gData.m_GameFlag |= FL_GAME_2_FRAMES;
+
+    if (FlagsString[12] == 'P') {
+        gData.m_GameFlag |= FL_GAME_UNK_0x100 | FL_GAME_PAL | FL_GAME_UNK_0x1;
+    }
+
+    if (FlagsString[14] == 'D') {
+        gData.m_GameFlag |= FL_GAME_UNK_0x2000;
+    }
+
+    if (FlagsString[16] == 'B') {
+        gData.m_GameFlag |= FL_GAME_UNK_0x1000;
+    }
+
+    if (FlagsString[18] == 'L') {
+        gData.m_GameFlag |= FL_GAME_USE_CD;
+    }
+
+    gData.m_GameFlag |= FL_GAME_UNK_0x1000;
+    gData.m_GameFlag |= FL_GAME_USE_CD;
 }
 
 void RegisterGameClasses() {

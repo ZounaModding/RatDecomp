@@ -3,11 +3,8 @@
 #include "Name_Z.h"
 #include "ConsoleInterp_Z.h"
 #include "Types_Z.h"
-#include "String_Z.h"
-ExternC_Z int strncmp(const char* str1, const char* str2, int n);
-ExternC_Z U32 strlen(const char* str);
-ExternC_Z Float atof(const char* str);
-ExternC_Z int stricmp(const char* String1, const char* String2);
+#include <String_Z.h>
+#include <stdio.h>
 
 void Console_Z::DisplayHelp() { }
 

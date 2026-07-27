@@ -9,6 +9,7 @@ extern "C" {
 
 size_t __fwrite(const void* buffer, size_t size, size_t count, FILE* stream);
 size_t fwrite(const void* buffer, size_t size, size_t count, FILE* stream);
+size_t fread(void* buffer, size_t size, size_t count, FILE* stream);
 
 #ifdef __cplusplus
 }

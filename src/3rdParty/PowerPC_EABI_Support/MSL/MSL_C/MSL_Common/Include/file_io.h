@@ -10,6 +10,7 @@ extern "C" {
 int __msl_strnicmp(const char* str1, const char* str2, int n);
 int fflush(FILE* file);
 int fclose(FILE* file);
+FILE* fopen(const char* path, const char* mode);
 
 #ifdef __cplusplus
 }

@@ -3,10 +3,9 @@
 #include "ABC_ScriptManager.h"
 #include "DebugTools_Z.h"
 #include "Occluder_Z.h"
+#include <stdlib.h>
 
 static Char SndMgrStatusString[ARRAY_CHAR_MAX];
-
-ExternC_Z int rand();
 
 SoundManager_Z::SoundManager_Z() {
     REGISTERCOMMANDC("PlayMUsic", Cmd_PlayMusic, " MusicName");
@@ -152,5 +151,5 @@ Bool Cmd_PlayDialog() {
 }
 
 const Char* SoundManager_Z::GetUsedTrackString() {
-    return NULL;
+    return "TODO: Implement GetUsedTrackString";
 }

@@ -1,6 +1,5 @@
 #include "Console_Z.h"
 #include "BaseObject_Z.h"
-#include "GCMain_Z.h"
 #include "Handle_Z.h"
 #include "Memory_Z.h"
 #include "PopupMenu_Z.h"
@@ -9,7 +8,6 @@
 #include "Renderer_Z.h"
 #include "File_Z.h"
 #include "ConsoleInterp_ZHdl.h"
-Extern_Z GCGlobals gData;
 
 Console_Z::Console_Z()
     : m_UnkS32List_0x1384()

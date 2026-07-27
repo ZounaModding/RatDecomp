@@ -1,5 +1,6 @@
 #include "Movie_Z.h"
 #include "Memory_Z.h"
+#include "Console_Z.h"
 #include "bink.h"
 
 void* BinkAllocate(U32 i_Bytes) {

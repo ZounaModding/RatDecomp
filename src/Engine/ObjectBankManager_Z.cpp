@@ -1,8 +1,6 @@
 #include "ObjectBankManager_Z.h"
 #include "Program_Z.h"
 
-ExternC_Z int sprintf(char* i_Buf, const char* i_Format, ...);
-
 ObjectBankManager_Z::ObjectBankManager_Z() {
     Char l_NodeNameStr[64];
 

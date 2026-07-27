@@ -1,6 +1,7 @@
 #include "MatrixCache_Z.h"
 #include "Assert_Z.h"
 #include "Program_Z.h"
+#include "Console_Z.h"
 
 Mat4x4Buffer_Z::Mat4x4Buffer_Z() {
     U16 i;

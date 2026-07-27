@@ -1,7 +1,7 @@
 #ifndef _ERROR_Z_H_
 #define _ERROR_Z_H_
 #include "Types_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 
 #define ERROR_CODE_NONE (U64)(0 << 0)
 #define ERROR_CODE_INVALID_DB_PATH (U64)(1 << 27) // 0x8000000

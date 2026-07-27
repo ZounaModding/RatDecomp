@@ -3,6 +3,9 @@
 #include "Main_Z.h"
 #include "Handle_Z.h"
 #include "ClassManager_Z.h"
+#include <dolphin/os.h>
+
+#define Report_Z(title, buf) OSReport(title)
 
 void CallBack_ResetPressed();
 Bool PrintMemStatus();
@@ -11,6 +14,8 @@ void ShutProgram();
 
 class GCParticlesManager_Z;
 class TextureManager_Z;
+class GCGlobals;
+Extern_Z GCGlobals gData;
 
 class GCGlobals : public Globals {
 public:

@@ -40,13 +40,13 @@ public:
     void SetError(U32 i_Error);
     Bool WaitIO();
     S32 Read(void* i_Buffer, S32 i_Size);
-    void Write(const void* i_Buffer, S32 i_Size);
+    S32 Write(const void* i_Buffer, S32 i_Size);
     U32 GetSize();
-    U32 GetCurPos();
+    S32 GetCurPos();
     Bool Close();
     Bool DoFileExists(const Char* i_FilePath);
-    U32 GetFileDate(const Char* i_FilePath);
-    void SetFileDate(const Char* i_FilePath, U32 i_Date);
+    S32 GetFileDate(const Char* i_FilePath);
+    void SetFileDate(const Char* i_FilePath, S32 i_Date);
     U32 Seek(S32 i_Offset, S32 i_Origin);
     static Bool GetRealFileName(const Char* i_FilePath, Char* o_RealName);
     void CheckDisc(Bool i_Unk);

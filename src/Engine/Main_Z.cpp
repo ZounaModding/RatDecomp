@@ -82,8 +82,6 @@
 #include "KSys_Z.h"
 #include "Main_Z.h"
 
-ExternC_Z void exit(int);
-
 Char WhereAmI[128];
 VBool InMainLoop;
 
@@ -96,7 +94,7 @@ void _CoreMainLoop() {
 
     if (!init) {
         init = TRUE;
-        dTime = 1.0f / 60.0f;
+        dTime = FRAME_TIME_NTSC;
     }
 
     if (gData.m_BlockFrame) {
@@ -110,7 +108,7 @@ void _CoreMainLoop() {
             dTime = gData.GetOneFrameTime() * l_TargetSecondsPerFrame;
         }
         else {
-            dTime = 1.0f / 60.0f;
+            dTime = FRAME_TIME_NTSC;
         }
     }
 
@@ -255,53 +253,53 @@ void ProgramInit() {
     gData.UnkMgr_0x78 = NULL;
     gData.NetMgr = NULL;
 
-    NewMgr_Z(gData.ClassMgr, ClassManager_Z, 387);
+    NewMgrL_Z(gData.ClassMgr, ClassManager_Z, 387);
 
     RegisterClasses();
 
     InitTabError();
 
-    NewMgrInit_Z(gData.StreamMgr, StreamManager_Z, 396);
+    NewMgrInitL_Z(gData.StreamMgr, StreamManager_Z, 396);
 
     if (!gData.m_IsPlatformAgnostic) {
         LowLevelInitProgram();
     }
 
     if (!gData.MainRdr) {
-        NewMgr_Z(gData.MainRdr, Renderer_Z, 404);
+        NewMgrL_Z(gData.MainRdr, Renderer_Z, 404);
     }
 
     if (!gData.NetMgr) {
-        NewMgr_Z(gData.NetMgr, NetManager_Virtual_Z, 405);
+        NewMgrL_Z(gData.NetMgr, NetManager_Virtual_Z, 405);
     }
 
     if (!gData.SoundMgr) {
-        NewMgrInit_Z(gData.SoundMgr, SoundManager_Z, 406);
+        NewMgrInitL_Z(gData.SoundMgr, SoundManager_Z, 406);
     }
 
     if (!gData.InputMgr) {
-        NewMgrInit_Z(gData.InputMgr, InputPlatForm_Z, 407);
+        NewMgrInitL_Z(gData.InputMgr, InputPlatForm_Z, 407);
     }
 
     if (!gData.SavingMgr) {
-        NewMgrInit_Z(gData.SavingMgr, SaveGame_Z, 408);
+        NewMgrInitL_Z(gData.SavingMgr, SaveGame_Z, 408);
     }
 
     if (!gData.MovieMgr) {
-        NewMgrInit_Z(gData.MovieMgr, Movie_Z, 409);
+        NewMgrInitL_Z(gData.MovieMgr, Movie_Z, 409);
     }
 
-    NewMgr_Z(gData.VolatileMgr, VolatileMgr_Z, 411);
-    NewMgr_Z(gData.MaterialMgr, MaterialManager_Z, 412);
-    NewMgr_Z(gData.WorldMgr, WorldManager_Z, 413);
-    NewMgr_Z(gData.ColSurfaceCache, ColSurfaceCache_Z, 414);
-    NewMgr_Z(gData.ColTriangleCache, ColTriangleCache_Z, 416);
-    NewMgr_Z(gData.MatrixBuffer, Mat4x4Buffer_Z, 417);
-    NewMgr_Z(gData.ManipMgr, ManipulatorManager_Z, 418);
-    NewMgr_Z(gData.GameMgr, GameManager_Z, 419);
-    NewMgr_Z(gData.AnimMgr, AnimationManager_Z, 420);
-    NewMgr_Z(gData.EffectMgr, EffectManager_Z, 421);
-    NewMgrInit_Z(gData.XRamMgr, XRamManager_Z, 422);
+    NewMgrL_Z(gData.VolatileMgr, VolatileMgr_Z, 411);
+    NewMgrL_Z(gData.MaterialMgr, MaterialManager_Z, 412);
+    NewMgrL_Z(gData.WorldMgr, WorldManager_Z, 413);
+    NewMgrL_Z(gData.ColSurfaceCache, ColSurfaceCache_Z, 414);
+    NewMgrL_Z(gData.ColTriangleCache, ColTriangleCache_Z, 416);
+    NewMgrL_Z(gData.MatrixBuffer, Mat4x4Buffer_Z, 417);
+    NewMgrL_Z(gData.ManipMgr, ManipulatorManager_Z, 418);
+    NewMgrL_Z(gData.GameMgr, GameManager_Z, 419);
+    NewMgrL_Z(gData.AnimMgr, AnimationManager_Z, 420);
+    NewMgrL_Z(gData.EffectMgr, EffectManager_Z, 421);
+    NewMgrInitL_Z(gData.XRamMgr, XRamManager_Z, 422);
 
     PrintMemoryStatus("Zouna Init");
 
@@ -309,9 +307,9 @@ void ProgramInit() {
 
     PrintMemoryStatus("Game Init");
 
-    NewMgr_Z(gData.SystemDatas, SystemDatas_Z, 430);
-    NewMgr_Z(gData.ObjectBankMgr, ObjectBankManager_Z, 431);
-    NewMgr_Z(gData.ParticlesMgr, ParticlesManager_Z("ParticlesManager"), 432);
+    NewMgrL_Z(gData.SystemDatas, SystemDatas_Z, 430);
+    NewMgrL_Z(gData.ObjectBankMgr, ObjectBankManager_Z, 431);
+    NewMgrL_Z(gData.ParticlesMgr, ParticlesManager_Z("ParticlesManager"), 432);
 
     gData.ScriptMgr->Init();
     gData.MainRdr->InitViewport(1);

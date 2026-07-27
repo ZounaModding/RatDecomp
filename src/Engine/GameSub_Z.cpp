@@ -1,4 +1,5 @@
 #include "Game_Z.h"
+#include "Console_Z.h"
 
 void RegisterGameCommand() {
     REGISTERCOMMANDC("LoadSubLevel", Cmd_LoadSubLevel, " WorldName SubWorldName SubLevelId");

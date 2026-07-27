@@ -4,8 +4,7 @@
 #include "GameManager_Z.h"
 #include "DebugTools_Z.h"
 #include "InputEngine_Z.h"
-
-ExternC_Z int sprintf(char* i_Buf, const char* i_Format, ...);
+#include "Console_Z.h"
 
 static U32 TrashbinFlag;
 

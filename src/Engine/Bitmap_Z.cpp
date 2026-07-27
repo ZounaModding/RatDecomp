@@ -2,7 +2,7 @@
 #include "Memory_Z.h"
 #include "Program_Z.h"
 #include "Renderer_Z.h"
-ExternC_Z void* memcpy(void* dest, const void* src, int n);
+
 #pragma dont_inline on
 
 Bitmap_Z::Bitmap_Z() {
@@ -330,6 +330,10 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
     }
 }
 
+// The GameCube path reorders pixels into GX's tiled texture layout, 4x4 blocks
+// for 16bpp and 8x8 / 8x4 for the indexed formats. Ports supply their own.
+#if defined(GAMECUBE_Z)
+
 void Bitmap_Z::SetUniversal(U8* i_Datas) {
     U8* l_Datas;
     S32 l_Size = m_SizeX * m_SizeY;
@@ -545,5 +549,7 @@ void Bitmap_Z::SetUniversal(U8* i_Datas) {
 
     SetDatas(l_Datas);
 }
+
+#endif
 
 #pragma dont_inline off

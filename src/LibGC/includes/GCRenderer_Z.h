@@ -5,6 +5,7 @@
 #include "ARamXAllocator_Z.h"
 #include "DisplayList_Z.h"
 #include "StreamList_Z.h"
+#include "GCDrawString.h"
 #include <gx.h>
 #include <mtx.h>
 
@@ -107,15 +108,9 @@ public:
         Vec2f m_TextureCoordinates;
 
         void CopyFrom(const GCVertex2DStream& i_Vertex) {
-            m_Position.x = i_Vertex.m_Position.x;
-            m_Position.y = i_Vertex.m_Position.y;
-            m_Position.z = i_Vertex.m_Position.z;
-            m_Color.r = i_Vertex.m_Color.r;
-            m_Color.g = i_Vertex.m_Color.g;
-            m_Color.b = i_Vertex.m_Color.b;
-            m_Color.a = i_Vertex.m_Color.a;
-            m_TextureCoordinates.x = i_Vertex.m_TextureCoordinates.x;
-            m_TextureCoordinates.y = i_Vertex.m_TextureCoordinates.y;
+            m_Position = i_Vertex.m_Position;
+            m_Color = i_Vertex.m_Color;
+            m_TextureCoordinates = i_Vertex.m_TextureCoordinates;
         }
     };
 
@@ -215,30 +210,6 @@ public:
     U32 m_Flags;     // may be wrong
     Vec2f m_TextureCoordinates;
 };
-
-// TODO: Move these to their own files
-struct ScanCode_Z {
-    Float m_U1;
-    Float m_V1;
-    Float m_U2;
-    Float m_V2;
-    Float m_SizeX;
-    Float m_SizeY;
-    Bool m_Valid;
-
-    ScanCode_Z() {
-    }
-};
-
-struct FontString_Z {
-    Material_ZHdl m_MaterialHdl;
-    ScanCode_Z m_Characters[256];
-
-    void MarkHandles();
-    void Init();
-};
-
-// END TODO
 
 #define EXT_PRIM_INFO_ALIGN 32
 
@@ -344,12 +315,12 @@ public:
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);
     virtual void Draw2DQuad(const Vec2f& i_PosBottomLeft, const Vec2f& i_PosTopRight, const Vec2f& i_UvBottomLeft, const Vec2f& i_UvTopRight, const Color& i_ColBottomRight, const Color& i_ColTopRight, Float i_Z);
     virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5);
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Float a4);
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6);
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_Color, Float i_Z);
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Vec2f& i_UvTopLeft, Vec2f& i_UvBottomRight, Vec3f& i_Color, Float i_Z);
     virtual void Draw2DQuad(Vec2f* i_Positions, Vec3f* i_Colors, Vec2f* i_TextureCoordinates, Float i_Z, Float i_Alpha);
     virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4);
     virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4);
-    virtual void DrawString(const Vec2f& a1, const Char* a2, const Color& a3, Float a4, Float a5);
+    virtual void DrawString(const Vec2f& i_TopLeft, const Char* i_String, const Color& i_Color, Float i_Z, Float i_Scale);
     virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3);
     virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4);
     virtual void MakeScreenShot(Char* i_FilePath);

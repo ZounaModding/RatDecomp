@@ -11,8 +11,6 @@
 #include "Renderer_Z.h"
 #include "TextGameDraw_G.h"
 
-ExternC_Z int stricmp(const Char* i_String1, const Char* i_String2);
-
 ScriptManager_G::ScriptManager_G() {
     m_PlayerSaveStruct.Reset();
     m_UnkFloatZero_0x666c = 0.0f;

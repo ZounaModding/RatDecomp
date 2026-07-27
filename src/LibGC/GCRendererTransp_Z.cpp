@@ -1,8 +1,6 @@
 #include "GCRenderer_Z.h"
 #include "FlareGC_Z.h"
 
-ExternC_Z void exit(int);
-
 S32 GCRenderer_Z::PushADraw(StreamList_Z* i_StreamList, BaseDisplayList_Z* i_DisplayList, S32 i_RenderContextFlag) {
     S32 l_DrawCallIdx = m_DrawCalls.Add();
     ExtPrimitiveInfo_Z& l_DrawCall = m_DrawCalls[l_DrawCallIdx];

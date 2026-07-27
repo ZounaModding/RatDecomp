@@ -3,8 +3,6 @@
 #include "BitArray_Z.h"
 #include "Name_Z.h"
 
-ExternC_Z void memset(void* __s, S32 __c, U32 __n);
-
 #define HASHTABLE_DEFAULT_SIZE 16
 
 class S32Hash_Z {

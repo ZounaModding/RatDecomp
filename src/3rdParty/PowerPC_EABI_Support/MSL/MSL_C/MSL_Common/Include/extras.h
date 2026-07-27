@@ -7,6 +7,7 @@ extern "C" {
 
 int strnicmp(const char* str1, const char* str2, int n);
 int stricmp(const char* str1, const char* str2);
+char* strupr(char* str);
 
 #ifdef __cplusplus
 }

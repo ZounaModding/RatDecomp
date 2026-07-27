@@ -12,6 +12,7 @@
 #include "ABC_ScriptManager.h"
 #include "SoundManager_Z.h"
 #include "Memory_Z.h"
+#include "Timer_Z.h"
 
 #pragma dont_inline on
 
@@ -64,7 +65,7 @@ Renderer_Z::Renderer_Z() {
     m_SizeY = 100.0f;
     m_SizeX = 100.0f;
     m_UnkBoolFalse_0x704 = FALSE;
-    m_CurFps = 30.0f;
+    m_CurFps = FPS_NTSC / 2.0f;
     m_CpuTargetMsOrFps = 30.0f;
     m_GpuTargetMsOrFps = 30.0f;
     m_UnkFloat_0_0x8c4 = 0.0f;
@@ -77,9 +78,9 @@ Renderer_Z::Renderer_Z() {
     m_GifDmaMaxInUseNb = 0;
     m_GifDmaInUseNb = 0;
     m_DisplayFpsUpdateTimer = 0.0f;
-    m_CpuFps = 60.0f;
-    m_GpuFps = 60.0f;
-    m_Fps = 60.0f;
+    m_CpuFps = FPS_NTSC;
+    m_GpuFps = FPS_NTSC;
+    m_Fps = FPS_NTSC;
     m_ClearColor.Set(0.0, 0.0f, 0.0f, 1.0f);
     m_PerlinArray3D.Generate(0.5f, 1.0f, 16);
 }
@@ -281,11 +282,11 @@ void Renderer_Z::Draw(S32 i_ViewportId, Float i_DeltaTime) {
 
                 const Char* l_VsyncStr = "";
                 if (m_EffectFlag & FL_EFFECT_VSYNC) {
-                    l_VsyncStr = "(vsync)";
+                    l_VsyncStr = "Vsynced";
                 }
-                m_FpsString.Sprintf("Fps: %.1f (%.2fms) %s", l_VsyncStr, m_Fps, 1000.0f / m_Fps);
-                m_GpuString.Sprintf("Gpu: %.1f (%.2fms) %2.f%%", l_VsyncStr, m_GpuFps, 1000.0f / m_GpuFps, 100.0f * GetFreq() / m_GpuFps);
-                m_CpuString.Sprintf("Cpu: %.1f (%.2fms) %2.f%%", l_VsyncStr, m_CpuFps, 1000.0f / m_CpuFps, 100.0f * GetFreq() / m_CpuFps);
+                m_FpsString.Sprintf("Fps: %.1f (%.2fms) %s", m_Fps, 1000.0f / m_Fps, l_VsyncStr);
+                m_GpuString.Sprintf("Gpu: %.1f (%.2fms) %2.f%%", m_GpuFps, 1000.0f / m_GpuFps, 100.0f * GetFreq() / m_GpuFps);
+                m_CpuString.Sprintf("Cpu: %.1f (%.2fms) %2.f%%", m_CpuFps, 1000.0f / m_CpuFps, 100.0f * GetFreq() / m_CpuFps);
                 m_FragmentsString.Sprintf("Fragments: %d", MemManager.GetFragments());
                 Float l_Largest = (Float)MemManager.GetLargestFree() / 1048576.0f;
                 m_LargestBlockString.Sprintf("Largest Block: %d.%d Mo", (S32)l_Largest, (S32)(10.0f * l_Largest) - (S32)l_Largest * 10);

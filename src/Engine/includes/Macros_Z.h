@@ -18,10 +18,16 @@
         (void)0;             \
     } while (0)
 
-#undef DEBUG_Z
 #ifdef NONMATCHING_Z
-#define DEBUG_Z
 #define BUGFIXES_Z
+#endif
+
+#ifdef NONMATCHING_Z
+#define SrcLine_Z(Line) __LINE__
+#define SrcFile_Z(File) __FILE__
+#else
+#define SrcLine_Z(Line) Line
+#define SrcFile_Z(File) File
 #endif
 
 #endif

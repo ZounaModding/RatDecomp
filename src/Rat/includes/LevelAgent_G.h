@@ -15,10 +15,6 @@ public:
     DECL_BHV(BhvToMenu);
 
 private:
-    
-
-public:
-    void InitClass();
 END_AGENT_CLASS
 
 // clang-format on

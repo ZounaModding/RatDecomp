@@ -570,10 +570,6 @@ void HandleStream_Z::Draw(DrawInfo_Z& i_DrawInfo) {
     }
 }
 
-Float Renderer_Z::GetDefaultNear() {
-    return Renderer_ZDefaultNear;
-}
-
 void HandleStream_Z::Open(const Char* i_FileName) {
     m_StrFileName = i_FileName;
     m_Resources.Empty();

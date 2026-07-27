@@ -56,7 +56,4 @@ public:
     U32 GetLastError();
 };
 
-void* BinkAllocate(U32 i_Bytes);
-void BinkFree(void* i_Ptr);
-
 #endif

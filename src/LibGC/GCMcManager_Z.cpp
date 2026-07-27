@@ -4,8 +4,6 @@
 #include "File_Z.h"
 #include "StreamManager_Z.h"
 
-ExternC_Z int sprintf(Char* i_Buffer, const Char* i_Format, ...);
-
 GCMcManager_Z* McManager;
 
 GCMcManager_Z::GCMcManager_Z() {

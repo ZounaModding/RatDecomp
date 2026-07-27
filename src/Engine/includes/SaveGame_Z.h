@@ -29,7 +29,7 @@ public:
     virtual ~SaveGame_Z() { }
 
     virtual Bool Init() {
-        return FALSE;
+        return TRUE;
     }
 
     virtual void Shut() { }

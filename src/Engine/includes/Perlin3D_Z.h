@@ -1,9 +1,8 @@
 #ifndef _PERLINARRAY3D_Z_H_
 #define _PERLINARRAY3D_Z_H_
 #include "Memory_Z.h"
-#include <cmath.h>
-
-ExternC_Z int rand();
+#include "Math_Z.h"
+#include <stdlib.h>
 
 template <S32 SizeX, S32 SizeY, S32 SizeZ>
 class PerlinArray3D_Z {

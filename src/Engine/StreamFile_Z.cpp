@@ -2,6 +2,7 @@
 #include "Handle_Z.h"
 #include "Renderer_Z.h"
 #include "Timer_Z.h"
+#include "Console_Z.h"
 
 U8 StreamFile_Z::gBigFileHeader[sizeof(BigFileHeader_Z)];
 Float StartLoadingTime;
