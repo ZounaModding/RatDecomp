@@ -10,9 +10,9 @@
 #define BIGFILE_NAME_EXTENSION ".NGC"
 #define BIGFILE_PLATFORM_VERSION ".01"
 
-#define PlatformMovieManipulator_Z \
-class GCMovieManipulator_Z; \
-HANDLE_Z(GCMovieManipulator_Z, ManipulatorDraw_Z); \
-typedef GCMovieManipulator_ZHdl MovieManipHdl
+#define PlatformMovieManipulator_Z                     \
+    class GCMovieManipulator_Z;                        \
+    HANDLE_Z(GCMovieManipulator_Z, ManipulatorDraw_Z); \
+    typedef GCMovieManipulator_ZHdl MovieManipHdl
 
 #endif

@@ -25,9 +25,11 @@
 #ifdef NONMATCHING_Z
 #define SrcLine_Z(Line) __LINE__
 #define SrcFile_Z(File) __FILE__
+#define SrcExp_Z(Exp, OrigExp) #Exp
 #else
 #define SrcLine_Z(Line) Line
 #define SrcFile_Z(File) File
+#define SrcExp_Z(Exp, OrigExp) OrigExp
 #endif
 
 #endif

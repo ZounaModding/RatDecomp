@@ -480,21 +480,21 @@ public:
 
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3) { }
 
-    virtual void Draw2DQuad(const Vec2f& a1, const Vec2f& a2, const Vec2f& a3, const Vec2f& a4, const Color& a5, const Color& a6, Float a7) { };
+    virtual void Draw2DQuad(const Vec2f& i_TopLeft, const Vec2f& i_BottomRight, const Vec2f& i_UvTopLeft, const Vec2f& i_UvBottomRight, const Color& i_ColorTop, const Color& i_ColorBottom, Float i_Z) { };
 
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5) { }
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_ColorTop, Color& i_ColorBottom, Float i_Z) { }
 
     virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_Color, Float i_Z) { }
 
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Vec2f& a3, Vec2f& a4, Vec3f& a5, Float a6) { }
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Vec2f& i_UvTopLeft, Vec2f& i_UvBottomRight, Vec3f& i_Color, Float i_Z) { }
 
     virtual void DrawTri(Vec2f& i_Point1, Vec2f& i_Point2, Vec2f& i_Point3, Color& i_Color, Float i_Z) { }
 
-    virtual void Draw2DQuad(Vec2f* a1, Vec3f* a2, Vec2f* a3, Float a4, Float a5) { }
+    virtual void Draw2DQuad(Vec2f* i_Positions, Vec3f* i_Colors, Vec2f* i_TextureCoordinates, Float i_Z, Float i_Alpha) { }
 
-    virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4) { }
+    virtual void DrawStrip(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z) { }
 
-    virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4) { }
+    virtual void DrawFan(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z) { }
 
     virtual void EnableZBuffer(Bool i_Enable) { }
 

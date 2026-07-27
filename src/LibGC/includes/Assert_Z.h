@@ -20,12 +20,12 @@ void BreakPoint_Z();
 #undef ASSERTLE_Z
 #define ASSERTLE_Z(Exp, Comment, Line, OrigExp) \
     if (!(Exp))                                 \
-    ExceptionFonc_Z(OrigExp, __FILE__, SrcLine_Z(Line), Comment, 0, 0, 0, 0, 0, 0)
+    ExceptionFonc_Z(SrcExp_Z(Exp, OrigExp), __FILE__, SrcLine_Z(Line), Comment, 0, 0, 0, 0, 0, 0)
 // $SABE: Only use to finish matching funcs with ASSERTs in decomp.me :))
 #undef ASSERTLEF_Z
 #define ASSERTLEF_Z(Exp, Comment, Line, File, OrigExp) \
     if (!(Exp))                                        \
-    ExceptionFonc_Z(OrigExp, SrcFile_Z(File), SrcLine_Z(Line), Comment, 0, 0, 0, 0, 0, 0)
+    ExceptionFonc_Z(SrcExp_Z(Exp, OrigExp), SrcFile_Z(File), SrcLine_Z(Line), Comment, 0, 0, 0, 0, 0, 0)
 
 #undef ASSERTBOOL_Z
 #define ASSERTBOOL_Z(Exp, Msg, ...) \

@@ -313,13 +313,13 @@ public:
     virtual void DrawLine(const Vec2f& a1, const Vec2f& a2, const Color& a3, Float a4);
     virtual void DrawImage(Bitmap_ZHdl& a1);
     virtual void DrawCross(const Vec3f& a1, const Color& a2, Float a3);
-    virtual void Draw2DQuad(const Vec2f& i_PosBottomLeft, const Vec2f& i_PosTopRight, const Vec2f& i_UvBottomLeft, const Vec2f& i_UvTopRight, const Color& i_ColBottomRight, const Color& i_ColTopRight, Float i_Z);
-    virtual void DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5);
+    virtual void Draw2DQuad(const Vec2f& i_TopLeft, const Vec2f& i_BottomRight, const Vec2f& i_UvTopLeft, const Vec2f& i_UvBottomRight, const Color& i_ColorTop, const Color& i_ColorBottom, Float i_Z);
+    virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_ColorTop, Color& i_ColorBottom, Float i_Z);
     virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_Color, Float i_Z);
     virtual void DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Vec2f& i_UvTopLeft, Vec2f& i_UvBottomRight, Vec3f& i_Color, Float i_Z);
     virtual void Draw2DQuad(Vec2f* i_Positions, Vec3f* i_Colors, Vec2f* i_TextureCoordinates, Float i_Z, Float i_Alpha);
-    virtual void DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4);
-    virtual void DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4);
+    virtual void DrawStrip(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z);
+    virtual void DrawFan(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z);
     virtual void DrawString(const Vec2f& i_TopLeft, const Char* i_String, const Color& i_Color, Float i_Z, Float i_Scale);
     virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3);
     virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4);

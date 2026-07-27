@@ -165,23 +165,23 @@ void GCRenderer_Z::DrawQuad(
     m_Draw2D.CloseRequest();
 }
 
-void GCRenderer_Z::DrawQuad(Vec2f& a1, Vec2f& a2, Color& a3, Color& a4, Float a5) {
+void GCRenderer_Z::DrawQuad(Vec2f& i_TopLeft, Vec2f& i_BottomRight, Color& i_ColorTop, Color& i_ColorBottom, Float i_Z) {
 }
 
 void GCRenderer_Z::Draw2DQuad(
-    const Vec2f& i_PosBottomLeft,
-    const Vec2f& i_PosTopRight,
-    const Vec2f& i_UvBottomLeft,
-    const Vec2f& i_UvTopRight,
-    const Color& i_ColBottomRight,
-    const Color& i_ColTopRight,
+    const Vec2f& i_TopLeft,
+    const Vec2f& i_BottomRight,
+    const Vec2f& i_UvTopLeft,
+    const Vec2f& i_UvBottomRight,
+    const Color& i_ColorTop,
+    const Color& i_ColorBottom,
     Float i_Z
 ) {
     Float l_Z = Max(i_Z, Renderer_ZCurrentNear);
 
     Float l_Opacity = Min(
-        i_ColBottomRight.a,
-        Min(i_ColTopRight.a, 1.0f)
+        i_ColorTop.a,
+        Min(i_ColorBottom.a, 1.0f)
     );
 
     U32 l_RenderFlags = 0;
@@ -220,61 +220,61 @@ void GCRenderer_Z::Draw2DQuad(
     WriteFloat(l_VertexZ, l_Vertex[2].m_Position.z);
     WriteFloat(l_VertexZ, l_Vertex[3].m_Position.z);
 
-    l_Vertex[0].m_Color.a = (U8)((i_ColBottomRight.a * l_Opacity) * 255.0f);
+    l_Vertex[0].m_Color.a = (U8)((i_ColorTop.a * l_Opacity) * 255.0f);
 
-    l_Vertex[2].m_Color.a = (U8)((i_ColTopRight.a * l_Opacity) * 255.0f);
-
-    WriteFloat(
-        i_PosBottomLeft.x + l_ViewportX, l_Vertex[0].m_Position.x
-    );
-    WriteFloat(
-        i_PosBottomLeft.y + l_ViewportY, l_Vertex[0].m_Position.y
-    );
+    l_Vertex[2].m_Color.a = (U8)((i_ColorBottom.a * l_Opacity) * 255.0f);
 
     WriteFloat(
-        i_PosTopRight.x + l_ViewportX, l_Vertex[1].m_Position.x
+        i_TopLeft.x + l_ViewportX, l_Vertex[0].m_Position.x
     );
     WriteFloat(
-        i_PosBottomLeft.y + l_ViewportY, l_Vertex[1].m_Position.y
+        i_TopLeft.y + l_ViewportY, l_Vertex[0].m_Position.y
     );
 
     WriteFloat(
-        i_PosBottomLeft.x + l_ViewportX, l_Vertex[2].m_Position.x
+        i_BottomRight.x + l_ViewportX, l_Vertex[1].m_Position.x
     );
     WriteFloat(
-        i_PosTopRight.y + l_ViewportY, l_Vertex[2].m_Position.y
+        i_TopLeft.y + l_ViewportY, l_Vertex[1].m_Position.y
     );
 
     WriteFloat(
-        i_PosTopRight.x + l_ViewportX, l_Vertex[3].m_Position.x
+        i_TopLeft.x + l_ViewportX, l_Vertex[2].m_Position.x
     );
     WriteFloat(
-        i_PosTopRight.y + l_ViewportY, l_Vertex[3].m_Position.y
+        i_BottomRight.y + l_ViewportY, l_Vertex[2].m_Position.y
     );
 
-    l_Vertex[0].m_Color.r = (U8)(i_ColBottomRight.r * 255.0f);
-    l_Vertex[0].m_Color.g = (U8)(i_ColBottomRight.g * 255.0f);
-    l_Vertex[0].m_Color.b = (U8)(i_ColBottomRight.b * 255.0f);
+    WriteFloat(
+        i_BottomRight.x + l_ViewportX, l_Vertex[3].m_Position.x
+    );
+    WriteFloat(
+        i_BottomRight.y + l_ViewportY, l_Vertex[3].m_Position.y
+    );
+
+    l_Vertex[0].m_Color.r = (U8)(i_ColorTop.r * 255.0f);
+    l_Vertex[0].m_Color.g = (U8)(i_ColorTop.g * 255.0f);
+    l_Vertex[0].m_Color.b = (U8)(i_ColorTop.b * 255.0f);
 
     l_Vertex[1].m_Color = l_Vertex[0].m_Color;
 
-    l_Vertex[2].m_Color.r = (U8)(i_ColTopRight.r * 255.0f);
-    l_Vertex[2].m_Color.g = (U8)(i_ColTopRight.g * 255.0f);
-    l_Vertex[2].m_Color.b = (U8)(i_ColTopRight.b * 255.0f);
+    l_Vertex[2].m_Color.r = (U8)(i_ColorBottom.r * 255.0f);
+    l_Vertex[2].m_Color.g = (U8)(i_ColorBottom.g * 255.0f);
+    l_Vertex[2].m_Color.b = (U8)(i_ColorBottom.b * 255.0f);
 
     l_Vertex[3].m_Color = l_Vertex[2].m_Color;
 
-    WriteFloat(i_UvBottomLeft.x, l_Vertex[0].m_TextureCoordinates.x);
-    WriteFloat(i_UvBottomLeft.y, l_Vertex[0].m_TextureCoordinates.y);
+    WriteFloat(i_UvTopLeft.x, l_Vertex[0].m_TextureCoordinates.x);
+    WriteFloat(i_UvTopLeft.y, l_Vertex[0].m_TextureCoordinates.y);
 
-    WriteFloat(i_UvTopRight.x, l_Vertex[1].m_TextureCoordinates.x);
-    WriteFloat(i_UvBottomLeft.y, l_Vertex[1].m_TextureCoordinates.y);
+    WriteFloat(i_UvBottomRight.x, l_Vertex[1].m_TextureCoordinates.x);
+    WriteFloat(i_UvTopLeft.y, l_Vertex[1].m_TextureCoordinates.y);
 
-    WriteFloat(i_UvBottomLeft.x, l_Vertex[2].m_TextureCoordinates.x);
-    WriteFloat(i_UvTopRight.y, l_Vertex[2].m_TextureCoordinates.y);
+    WriteFloat(i_UvTopLeft.x, l_Vertex[2].m_TextureCoordinates.x);
+    WriteFloat(i_UvBottomRight.y, l_Vertex[2].m_TextureCoordinates.y);
 
-    WriteFloat(i_UvTopRight.x, l_Vertex[3].m_TextureCoordinates.x);
-    WriteFloat(i_UvTopRight.y, l_Vertex[3].m_TextureCoordinates.y);
+    WriteFloat(i_UvBottomRight.x, l_Vertex[3].m_TextureCoordinates.x);
+    WriteFloat(i_UvBottomRight.y, l_Vertex[3].m_TextureCoordinates.y);
 
     m_Draw2D.CloseRequest();
 }
@@ -332,10 +332,10 @@ void GCRenderer_Z::Draw2DQuad(
     m_Draw2D.CloseRequest();
 }
 
-void GCRenderer_Z::DrawStrip(Vec2f* a1, S32 a2, const Color& a3, Float a4) {
+void GCRenderer_Z::DrawStrip(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z) {
 }
 
-void GCRenderer_Z::DrawFan(Vec2f* a1, S32 a2, const Color& a3, Float a4) {
+void GCRenderer_Z::DrawFan(Vec2f* i_Positions, S32 i_Count, const Color& i_Color, Float i_Z) {
 }
 
 void GCRenderer_Z::DrawString(
