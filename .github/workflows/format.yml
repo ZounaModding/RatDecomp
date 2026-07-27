@@ -2,6 +2,7 @@ name: format
 
 on:
   pull_request:
+    branches: [main]
     paths:
       - '**.hpp'
       - '**.cpp'
