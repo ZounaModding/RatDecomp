@@ -10,7 +10,7 @@
 #include "BnkLinkArray_Z.h"
 
 #define HANDLEREC_GRANULARITY 16384
-#define HANDLE_NULL BaseObject_ZHdl()
+#define HANDLE_NULL NULL
 
 #define HANDLE_MARKED_FALSE 0
 #define HANDLE_MARKED_TRUE 1
@@ -50,6 +50,9 @@ class DrawInfo_Z;
         ClassName##Hdl(const ClassName##Hdl& i_Org) {            \
             m_RealID.GblID = i_Org.m_RealID.GblID;               \
         }                                                        \
+        ClassName##Hdl(int i_Val) {                              \
+            m_RealID.GblID = i_Val;                              \
+        }                                                        \
         ClassName##Hdl(const BaseObject_ZHdl& i_Org) {           \
             m_RealID.GblID = i_Org.m_RealID.GblID;               \
         }                                                        \
@@ -74,6 +77,9 @@ class DrawInfo_Z;
         ClassName##Hdl(void) { }                                 \
         ClassName##Hdl(const ClassName##Hdl& i_Org) {            \
             m_RealID.GblID = i_Org.m_RealID.GblID;               \
+        }                                                        \
+        ClassName##Hdl(int i_Val) {                              \
+            m_RealID.GblID = i_Val;                              \
         }                                                        \
         ClassName##Hdl(const BaseObject_ZHdl& i_Org) {           \
             m_RealID.GblID = i_Org.m_RealID.GblID;               \
@@ -113,9 +119,9 @@ public:
         m_RealID.GblID = 0;
     }
 
-    BaseObject_ZHdl(const int i_Val) {
+    BaseObject_ZHdl(int i_Val) {
         m_RealID.Ref.ID = i_Val;
-        m_RealID.Ref.Key = (char)i_Val;
+        m_RealID.Ref.Key = (Char)i_Val;
     }
 
     BaseObject_ZHdl(const BaseObject_ZHdl& i_Org) {
@@ -126,7 +132,7 @@ public:
         return m_RealID.Ref.ID;
     }
 
-    char GetKey() const {
+    Char GetKey() const {
         return m_RealID.Ref.Key;
     }
 
@@ -347,7 +353,7 @@ public:
     void RemoveResourceRef(const HandleRec_Z& i_HandleRec);
     S32 IsResourceRef(S32 i_Hdl);
 
-private:
+protected:
     String_Z<ARRAY_CHAR_MAX> m_DefaultNameString;
 
 public:

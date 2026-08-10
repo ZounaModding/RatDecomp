@@ -84,9 +84,9 @@ void Viewport_Z::UpdateFrustrum() {
     l_Camera->GetFrustrum().m_WorldTranslation = l_CameraMatrix.GetMatrixTrans();
     l_Camera->GetFrustrum().m_WorldMatrix = l_CameraMatrix;
     l_Camera->GetFrustrum().m_Direction = l_Camera->GetDir();
-    Vec3f l_Right = l_Camera->GetFrustrum().m_Direction ^ VEC3F_UP;
-    l_Right.CNormalize();
-    l_Camera->GetFrustrum().m_Up = l_Right ^ l_Camera->GetFrustrum().m_Direction;
+    Vec3f l_Left = l_Camera->GetFrustrum().m_Direction ^ VEC3F_UP;
+    l_Left.CNormalize();
+    l_Camera->GetFrustrum().m_Up = l_Left ^ l_Camera->GetFrustrum().m_Direction;
     l_Camera->GetFrustrum().m_Up.CNormalize();
     l_Camera->GetFrustrum().m_ViewPlanes.BuildFrustrum(
         l_CameraMatrix,

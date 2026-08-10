@@ -93,7 +93,7 @@ BaseObject_ZHdl ClassNameResManager_Z::GetObjectInClass(const S32 i_ClassID, con
     const S32Hash_Z* l_Result = m_ClassResHA[i_ClassID].m_ResourceHT.Search(l_HashElt);
 
     if (!l_Result) {
-        return BaseObject_ZHdl(0);
+        return HANDLE_NULL;
     }
     else {
         return gData.ClassMgr->U32ToHandle(l_Result->m_Ref);

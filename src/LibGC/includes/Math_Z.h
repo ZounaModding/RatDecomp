@@ -154,7 +154,7 @@ struct Vec2f {
 
     Float GetNorm2() const { return (*this) * (*this); }
 
-    Float GetNorm() const { return sqrtf(GetNorm2()); }
+    Float GetNorm() const { return Sqrt(GetNorm2()); }
 
     Vec2f& Normalize() { return (*this) /= GetNorm(); }
 };

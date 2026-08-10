@@ -241,7 +241,7 @@ void RegisterLowLevelClasses() {
     REGISTER_CLASS("Flare_Z", "Object_Z", FlareGC_Z::NewObject);
     REGISTER_CLASS("FlareData_Z", "ObjectData_Z", FlareDataGC_Z::NewObject);
     REGISTER_CLASS("MovieManipulator_Z", "ManipulatorDraw_Z", GCMovieManipulator_Z::NewObject);
-    REGISTER_CLASS_TYPE("Mesh_Z", FL_CLASS_STREAM_XRAM, FL_CLASS_NONE);
+    REGISTER_CLASS_TYPE("Mesh_Z", FL_CLASS_TYPE_STREAM_XRAM, FL_CLASS_TYPE_NONE);
 }
 
 // TODO: Finish matching

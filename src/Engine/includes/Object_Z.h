@@ -106,7 +106,7 @@ enum ObjectType {
 #define FL_IS_LIGHT_ACTIVE (FL_OBJECT_LAST << 0)        // 0x100000 - Light is active
 #define FL_IS_LIGHT_UNK_0x200000 (FL_OBJECT_LAST << 1)  // 0x200000 - Unknown
 #define FL_IS_LIGHT_UNK_0x400000 (FL_OBJECT_LAST << 2)  // 0x400000 - Unknown
-#define FL_IS_LIGHT_DYNAMIC (FL_OBJECT_LAST << 3)       // 0x800000 -  Can light objects at runtime
+#define FL_IS_LIGHT_DYNAMIC (FL_OBJECT_LAST << 3)       // 0x800000 -  Can light objects at runtime (as opposed to baked lighting)
 #define FL_IS_LIGHT_UNK_0x1000000 (FL_OBJECT_LAST << 4) // 0x1000000 - Unknown
 
 // Light_Z flags (Are actually stored in LightData_Z::m_LightFlag))

@@ -56,7 +56,7 @@ void AramManager_Z::Minimize() {
     }
 }
 
-void AramManager_Z::Read(U8* i_Destination, S32 i_Source, U32 i_Size, bool i_Async) {
+void AramManager_Z::Read(U8* i_Destination, S32 i_Source, U32 i_Size, Bool i_Async) {
     ASSERTLEF_Z(IsAligned_Z(i_Destination, ARAM_MGR_ALIGNMENT), "AramManager_Z::Read Dest not aligned", 88, "ARAM_Z.cpp", "IS_ALIGN_Z(To,32)");
     ASSERTLEF_Z(IsAligned_Z(i_Source, ARAM_MGR_ALIGNMENT), "AramManager_Z::Read Src not aligned", 89, "ARAM_Z.cpp", "IS_ALIGN_Z(FromRamAddr,32)");
     ASSERTLEF_Z(IsAligned_Z(i_Size, ARAM_MGR_ALIGNMENT), "AramManager_Z::Read Size not aligned", 90, "ARAM_Z.cpp", "IS_ALIGN_Z(Size,32)");
@@ -75,7 +75,7 @@ void AramManager_Z::Read(U8* i_Destination, S32 i_Source, U32 i_Size, bool i_Asy
     DCStoreRange(i_Destination, i_Size);
 }
 
-void AramManager_Z::Write(U8* i_Source, S32 i_Destination, U32 i_Size, bool i_Async) {
+void AramManager_Z::Write(U8* i_Source, S32 i_Destination, U32 i_Size, Bool i_Async) {
     ASSERTLEF_Z(IsAligned_Z(i_Destination, ARAM_MGR_ALIGNMENT), "AramManager_Z::Write Dest not aligned", 104, "ARAM_Z.cpp", "IS_ALIGN_Z(ToRamAddr,32)");
 
     U8* l_AlignedBuffer = NULL;

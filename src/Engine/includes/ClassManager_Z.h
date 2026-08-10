@@ -26,8 +26,9 @@ Bool CloseBF();
 Bool ForceBF();
 Bool CloneClass();
 
-#define FL_CLASS_NONE (U8)(0 << 0)
-#define FL_CLASS_STREAM_XRAM (U8)(1 << 0)
+#define FL_CLASS_TYPE_NONE (U8)(0 << 0)
+#define FL_CLASS_TYPE_STREAM_XRAM (U8)(1 << 0)
+#define FL_CLASS_TYPE_STREAM (U8)(1 << 1)
 
 struct ClassDesc_Z {
 public:
@@ -36,7 +37,7 @@ public:
         m_ParentClassName = i_ParentClassName;
         m_NewObject = i_NewObjectProc;
         m_Id = 0;
-        m_Flag = FL_CLASS_NONE;
+        m_Flag = FL_CLASS_TYPE_NONE;
         m_ClonedClassId = i_ClonedClassId;
     }
 
@@ -50,25 +51,28 @@ public:
 };
 
 struct BigFileRscHeader_Z {
-    U32 m_Size;
-    U32 m_LinkSize;
-    U32 m_DataSize;
-    U32 m_CompressedSize;
+    S32 m_Size;
+    S32 m_LinkSize;
+    S32 m_DataSize;
+    S32 m_CompressedSize;
     Name_Z m_ClassName;
     Name_Z m_Name;
 };
 
+#define BF_RSC_FLAG_NONE (U8)(0 << 0)
+#define BF_RSC_FLAG_LOAD_TOC (U8)(1 << 0)
+
 struct BigFileRsc_Z {
     BigFileRscHeader_Z* m_Header;
     U8* m_Data;
-    BaseObject_Z* m_Rsc;
+    BaseObject_Z* m_ObjPtr;
     U8 m_Flag;
 
     BigFileRsc_Z() {
         m_Flag = 0;
         m_Data = NULL;
         m_Header = NULL;
-        m_Rsc = NULL;
+        m_ObjPtr = NULL;
     }
 };
 
@@ -89,15 +93,16 @@ public:
 
     virtual void ShutBigFile() { }
 
-    virtual void GetResourceObject(const Char* a1);
-    virtual void AssumeGetResourceObject(const Char* a1);
+    virtual BaseObject_ZHdl GetResourceObject(const Char* i_RscName);
+    virtual BaseObject_ZHdl AssumeGetResourceObject(const Char* i_RscName);
 
     virtual void ExcludeFromSaving(const BaseObject_ZHdl& a1) { }
 
     void LoadLinkId(void* i_ID, void** i_Data);
-    void UpdateLinkFromId(BaseObject_ZHdl& i_Hdl, S32 i_ID);
-    void UpdateLink(BaseObject_ZHdl& i_Hdl);
-    void LoadName(Name_Z&, void**);
+    Bool UpdateLinkFromId(BaseObject_ZHdl& io_Hdl, S32 i_ID);
+    Bool UpdateLink(BaseObject_ZHdl& io_Hdl);
+    void UpdateLinkPtr(void* io_Ptr);
+    void LoadName(Name_Z& o_Name, void** i_Data);
     void LoadLink(BaseObject_ZHdl& i_Hdl, void** i_Data);
     void RegisterClass(const Char* i_ClassName, const Char* i_ParentClassName, NewObjectProc i_NewObject);
     void RegisterClassType(const Char* i_ClassName, U8 i_AddFlag, U8 i_RemoveFlag);
@@ -107,6 +112,7 @@ public:
     const BaseObject_ZHdl& NewObject(const Char* i_ClassName);
     Name_Z& GetClassName(const BaseObject_ZHdl& i_Hdl);
     void GetNameFromId(U32 i_ID, Name_Z& o_Name);
+    void SetNameStrFromID(Name_Z& o_Name);
 
     const BaseObject_ZHdl& NewResource(const Name_Z& i_ClassName, const Name_Z& i_Name);
     Bool GetFile(const Char* i_Path, File_Z& i_File);
@@ -142,8 +148,9 @@ public:
         m_BfCreate = !m_BfRead;
     }
 
-    Bool LoadResource(BigFileRsc_Z& i_Resource);
-    void LoadResourceData(BigFileRsc_Z& i_Resource);
+    Bool LoadResource(BigFileRsc_Z& io_Resource);
+    Bool LoadResourceLink(BigFileRsc_Z& io_Resource);
+    void LoadResourceData(BigFileRsc_Z& io_Resource);
 
     const Char* GetBigFileHeaderText() const { return m_BfHeaderText; }
 

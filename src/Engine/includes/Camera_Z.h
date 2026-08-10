@@ -16,7 +16,17 @@ struct FrustrumPlane_Z {
     Vec4f m_PlaneZ;          // z component of left,right,bottom,top
 
     void BuildFrustrum(const Mat4x4& i_WorldMatrix, const Vec3f& i_CameraPosition, Float i_HRatio, Float i_VRatio, Float i_NearClip, Float i_FarClip);
+    void BuildPlane(const Vec3f& i_CameraPosition, Float i_NearClip, Float i_FarClip);
 };
+
+#define FRUST_CORNER_TOP_RIGHT_NEAR 0
+#define FRUST_CORNER_BOTTOM_RIGHT_NEAR 1
+#define FRUST_CORNER_BOTTOM_LEFT_NEAR 2
+#define FRUST_CORNER_TOP_LEFT_NEAR 3
+#define FRUST_CORNER_TOP_RIGHT_FAR 4
+#define FRUST_CORNER_BOTTOM_RIGHT_FAR 5
+#define FRUST_CORNER_BOTTOM_LEFT_FAR 6
+#define FRUST_CORNER_TOP_LEFT_FAR 7
 
 struct Frustrum_Z {
     Mat4x4 m_WorldMatrix;
@@ -41,18 +51,82 @@ struct Frustrum_Z {
     Vec3f m_CornerPoints[8];           // Frustum corner points in world space. 0..3 = near plane, 4..7 = far plane
 };
 
+#define MAX_OCCLUDED_FRUSTUM_EDGES 96
+
+// Represents the top-down projected frustum after occlusion (it's actually a convex polygon)
 struct OccludedFrustum_Z {
-    Vec2f m_TargetDelta;
-    Vec2f m_Points[97];
-    Float m_UnkFloats[97];               // obviously related to m_Points (lengths or something?)
-    Vec2f m_DeltaPoints[96];             // difference between point at i and i+1
-    Vec2f m_AccumulativeDeltaPoints[97]; // difference between point at i and point at 0
+    // Vector from camera pos to target pos
+    Vec2f m_CamToTarget;
+    // Outer points of the polygon in top-down space (XZ). At [0] is the camera pos
+    // These go from left to right in clockwise order, and start as the 2d projection of the camera frustum corners.
+    // Points may be added later to the polygon if occluders are found, and the polygon is clipped against them.
+    //
+    // Example of a 5-point frustum:              Example of a 3-point frustum:
+    //
+    //         2---------3
+    //         |         |                                 1---------2
+    //         |         |                                  \       /
+    //         1         4                                   \     /
+    //          \       /                                     \   /
+    //           \     /                                        0
+    //            \   /
+    //              0
+    //
+    Vec2f m_Points[MAX_OCCLUDED_FRUSTUM_EDGES + 1];
+    // 0.0-1.0 float from left to right in screen space (for each point)
+    Float m_HorizontalProjection[MAX_OCCLUDED_FRUSTUM_EDGES + 1];
+    // Difference between point at i and i+1
+    Vec2f m_EdgeVectors[MAX_OCCLUDED_FRUSTUM_EDGES];
+    // Difference between the camera point and the point at i
+    Vec2f m_PointOffsetsFromOrigin[MAX_OCCLUDED_FRUSTUM_EDGES + 1];
+    // Camera pos in 3D world space
     Vec3f m_WorldPos;
-    Vec3f m_Target;
-    U32 m_PointNb;
-    Vec2f m_SomeDiagonalMaybe1;
-    Vec2f m_SomeDiagonalMaybe2;
-    Bool m_IsOccluding;
+    // Camera target pos in 3D world space
+    Vec3f m_TargetWorldPos;
+    S32 m_PointNb;
+    // Segment start pos (XZ) for screen space projection of points
+    Vec2f m_ProjectionLineStart;
+    // Vector from m_ProjectionLineStart to projection end
+    Vec2f m_ProjectionLineDelta;
+    // Has the frustum been occluded by an occluder?
+    Bool m_IsOccluded;
+
+    const Vec2f& GetCamPos() const {
+        return m_Points[0];
+    }
+
+    void DoVec() {
+        m_Points[m_PointNb] = m_Points[0];
+        for (S32 i = 0; i < m_PointNb; i++) {
+            m_EdgeVectors[i] = m_Points[i + 1] - m_Points[i];
+        }
+        for (S32 i = 0; i < m_PointNb + 1; i++) {
+            m_PointOffsetsFromOrigin[i] = m_Points[i] - m_Points[0];
+        }
+    }
+
+    OccludedFrustum_Z& operator=(const OccludedFrustum_Z& i_Other) {
+        m_PointNb = i_Other.m_PointNb;
+        m_CamToTarget = i_Other.m_CamToTarget;
+        m_WorldPos = i_Other.m_WorldPos;
+        m_TargetWorldPos = i_Other.m_TargetWorldPos;
+
+        for (S32 i = 0; i < m_PointNb; i++) {
+            m_EdgeVectors[i] = i_Other.m_EdgeVectors[i];
+            m_Points[i] = i_Other.m_Points[i];
+            m_HorizontalProjection[i] = i_Other.m_HorizontalProjection[i];
+        }
+
+        m_HorizontalProjection[m_PointNb] = i_Other.m_HorizontalProjection[m_PointNb];
+        m_Points[m_PointNb] = m_Points[0];
+        m_ProjectionLineStart = i_Other.m_ProjectionLineStart;
+        m_ProjectionLineDelta = i_Other.m_ProjectionLineDelta;
+        return *this;
+    }
+
+    Bool GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ);
+    // Should be called GetPtsOnLineZ
+    Bool GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX);
 };
 
 class Camera_Z : public Object_Z {
@@ -66,7 +140,7 @@ private:
     Vec3f m_WorldPos;
     Vec3f m_Direction;
     Node_ZHdl m_NodeTargetHdl;
-    BaseObject_ZHdl m_OccluderHdl;
+    Occluder_ZHdl m_OccluderHdl;
     BitArray_Z m_OccludedZonesBA; // possibly bit array of occluded zones
     OccludedFrustum_Z m_OccludedFrustum;
     Float m_FovEdition; // Name from Monopoly

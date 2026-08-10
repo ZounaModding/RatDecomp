@@ -96,6 +96,8 @@ public:
         return (S32)strlen(m_Str);
     }
 
+    Char* StrChr(int i_Char) const { return (Char*)strchr(m_Str, i_Char); }
+
 private:
     Char m_Str[Size];
 };

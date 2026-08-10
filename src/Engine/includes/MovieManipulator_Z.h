@@ -15,8 +15,8 @@ public:
     virtual void Update(Float i_DeltaTime);
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
     virtual void Open(const Char* i_FilePath, U32 i_Flags);
-    virtual void Pause(bool i_Pause);
-    virtual void Stop(bool i_Restart);
+    virtual void Pause(Bool i_Pause);
+    virtual void Stop(Bool i_Restart);
     virtual void Retry();
     virtual void Skip(Float i_SkipTime);
     virtual void IsAnyButton();

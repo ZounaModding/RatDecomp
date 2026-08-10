@@ -1,5 +1,6 @@
 #include "Node_Z.h"
 #include "MatrixCache_Z.h"
+#include "World_Z.h"
 
 // TODO: Finish matching
 Node_Z::Node_Z()
@@ -37,6 +38,9 @@ Node_Z::Node_Z()
 }
 
 Node_Z::~Node_Z() {
+    if (gData.MatrixBuffer) {
+        gData.MatrixBuffer->RemoveMatrix(GetWorldMatrixId());
+    }
 }
 
 Bool Node_Z::MarkHandles() {
@@ -50,6 +54,29 @@ void Node_Z::AddSon(const Node_ZHdl& i_Son, Bool i_IsWorldRelative, Bool i_Chang
 }
 
 void Node_Z::Remove(Bool a1, Bool a2) {
+}
+
+void Node_Z::UnHideSons() {
+    for (Node_Z* l_CurNode = m_HeadSon; l_CurNode; l_CurNode = l_CurNode->m_Next) {
+        l_CurNode->UnHide(TRUE);
+    }
+}
+
+// TODO: Finish matching
+void Node_Z::UnHide(Bool i_Recursive) {
+    WorldManager_Z* l_WorldMgr = gData.WorldMgr;
+    S32 l_WorldId;
+    if (m_Flag & FL_NODE_HIDE) {
+        m_Flag &= ~FL_NODE_HIDE;
+        l_WorldId = GetWorldId();
+        if (l_WorldId != -1) {
+            l_WorldMgr = gData.WorldMgr;
+            Ref(l_WorldMgr->GetWorld(l_WorldId), GetObject(FALSE));
+        }
+    }
+    if (i_Recursive) {
+        UnHideSons();
+    }
 }
 
 void Node_Z::Update() {

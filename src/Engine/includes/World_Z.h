@@ -119,6 +119,10 @@ public:
             i = m_WorldHdls.FindNext(i);
         }
     }
+
+    inline const World_ZHdl& GetWorld(S32 i_Index) const {
+        return m_WorldHdls.Get(i_Index);
+    }
 };
 
 #endif // _WORLD_Z_H_

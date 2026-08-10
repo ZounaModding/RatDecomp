@@ -29,7 +29,7 @@ Bool AnimatedAgent_Z::GetCollisionMessageAction(abc_message& o_Msg) { }
 void AnimatedAgent_Z::SetCollisionMessageAction(abc_message i_Msg) { }
 
 Animation_ZHdl AnimatedAgent_Z::GetAnimation(anim_id i_AnimId) {
-    return Animation_ZHdl();
+    return HANDLE_NULL;
 }
 
 void AnimatedAgent_Z::Suspend() { }

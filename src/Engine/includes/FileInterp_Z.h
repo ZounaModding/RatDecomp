@@ -25,7 +25,7 @@ private:
     S32 m_StackIndex;
     S32 m_Flags;
     String_Z<64> m_FileName;
-    S32 m_ParamCountMaybe;
+    S32 m_ParamCount;
     String_Z<64> m_Params[16];
 };
 

@@ -10,7 +10,7 @@ public:
     virtual void Draw(const Viewport_Z* a1);
     virtual void ActivateMenu(U8 a1);
     virtual void DeactivateMenu();
-    virtual void UpdateItems(bool a1, bool a2);
+    virtual void UpdateItems(Bool a1, Bool a2);
     virtual void LoadMenuDesc(const Char* a1, S32 a2);
     virtual void InitMenu(S32 a1);
 

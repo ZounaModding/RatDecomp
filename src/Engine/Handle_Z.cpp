@@ -158,8 +158,8 @@ S32 HandleManager_Z::MarkHandles(S32 i_Manager) {
     if ((i_Manager < 0 || i_Manager == 9) && gData.Cons) {
         gData.Cons->MarkHandles();
     }
-    if ((i_Manager < 0 || i_Manager == 10) && gData.ManipMgr) {
-        gData.ManipMgr->MarkHandles();
+    if ((i_Manager < 0 || i_Manager == 10) && gData.ManipulatorMgr) {
+        gData.ManipulatorMgr->MarkHandles();
     }
     if ((i_Manager < 0 || i_Manager == 11) && gData.MovieMgr) {
         gData.MovieMgr->MarkHandles();
@@ -191,8 +191,8 @@ void HandleManager_Z::Minimize() {
     if (gData.MainRdr) {
         gData.MainRdr->Minimize();
     }
-    if (gData.ManipMgr) {
-        gData.ManipMgr->Minimize();
+    if (gData.ManipulatorMgr) {
+        gData.ManipulatorMgr->Minimize();
     }
     if (gData.ScriptMgr) {
         gData.ScriptMgr->Minimize();
@@ -370,7 +370,7 @@ Bool HandleManager_Z::IsAsynchDelHandle(const BaseObject_ZHdl& i_Hdl) const {
     }
 
     S32 l_ID = i_Hdl.GetID();
-    char l_Key = i_Hdl.GetKey();
+    Char l_Key = i_Hdl.GetKey();
     const HandleRec_Z& l_Rec = m_HandleRecDA[l_ID];
     if (l_Rec.m_Key == 0 && l_Rec.m_LastKeyBeforeAsyncDelete && l_Rec.m_LastKeyBeforeAsyncDelete == l_Key) {
         U32 l_EngineFlag = gData.m_EngineFlag;
@@ -656,13 +656,13 @@ void HandleStream_Z::Update(Float i_DeltaTime) {
 
                     if (l_Resource.m_Flag) {
                         if (gData.ClassMgr->LoadResource(l_Resource)) {
-                            m_Resources.Add(l_Resource.m_Rsc);
+                            m_Resources.Add(l_Resource.m_ObjPtr);
                         }
                     }
                     else {
                         gData.ClassMgr->LoadResourceData(l_Resource);
-                        l_Resource.m_Rsc->EndLoadLinks();
-                        l_Resource.m_Rsc->AfterEndLoad();
+                        l_Resource.m_ObjPtr->EndLoadLinks();
+                        l_Resource.m_ObjPtr->AfterEndLoad();
                     }
                 }
                 l_QueuedRsc = l_QueuedRsc->m_Next;

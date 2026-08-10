@@ -151,7 +151,7 @@ struct DrawInfo_Z {
     Float m_LodPatchMax;
     Float m_LodPatchDist;
     Occluder_Z* m_Occluder;
-    Bool m_IsOccluding;
+    Bool m_IsOccluded; // Set to TRUE if the frustum was clipped by an occluder
     BitArray_Z* m_OccludedZonesBA;
     S32 m_Unk0_0x17c0_From_Renderer_0x704; // gets assigned from Renderer_Z::m_UnkBoolFalse_0x704
     Float m_DeltaTime;
@@ -170,7 +170,7 @@ struct DrawInfo_Z {
         m_VpCount = 0;
         m_DeltaTime = 0.0f;
         m_Occluder = NULL;
-        m_IsOccluding = FALSE;
+        m_IsOccluded = FALSE;
     }
 
     ~DrawInfo_Z() {

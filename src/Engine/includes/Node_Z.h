@@ -38,6 +38,7 @@ public:
     void GetAllSons(Node_ZHdlDA& i_Sons, Bool i_Recursive = FALSE) const;
     void Remove(Bool a1, Bool a2);
     Node_ZHdl& GetRoot();
+    void Ref(World_Z* i_World, Object_Z* i_Object);
 
     inline Bool IsRoot() const { return m_Parent == NULL; }
 
@@ -49,8 +50,15 @@ public:
 
     inline Node_Z* GetNext() const { return m_Next; }
 
-    Object_Z* GetObject(Bool) const {
-        return NULL;
+    Object_Z* GetObject(Bool i_Update) const {
+        Object_Z* l_Object;
+        if (i_Update && m_Object) {
+            l_Object = (Object_Z*)GETPTR(m_Object->GetHandle());
+        }
+        else {
+            return m_Object;
+        }
+        return l_Object;
     }
 
     Object_Z* GetObjectA() const { return m_Object; }
@@ -148,7 +156,7 @@ public:
     void LightingChanged();
 
     void Hide(Bool i_Recursive = FALSE);
-
+    void UnHideSons();
     void UnHide(Bool i_Recursive = FALSE);
 
     Agent_ZHdl& GetAgent() {

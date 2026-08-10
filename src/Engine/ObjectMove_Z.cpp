@@ -104,7 +104,7 @@ void ObjectMove_Z::StoreStartingPos(S32 i_Index) {
     m_StartingNodeParentHdlDA.GetArrayPtr()[i_Index] = l_Node->GetParent()->GetHandle();
 }
 
-void ObjectMove_Z::ChangeLink(const Node_ZHdl& i_NodeHdl, Node_Z* i_Parent, bool i_Update, S32 i_Index) {
+void ObjectMove_Z::ChangeLink(const Node_ZHdl& i_NodeHdl, Node_Z* i_Parent, Bool i_Update, S32 i_Index) {
     Node_Z* l_Node = i_NodeHdl;
     if (!(l_Node->GetFlag() & FL_NODE_USER_LOCK)) {
         l_Node->Remove(FALSE, FALSE);

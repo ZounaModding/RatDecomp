@@ -15,7 +15,7 @@ struct ABC_Message {
     }
 
     void Reset() {
-        m_Sender = BaseObject_ZHdl(0);
+        m_Sender = HANDLE_NULL;
         m_Id = msg_no_message;
         m_Next = NULL;
         m_Time = -1.0f;

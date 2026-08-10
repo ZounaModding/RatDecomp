@@ -193,7 +193,7 @@ Bool ABC_ScriptManager::Minimize() {
 }
 
 void ABC_ScriptManager::Send(abc_message i_Msg, ABC_Agent* i_Agent, Float i_Param) {
-    i_Agent->Receive(i_Msg, BaseObject_ZHdl(0), i_Param);
+    i_Agent->Receive(i_Msg, HANDLE_NULL, i_Param);
 }
 
 void ABC_ScriptManager::SendTimed(abc_message i_Msg, ABC_Agent* i_Agent, Float i_Delay, Float i_Param) {
@@ -259,7 +259,7 @@ void ABC_ScriptManager::CheckTimedMessages(Float i_DeltaTime) {
 
         if (l_Msg->m_Time <= 0.0f) {
             l_Msg->m_Next = NULL;
-            l_Msg->m_Sender = BaseObject_ZHdl(0);
+            l_Msg->m_Sender = HANDLE_NULL;
 
             l_Agent->Receive(l_Msg);
 

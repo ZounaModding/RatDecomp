@@ -12,18 +12,18 @@ Manipulator_Z::Manipulator_Z() {
 }
 
 Manipulator_Z::~Manipulator_Z() {
-    if (gData.ManipMgr != NULL)
-        gData.ManipMgr->Remove(this);
+    if (gData.ManipulatorMgr != NULL)
+        gData.ManipulatorMgr->Remove(this);
 }
 
 void Manipulator_Z::Init() {
     ASSERTLE_Z(!m_IsActive && m_ManipGroup == ag_no_group, "", 24, "!bActive && Group==ag_no_group");
-    gData.ManipMgr->Add(this);
+    gData.ManipulatorMgr->Add(this);
 }
 
 void Manipulator_Z::Activate() {
     if (!m_IsActive) {
-        gData.ManipMgr->Activate(this);
+        gData.ManipulatorMgr->Activate(this);
         m_IsActive = TRUE;
         ActionOnActivate();
     }
@@ -31,7 +31,7 @@ void Manipulator_Z::Activate() {
 
 void Manipulator_Z::Deactivate() {
     if (m_IsActive) {
-        gData.ManipMgr->Deactivate(this);
+        gData.ManipulatorMgr->Deactivate(this);
         m_IsActive = FALSE;
         ActionOnDeactivate();
     }
@@ -39,7 +39,7 @@ void Manipulator_Z::Deactivate() {
 
 void Manipulator_Z::SetGroup(ActivableGroup_Z i_Group) {
     if (i_Group != m_ManipGroup) {
-        gData.ManipMgr->Order(this, i_Group);
+        gData.ManipulatorMgr->Order(this, i_Group);
     }
 }
 
@@ -54,7 +54,7 @@ ManipulatorDraw_Z::ManipulatorDraw_Z() {
 }
 
 void ManipulatorDraw_Z::Init() {
-    gData.ManipMgr->Add(this);
+    gData.ManipulatorMgr->Add(this);
 }
 
 void ManipulatorDraw_Z::Draw(const DrawInfo_Z& i_DrawInfo) {
@@ -79,7 +79,7 @@ ManipulatorSceneDraw_Z::ManipulatorSceneDraw_Z() {
 }
 
 void ManipulatorSceneDraw_Z::Init() {
-    gData.ManipMgr->Add(this);
+    gData.ManipulatorMgr->Add(this);
 }
 
 void ManipulatorSceneDraw_Z::Draw(const DrawInfo_Z& i_DrawInfo) { }

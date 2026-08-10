@@ -164,12 +164,12 @@ public:
     MaterialManager_Z* MaterialMgr;
     ABC_ScriptManager* ScriptMgr;
     ColSurfaceCache_Z* ColSurfaceCache;
-    void* UnkMgr_0x24;
+    void* UnkMgr_0x24; // $SABE: Most likely ColSurfaceDatasCache_Z or PointsCache_Z (Jimmy DWARF)
     ColTriangleCache_Z* ColTriangleCache;
     Mat4x4Buffer_Z* MatrixBuffer;
-    ManipulatorManager_Z* ManipMgr;
+    ManipulatorManager_Z* ManipulatorMgr;
     GameManager_Z* GameMgr;
-    void* UnkMgr_0x38;
+    void* UnkMgr_0x38; // $SABE: Most likely Profiler_Z (Jimmy DWARF)
     AnimationManager_Z* AnimMgr;
     EffectManager_Z* EffectMgr;
     SystemDatas_Z* SystemDatas;

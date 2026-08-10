@@ -11,5 +11,5 @@ void MaterialObj_Z::EndLoad() {
 }
 
 MaterialAnim_ZHdl MaterialObj_Z::GetMaterialByName(const Name_Z& i_Name) {
-    return MaterialAnim_ZHdl();
+    return HANDLE_NULL;
 }
