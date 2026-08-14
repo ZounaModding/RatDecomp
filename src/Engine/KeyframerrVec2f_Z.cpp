@@ -1,6 +1,5 @@
 #include "Keyframer_Z.h"
 
-// TODO: Finish matching
 S32 KeyframerVec2fLinear_Z::GetValue(Float i_Time, Vec2f& o_Value, S32 i_KeyOffset) {
     S32 l_NbKey = GetNbKeys();
     KeyVec2fLinear_Z* l_Key = &m_Keys[i_KeyOffset] - 1;
@@ -32,38 +31,42 @@ S32 KeyframerVec2fLinear_Z::GetValue(Float i_Time, Vec2f& o_Value, S32 i_KeyOffs
             l_PrevKey->Get(o_Value);
         }
         else {
+            Vec2f l_Prev;
             Vec2f l_Cur;
             l_Key->Get(l_Cur);
-            Vec2f l_Prev;
             l_PrevKey->Get(l_Prev);
             Float t = (i_Time - l_PrevTime) / (l_CurTime - l_PrevTime);
-            o_Value = l_Prev + (l_Cur - l_Prev) * t;
+            Float l_PrevX = l_Prev.x;
+            Float l_CurX = l_Cur.x;
+            Float l_CurY = l_Cur.y;
+            Float l_PrevY = l_Prev.y;
+            o_Value = l_Prev + Vec2f(l_CurX - l_PrevX, l_CurY - l_PrevY) * t;
         }
     }
 
     return i_KeyOffset;
 }
 
-// TODO: Finish matching
 void KeyframerVec2fLinear_Z::GetDerivate(Float i_Time, Vec2f& o_Value) {
     if (m_Flag & FL_KEYFRAMER_SQUARE) {
         o_Value = VEC2F_NULL;
         return;
     }
     S32 l_Idx = 1;
+    S32 l_NbKeys = m_Keys.GetSize();
     KeyVec2fLinear_Z* l_Key = m_Keys.GetArrayPtr();
     Float l_PrevTime = l_Key->GetTime();
     l_Key++;
     Float l_CurTime = l_Key->GetTime();
 
-    while (l_Idx < GetNbKeys()) {
+    while (l_Idx < l_NbKeys) {
         if (l_PrevTime <= i_Time && l_CurTime > i_Time)
             break;
 
         l_Idx++;
         l_Key++;
 
-        if (l_Idx == GetNbKeys())
+        if (l_Idx == l_NbKeys)
             break;
 
         l_PrevTime = l_CurTime;
@@ -72,7 +75,7 @@ void KeyframerVec2fLinear_Z::GetDerivate(Float i_Time, Vec2f& o_Value) {
 
     KeyVec2fLinear_Z* l_PrevKey = &l_Key[-1];
 
-    if (l_Idx == GetNbKeys()) {
+    if (l_NbKeys == l_Idx) {
         l_PrevKey->Get(o_Value);
     }
     else {

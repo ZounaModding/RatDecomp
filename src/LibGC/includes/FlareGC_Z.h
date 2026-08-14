@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    DynArray_Z<DisplayList_Z, 64, TRUE, TRUE, 4> m_DisplayLists;
+    DynArray_Z<DisplayList_Z, 64> m_DisplayLists;
     DisplayList_Z m_DisplayList;
 };
 

@@ -45,6 +45,8 @@ typedef DynArray_Z<SplineZoneLink, 32, FALSE, FALSE> SplineZoneLinkDA;
 
 class SplineZone_Z : public Object_Z {
 public:
+    SplineZone_Z();
+
     virtual ~SplineZone_Z() { }
 
     virtual void Load(void** i_Data);

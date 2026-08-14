@@ -50,7 +50,7 @@ public:
 
     inline Node_Z* GetNext() const { return m_Next; }
 
-    Object_Z* GetObject(Bool i_Update) const {
+    Object_Z* GetObject(Bool i_Update = TRUE) const {
         Object_Z* l_Object;
         if (i_Update && m_Object) {
             l_Object = (Object_Z*)GETPTR(m_Object->GetHandle());
@@ -62,6 +62,8 @@ public:
     }
 
     Object_Z* GetObjectA() const { return m_Object; }
+
+    ObjectDatas_Z* GetObjectDatas() const { return m_ObjectDatas; }
 
     inline Quat& GetRotInWorld() { return m_RotInWorld; }
 
@@ -79,16 +81,7 @@ public:
         m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)gData.MatrixBuffer->GetMatrix(GetWorldMatrixId());
     }
 
-    inline void SetWorldMatrixPtr(Mat4x4* i_MatrixPtr) {
-        m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)i_MatrixPtr;
-    }
-
     inline Mat4x4* GetWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
-
-    void UpdateWorldMatrixPtr(U16 i_Id) {
-        SetWorldMatrixId(i_Id);
-        SetWorldMatrixPtr(gData.MatrixBuffer->GetMatrix(GetWorldMatrixId()));
-    }
 
     void SetRotation(const Quat& i_Rotation);
 
@@ -214,7 +207,15 @@ public:
 
     inline void SetWorldMatrixId(U16 i_Id) { m_InverseRotInWorldMatrix.m.m23.dummy.u16[1] = i_Id; }
 
-    inline U16 GetWorldMatrixId() const { return m_InverseRotInWorldMatrix.m.m23.dummy.u16[1]; }
+    inline U16 GetWorldMatrixId() { return m_InverseRotInWorldMatrix.m.m23.dummy.u16[1]; }
+
+    inline U32 GetOccluderZoneId() { return m_OccluderZoneStartId; }
+
+    inline void SetOccluderZoneId(U32 i_Id) { m_OccluderZoneStartId = i_Id; }
+
+    inline void ClrOccluderZoneId() { m_OccluderZoneStartId = 0; }
+
+    inline HFogData_Z* GetHFog() const { return m_HFogData; }
 
 private:
     Agent_ZHdl m_Agent;

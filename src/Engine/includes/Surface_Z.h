@@ -23,8 +23,8 @@ struct Edge {
     U16 T[2];
 };
 
-typedef DynArray_Z<Edge, 32, FALSE, TRUE> EdgeDA;
-typedef DynArray_Z<Patch, 32, TRUE, TRUE> PatchDA;
+typedef DynArray_Z<Edge, 32, FALSE> EdgeDA;
+typedef DynArray_Z<Patch, 32> PatchDA;
 
 class Surface_Z : public Points_Z {
 public:
@@ -37,10 +37,13 @@ public:
     virtual Bool MarkHandles();
     virtual Bool GetCollisionLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
     virtual Bool GetClingLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ClingLineResult_Z& o_Result);
+    virtual Bool GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, NUM_SPHERE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
     virtual Bool GetCollisionMovingSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionCapsule(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, StaticArray_Z<ColSphereResult_Z, NUM_CAPSULE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionTriangles(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<TriangleFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
 
     virtual U32 GetNbNormals() const {
-        return 0;
+        return m_Normals.GetSize();
     }
 
     void GetQuadPatchCtrlPoint(const Patch& i_Patch, QuadCtrlPoint_Z& o_QuadCtrlPoint);
@@ -49,7 +52,8 @@ protected:
     U8 m_Pad_0xa0[16];
     PatchDA m_PatchTab;
     EdgeDA m_EdgeTab;
-    U8 m_Pad_0xc0[48];
+    Vec3fDA m_Normals;
+    U8 m_Pad_0xc0[40];
 };
 
 class SurfaceDatas_Z : public PointsDatas_Z {

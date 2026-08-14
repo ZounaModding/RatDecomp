@@ -109,8 +109,8 @@ public:
     Bool m_Muted;
     Name_Z m_StreamType;
     String_Z<256> m_StreamName;
-    DynArray_Z<VaiMarkerEntry_Z, 16, TRUE, TRUE, 4> m_VaiMarkerEntries;
-    DynArray_Z<MusicSkipInfo_Z, 16, TRUE, TRUE, 4> m_MusicSkipInfos;
+    DynArray_Z<VaiMarkerEntry_Z, 16> m_VaiMarkerEntries;
+    DynArray_Z<MusicSkipInfo_Z, 16> m_MusicSkipInfos;
     Float m_ChannelCount;
     U32 m_Unk_0x174[2];
 };

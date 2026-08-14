@@ -74,14 +74,14 @@ public:
 
     Vec3f& GetColor() { return m_Color; }
 
-    const Mat4x4& GetWorldMatrix() const { return m_UnkMatrix; }
+    const Mat4x4& GetWorldMatrix() const { return m_WorldMatrix; }
 
-    Bool IsActive() const { return m_Active; }
+    Bool IsActive() { return m_Active; }
 
 private:
     Float m_Unk0x28;
     Float m_Unk0x2C;
-    Mat4x4 m_UnkMatrix;
+    Mat4x4 m_WorldMatrix;
     Vec3f m_Color;
     Bool m_Active;
 };

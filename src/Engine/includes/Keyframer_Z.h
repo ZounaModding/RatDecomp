@@ -484,6 +484,9 @@ private:
     S16 m_ValueY;
 };
 
+#pragma push
+#pragma pack(4)
+
 struct KeyVec4fLinear_Z : public Key_Z {
 public:
     KeyVec4fLinear_Z() {
@@ -515,6 +518,8 @@ public:
 private:
     Vec4f m_Value;
 };
+
+#pragma pop
 
 struct KeyVec4fLinearComp_Z : public Key_Z {
 public:

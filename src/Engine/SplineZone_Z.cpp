@@ -1,5 +1,9 @@
 #include "SplineZone_Z.h"
 
+SplineZone_Z::SplineZone_Z() {
+    SetGeometryType(SPLINEZONE_Z);
+}
+
 void SplineZone_Z::Clean() {
 }
 

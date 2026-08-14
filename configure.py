@@ -288,6 +288,7 @@ cflags_rat_base = [
     "-i src/Rat/includes",
     "-O4,p",
     "-rostr",
+    "-DGAMECUBE_Z"
 ]
 
 if config.non_matching:
@@ -713,7 +714,7 @@ config.libs = [
         "cflags": cflags_rat_base,
         "progress_category": ["engine", "rat"],  # str | List[str]
         "objects": [
-            Object(Matching, "Engine/InGameDatas_Z.cpp"),
+            Object(Matching,    "Engine/InGameDatas_Z.cpp"),
             Object(NonMatching, "Engine/ObjectBankManager_Z.cpp",extra_cflags=["-O4,s","-inline off"]),
             Object(NonMatching, "Engine/GameManager_Z.cpp"),
             Object(NonMatching, "Engine/Math_Z.cpp"),
@@ -844,7 +845,7 @@ config.libs = [
             Object(NonMatching, "Engine/ObjectsBreakColl_Z.cpp"),
             Object(NonMatching, "Engine/RotShapeCollision_Z.cpp"),
             Object(NonMatching, "Engine/PlayAnim_Z.cpp"),
-            Object(NonMatching, "Engine/KeyframerrVec2f_Z.cpp"),
+            Object(Matching,    "Engine/KeyframerrVec2f_Z.cpp"),
             Object(NonMatching, "Engine/ObjectThrowColl_Z.cpp"),
             Object(NonMatching, "Engine/SubWorldLoad_Z.cpp"),
             Object(NonMatching, "Engine/GraphDraw_Z.cpp"),
@@ -1164,7 +1165,7 @@ config.libs = [
             Object(NonMatching, "Rat/BaseInGameDatas_G.cpp"),
             Object(NonMatching, "Rat/CreaturePST_TOOLS_G.cpp"),
             Object(NonMatching, "Rat/InGamePlayer_G.cpp"),
-            Object(Matching, "Rat/ResName.cpp"),
+            Object(Matching,    "Rat/ResName.cpp"),
             Object(NonMatching, "Rat/Dialogs_LoadSave.cpp"),
             Object(NonMatching, "Rat/LightVolumeAgent_G.cpp"),
             Object(NonMatching, "Rat/Mission_MiniGame.cpp"),

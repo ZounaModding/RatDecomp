@@ -15,7 +15,7 @@ struct CacheStateFrame_Z {
     void* m_OwnerPtr;
 };
 
-typedef DynArray_Z<CacheStateFrame_Z, 8, FALSE, TRUE, 4> CacheStateFrame_ZDA;
+typedef DynArray_Z<CacheStateFrame_Z, 8, FALSE> CacheStateFrame_ZDA;
 
 template <class T, Bool DeleteObject = TRUE, S32 Align = _ALLOCDEFAULTALIGN>
 class CacheEntryFrame_Z {
@@ -206,7 +206,7 @@ public:
     }
 
 private:
-    DynArray_Z<List_Ele, 32, FALSE, TRUE, 4> m_LRUList;
+    DynArray_Z<List_Ele, 32, FALSE> m_LRUList;
 };
 
 template <class T>

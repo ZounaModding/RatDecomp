@@ -173,7 +173,7 @@ private:
     }
 
     U32 m_ReservedSize : DYA_RSVSIZEBITS,
-                         m_Size : DYA_SIZEBITS;
+        m_Size : DYA_SIZEBITS;
     T* m_ArrayPtr;
 };
 

@@ -14,9 +14,7 @@ public:
 
     virtual void Load(void** i_Data);
     virtual void Clean();
-    inline Vec3fDA& GetVertexDA();
     inline Vec3f& GetVertex(const U32 i_Index);
-    inline void SetVertex(const U32 i_Index, const Vec3f& o_Point);
     inline U32 GetNbVertices() const;
     virtual U32 GetNbNormals() const;
 

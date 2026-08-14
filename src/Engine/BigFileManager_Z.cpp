@@ -64,7 +64,7 @@ Bool ClassManager_Z::LoadResourceLink(BigFileRsc_Z& io_Resource) {
         ASSERTLE_Z(m_HandleRecDA[l_HdlIdx].m_Name == l_RscName, "", 94, "HandleRecDA[result].Name==pRscName");
         return FALSE;
     }
-    
+
     const BaseObject_ZHdl& l_NewObject = NewResource(l_ClassName, l_RscName);
     io_Resource.m_ObjPtr = m_HandleRecDA[l_NewObject.GetID()].m_ObjPtr;
 
@@ -72,7 +72,7 @@ Bool ClassManager_Z::LoadResourceLink(BigFileRsc_Z& io_Resource) {
     U8* l_DataPtr = l_DataStartPtr;
     io_Resource.m_ObjPtr->LoadLinks((void**)&l_DataPtr);
     l_CurRscSize = (S32)l_DataPtr - (S32)l_DataStartPtr;
-    
+
     ASSERTLE_Z(l_CurRscSize == l_RscHeader.m_LinkSize, "", 111, "CurRscSize==RscHeader.RscLinkSize");
 
     return TRUE;

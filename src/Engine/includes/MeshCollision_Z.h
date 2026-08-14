@@ -53,8 +53,8 @@ public:
 
 class AABBCol_Z {
 public:
-    DynArray_Z<FaceCol_Z, 32, FALSE, FALSE, 4> m_Faces;
-    DynArray_Z<AABBNode_Z, 32, FALSE, FALSE, 4> m_Nodes;
+    DynArray_Z<FaceCol_Z, 32, FALSE, FALSE> m_Faces;
+    DynArray_Z<AABBNode_Z, 32, FALSE, FALSE> m_Nodes;
 };
 
 typedef DynArray_Z<SphereCol_Z, 8> SphereCol_ZDA;

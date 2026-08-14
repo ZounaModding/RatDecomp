@@ -23,7 +23,7 @@ Node_Z::Node_Z()
     m_CollideSeadRect.Set(-1, -1, -1, -1);
     SetCollideSeadId(-1);
     SetDisplaySeadId(-1);
-    m_OccluderZoneStartId = 0;
+    ClrOccluderZoneId();
     SetWorldId(-1);
     SetStart(0.0f);
     SetEnd(0.0f);
@@ -90,9 +90,11 @@ void Node_Z::SetTranslation(const Vec3f& i_Translation) {
 }
 
 void Node_Z::SetRotation(const Quat& i_Rotation) {
+    m_Rotation = i_Rotation;
 }
 
 void Node_Z::SetScale(Float i_Scale) {
+    m_Scale = i_Scale;
 }
 
 void Node_Z::SetFromWorldTransRot(const Vec3f& i_Trans, const Quat& i_Rot) {

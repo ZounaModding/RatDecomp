@@ -26,10 +26,10 @@ public:
 private:
     void InitConstant();
 
-    DynArray_Z<Mat3x3, 32, FALSE, FALSE, 4> m_ConstantMatrices;
+    DynArray_Z<Mat3x3, 32, FALSE, FALSE> m_ConstantMatrices;
     S16DA m_BoneToConstantIndices;
     U32 m_LastFrameUpdated;
-    DynArray_Z<SkinStreamList_Z, 32, TRUE, TRUE, 4> m_StreamLists;
+    DynArray_Z<SkinStreamList_Z, 32> m_StreamLists;
 };
 
 #endif // _SKELGC_Z_H_

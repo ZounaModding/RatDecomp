@@ -530,12 +530,17 @@ struct Vec4f {
     Vec3f& xyz() {
         return *(Vec3f*)&x;
     }
-};
+} Aligned_Z(16);
 
 inline Vec3f::Vec3f(const Vec4f& i_Vec) {
     x = i_Vec.x;
     y = i_Vec.y;
     z = i_Vec.z;
+}
+
+inline Float Vec4_HDist2(const Vec4f& i_Left, const Vec4f& i_Right) {
+    Vec4f l_Delta = Vec4f(i_Left.x - i_Right.x, i_Left.y - i_Right.y, i_Left.z - i_Right.z, 1.f);
+    return l_Delta.x * l_Delta.x + l_Delta.z * l_Delta.z;
 }
 
 inline Vec4f operator*(Float i_Factor, const Vec4f& i_Vec) {
@@ -880,10 +885,10 @@ T Max(T i_V1, T i_V2) {
 void Inverse2(const Mat4x4& i_Mat, Mat4x4& o_Mat);
 void ComputeMathPrecision();
 
-typedef DynArray_Z<Vec3f_S16_Z, 32, FALSE, FALSE, 4> Vec3f_S16_ZDA;
+typedef DynArray_Z<Vec3f_S16_Z, 32, FALSE, FALSE> Vec3f_S16_ZDA;
 typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;
 typedef DynArray_Z<Vec2f, 32, FALSE, FALSE, 32> Vec2fDA;
 typedef DynArray_Z<Vec4f, 32, FALSE, FALSE, 32> Vec4fDA;
-typedef DynArray_Z<TBVtx, 32, FALSE, FALSE, 4> TBVtxDA;
+typedef DynArray_Z<TBVtx, 32, FALSE, FALSE> TBVtxDA;
 
 #endif

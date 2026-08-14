@@ -156,7 +156,7 @@ public:
     S32 m_CurDisplayListIdx;
     S32 m_RemainingVertexCount;
     BnkDynArray_Z<GCListVertex2D, 16, FALSE, FALSE, DRAW2D_VERTEX_LIST_ALIGN> m_Vtx2DBufferDA;
-    DynArray_Z<Primitive2DList_Z, 8, TRUE, TRUE, 4> m_PrimitiveLists;
+    DynArray_Z<Primitive2DList_Z> m_PrimitiveLists;
 };
 
 // END TODO

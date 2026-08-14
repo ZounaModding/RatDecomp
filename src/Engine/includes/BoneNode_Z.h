@@ -112,6 +112,6 @@ private:
     Name_Z m_Name;
 };
 
-typedef DynPtrArray_Z<BoneNode_Z*, 4, 4> BoneNodePtr_ZDA;
+typedef DynPtrArray_Z<BoneNode_Z*, 4> BoneNodePtr_ZDA;
 
 #endif

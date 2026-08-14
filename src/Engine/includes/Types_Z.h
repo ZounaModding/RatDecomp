@@ -40,6 +40,9 @@ typedef volatile double VDouble;
 #undef U32_MAX
 #define U32_MAX 0xFFFFFFFF
 
+#undef U16_MINUS_ONE
+#define U16_MINUS_ONE ((U16) - 1)
+
 #undef U32_MINUS_ONE
 #define U32_MINUS_ONE ((U32) - 1)
 

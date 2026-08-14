@@ -41,6 +41,10 @@ typedef DynArray_Z<ZoneFace_Z, 32, TRUE, TRUE, 16> ZoneFace_ZDA;
 
 class Occluder_Z : public SplineZone_Z {
 public:
+    Occluder_Z() {
+        SetGeometryType(OCCLUDER_Z);
+    }
+
     virtual void Load(void** i_Data);
 
     virtual void Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data) {

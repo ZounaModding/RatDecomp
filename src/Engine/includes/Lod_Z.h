@@ -17,7 +17,7 @@ struct ShadowReceiver_Z {
     S32DA m_ShadowReceiverElementIndices; // indices of the elements of the object that receive shadow (ex: for surface, the patch ids)
 };
 
-typedef DynArray_Z<ShadowReceiver_Z, 2, 1, 1, 4> ShadowReceiver_ZDA;
+typedef DynArray_Z<ShadowReceiver_Z, 2> ShadowReceiver_ZDA;
 
 struct ActorData_Z {
     Vec3f m_LocalShadowPos;

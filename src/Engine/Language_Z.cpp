@@ -11,6 +11,9 @@ static const Char s_Unused_1422[] = "Empty Text";
 
 #define LANG_TO_STRING(Lang) "PATCH_STR_" #Lang
 
+// Array that maps the hash of a button name to the Font_Z char code by index (for example "CROSS" maps to 0x01).
+// The Font then maps that character code to the corresponding button texture, in the case of 0x01 for GC it uses A.
+// With the usage of the RemapTextAdd command, an identifier is assigned to a button so STR_DASH becomes R1 for example.
 Name_Z CharNames[20] = {
     Name_Z::GetID("EMPTY", 0),
     Name_Z::GetID("CROSS", 0),

@@ -11,6 +11,16 @@
 #include "StaticArray_Z.h"
 #include "HoleArray_Z.h"
 #include "World_ZHdl.h"
+#include "HField_ZHdl.h"
+#include "Warp_ZHdl.h"
+#include "HFog_ZHdl.h"
+#include "GenWorld_ZHdl.h"
+#include "GameObj_ZHdl.h"
+#include "Flare_ZHdl.h"
+
+#define MAX_CAMERAZONE_OBJECT 8
+#define MAX_OCCLUDER_OBJECT 8
+#define MAX_FLARE_OBJECT 8
 
 struct SubWorldData_Z {
     U8 m_Pad_0x0[0x168];
@@ -46,6 +56,10 @@ public:
         return m_RootNodeHdl;
     }
 
+    inline HField_ZHdl GetHField() {
+        return m_HFieldHdl;
+    }
+
     inline S32 GetNbOccluder() {
         return m_OccluderHdls.GetSize();
     }
@@ -76,12 +90,12 @@ private:
     U32 m_Flag;
     S32 m_NbVp;
     S32 m_FirstPlayerVpId;
-    BaseObject_ZHdl m_WarpHdl;     // TODO: It's a Warp_ZHdl
-    BaseObject_ZHdl m_UnkHdl_0x24; // TODO: Unknown type but check correct inheritance
-    BaseObject_ZHdl m_GenWorldHdl; // TODO: It's a GenWorld_ZHdl
-    BaseObject_ZHdl m_GameObjHdl;  // TODO: It's a GameObj_ZHdl
+    Warp_ZHdl m_WarpHdl;
+    HField_ZHdl m_HFieldHdl;
+    GenWorld_ZHdl m_GenWorldHdl;
+    GameObj_ZHdl m_GameObjHdl;
     Node_ZHdl m_RootNodeHdl;
-    BaseObject_ZHdl m_MainHFogDataHdl; // TODO: It's a HFogData_ZHdl
+    HFogData_ZHdl m_MainHFogDataHdl;
     OccludedSeadHandle_Z m_SeadDisplay;
     SeadHandle_Z m_SeadCollide;
     AnimFrame_ZHdlDA m_AnimFrameHdls;
@@ -91,8 +105,14 @@ private:
     Node_ZHdlDA m_NoOccluderClippingNodeHdls;
     SubWorldData_ZDA m_SubWorldDatas;
     ManipulatorSceneDraw_ZHdlDA m_ManipulatorSceneDrawHdls;
-    StaticArray_Z<CameraZone_ZHdl, 8> m_CameraZoneHdls;
-    StaticArray_Z<Occluder_ZHdl, 8> m_OccluderHdls;
+    StaticArray_Z<CameraZone_ZHdl, MAX_CAMERAZONE_OBJECT> m_CameraZoneHdls;
+    StaticArray_Z<Occluder_ZHdl, MAX_OCCLUDER_OBJECT> m_OccluderHdls;
+    // $SABE: We don't actually know which handle type this stores. The constructor hierarchy lines up with a child of Object_Z,
+    //        and Flare_Z was introduced in the same game as this static array (The Mummy), since it works out I decided to use it.
+    //        Could also be a static array of FlareData_ZHdl, which would line up with how they store fog above (HFogData_ZHdl).
+    //        Note that this goes completely unused in all games that have it, aside from attempting to load and mark the handles.
+    //        Maybe they first assumed they could store flare objects at the world level, but later decided to move them into nodes.
+    StaticArray_Z<Flare_ZHdl, MAX_FLARE_OBJECT> m_FlareHdls;
     // TODO: More members
 };
 

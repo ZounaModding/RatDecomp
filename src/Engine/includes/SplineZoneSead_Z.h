@@ -14,8 +14,9 @@ typedef DynArray_Z<SplineZoneVoxel_Z, 32, FALSE, FALSE> SplineZoneVoxelDA;
 class SplineZoneSead_Z {
 public:
     SplineZoneSead_Z() {
-        m_SizeX = 0;
+        m_MaxZoneIndex = 0;
         m_SizeY = 0;
+        m_SizeX = 0;
     }
 
     void Empty();

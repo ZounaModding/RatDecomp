@@ -17,7 +17,7 @@ void Node_Z::Load(void** i_Data) {
     l_U16 = GetWorldMatrixId();
     LOADRANGE_Z(m_InverseWorldMatrix, m_CollideSeadRect);
     SetWorldMatrixId(l_U16);
-    SetWorldMatrixPtr(gData.MatrixBuffer->GetMatrix(GetWorldMatrixId()));
+    SetWorldMatrixPtr();
     LOAD_Z(GetWorldMatrix());
     LOAD_Z(GetCollideSeadId());
     LOAD_Z(GetDisplaySeadId());
