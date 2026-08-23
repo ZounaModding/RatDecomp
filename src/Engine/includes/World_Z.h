@@ -17,19 +17,101 @@
 #include "GenWorld_ZHdl.h"
 #include "GameObj_ZHdl.h"
 #include "Flare_ZHdl.h"
+#include "GameManager_Z.h"
+#include "Camera_Z.h"
 
 #define MAX_CAMERAZONE_OBJECT 8
 #define MAX_OCCLUDER_OBJECT 8
 #define MAX_FLARE_OBJECT 8
 
+#define FL_WORLD_NONE (0 << 0)
+#define FL_WORLD_DISABLE_SCENE_DRAW (1 << 0) // 0x1 - Disable world draw
+
+enum SceneOrder {
+    so_none = 0,
+    so_scene = 1,
+    so_2d = 2,
+    so_last = 3,
+    so_count = 4
+};
+
+struct Line2D_Z {
+    Vec3f m_P1;
+    Vec3f m_P2;
+    Color m_Col;
+};
+
+struct Face3D_Z {
+    Vec3f m_P1;
+    Vec3f m_P2;
+    Vec3f m_P3;
+    Color m_Col;
+};
+
+struct PosName_Z {
+    Vec3f m_Pos;
+    Color m_Col;
+    String_Z<ARRAY_CHAR_MAX> m_Str;
+};
+
+struct PosName2D_Z {
+    Vec2f m_Pos;
+    Color m_Col;
+    String_Z<ARRAY_CHAR_MAX> m_Str;
+};
+
+typedef DynArray_Z<Line2D_Z, 32, FALSE, FALSE> Line2D_ZDA;
+typedef DynArray_Z<Face3D_Z, 32, FALSE, FALSE> Face3D_ZDA;
+typedef DynArray_Z<PosName_Z, 32> PosName_ZDA;
+typedef DynArray_Z<PosName2D_Z, 32> PosName2D_ZDA;
+
+struct SubWorldRange_Z {
+    Vec2fRect_Z m_Rect;
+    Float m_Unk_0x10;
+    Float m_Unk_0x14;
+    Vec2fDA m_PolyVertices; // Points that form a polygon
+    Box_ZDA m_Boxes;        // Bounding boxes?
+};
+
+enum SubWorldType {
+    SUBWORLD_TYPE_NONE = 0,
+    SUBWORLD_TYPE_SUBLEVEL = 1,
+    SUBWORLD_TYPE_SUBDATA = 2
+};
+
+#define FL_SUBWORLD_NONE (0 << 0)
+#define FL_SUBWORLD_LOADING (1 << 0)
+#define FL_SUBWORLD_LOADED (1 << 1)
+#define FL_SUBWORLD_REMOVING (1 << 2)
+
 struct SubWorldData_Z {
-    U8 m_Pad_0x0[0x168];
+    S32 m_Type; // 1 == sublevel, 2 == subdata?
+    S32 m_Unk_0x4;
+    S32 m_SubId;
+    S32 m_Unk_0xc;
+    S32 m_Unk_0x10;
+    S32 m_Unk_0x14;
+    SubWorldRange_Z m_Range;
+    Char m_SubWorldName[256];
+    S32DA m_UnkIds_0x140;
+    S32DA m_UnkIds_0x148;
+    S32DA m_SubIds;
+    U8 m_Flag;
+    SubWorld_ZHdl m_SubWorldHdl;
+    S32 m_Unk_0x160;
+    S32 m_Unk_0x164;
 };
 
 typedef DynArray_Z<SubWorldData_Z, 8> SubWorldData_ZDA;
 
 class World_Z : public ResourceObject_Z {
 public:
+    World_Z() {
+        m_NbVp = 0;
+        m_FirstPlayerVpId = -1;
+        m_Flag = FL_WORLD_NONE;
+    }
+
     virtual ~World_Z();
     virtual void Load(void** i_Data);
     virtual void EndLoad();
@@ -38,6 +120,9 @@ public:
     virtual Bool MarkHandles();
 
     void Draw(DrawInfo_Z& i_DrawInfo);
+    void DrawObjects(DrawInfo_Z& i_DrawInfo);
+    void GetOmniOnClip(DrawInfo_Z& i_DrawInfo, StaticArray_Z<OmniFrust_Z, 64, FALSE, FALSE>& io_OmniFrusts);
+    void AddManipulatorSceneDraw(const ManipulatorSceneDraw_ZHdl& i_ManipulatorSceneDrawHdl);
     void EndDraw();
 
     Node_ZHdl GetNodeByName(const Name_Z& i_Name) const;
@@ -84,6 +169,22 @@ public:
         return m_ManipulatorSceneDrawHdls[i_Idx];
     }
 
+    inline Bool IsFlag(U32 i_Flag) const {
+        return (m_Flag & i_Flag) ? TRUE : FALSE;
+    }
+
+    inline void EnableFlag(U32 i_Flag) {
+        m_Flag |= i_Flag;
+    }
+
+    inline Warp_ZHdl GetWarp() {
+        return m_WarpHdl;
+    }
+
+    inline GenWorld_ZHdl GetGenWorld() {
+        return m_GenWorldHdl;
+    }
+
     static BaseObject_Z* NewObject() { return NewL_Z(314) World_Z; }
 
 private:
@@ -113,7 +214,14 @@ private:
     //        Note that this goes completely unused in all games that have it, aside from attempting to load and mark the handles.
     //        Maybe they first assumed they could store flare objects at the world level, but later decided to move them into nodes.
     StaticArray_Z<Flare_ZHdl, MAX_FLARE_OBJECT> m_FlareHdls;
-    // TODO: More members
+    // Debug draw data
+    SeadZoneData_ZDA m_DebugLockViewSeadZoneDatas[MAX_VIEWPORT];
+    BitArray_Z m_DebugLockViewOccludedZonesBAs[MAX_VIEWPORT];
+    Camera_Z m_DebugLockViewCameras[MAX_VIEWPORT];
+    Line2D_ZDA m_DebugLines2D;
+    Face3D_ZDA m_DebugFaces3D;
+    PosName_ZDA m_DebugNames;
+    PosName2D_ZDA m_DebugNames2D;
 };
 
 class WorldManager_Z {

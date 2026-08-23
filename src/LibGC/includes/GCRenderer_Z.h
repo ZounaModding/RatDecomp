@@ -196,7 +196,7 @@ public:
     }
 
     S32 m_CurBankIdx;
-    BaseDisplayList_Z* m_CurDisplayList;
+    GCDisplayListVertex3D* m_CurDisplayList;
     BnkDynArray_Z<GCDisplayListVertex3D, 16, FALSE, TRUE, DRAW3D_VERTEX_LIST_ALIGN> m_Vtx3DBufferDA[2];
 };
 

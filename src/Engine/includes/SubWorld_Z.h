@@ -4,6 +4,12 @@
 
 class SubWorld_Z : public ResourceObject_Z {
 public:
+    static Float SubWorldDisplayScale;
+    static S32 SubWorldDisplayID;
+    static Bool SubWorldDisplaySelection;
+
+    SubWorld_Z();
+
     virtual ~SubWorld_Z() { }
 
     virtual void Load(void** i_Data);

@@ -9,8 +9,8 @@ struct FrustrumPlane_Z {
     Vec4f m_PlaneNormals[6]; // plane normals - left,right,bottom,top,near,far I think
     Vec4f m_PlanesDir[6];    // plane normals transformed by world matrix WITHOUT translation
     Float m_PlaneOffsets[6]; // the D (or -D im not sure) of the planes (you can move up the normal by this to get the real world coord plane)
-    Mat4x4 m_PlanesLRB;      // L.x, R.x, B.x, 1.0, L.y, R.y, B.y, 1.0, L.z, R.z, B.z, 1.0, L.offset, R.offset, B.offset, 1.0
-    Mat4x4 m_PlanesTNF;      // T.x, N.x, F.x, 1.0, T.y, N.y, F.y, 1.0, T.z, N.z, F.z, 1.0, T.offset, N.offset, F.offset, 1.0
+    Vec4f m_PlanesLRB[4];    // L.x, R.x, B.x, 1.0, L.y, R.y, B.y, 1.0, L.z, R.z, B.z, 1.0, L.offset, R.offset, B.offset, 1.0
+    Vec4f m_PlanesTNF[4];    // T.x, N.x, F.x, 1.0, T.y, N.y, F.y, 1.0, T.z, N.z, F.z, 1.0, T.offset, N.offset, F.offset, 1.0
     Vec4f m_PlaneX;          // x component of left,right,bottom,top
     Vec4f m_PlaneY;          // y component of left,right,bottom,top
     Vec4f m_PlaneZ;          // z component of left,right,bottom,top
@@ -45,10 +45,13 @@ struct Frustrum_Z {
     Vec2f m_TopViewBoundsMin;          // Minimum corner of the frustum bounds in top-view space
     Vec2f m_TopViewBoundsMax;          // Maximum corner of the frustum bounds in top-view space
     Vec3f m_WorldTranslation;          // World-space position of the frustum origin, usually the camera position
-    Float m_FarPlaneHalfWidth;         // Half-width of the far plane
-    Float m_FarPlaneHalfHeight;        // Half-height of the far plane
-    Float m_FrustumFarClip;            // Effective far clip currently used by the frustum
+    Float m_FarPlaneData[3];           // Half-width, half-height, and effective far clip
     Vec3f m_CornerPoints[8];           // Frustum corner points in world space. 0..3 = near plane, 4..7 = far plane
+};
+
+struct Frustrum2D_Z {
+    S32 m_PointNb;
+    Vec2f m_Points[6];
 };
 
 #define MAX_OCCLUDED_FRUSTUM_EDGES 96
@@ -161,6 +164,8 @@ public:
 
     void DoOcclusion(const Occluder_ZHdl& i_OccluderHdl);
     void NoOcclusion();
+    void GetOccluded(DrawInfo_Z& io_DrawInfo);
+    void GetFrustrum2D(Frustrum2D_Z& o_Frustrum) const;
 
     static BaseObject_Z* NewObject() { return NewL_Z(188) Camera_Z; }
 

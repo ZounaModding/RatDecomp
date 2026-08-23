@@ -207,6 +207,13 @@ struct IndexBuffer_Z;
 struct Vertex3D;
 class LightData_Z;
 
+struct Vertex3D {
+    Vec3f m_Pos;
+    Float m_Fog;
+    Color m_Color;
+    Vec2f m_UV;
+};
+
 enum BitmapType {
     BITMAP_DIFFUSE = 0,   // Color bitmap
     BITMAP_RADIOSITY = 1, // Baked lighting bitmap
@@ -528,6 +535,15 @@ public:
 
     virtual void SetActiveViewport(S32 i_ViewportID);
     virtual void FlushActiveViewport();
+
+    static void GetScreen2DPt(
+        Vec2f& o_ScreenPoint,
+        const Vec2f& i_Point,
+        const Vec2f& i_CameraPosition,
+        const Vec2f& i_ScreenCenter,
+        const Vec2f& i_CameraRotation,
+        Float i_Scale
+    );
 
     inline Bool IsEffectFlag(U32 i_Flag) { return (m_EffectFlag & i_Flag); }
 

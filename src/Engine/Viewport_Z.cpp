@@ -134,10 +134,10 @@ void Viewport_Z::UpdateFrustrum() {
     l_Camera->GetFrustrum().m_CornerPoints[3] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_NearClip;
     l_Camera->GetFrustrum().m_CornerPoints[7] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_FarClip;
 
-    l_Camera->GetFrustrum().m_FarPlaneHalfWidth = ((l_Camera->GetFrustrum().m_CornerPoints[4] - l_Camera->GetFrustrum().m_CornerPoints[7]).GetNorm()) * 0.5f;
-    l_Camera->GetFrustrum().m_FarPlaneHalfHeight = ((l_Camera->GetFrustrum().m_CornerPoints[5] - l_Camera->GetFrustrum().m_CornerPoints[6]).GetNorm()) * 0.5f;
+    l_Camera->GetFrustrum().m_FarPlaneData[0] = ((l_Camera->GetFrustrum().m_CornerPoints[4] - l_Camera->GetFrustrum().m_CornerPoints[7]).GetNorm()) * 0.5f;
+    l_Camera->GetFrustrum().m_FarPlaneData[1] = ((l_Camera->GetFrustrum().m_CornerPoints[5] - l_Camera->GetFrustrum().m_CornerPoints[6]).GetNorm()) * 0.5f;
 
-    l_Camera->GetFrustrum().m_FrustumFarClip = l_Camera->GetFrustrum().m_FarClip;
+    l_Camera->GetFrustrum().m_FarPlaneData[2] = l_Camera->GetFrustrum().m_FarClip;
 
     m_FrustumBoundsMin = l_Camera->GetFrustrum().m_CornerPoints[0];
     m_FrustumBoundsMax = m_FrustumBoundsMin;

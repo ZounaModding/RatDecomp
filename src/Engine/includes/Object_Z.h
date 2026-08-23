@@ -162,6 +162,10 @@ public:
         return (m_Flag & i_Flag) ? TRUE : FALSE;
     }
 
+    inline U32 GetFlag() const {
+        return m_Flag;
+    }
+
 protected:
     U32 m_Flag;
     Color m_DefaultColor;

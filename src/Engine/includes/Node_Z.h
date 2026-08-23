@@ -217,6 +217,8 @@ public:
 
     inline HFogData_Z* GetHFog() const { return m_HFogData; }
 
+    inline LightData_Z* GetLightData() const { return m_LightData; }
+
 private:
     Agent_ZHdl m_Agent;
     Mat4x4 m_InverseWorldMatrix;

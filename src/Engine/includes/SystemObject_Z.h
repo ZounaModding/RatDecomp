@@ -41,6 +41,8 @@ struct Box_Z {
     inline void SetTranslation(const Vec4f& i_Trans) { Mat.m.m[0][3] = i_Trans.x, Mat.m.m[1][3] = i_Trans.y, Mat.m.m[2][3] = i_Trans.z; }
 };
 
+typedef DynArray_Z<Box_Z, 8, FALSE, FALSE> Box_ZDA;
+
 struct Sphere_Z {
     Vec3f Center;
     Float Radius;
@@ -140,6 +142,11 @@ struct Rect_Z {
         x2 = _x2;
         y2 = _y2;
     }
+};
+
+struct Vec2fRect_Z {
+    Vec2f m_BMin;
+    Vec2f m_BMax;
 };
 
 #define DEFAULT_NOCULLED 10001.f

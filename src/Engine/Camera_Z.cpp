@@ -9,7 +9,7 @@ void Camera_Z::SetOccludedFarClip(Float i_Far) {
     ASSERTLE_Z(i_Far > 0.0f, "Invalid Occluded Far Value", 146, "_Far>0.f");
 
     m_Frustum.m_OccludedFarClip = i_Far;
-    m_Frustum.m_FrustumFarClip = m_Frustum.m_FarClip;
+    m_Frustum.m_FarPlaneData[2] = m_Frustum.m_FarClip;
     m_Frustum.m_ViewPlanes.BuildPlane(m_WorldPos, m_Frustum.m_NearClip, i_Far);
     m_Frustum.m_SecondaryPlanes.BuildPlane(m_WorldPos, m_Frustum.m_NearClip, i_Far);
     return;

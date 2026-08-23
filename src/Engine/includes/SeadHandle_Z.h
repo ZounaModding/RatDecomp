@@ -21,8 +21,11 @@ struct SeadZoneData_Z {
     Object_Z* m_Object;
 };
 
+typedef DynArray_Z<SeadZoneData_Z, 32, FALSE, FALSE> SeadZoneData_ZDA;
+
 class SeadZone_Z {
     friend class SeadHandle_Z;
+    friend class World_Z;
 
 public:
     static S32 SeadZonesCount;
