@@ -381,6 +381,6 @@ SeadZoneData_Z* SeadZone_Z::AddNode(Node_Z* i_Node) {
     m_SeadZoneDataNb++;
     m_TailSeadZoneData->m_ObjectDatas = i_Node->GetObjectDatas();
     m_TailSeadZoneData->m_Node = i_Node;
-    m_TailSeadZoneData->m_Object = i_Node->GetObject();
+    m_TailSeadZoneData->m_Object = i_Node->GetObject(TRUE);
     return m_TailSeadZoneData++;
 }

@@ -11,6 +11,8 @@
 #include "GameManager_Z.h"
 #include "MatrixCache_Z.h"
 
+#define MAX_OMNI 3
+
 #define RATIO_SCREEN_STANDARD (4.f / 3.f)
 #define RATIO_SCREEN_WIDESCREEN (16.f / 9.f)
 
@@ -90,6 +92,10 @@ struct OmniStruct_Z {
     OmniFrust_Z* m_OmniFrust;
     Float m_Unk_0x48;
     Float m_Unk_0x4c;
+
+    Vec3f GetDirectionWorldSpace() const {
+        return m_DirectionWorldSpace;
+    }
 };
 
 typedef StaticArray_Z<OmniStruct_Z, 64, FALSE, FALSE> OmniStruct_ZSA;

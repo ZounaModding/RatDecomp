@@ -51,6 +51,8 @@ public:
     virtual void SetDfltColorNoAlpha(const Color& i_Color);
     virtual void SetDfltColorAlpha(Float i_Alpha);
 
+    void SetLightingData(LightData_ZHdl i_LightDataHdl);
+
 protected:
     U8 m_Pad_0x28[16];
 };

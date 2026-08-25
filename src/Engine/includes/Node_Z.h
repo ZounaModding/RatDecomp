@@ -35,7 +35,13 @@ public:
     void Changed();
     void Changed(S32 i_Flag);
     void AddSon(const Node_ZHdl& i_Son, Bool i_IsWorldRelative = FALSE, Bool i_Changed = TRUE);
+    void GetByObjectType(Node_ZHdlDA& o_Nodes, S32 i_Type, Bool i_Next = FALSE);
+    void GetByName(const Name_Z& i_Name, Node_ZHdl& o_Node, Bool i_Next = FALSE);
+    void GetNodesFromFlag(Node_ZHdlDA& o_Nodes, U32 i_Flag, U32 i_NoFlag, Bool i_Next = FALSE);
+    void BuildNonShared(Bool i_Recursive, Bool i_Next);
     void GetAllSons(Node_ZHdlDA& i_Sons, Bool i_Recursive = FALSE) const;
+    void GetAllNodes(Node_ZHdlDA& o_Nodes) const;
+    void Clone(Node_ZHdl& o_NodeHdl, Bool i_BuildNonShared);
     void Remove(Bool a1, Bool a2);
     Node_ZHdl& GetRoot();
     void Ref(World_Z* i_World, Object_Z* i_Object);
@@ -50,7 +56,7 @@ public:
 
     inline Node_Z* GetNext() const { return m_Next; }
 
-    Object_Z* GetObject(Bool i_Update = TRUE) const {
+    Object_Z* GetObject(Bool i_Update = FALSE) const {
         Object_Z* l_Object;
         if (i_Update && m_Object) {
             l_Object = (Object_Z*)GETPTR(m_Object->GetHandle());
@@ -78,7 +84,8 @@ public:
     inline Mat4x4& GetWorldMatrix() { return *(Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
 
     inline void SetWorldMatrixPtr() {
-        m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)gData.MatrixBuffer->GetMatrix(GetWorldMatrixId());
+        U16 l_WorldMatrixId = GetWorldMatrixId();
+        m_RotInWorldMatrix.m.m13.dummy.u32 = (U32)gData.MatrixBuffer->GetMatrix(l_WorldMatrixId);
     }
 
     inline Mat4x4* GetWorldMatrixPtr() { return (Mat4x4*)m_RotInWorldMatrix.m.m13.dummy.i32; }
@@ -98,6 +105,7 @@ public:
     inline Vec3f& GetLocalTranslation() { return m_Translation; }
 
     void SetFromWorldTrans(const Vec3f& i_Trans);
+    void SetFromWorldTransEpsilon(Node_Z* i_Parent, const Vec3f& i_Trans);
     void SetFromWorldTransRot(const Vec3f& i_Trans, const Quat& i_Rot);
     void SetFromWorldTransScale(const Vec3f& i_Trans, Float i_Scale);
     void SetFromWorldScale(Float i_Scale);
@@ -116,9 +124,7 @@ public:
     }
 
     inline Quat GetInverseRotInWorld() {
-        Quat l_Quat(m_RotInWorld);
-        l_Quat.SetInverse();
-        return l_Quat;
+        return Quat(m_RotInWorld.w, -m_RotInWorld.v.x, -m_RotInWorld.v.y, -m_RotInWorld.v.z);
     }
 
     inline void SetFlag(U32 i_Flag) { m_Flag = i_Flag; }
@@ -126,6 +132,8 @@ public:
     inline void SetFlag(U32 i_Flag, Bool Set) { Set ? m_Flag |= i_Flag : m_Flag &= ~i_Flag; }
 
     inline U32 GetFlag(void) const { return m_Flag; }
+
+    inline U32 HasFlag(U32 i_Flag) const { return m_Flag & i_Flag; }
 
     inline void EnableFlag(U32 i_Flag) { m_Flag |= i_Flag; }
 
@@ -147,10 +155,13 @@ public:
     void Update();
 
     void LightingChanged();
+    void SetLighting(LightData_Z* i_LightData, HFogData_Z* i_HFogData, Bool i_KeepExisting);
 
     void Hide(Bool i_Recursive = FALSE);
+    void HideSons();
     void UnHideSons();
     void UnHide(Bool i_Recursive = FALSE);
+    void UnRef();
 
     Agent_ZHdl& GetAgent() {
         return m_Agent;
@@ -185,6 +196,8 @@ public:
         m_InverseRotInWorldMatrix.m.m23.dummy.i16[0] = i_Id;
     }
 
+    void SetWorldId(S16 i_Id, Bool i_Recursive);
+
     inline S16 GetWorldId() const {
         return m_InverseRotInWorldMatrix.m.m23.dummy.i16[0];
     }
@@ -217,7 +230,17 @@ public:
 
     inline HFogData_Z* GetHFog() const { return m_HFogData; }
 
-    inline LightData_Z* GetLightData() const { return m_LightData; }
+    inline LightData_Z* GetLight() const { return m_LightData; }
+
+    Float GetInverseWorldScale() const { return m_InverseUniformScale; }
+
+    Mat3x3& GetInverseMatRotInWorld() {
+        if (IsFlagEnable(FL_NODE_INVALIDROT)) {
+            GetInverseRotInWorld().GetMatrix(m_InverseRotInWorldMatrix);
+            DisableFlag(FL_NODE_INVALIDROT);
+        }
+        return m_InverseRotInWorldMatrix;
+    }
 
 private:
     Agent_ZHdl m_Agent;

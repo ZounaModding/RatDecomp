@@ -630,7 +630,17 @@ public:
         return l_v;
     }
 
-    inline Vec4f operator*(const Vec4f& i_v) const;
+    Vec4f operator*(const Vec4f& i_v) const {
+        Vec4f l_v;
+
+        l_v.x = m.m[0][0] * i_v.x + m.m[1][0] * i_v.y + m.m[2][0] * i_v.z;
+        l_v.y = m.m[0][1] * i_v.x + m.m[1][1] * i_v.y + m.m[2][1] * i_v.z;
+        l_v.z = m.m[0][2] * i_v.x + m.m[1][2] * i_v.y + m.m[2][2] * i_v.z;
+        l_v.w = 1.0f;
+
+        return l_v;
+    }
+
     Bool operator==(const Mat3x3& i_m) const;
     Bool operator!=(const Mat3x3& i_m) const;
     const Vec4f& GetRow(const int i_x) const;
@@ -703,7 +713,12 @@ struct Mat4x4 {
         return l_Scale.GetNorm();
     }
 
-    void GetScale(Vec3f& o_Scale) const;
+    inline void GetScale(Vec3f& o_Scale) const {
+        o_Scale.x = Vec3f(m[0][0], m[0][1], m[0][2]).GetNorm();
+        o_Scale.y = Vec3f(m[1][0], m[1][1], m[1][2]).GetNorm();
+        o_Scale.z = Vec3f(m[2][0], m[2][1], m[2][2]).GetNorm();
+    }
+
     const Vec4f& GetMatrixTrans4() const;
 
     void SetTRS(const Vec3f& i_Trans, const Quat& i_Rot, const Vec3f& i_Scale);
@@ -744,9 +759,9 @@ struct Quat {
 
     inline Quat(Float _w, Float i_x, Float i_y, Float i_z) {
         w = _w;
-        v.z = i_z;
-        v.y = i_y;
         v.x = i_x;
+        v.y = i_y;
+        v.z = i_z;
     }
 
     inline Quat(Float Angle, const Vec3f& Axis) {
@@ -757,6 +772,12 @@ struct Quat {
     inline Quat(const Quat& i_Quat) {
         w = i_Quat.w;
         v = i_Quat.v;
+    }
+
+    inline Quat& SetIdentity() {
+        w = 1.0f;
+        v.x = v.y = v.z = 0.0f;
+        return *this;
     }
 
     Quat(const Vec3f& V1, const Vec3f& V2);

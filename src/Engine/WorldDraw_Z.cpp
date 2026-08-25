@@ -306,7 +306,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
             }
 
             i_DrawInfo.m_Node = l_Node;
-            i_DrawInfo.m_LightData = l_Node->GetLightData();
+            i_DrawInfo.m_LightData = l_Node->GetLight();
             i_DrawInfo.m_CurrentNodeHFogData = l_Node->GetHFog();
             i_DrawInfo.m_FadeValue = 1.0f;
             if (l_DrawObject) {
@@ -362,7 +362,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
         Bool l_DrawObjectDatas = l_ObjectDatas && (l_ObjectDatasFlag & FL_OBJECTDATAS_DISPLAY);
         if (l_DrawObject || l_DrawObjectDatas) {
             i_DrawInfo.m_Node = l_Node;
-            i_DrawInfo.m_LightData = l_Node->GetLightData();
+            i_DrawInfo.m_LightData = l_Node->GetLight();
             i_DrawInfo.m_CurrentNodeHFogData = l_Node->GetHFog();
             i_DrawInfo.m_FadeValue = 1.0f;
             if (l_DrawObject) {
@@ -402,7 +402,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
         U32 l_DrawObject = l_Object->GetFlag() & FL_OBJECT_DISPLAY;
         if ((l_DrawObject | l_ObjectDatasFlag) && SphereVsFrustrum(l_Frustrum, i_DrawInfo, l_Node)) {
             i_DrawInfo.m_Node = l_Node;
-            i_DrawInfo.m_LightData = l_Node->GetLightData();
+            i_DrawInfo.m_LightData = l_Node->GetLight();
             i_DrawInfo.m_CurrentNodeHFogData = l_Node->GetHFog();
             i_DrawInfo.m_FadeValue = 1.0f;
             if (l_DrawObject) {

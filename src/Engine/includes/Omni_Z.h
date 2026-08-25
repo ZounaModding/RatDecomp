@@ -3,6 +3,7 @@
 #include "Object_Z.h"
 #include "MaterialAnim_ZHdl.h"
 #include "Material_ZHdl.h"
+#include "Renderer_Z.h"
 
 class Omni_Z : public Object_Z {
 private:
@@ -34,10 +35,9 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(79) Omni_Z; }
 
     void Changed();
-    // TODO: Define OmniFrust_Z
-    //static void InFrustrum(DrawInfo_Z& i_DrawInfo, const Sphere_Z& i_UnkSph, Node_Z* i_Node, Omni_Z* i_Omni, OmniFrust_Z& i_OmniFrust, U8 i_Index);
-    static U32 SetOmnis(const Box_Z& i_UnkBox, DrawInfo_Z& i_DrawInfo, Bool i_LocalValue, Bool i_UnkBool, U32 i_UnkU32_1, U32 i_UnkU32_2);
-    static U32 SubOmnis(const Sphere_Z& i_UnkSph, const Box_Z& i_UnkBox, DrawInfo_Z& i_DrawInfo, U32 i_UnkU32_1, U32 i_UnkU32_2);
+    static void InFrustrum(DrawInfo_Z& i_DrawInfo, const Sphere_Z& i_BSph, Node_Z* i_Node, Omni_Z* i_Omni, OmniFrust_Z& i_OmniFrust, U8 i_Index);
+    static U32 SetOmnis(const Box_Z& i_BBox, DrawInfo_Z& i_DrawInfo, Bool i_LocalValue, Bool i_OnlyTest = FALSE, U32 i_Flag = U32_MAX, U32 i_NoFlag = 0);
+    static U32 SubOmnis(const Sphere_Z& i_BSph, const Box_Z& i_BBox, DrawInfo_Z& i_DrawInfo, U32 i_Flag = U32_MAX, U32 i_NoFlag = 0);
 
     inline void SetColor(const Vec3f& i_Color) {
         m_Color = i_Color;

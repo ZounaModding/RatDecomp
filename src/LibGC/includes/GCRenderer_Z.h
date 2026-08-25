@@ -9,7 +9,6 @@
 #include <gx.h>
 #include <mtx.h>
 
-#define MAX_OMNI 3
 #define FIFO_BUFFER_SIZE (380 * 1024)
 #define GC_BUFFER_ALIGN 32
 #define VIZ_QUERY_DISPLAY_LIST_SIZE 32
