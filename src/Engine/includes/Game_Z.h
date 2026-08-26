@@ -44,6 +44,10 @@ public:
 
     void DeclareObjectGame(const ObjectGame_ZHdl& i_ObjectGameHdl);
     void InitAgent(Node_Z* i_StartNode, Bool i_RecursiveBelow, Bool i_RecursiveNextTo);
+    Bool CreateAgentForNode(Node_Z* i_Node, Name_Z i_AgentClassName = NULL);
+    Agent_ZHdl CreateAgentForSystemObject(const Name_Z& i_ObjectName, Name_Z i_AgentClassName, Node_ZHdl i_ParentNodeHdl, U32 i_Flag, U32 i_NoFlag);
+    void DeclareOtherAgent(const Agent_ZHdl& i_AgentHdl);
+    Bool IsRtcActive(S32 i_RtcIdx);
     U32 GetFirstVp() const;
     U32 GetNbVp() const;
     void SetGameWorld(const World_ZHdl& i_WorldHdl, const Char* i_GameName);
@@ -53,6 +57,7 @@ public:
     S32 GetSubId(S32 i_SubDataId, S32 i_Unk);
     void AddSubLevel(const SubWorld_ZHdl& i_SubWorldHdl, S32 i_SubLevelId);
     void SendMessage(U32 i_Target, abc_message i_Message, Float i_Param);
+    void FlushMessage(U32 i_Target, abc_message i_Message);
 
     const World_ZHdl& GetWorld() const {
         return m_WorldHdl;

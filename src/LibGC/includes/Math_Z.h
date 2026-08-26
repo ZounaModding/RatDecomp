@@ -860,6 +860,27 @@ inline Double Abs(Float i_Value) {
 }
 
 template <typename T>
+inline void Smooth(
+    const T& i_Current,
+    const T& i_Target,
+    Float i_Rate,
+    Float i_DeltaTime,
+    T& o_Result
+) {
+    Float l_Delta = i_Target - i_Current;
+    l_Delta = l_Delta >= 0.0f ? l_Delta : -l_Delta;
+
+    if (l_Delta < Float_Eps) {
+        o_Result = i_Target;
+    }
+    else {
+        Float l_One = 1.0f;
+        Float l_Pow = (Float)pow(i_Rate, i_DeltaTime / 0.033f);
+        o_Result = (i_Target - i_Current) * (l_One - l_One / l_Pow) + i_Current;
+    }
+}
+
+template <typename T>
 void FastSmooth(
     const T& i_Current,
     const T& i_Target,

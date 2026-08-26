@@ -171,6 +171,10 @@ public:
         m_LightData = i_LightData;
     }
 
+    inline void SetHFog(HFogData_Z* i_HFogData) {
+        m_HFogData = i_HFogData;
+    }
+
     inline void SetObject(Object_Z* i_Object) {
         m_Object = i_Object;
         Changed();

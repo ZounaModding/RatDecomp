@@ -84,7 +84,8 @@ enum ObjectType {
 
 // Lod_Z flags
 
-#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0) // 0x100000 - LOD is a skin
+#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0)     // 0x100000 - LOD is a skin
+#define FL_IS_LOD_ANIMATED (FL_OBJECT_LAST << 1) // 0x200000 - LOD is animated
 
 // Mesh_Z flags
 

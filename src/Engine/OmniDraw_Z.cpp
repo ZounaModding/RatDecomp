@@ -109,26 +109,20 @@ U32 Omni_Z::SetOmnis(const Box_Z& i_BBox, DrawInfo_Z& i_DrawInfo, Bool i_LocalVa
                 l_LowPrioOmniStruct = l_FirstOmniStruct;
                 i_DrawInfo.m_ActiveOmniCount = 0;
                 for (i = 0; i < l_ActiveOmniNb; i++, l_PrioOmniStruct++) {
-                    if (l_PrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_HIGH) &&
-                        SphereVsBox(*(Sphere_Z*)&l_PrioOmniStruct->m_TranslationLocalSpace, i_BBox)
-                    ) {
+                    if (l_PrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_HIGH) && SphereVsBox(*(Sphere_Z*)&l_PrioOmniStruct->m_TranslationLocalSpace, i_BBox)) {
 
                         i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_PrioOmniStruct;
                     }
                 }
                 l_MidPrioOmniStruct = l_FirstOmniStruct;
                 for (i = 0; i < l_ActiveOmniNb; i++, l_MidPrioOmniStruct++) {
-                    if (l_MidPrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_MID) &&
-                        SphereVsBox(*(Sphere_Z*)&l_MidPrioOmniStruct->m_TranslationLocalSpace, i_BBox)
-                    ) {
+                    if (l_MidPrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_MID) && SphereVsBox(*(Sphere_Z*)&l_MidPrioOmniStruct->m_TranslationLocalSpace, i_BBox)) {
 
                         i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_MidPrioOmniStruct;
                     }
                 }
                 for (i = 0; i < l_ActiveOmniNb; i++, l_LowPrioOmniStruct++) {
-                    if (!l_LowPrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_MID | FL_IS_OMNI_PRIORITY_HIGH) &&
-                        SphereVsBox(*(Sphere_Z*)&l_LowPrioOmniStruct->m_TranslationLocalSpace, i_BBox)
-                    ) {
+                    if (!l_LowPrioOmniStruct->m_OmniFrust->m_Omni->IsFlag(FL_IS_OMNI_PRIORITY_MID | FL_IS_OMNI_PRIORITY_HIGH) && SphereVsBox(*(Sphere_Z*)&l_LowPrioOmniStruct->m_TranslationLocalSpace, i_BBox)) {
 
                         i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_LowPrioOmniStruct;
                     }
@@ -172,9 +166,7 @@ U32 Omni_Z::SubOmnis(const Sphere_Z& i_BSph, const Box_Z& i_BBox, DrawInfo_Z& i_
         l_OmniFlag = l_OmniStruct->m_Flag;
         if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag)) {
             Float l_Radius = (*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace).Radius + i_BSph.Radius;
-            if (((*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace).Center - i_BSph.Center).GetNorm2() < l_Radius * l_Radius &&
-                SphereVsBox(*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace, i_BBox)
-            ) {
+            if (((*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace).Center - i_BSph.Center).GetNorm2() < l_Radius * l_Radius && SphereVsBox(*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace, i_BBox)) {
                 i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_OmniStruct;
             }
         }
@@ -190,9 +182,7 @@ U32 Omni_Z::SubOmnis(const Sphere_Z& i_BSph, const Box_Z& i_BBox, DrawInfo_Z& i_
         i_Flag |= FL_IS_OMNI_PRIORITY_HIGH;
         for (i = 0; i < l_ActiveOmniNb; i++, l_HighPrioOmniStruct++) {
             l_OmniFlag = l_HighPrioOmniStruct->m_Flag;
-            if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag) &&
-                SphereVsBox(*(Sphere_Z*)&l_HighPrioOmniStruct->m_TranslationLocalSpace, i_BBox)
-            ) {
+            if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag) && SphereVsBox(*(Sphere_Z*)&l_HighPrioOmniStruct->m_TranslationLocalSpace, i_BBox)) {
                 i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_HighPrioOmniStruct;
             }
         }
@@ -201,10 +191,7 @@ U32 Omni_Z::SubOmnis(const Sphere_Z& i_BSph, const Box_Z& i_BBox, DrawInfo_Z& i_
         i_Flag |= FL_IS_OMNI_PRIORITY_MID;
         for (i = 0; i < l_ActiveOmniNb; i++, l_OmniStruct++) {
             l_OmniFlag = l_OmniStruct->m_Flag;
-            if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag) &&
-                (l_OmniFlag & FL_IS_OMNI_PRIORITY_MID) &&
-                SphereVsBox(*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace, i_BBox)
-            ) {
+            if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag) && (l_OmniFlag & FL_IS_OMNI_PRIORITY_MID) && SphereVsBox(*(Sphere_Z*)&l_OmniStruct->m_TranslationLocalSpace, i_BBox)) {
                 i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_OmniStruct;
             }
         }
@@ -213,10 +200,7 @@ U32 Omni_Z::SubOmnis(const Sphere_Z& i_BSph, const Box_Z& i_BBox, DrawInfo_Z& i_
         i_NoFlag |= FL_IS_OMNI_PRIORITY_MID;
         for (i = 0; i < l_ActiveOmniNb; i++, l_LowPrioOmniStruct++) {
             l_OmniFlag = l_OmniStruct->m_Flag;
-            if ((l_OmniFlag & i_Flag) &&
-                !(l_OmniFlag & i_NoFlag) &&
-                SphereVsBox(*(Sphere_Z*)&l_LowPrioOmniStruct->m_TranslationLocalSpace, i_BBox)
-            ) {
+            if ((l_OmniFlag & i_Flag) && !(l_OmniFlag & i_NoFlag) && SphereVsBox(*(Sphere_Z*)&l_LowPrioOmniStruct->m_TranslationLocalSpace, i_BBox)) {
                 i_DrawInfo.m_OmniStructs[i_DrawInfo.m_ActiveOmniCount++] = l_LowPrioOmniStruct;
             }
         }

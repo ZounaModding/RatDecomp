@@ -58,6 +58,7 @@ public:
     void StopMatAnims();
     void ResetNodeAnims();
     void ResetMatAnims();
+    Bool HasAgentClass(Name_Z& o_AgentClassName);
 
 private:
     CollisionVolDA m_CollisionVolInfos;

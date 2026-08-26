@@ -87,6 +87,10 @@ ABC_AgentHdl ABC_ScriptManager::NewAgent(const Char* i_AgentClassName) {
 }
 
 ABC_AgentHdl ABC_ScriptManager::NewAgent(const Name_Z& i_AgentClassName, const Char* i_AgentName) {
+    // $SABE: Had to add this cause of Name_Z copy constructor being compiler generated and not
+    //        explicitly defined, it broke this not inlining but made Game_Z::InitAgent closer.
+    FIXDEBUGINLINING_Z();
+
     if (InHeritName != i_AgentClassName && !gData.ClassMgr->IsObjectInherit(i_AgentClassName, InHeritName)) {
         return HANDLE_NULL;
     }
@@ -278,7 +282,6 @@ void ABC_ScriptManager::CheckTimedMessages(Float i_DeltaTime) {
     }
 }
 
-// TODO: FIX
 StreamAgent_ZHdl& ABC_ScriptManager::SetStreamAgent(const Name_Z& i_AgentClassName) {
     m_StreamAgentHdl = gData.ScriptMgr->NewAgent(i_AgentClassName);
     return m_StreamAgentHdl;

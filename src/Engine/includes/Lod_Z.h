@@ -6,9 +6,13 @@
 #include "Node_ZHdl.h"
 #include "Object_ZHdl.h"
 #include "Light_ZHdl.h"
+#include "MeshCollision_Z.h"
 
 #define FL_LOD_FORCE_HIGHEST (FL_OBJECTDATAS_LAST)               // 0x10000 - Force highest LOD
 #define FL_LOD_DISABLE_STENCIL_SHADOW (FL_OBJECTDATAS_LAST << 1) // 0x20000 - Disable stencil shadow for this LOD
+
+class SphereColNode_Z;
+class UserDefine_Z;
 
 struct ShadowReceiver_Z {
     Node_ZHdl m_NodeHdl;                  // node we collided with hdl
@@ -80,8 +84,19 @@ public:
         U64 i_NoFlag
     );
 
+    inline S32 GetObjectCount() const { return m_ObjectHdls.GetSize(); }
+
 protected:
-    U8 m_Pad_0x80[64];
+    SphereCol_ZDA m_SphereCollisions;
+    BoxCol_ZDA m_BoxCollisions;
+    CylindreCol_ZDA m_CylindreCollisions;
+    SphereColNode_Z* m_ShadowSphere;
+    Float m_NearFadeThreshold;
+    Float m_FarFadeThreshold;
+    Float m_LodDistanceScale;
+    UserDefine_Z* m_UserDefine;
+    Object_ZHdlDA m_ObjectHdls;
+    Object_ZHdl m_VolumeObjectHdl;
 };
 
 #endif // _LOD_Z_H_

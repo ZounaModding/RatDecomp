@@ -8,6 +8,7 @@
 #include "MaterialObj_ZHdl.h"
 #include "MaterialAnim_ZHdl.h"
 #include "Bitmap_ZHdl.h"
+#include "Node_ZHdl.h"
 
 class SystemDatas_Z {
 public:
@@ -18,6 +19,7 @@ public:
     S32 GetFontId(const Name_Z& i_Name);
     void MarkHandles();
     Bool Minimize();
+    Node_ZHdl GetObjectByName(const Name_Z& i_Name, S16 i_GameObjId);
 
     Fonts_Z* GetFont(S32 i_FontId) const {
         if (i_FontId < 0 || i_FontId >= m_FontHdls.GetSize()) {

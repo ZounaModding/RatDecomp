@@ -29,6 +29,7 @@ struct Box_Z {
     Box_Z& operator+=(const Box_Z& i_Box);
     Box_Z& operator+=(const Sphere_Z& i_Sph);
     Box_Z operator*(const Mat4x4& i_Mat) const;
+    void MatMulHasScale(const Box_Z& i_Box, const Mat4x4& i_Mat, Float i_Scale, Float i_InvScale);
     void Build(const Vec3f& i_Center, const Vec3f& i_YAxis, const Vec3f* i_PointList, U32 i_NumPoint, Bool i_bAllowTinyBoxes = FALSE);
     void GetVtx(Vec3f* o_VtxArr) const;
 

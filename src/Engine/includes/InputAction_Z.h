@@ -8,10 +8,13 @@
 
 #define INPUT_ACTION_COUNT 96
 
+#define INPUT_VALUE_CURVE_NONE -1
+#define INPUT_VALUE_CURVE_DOUBLE_EXPONENTIAL 0
+
 class DeviceAction_Z {
 public:
-    Float m_CurrentStatus;
-    Bool m_Unk_0x4;
+    Float m_Value;
+    Bool m_SmoothValue;
 };
 
 class InputDevice_Z {
@@ -62,8 +65,8 @@ public:
         m_EcoMode = TRUE;
 
         for (U32 i = 0; i < INPUT_ACTION_COUNT; i++) {
-            m_DeviceActions[i].m_CurrentStatus = 0.0f;
-            m_DeviceActions[i].m_Unk_0x4 = FALSE;
+            m_DeviceActions[i].m_Value = 0.0f;
+            m_DeviceActions[i].m_SmoothValue = FALSE;
         }
     }
 
@@ -74,6 +77,10 @@ public:
             }
         }
         return FALSE;
+    }
+
+    DeviceAction_Z& GetAction(S32 i_Idx) {
+        return m_DeviceActions[i_Idx];
     }
 
     S32 m_Status;
@@ -134,64 +141,67 @@ public:
 };
 
 struct InputAction_Z {
-    Bool m_UnkBool_0x0;
-    Bool m_UnkBool_0x1;
-    Bool m_UnkBool_0x2;
-    Float m_UnkFloat_0x4;
-    Bool m_UnkBool_0x8;
-    Bool m_UnkBool_0x9;
-    Bool m_UnkBool_0xa;
-    Float m_UnkFloat_0xc;
-    Float m_UnkFloat_0x10;
-    Float m_UnkFloat_0x14;
-    Float m_BaseValue;
+    Bool m_WasPressed;
+    Bool m_ManualValueDirty;
+    Bool m_NormalizeValue;
+    Float m_ManualValue;
+    Bool m_UseManualValue;
+    Bool m_RepeatEnabled;
+    Bool m_RepeatPulseActive;
+    Float m_RepeatTimer;
+    Float m_FirstRepeatDelay;
+    Float m_RepeatInterval;
+    Float m_PressThreshold;
     Float m_MinValue;
     Float m_MaxValue;
-    Float m_UnkFloat_0x24;
-    S32 m_UnkS32_0x28;
-    Float m_UnkFloat_0x2c;
+    Float m_SmoothingRate;
+    S32 m_ValueCurve;
+    Float m_Value;
     Bool m_Pressed;
-    Bool m_UnkBool_0x31;
-    Bool m_UnkBool_0x32;
-    Float m_PressedTimer;
-    Float m_SomeTimer_0x38;
-    Float m_SomeOtherTimer_0x3c;
+    Bool m_JustPressed;
+    Bool m_JustReleased;
+    Float m_HeldTime;
+    Float m_TimeSincePressed;
+    Float m_TimeSinceReleased;
     S32 m_DeviceIdx;
     S32 m_ActionId;
 
     InputAction_Z() {
-        m_UnkBool_0x0 = FALSE;
+        m_WasPressed = FALSE;
         m_Pressed = FALSE;
-        m_UnkBool_0x31 = FALSE;
-        m_UnkBool_0x32 = FALSE;
-        m_PressedTimer = 0.0f;
-        m_SomeTimer_0x38 = 0.0f;
-        m_SomeOtherTimer_0x3c = 0.0f;
-        m_UnkBool_0x1 = FALSE;
+        m_JustPressed = FALSE;
+        m_JustReleased = FALSE;
+        m_HeldTime = 0.0f;
+        m_TimeSincePressed = 0.0f;
+        m_TimeSinceReleased = 0.0f;
+        m_ManualValueDirty = FALSE;
         m_DeviceIdx = -1;
         m_ActionId = -1;
-        m_UnkBool_0x8 = FALSE;
-        m_UnkBool_0x9 = FALSE;
-        m_UnkFloat_0xc = 0.0f;
-        m_UnkFloat_0x10 = 0.4f;
-        m_UnkFloat_0x14 = 0.08f;
-        m_UnkBool_0xa = FALSE;
-        m_UnkFloat_0x4 = 0.0f;
-        m_BaseValue = 0.5f;
+        m_UseManualValue = FALSE;
+        m_RepeatEnabled = FALSE;
+        m_RepeatTimer = 0.0f;
+        m_FirstRepeatDelay = 0.4f;
+        m_RepeatInterval = 0.08f;
+        m_RepeatPulseActive = FALSE;
+        m_ManualValue = 0.0f;
+        m_PressThreshold = 0.5f;
         m_MinValue = 0.2f;
         m_MaxValue = 0.9f;
-        m_UnkFloat_0x24 = 1.1f;
-        m_UnkS32_0x28 = -1;
-        m_UnkBool_0x2 = TRUE;
-        m_UnkFloat_0x2c = 0.0f;
+        m_SmoothingRate = 1.1f;
+        m_ValueCurve = -1;
+        m_NormalizeValue = TRUE;
+        m_Value = 0.0f;
     }
+
+    void Reset();
+    void Update(Float i_DeltaTime);
 };
 
 struct InputActionContext_Z {
     S32 m_DeviceIdx;
     Bool m_AlwaysActive;
     DynArray_Z<InputAction_Z, 4> m_Actions;
-    S32 m_UnkS32_0x10;
+    Bool m_IsActive;
     S32 m_FirstActionIdx;
 
     S32 AddAction(S32 i_ActionId);
