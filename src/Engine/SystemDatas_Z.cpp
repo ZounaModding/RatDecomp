@@ -1,4 +1,10 @@
+// $SABE: Having to add these pragmas is a bit disgusting but it gets it matching, fine for now at least
+#pragma use_lmw_stmw off
+#pragma optimize_for_size off
+#include "Handle_Z.h"
+#pragma optimize_for_size on
 #include "SystemDatas_Z.h"
+#pragma use_lmw_stmw on
 #include "ClassManager_Z.h"
 #include "Math_Z.h"
 #include "Material_Z.h"
@@ -8,6 +14,10 @@
 #include "MaterialObj_Z.h"
 #include "Fonts_Z.h"
 #include "Main_Z.h"
+#include "Console_Z.h"
+#include "GameObj_Z.h"
+#include "Rtc_Z.h"
+#include "KSys_Z.h"
 
 SystemDatas_Z::SystemDatas_Z() {
     m_DefaultMaterialAnimHdl = gData.ClassMgr->NewResource(Name_Z("MaterialAnim_Z"), Name_Z("DefaultMaterialAnim"));
@@ -82,21 +92,246 @@ SystemDatas_Z::SystemDatas_Z() {
 SystemDatas_Z::~SystemDatas_Z() { }
 
 void SystemDatas_Z::MarkHandles() {
+    for (S32 i = 0; i < m_ExtGameObjHdls.GetSize(); i++) {
+        m_ExtGameObjHdls[i]->MarkHandles();
+    }
+    for (S32 i = 0; i < m_GameObjHdls.GetSize(); i++) {
+        m_GameObjHdls[i]->MarkHandles();
+    }
+    for (S32 i = 0; i < m_MaterialObjHdls.GetSize(); i++) {
+        m_MaterialObjHdls[i]->MarkHandles();
+    }
+    for (S32 i = 0; i < m_FontHdls.GetSize(); i++) {
+        m_FontHdls[i]->MarkHandles();
+    }
+    for (S32 i = 0; i < m_RtcHdls.GetSize(); i++) {
+        m_RtcHdls[i]->MarkHandles();
+    }
+
+    if (m_ShadowMaterialHdl.IsValid()) {
+        m_ShadowMaterialHdl->MarkHandles();
+    }
+    if (m_BloomMaterialHdl.IsValid()) {
+        m_BloomMaterialHdl->MarkHandles();
+    }
+    if (m_StencilMaterialHdl.IsValid()) {
+        m_StencilMaterialHdl->MarkHandles();
+    }
+    if (m_OverdrawMaterialHdl.IsValid()) {
+        m_OverdrawMaterialHdl->MarkHandles();
+    }
+    if (m_NoTextureMaterialHdl.IsValid()) {
+        m_NoTextureMaterialHdl->MarkHandles();
+    }
+    if (m_FlashMaterialHdl.IsValid()) {
+        m_FlashMaterialHdl->MarkHandles();
+    }
+    if (m_SonarMaterialHdl.IsValid()) {
+        m_SonarMaterialHdl->MarkHandles();
+    }
+    if (m_RadialMotionBlurMaterialHdl.IsValid()) {
+        m_RadialMotionBlurMaterialHdl->MarkHandles();
+    }
+    m_DefaultMaterialHdl->MarkHandles();
+    m_DefaultMaterialAnimHdl->MarkHandles();
+    m_WhiteBitmapHdl->MarkHandles();
+    m_BlackBitmapHdl->MarkHandles();
+    m_BloomBitmapHdl->MarkHandles();
+    m_DefaultLightDataHdl->MarkHandles();
+    m_SubDefaultLightDataHdl->MarkHandles();
+    m_BlackMaterialHdl->MarkHandles();
+    if (m_UnkMaterialHdl_0x60.IsValid()) {
+        m_UnkMaterialHdl_0x60->MarkHandles();
+    }
+    if (m_UnkBitmapHdl_0x64.IsValid()) {
+        m_UnkBitmapHdl_0x64->MarkHandles();
+    }
 }
 
-Bool SystemDatas_Z::Minimize() {
-    return FALSE;
+void SystemDatas_Z::Minimize() {
+    m_ExtGameObjHdls.Minimize();
+    m_GameObjHdls.Minimize();
+    m_MaterialObjHdls.Minimize();
+}
+
+void SystemDatas_Z::AddExtGameObj(const GameObj_ZHdl& i_GameObjHdl) {
+    m_ExtGameObjHdls.Add(i_GameObjHdl);
+}
+
+void SystemDatas_Z::RemoveExtGameObj(const GameObj_ZHdl& i_GameObjHdl) {
+    for (S32 i = 0; i < m_ExtGameObjHdls.GetSize(); i++) {
+        if (m_ExtGameObjHdls[i] == i_GameObjHdl) {
+            m_ExtGameObjHdls.Remove(i);
+            break;
+        }
+    }
+}
+
+GameObj_ZHdl SystemDatas_Z::GetGameObjectByObjectName(const Name_Z& i_Name, S16 i_GameObjId) {
+    for (S32 i = 0; i < m_GameObjHdls.GetSize(); i++) {
+        Node_ZHdl l_NodeHdl = m_GameObjHdls[i]->GetObjectByName(i_Name, i_GameObjId);
+        if (l_NodeHdl.IsValid()) {
+            return m_GameObjHdls[i];
+        }
+    }
+    for (S32 i = 0; i < m_ExtGameObjHdls.GetSize(); i++) {
+        Node_ZHdl l_NodeHdl = m_ExtGameObjHdls[i]->GetObjectByName(i_Name, i_GameObjId);
+        if (l_NodeHdl.IsValid()) {
+            return m_ExtGameObjHdls[i];
+        }
+    }
+    return GameObj_ZHdl(0);
+}
+
+Node_ZHdl SystemDatas_Z::GetObjectByName(const Name_Z& i_Name, S16 i_GameObjId) {
+    Node_ZHdl l_NodeHdl(0);
+    for (S32 i = 0; i < m_GameObjHdls.GetSize(); i++) {
+        l_NodeHdl = m_GameObjHdls[i]->GetObjectByName(i_Name, i_GameObjId);
+        if (l_NodeHdl.IsValid()) {
+            return l_NodeHdl;
+        }
+    }
+    for (S32 i = 0; i < m_ExtGameObjHdls.GetSize(); i++) {
+        l_NodeHdl = m_ExtGameObjHdls[i]->GetObjectByName(i_Name, i_GameObjId);
+        if (l_NodeHdl.IsValid()) {
+            break;
+        }
+    }
+    return l_NodeHdl;
+}
+
+Rtc_ZHdl SystemDatas_Z::GetSysRtcByObjectName(const Name_Z& i_Name) {
+    for (S32 i = 0; i < m_RtcHdls.GetSize(); i++) {
+        if (m_RtcHdls[i]->GetName() == i_Name) {
+            return m_RtcHdls[i];
+        }
+    }
+    return Rtc_ZHdl(0);
+}
+
+// $SABE: Added this to force HandleManager_Z::GetHandleName before SystemDatas_Z::GetMaterialByName
+static Name_Z FixOrder() {
+    BaseObject_ZHdl l_Handle;
+    Name_Z l_HandleName = gData.ClassMgr->GetHandleName(l_Handle);
+    return l_HandleName;
 }
 
 MaterialAnim_ZHdl SystemDatas_Z::GetMaterialByName(const Name_Z& i_Name) {
-    MaterialAnim_ZHdl l_MatHdl;
-    for (S32 i = 0; !l_MatHdl.IsValid() && i < m_MaterialObjHdls.GetSize(); i++) {
-        l_MatHdl = m_MaterialObjHdls[i]->GetMaterialByName(i_Name);
+    MaterialAnim_ZHdl l_MaterialHdl;
+    for (S32 i = 0; !l_MaterialHdl.IsValid() && i < m_MaterialObjHdls.GetSize(); i++) {
+        l_MaterialHdl = m_MaterialObjHdls[i]->GetMaterialByName(i_Name);
     }
-    if (!l_MatHdl.IsValid()) {
-        gData.MaterialMgr->GetMaterialByName(i_Name, l_MatHdl);
+    if (!l_MaterialHdl.IsValid()) {
+        gData.MaterialMgr->GetMaterialByName(i_Name, l_MaterialHdl);
     }
-    return l_MatHdl;
+    return l_MaterialHdl;
+}
+
+Bool SystemDatas_Z::LoadObjects(const Char* i_FileName) {
+    GameObj_ZHdl l_GameObjHdl = gData.ClassMgr->GetResourceObject(i_FileName);
+    if (!l_GameObjHdl.IsValid()) {
+        return FALSE;
+    }
+    for (S32 i = 0; i < m_GameObjHdls.GetSize(); i++) {
+        if (m_GameObjHdls[i] == l_GameObjHdl) {
+            return TRUE;
+        }
+    }
+    m_GameObjHdls.Add(l_GameObjHdl);
+    return TRUE;
+}
+
+Bool SystemDatas_Z::RemoveObjects(const Char* i_FileName) {
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    PathKDBToSys(i_FileName, l_FileName);
+    String_Z<ARRAY_CHAR_MAX> l_DbFileName;
+    PathSysToDB(l_FileName, l_DbFileName);
+    const Name_Z l_ResourceName(l_DbFileName);
+
+    for (S32 i = 0; i < m_GameObjHdls.GetSize(); i++) {
+        const Name_Z& l_HandleName = gData.ClassMgr->GetHandleName(m_GameObjHdls[i]);
+        if (l_HandleName == l_ResourceName) {
+            m_GameObjHdls.Remove(i);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+Bool SystemDatas_Z::LoadMaterialLib(const Char* i_FileName) {
+    MaterialObj_ZHdl l_MaterialObjHdl = gData.ClassMgr->GetResourceObject(i_FileName);
+    if (!l_MaterialObjHdl.IsValid()) {
+        return FALSE;
+    }
+
+    S32 i;
+    for (i = 0; i < m_MaterialObjHdls.GetSize(); i++) {
+        if (m_MaterialObjHdls[i] == l_MaterialObjHdl) {
+            break;
+        }
+    }
+    if (i == m_MaterialObjHdls.GetSize()) {
+        m_MaterialObjHdls.Add(l_MaterialObjHdl);
+    }
+
+    MaterialAnim_ZHdl l_ShadowMaterialAnimHdl = GetMaterialByName(Name_Z("SHADOW"));
+    if (l_ShadowMaterialAnimHdl.IsValid()) {
+        m_ShadowMaterialHdl = l_ShadowMaterialAnimHdl->GetMaterial();
+    }
+    return l_MaterialObjHdl.IsValid();
+}
+
+Bool SystemDatas_Z::RemoveMaterialLib(const Char* i_FileName) {
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    PathKDBToSys(i_FileName, l_FileName);
+    String_Z<ARRAY_CHAR_MAX> l_DbFileName;
+    PathSysToDB(l_FileName, l_DbFileName);
+    const Name_Z l_ResourceName(l_DbFileName);
+
+    for (S32 i = 0; i < m_MaterialObjHdls.GetSize(); i++) {
+        const Name_Z& l_HandleName = gData.ClassMgr->GetHandleName(m_MaterialObjHdls[i]);
+        if (l_HandleName == l_ResourceName) {
+            m_MaterialObjHdls.Remove(i);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+Bool SystemDatas_Z::LoadSysRtc(const Char* i_FileName) {
+    Rtc_ZHdl l_RtcHdl = gData.ClassMgr->GetResourceObject(i_FileName);
+    if (!l_RtcHdl.IsValid()) {
+        return FALSE;
+    }
+
+    S32 i;
+    for (i = 0; i < m_RtcHdls.GetSize(); i++) {
+        if (m_RtcHdls[i] == l_RtcHdl) {
+            break;
+        }
+    }
+    if (i == m_RtcHdls.GetSize()) {
+        m_RtcHdls.Add(l_RtcHdl);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+Bool SystemDatas_Z::RemoveSysRtc(const Char* i_FileName) {
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    PathKDBToSys(i_FileName, l_FileName);
+    String_Z<ARRAY_CHAR_MAX> l_DbFileName;
+    PathSysToDB(l_FileName, l_DbFileName);
+    const Name_Z l_ResourceName(l_DbFileName);
+
+    for (S32 i = 0; i < m_RtcHdls.GetSize(); i++) {
+        const Name_Z& l_HandleName = gData.ClassMgr->GetHandleName(m_RtcHdls[i]);
+        if (l_HandleName == l_ResourceName) {
+            m_RtcHdls.Remove(i);
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 S32 SystemDatas_Z::GetFontId(const Name_Z& i_Name) {
@@ -108,26 +343,70 @@ S32 SystemDatas_Z::GetFontId(const Name_Z& i_Name) {
     return -1;
 }
 
+static const Char s_TextureDebugMat[] = "TextureDebugMat";
+
 Bool LoadMaterialLib() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat(".TOTEMBITMAP");
+    return gData.SystemDatas->LoadMaterialLib(l_FileName);
 }
 
 Bool LoadObjectLib() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat(".TGAMEOBJ");
+    return gData.SystemDatas->LoadObjects(l_FileName);
 }
 
 Bool RemoveObjectLib() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat(".TGAMEOBJ");
+    return gData.SystemDatas->RemoveObjects(l_FileName);
 }
 
 Bool RemoveMaterialLib() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat(".TOTEMBITMAP");
+    return gData.SystemDatas->RemoveMaterialLib(l_FileName);
 }
 
 Bool LoadSysRtc() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat("_RTC.TRTC");
+    return gData.SystemDatas->LoadSysRtc(l_FileName);
 }
 
 Bool RemoveSysRtc() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() != 2) {
+        return TRUE;
+    }
+    String_Z<ARRAY_CHAR_MAX> l_FileName;
+    l_FileName.StrCpy("DB:>");
+    l_FileName.StrCat(gData.Cons->GetParamStr(1));
+    l_FileName.StrCat("_RTC.TRTC");
+    return gData.SystemDatas->RemoveSysRtc(l_FileName);
 }

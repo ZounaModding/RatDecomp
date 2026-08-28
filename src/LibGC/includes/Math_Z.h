@@ -57,6 +57,10 @@ inline Float InvSqrt(register Float x, register Float y = 1.f) {
 
 void Inverse2(const Mat4x4&, Mat4x4&);
 
+inline Float DegToRad(Float i_Deg) {
+    return (i_Deg * Pi / 180.f);
+}
+
 union UDummy { // $SABE: U dummy!
     S16 i16[2];
     U16 u16[2];

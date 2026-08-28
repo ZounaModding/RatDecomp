@@ -1,6 +1,7 @@
 #ifndef _NAME_Z_H_
 #define _NAME_Z_H_
 #include "Types_Z.h"
+#include "String_Z.h"
 
 class Name_Z {
 public:
@@ -9,6 +10,10 @@ public:
     }
 
     Name_Z(int i_ID) { m_ID = (U32)i_ID; }
+
+    Name_Z(const String_Z<ARRAY_CHAR_MAX>& i_Str) {
+        SetName(i_Str);
+    }
 
     Name_Z() { m_ID = 0; }
 

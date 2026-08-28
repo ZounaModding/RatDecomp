@@ -56,6 +56,8 @@ struct Sphere_Z {
         return *this;
     }
 
+    void Set(const Vec3f* i_VecPtr, S32 i_NbPoint);
+
     inline void Set(const Vec3f& i_Center, Float i_Radius) {
         Center.x = i_Center.x;
         Center.y = i_Center.y;

@@ -804,7 +804,7 @@ config.libs = [
             Object(Matching,    "Engine/AnimatedMsgAgent_Z.cpp"),
             Object(NonMatching, "Engine/StreamAgent_Z.cpp"),
             Object(NonMatching, "Engine/ObjectMoveCollShadow_Z.cpp"),
-            Object(NonMatching, "Engine/SystemDatas_Z.cpp",extra_cflags=["-O4,s","-inline off"]),
+            Object(Matching,    "Engine/SystemDatas_Z.cpp",extra_cflags=["-O4,s","-inline off"]),
             Object(NonMatching, "Engine/ParticlesLoad_Z.cpp"),
             Object(Matching,    "Engine/SkinAgent_Z.cpp"),
             Object(NonMatching, "Engine/MeshCollision_Z.cpp"),

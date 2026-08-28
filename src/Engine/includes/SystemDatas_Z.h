@@ -18,8 +18,18 @@ public:
     MaterialAnim_ZHdl GetMaterialByName(const Name_Z& i_Name);
     S32 GetFontId(const Name_Z& i_Name);
     void MarkHandles();
-    Bool Minimize();
+    void Minimize();
+    void AddExtGameObj(const GameObj_ZHdl& i_GameObjHdl);
+    void RemoveExtGameObj(const GameObj_ZHdl& i_GameObjHdl);
+    GameObj_ZHdl GetGameObjectByObjectName(const Name_Z& i_Name, S16 i_GameObjId);
     Node_ZHdl GetObjectByName(const Name_Z& i_Name, S16 i_GameObjId);
+    Rtc_ZHdl GetSysRtcByObjectName(const Name_Z& i_Name);
+    Bool LoadObjects(const Char* i_FileName);
+    Bool RemoveObjects(const Char* i_FileName);
+    Bool LoadMaterialLib(const Char* i_FileName);
+    Bool RemoveMaterialLib(const Char* i_FileName);
+    Bool LoadSysRtc(const Char* i_FileName);
+    Bool RemoveSysRtc(const Char* i_FileName);
 
     Fonts_Z* GetFont(S32 i_FontId) const {
         if (i_FontId < 0 || i_FontId >= m_FontHdls.GetSize()) {

@@ -5,15 +5,31 @@
 #include "MatrixCache_Z.h"
 #include "Occluder_ZHdl.h"
 
+// $SABE: This is a bit hacky, but the constructor can't match
+//        if m_PlanesLRB and m_PlanesTNF Vec4f arrays, so eh
+struct FrustrumVec4_Z {
+    Float x;
+    Float y;
+    Float z;
+    Float w;
+
+    void Set(Float i_X, Float i_Y, Float i_Z, Float i_W) {
+        x = i_X;
+        y = i_Y;
+        z = i_Z;
+        w = i_W;
+    }
+} Aligned_Z(16);
+
 struct FrustrumPlane_Z {
-    Vec4f m_PlaneNormals[6]; // plane normals - left,right,bottom,top,near,far I think
-    Vec4f m_PlanesDir[6];    // plane normals transformed by world matrix WITHOUT translation
-    Float m_PlaneOffsets[6]; // the D (or -D im not sure) of the planes (you can move up the normal by this to get the real world coord plane)
-    Vec4f m_PlanesLRB[4];    // L.x, R.x, B.x, 1.0, L.y, R.y, B.y, 1.0, L.z, R.z, B.z, 1.0, L.offset, R.offset, B.offset, 1.0
-    Vec4f m_PlanesTNF[4];    // T.x, N.x, F.x, 1.0, T.y, N.y, F.y, 1.0, T.z, N.z, F.z, 1.0, T.offset, N.offset, F.offset, 1.0
-    Vec4f m_PlaneX;          // x component of left,right,bottom,top
-    Vec4f m_PlaneY;          // y component of left,right,bottom,top
-    Vec4f m_PlaneZ;          // z component of left,right,bottom,top
+    Vec4f m_PlaneNormals[6];       // plane normals - left,right,bottom,top,near,far I think
+    Vec4f m_PlanesDir[6];          // plane normals transformed by world matrix WITHOUT translation
+    Float m_PlaneOffsets[6];       // the D (or -D im not sure) of the planes (you can move up the normal by this to get the real world coord plane)
+    FrustrumVec4_Z m_PlanesLRB[4]; // L.x, R.x, B.x, 1.0, L.y, R.y, B.y, 1.0, L.z, R.z, B.z, 1.0, L.offset, R.offset, B.offset, 1.0
+    FrustrumVec4_Z m_PlanesTNF[4]; // T.x, N.x, F.x, 1.0, T.y, N.y, F.y, 1.0, T.z, N.z, F.z, 1.0, T.offset, N.offset, F.offset, 1.0
+    Vec4f m_PlaneX;                // x component of left,right,bottom,top
+    Vec4f m_PlaneY;                // y component of left,right,bottom,top
+    Vec4f m_PlaneZ;                // z component of left,right,bottom,top
 
     void BuildFrustrum(const Mat4x4& i_WorldMatrix, const Vec3f& i_CameraPosition, Float i_HRatio, Float i_VRatio, Float i_NearClip, Float i_FarClip);
     void BuildPlane(const Vec3f& i_CameraPosition, Float i_NearClip, Float i_FarClip);
@@ -153,6 +169,8 @@ private:
     Float m_UnkFloat_0x10dc;
 
 public:
+    Camera_Z();
+
     void UpdateInverseWorldMatrix(Node_Z* i_Node);
 
     virtual ~Camera_Z() { }
@@ -170,6 +188,7 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(188) Camera_Z; }
 
     void SetFov(Float i_Fov);
+    void SetTarget(const Vec3f& i_Target);
 
     inline Float GetFov() const {
         return m_Fov;

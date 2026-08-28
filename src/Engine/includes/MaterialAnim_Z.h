@@ -45,6 +45,10 @@ public:
         return m_MaterialHdl;
     }
 
+    inline Material_ZHdl& GetMaterial() {
+        return m_MaterialHdl;
+    }
+
     Bool IsAnimated() {
         return !(m_PlayFlag & FL_MTL_NOT_ANIMATED);
     }
