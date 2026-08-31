@@ -80,7 +80,7 @@ public:
     virtual Bool ParentLink(S32 i_Index);
     virtual void RestoreStartingPos(S32 i_Index);
     virtual void StoreStartingPos(S32 i_Index);
-    virtual void ChangeLink(const Node_ZHdl& i_NodeHdl, Node_Z* i_Parent, bool i_Update, S32 i_Index);
+    virtual void ChangeLink(const Node_ZHdl& i_NodeHdl, Node_Z* i_Parent, Bool i_Update, S32 i_Index);
 
     virtual Vec3f& GetLastEffectiveSpeed(S32 i_Index) {
     }
@@ -91,12 +91,12 @@ public:
     virtual void FatherUnLinked(S32 i_Index);
     virtual void Abort();
     virtual void UpdateDynamic(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos, S32 i_Index);
-    virtual void UpdateVolume(SeadZone_Z& i_Zone, bool i_IsInit);
-    virtual void UpdateCollisionVolume(World_Z* i_World, bool i_IsInit);
-    virtual void UpdateCollisionNode(SeadZone_Z& i_Zone, const Vec3f& i_Pos, const Sphere_Z& i_Sphere, Vec3f& io_Orient, Vec3f& io_Dir, S32 i_Index, bool i_GetDisplacement);
+    virtual void UpdateVolume(SeadZone_Z& i_Zone, Bool i_IsInit);
+    virtual void UpdateCollisionVolume(World_Z* i_World, Bool i_IsInit);
+    virtual void UpdateCollisionNode(SeadZone_Z& i_Zone, const Vec3f& i_Pos, const Sphere_Z& i_Sphere, Vec3f& io_Orient, Vec3f& io_Dir, S32 i_Index, Bool i_GetDisplacement);
     virtual void GetCollisionNodeDepl(const Vec3f& i_CurPos, Vec3f& o_Orient, Vec3f& o_Dir);
     virtual void InitLinkCollisionNode(ColLineResult_Z& i_Result, const Vec3f& i_Orient, S32 i_Index);
-    virtual void EndCollisionNode(bool i_Abort, S32 i_Index);
+    virtual void EndCollisionNode(Bool i_Abort, S32 i_Index);
 
     virtual void GetLinkCollisionNode(Vec3f& o_Intersection, Vec3f& o_InterGround, Vec3f& o_Local, Vec3f& o_LocalLookAt, S32 i_Index) { }
 

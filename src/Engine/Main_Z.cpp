@@ -140,7 +140,7 @@ void _CoreMainLoop() {
     gData.GameMgr->Update(dTime);
 
     WhereAmI_Z("Before ManipulatorMgr->Update()");
-    gData.ManipMgr->Update(dTime);
+    gData.ManipulatorMgr->Update(dTime);
 
     WhereAmI_Z("Before EffectMgr->Update()");
     gData.EffectMgr->Update(dTime);
@@ -171,7 +171,7 @@ void _CoreMainLoop() {
             WhereAmI_Z("Before ScriptMgr->EndPause()");
             gData.ScriptMgr->EndPause();
             WhereAmI_Z("Before ManipulatorMgr->EndPause()");
-            gData.ManipMgr->EndPause();
+            gData.ManipulatorMgr->EndPause();
             WhereAmI_Z("Before MaterialMgr->EndPause()");
             gData.MaterialMgr->EndPause();
             WhereAmI_Z("Before GameMgr->EndPause()");
@@ -295,7 +295,7 @@ void ProgramInit() {
     NewMgrL_Z(gData.ColSurfaceCache, ColSurfaceCache_Z, 414);
     NewMgrL_Z(gData.ColTriangleCache, ColTriangleCache_Z, 416);
     NewMgrL_Z(gData.MatrixBuffer, Mat4x4Buffer_Z, 417);
-    NewMgrL_Z(gData.ManipMgr, ManipulatorManager_Z, 418);
+    NewMgrL_Z(gData.ManipulatorMgr, ManipulatorManager_Z, 418);
     NewMgrL_Z(gData.GameMgr, GameManager_Z, 419);
     NewMgrL_Z(gData.AnimMgr, AnimationManager_Z, 420);
     NewMgrL_Z(gData.EffectMgr, EffectManager_Z, 421);
@@ -355,7 +355,7 @@ void RegisterClasses() {
     REGISTER_CLASS("PointsData_Z", "ObjectData_Z", NULL);
     REGISTER_CLASS("Txt_Z", "ResourceObject_Z", Txt_Z::NewObject);
     REGISTER_CLASS("Animation_Z", "ResourceObject_Z", Animation_Z::NewObject);
-    REGISTER_CLASS_TYPE("Animation_Z", FL_CLASS_STREAM_XRAM, FL_CLASS_NONE);
+    REGISTER_CLASS_TYPE("Animation_Z", FL_CLASS_TYPE_STREAM_XRAM, FL_CLASS_TYPE_NONE);
     RegisterLowLevelClasses();
     REGISTER_CLASS("Manipulator_Z", "BaseObject_Z", NULL);
     REGISTER_CLASS("ManipulatorDraw_Z", "Manipulator_Z", NULL);

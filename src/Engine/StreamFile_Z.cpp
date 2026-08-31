@@ -91,7 +91,7 @@ void StreamFile_Z::Update(Float i_DeltaTime) {
             while (l_BlockDesc->m_ObjectCount--) {
                 BigFileRscHeader_Z* l_PrevRscHeader = m_CurResource.m_Header;
                 if (gData.ClassMgr->LoadResource(m_CurResource)) {
-                    m_Resources.Add(m_CurResource.m_Rsc);
+                    m_Resources.Add(m_CurResource.m_ObjPtr);
                 }
                 BigFileRscHeader_Z l_RscHeader;
                 Sys_Z::MemCpyFrom(&l_RscHeader, m_CurResource.m_Header, sizeof(BigFileRscHeader_Z));

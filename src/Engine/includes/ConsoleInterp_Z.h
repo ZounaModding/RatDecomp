@@ -26,7 +26,7 @@ public:
     void Start(const Char* i_CommandLine, S32 i_FileSize);
     void Start(const Char* i_FileName, Char** i_CommandLine, S32 i_ParamCount);
     Bool PushCommand(const Char* i_CommandLine, Bool i_TopOfStack);
-    Bool PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& i_CommandString);
+    Bool PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& o_CommandString);
     Bool DoCommand(U32 i_Depth, Char* i_CommandString, S32& io_CommentCurrentDepth, Bool& o_Skipped, FileInterp_Z* i_ReplacementFileInterp = NULL);
     void End();
 

@@ -6,6 +6,9 @@ class Material_Z;
 class Object_Z;
 class ObjectDatas_Z;
 
+#define NUM_SPHERE_HIT_MAX 256
+#define NUM_CAPSULE_HIT_MAX 128
+
 struct ColLineResult_Z {
     Vec4f m_Intersection;
     Vec4f m_Normal;

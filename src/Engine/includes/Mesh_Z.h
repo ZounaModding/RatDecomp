@@ -6,12 +6,16 @@
 #include "MeshCollision_Z.h"
 #include "MeshStrip_Z.h"
 
+class SphereColNode_Z;
+
 class FaceVolume_Z {
 public:
     Vec4f* m_Vertex1;
     Vec4f* m_Vertex2;
     Vec4f* m_Vertex3;
-    U8 m_Unk_0xC[20];
+    U32 m_UnkValue;
+    Vec3f m_Normal;
+    Float m_Dot;
 };
 
 class EdgeVolume_Z {
@@ -28,8 +32,8 @@ public:
     void Clone(const MeshVolume_Z& i_MeshVolume);
 
     Vec4fDA m_Vertices;
-    DynArray_Z<FaceVolume_Z, 64, FALSE, FALSE, 4> m_FaceVolumes;
-    DynArray_Z<EdgeVolume_Z, 64, FALSE, FALSE, 4> m_EdgeVolumes;
+    DynArray_Z<FaceVolume_Z, 64, FALSE, FALSE> m_FaceVolumes;
+    DynArray_Z<EdgeVolume_Z, 64, FALSE, FALSE> m_EdgeVolumes;
     Vec4fDA m_UnkVertices;
 };
 
@@ -57,17 +61,25 @@ public:
     virtual Bool MarkHandles();
     virtual void Draw(DrawInfo_Z& a1, ObjectDatas_Z* a2);
     virtual Bool GetCollisionLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual Bool GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, 256, 0, 1>& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, NUM_SPHERE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
     virtual Bool GetCollisionMovingSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual Bool GetCollisionCapsule(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, StaticArray_Z<ColSphereResult_Z, 128, FALSE, TRUE>& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual Bool GetCollisionBoxes(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<BoxFlag_Z, 8, FALSE, FALSE, 4>& o_Result, U64 i_Flag, U64 i_NoFlag);
-    virtual Bool GetCollisionSpheres(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<SphereFlag_Z, 8, FALSE, FALSE, 4>& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionCapsule(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, StaticArray_Z<ColSphereResult_Z, NUM_CAPSULE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionBoxes(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<BoxFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
+    virtual Bool GetCollisionSpheres(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<SphereFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag);
 
     virtual U32 GetNbNormals() const {
         return m_Normals.GetSize();
     }
 
 protected:
+    static void Load(void** i_Data, SphereCol_Z& o_SphereCol);
+    static void Load(void** i_Data, BoxCol_Z& o_BoxCol);
+    static void Load(void** i_Data, CylindreCol_Z& o_CylindreCol);
+    static void Load(void** i_Data, SphereCol_ZDA& o_SphereCols);
+    static void Load(void** i_Data, BoxCol_ZDA& o_BoxCols);
+    static void Load(void** i_Data, CylindreCol_ZDA& o_CylindreCols);
+    static void Load(void** i_Data, SphereColNode_Z** o_SphereColNode);
+
     Vec3fDA m_Normals;
     Vec2fDA m_TextureCoordinates;
     Strip_ZDA m_Strips;

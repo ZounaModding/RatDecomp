@@ -1,18 +1,19 @@
 #ifndef _NAME_Z_H_
 #define _NAME_Z_H_
 #include "Types_Z.h"
+#include "String_Z.h"
 
 class Name_Z {
 public:
-    Name_Z(const Name_Z& i_Name) {
-        m_ID = i_Name.m_ID;
-    }
-
     Name_Z(const Char* i_Str) {
         SetName(i_Str);
     }
 
     Name_Z(int i_ID) { m_ID = (U32)i_ID; }
+
+    Name_Z(const String_Z<ARRAY_CHAR_MAX>& i_Str) {
+        SetName(i_Str);
+    }
 
     Name_Z() { m_ID = 0; }
 
@@ -49,7 +50,7 @@ public:
 
     Bool operator!=(const Name_Z& i_Name) const { return m_ID != i_Name.m_ID; }
 
-    Bool operator!=(Name_Z i_Name) { return m_ID != i_Name.m_ID; }
+    Bool operator!=(const Name_Z& i_Name) { return m_ID != i_Name.m_ID; }
 
     U32 m_ID;
 };

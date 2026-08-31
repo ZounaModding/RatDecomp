@@ -48,6 +48,26 @@ void Viewport_Z::SetWorld(const World_ZHdl& i_WorldHdl) {
     }
 }
 
+void Viewport_Z::SetCamera(const Node_ZHdl& i_CameraNodeHdl) {
+    m_CameraNodeHdl = i_CameraNodeHdl;
+    if (!m_CameraNodeHdl.IsValid()) {
+        return;
+    }
+
+    ASSERTLE_Z(
+        m_CameraNodeHdl->GetObject() && m_CameraNodeHdl->GetObject()->GetHandle().IsValid() && m_CameraNodeHdl->GetObject()->GetGeometryType() == CAMERA_Z,
+        "Non Valid Node Camera",
+        74,
+        "CameraHdl->GetObject() && CameraHdl->GetObject()->GetHandle().IsValid() && CameraHdl->GetObject()->GetGeometryType()==CAMERA_Z"
+    );
+
+    if (m_CameraMatrixId == (U16)-1) {
+        m_CameraMatrixId = gData.MatrixBuffer->GetNewMatrix();
+        gData.MatrixBuffer->GetMatrix(m_CameraMatrixId, 0)->SetIdentity();
+        gData.MatrixBuffer->GetMatrix(m_CameraMatrixId, 1)->SetIdentity();
+    }
+}
+
 // TODO: Finish matching
 void Viewport_Z::UpdateFrustrum() {
     Node_Z* l_CameraNode = m_CameraNodeHdl;
@@ -84,9 +104,9 @@ void Viewport_Z::UpdateFrustrum() {
     l_Camera->GetFrustrum().m_WorldTranslation = l_CameraMatrix.GetMatrixTrans();
     l_Camera->GetFrustrum().m_WorldMatrix = l_CameraMatrix;
     l_Camera->GetFrustrum().m_Direction = l_Camera->GetDir();
-    Vec3f l_Right = l_Camera->GetFrustrum().m_Direction ^ VEC3F_UP;
-    l_Right.CNormalize();
-    l_Camera->GetFrustrum().m_Up = l_Right ^ l_Camera->GetFrustrum().m_Direction;
+    Vec3f l_Left = l_Camera->GetFrustrum().m_Direction ^ VEC3F_UP;
+    l_Left.CNormalize();
+    l_Camera->GetFrustrum().m_Up = l_Left ^ l_Camera->GetFrustrum().m_Direction;
     l_Camera->GetFrustrum().m_Up.CNormalize();
     l_Camera->GetFrustrum().m_ViewPlanes.BuildFrustrum(
         l_CameraMatrix,
@@ -134,10 +154,10 @@ void Viewport_Z::UpdateFrustrum() {
     l_Camera->GetFrustrum().m_CornerPoints[3] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_NearClip;
     l_Camera->GetFrustrum().m_CornerPoints[7] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_FarClip;
 
-    l_Camera->GetFrustrum().m_FarPlaneHalfWidth = ((l_Camera->GetFrustrum().m_CornerPoints[4] - l_Camera->GetFrustrum().m_CornerPoints[7]).GetNorm()) * 0.5f;
-    l_Camera->GetFrustrum().m_FarPlaneHalfHeight = ((l_Camera->GetFrustrum().m_CornerPoints[5] - l_Camera->GetFrustrum().m_CornerPoints[6]).GetNorm()) * 0.5f;
+    l_Camera->GetFrustrum().m_FarPlaneData[0] = ((l_Camera->GetFrustrum().m_CornerPoints[4] - l_Camera->GetFrustrum().m_CornerPoints[7]).GetNorm()) * 0.5f;
+    l_Camera->GetFrustrum().m_FarPlaneData[1] = ((l_Camera->GetFrustrum().m_CornerPoints[5] - l_Camera->GetFrustrum().m_CornerPoints[6]).GetNorm()) * 0.5f;
 
-    l_Camera->GetFrustrum().m_FrustumFarClip = l_Camera->GetFrustrum().m_FarClip;
+    l_Camera->GetFrustrum().m_FarPlaneData[2] = l_Camera->GetFrustrum().m_FarClip;
 
     m_FrustumBoundsMin = l_Camera->GetFrustrum().m_CornerPoints[0];
     m_FrustumBoundsMax = m_FrustumBoundsMin;
@@ -169,6 +189,10 @@ void Viewport_Z::UpdateFrustrum() {
     l_Camera->GetFrustrum().m_TopViewBoundsMax.Set(m_FrustumBoundsMax.x, m_FrustumBoundsMax.z);
 }
 
+const Mat4x4& Viewport_Z::GetMatrixInv() const {
+    return ((Camera_Z*)m_CameraNodeHdl->GetObject())->GetInverseWorldMatrix();
+}
+
 void Viewport_Z::Draw(DrawInfo_Z& i_DrawInfo) {
     S32 i;
 
@@ -189,7 +213,7 @@ void Viewport_Z::Draw(DrawInfo_Z& i_DrawInfo) {
         }
         i_DrawInfo.m_Camera = l_Camera;
         i_DrawInfo.m_CameraNode = l_CameraNode;
-        i_DrawInfo.m_CameraTranslation = l_CameraNode->GetTranslation();
+        i_DrawInfo.m_CameraTranslation = l_CameraNode->GetWorldTranslation();
         i_DrawInfo.m_CameraDirection = l_Camera->GetDir();
         i_DrawInfo.m_World2Cam = l_Camera->GetInverseWorldMatrix();
         i_DrawInfo.m_VpTangent = GetTang();

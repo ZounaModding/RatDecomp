@@ -13,7 +13,7 @@ public:
 
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
     virtual void Open(const Char* a1, U32 a2);
-    virtual void Stop(bool a1);
+    virtual void Stop(Bool a1);
     virtual void SetError(U32 a1);
     virtual void HandleBinkCopyToBuffer();
 

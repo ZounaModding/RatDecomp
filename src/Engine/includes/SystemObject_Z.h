@@ -29,6 +29,7 @@ struct Box_Z {
     Box_Z& operator+=(const Box_Z& i_Box);
     Box_Z& operator+=(const Sphere_Z& i_Sph);
     Box_Z operator*(const Mat4x4& i_Mat) const;
+    void MatMulHasScale(const Box_Z& i_Box, const Mat4x4& i_Mat, Float i_Scale, Float i_InvScale);
     void Build(const Vec3f& i_Center, const Vec3f& i_YAxis, const Vec3f* i_PointList, U32 i_NumPoint, Bool i_bAllowTinyBoxes = FALSE);
     void GetVtx(Vec3f* o_VtxArr) const;
 
@@ -41,9 +42,13 @@ struct Box_Z {
     inline void SetTranslation(const Vec4f& i_Trans) { Mat.m.m[0][3] = i_Trans.x, Mat.m.m[1][3] = i_Trans.y, Mat.m.m[2][3] = i_Trans.z; }
 };
 
+typedef DynArray_Z<Box_Z, 8, FALSE, FALSE> Box_ZDA;
+
 struct Sphere_Z {
     Vec3f Center;
     Float Radius;
+
+    Sphere_Z operator+(const Sphere_Z& i_Sphere) const;
 
     Sphere_Z& operator=(const Sphere_Z& i_Sph) {
         Center.x = i_Sph.Center.x;
@@ -52,6 +57,8 @@ struct Sphere_Z {
         Radius = i_Sph.Radius;
         return *this;
     }
+
+    void Set(const Vec3f* i_VecPtr, S32 i_NbPoint);
 
     inline void Set(const Vec3f& i_Center, Float i_Radius) {
         Center.x = i_Center.x;
@@ -142,6 +149,11 @@ struct Rect_Z {
     }
 };
 
+struct Vec2fRect_Z {
+    Vec2f m_BMin;
+    Vec2f m_BMax;
+};
+
 #define DEFAULT_NOCULLED 10001.f
 
 class CullCone_Z {
@@ -168,9 +180,13 @@ struct Segment_Z {
     Float Length;
     Vec3f Direction;
     Float Pad;
-} Aligned_Z(16);
+};
 
 struct Cylindre_Z {
+    Cylindre_Z() {
+        Radius = 1.0f;
+    }
+
     Segment_Z Seg;
     Float Radius;
 };

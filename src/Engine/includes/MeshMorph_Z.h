@@ -7,6 +7,10 @@
 struct MorphTarget_Z {
     Name_Z m_MeshName;
     Float m_Morph;
+
+    MorphTarget_Z()
+        : m_MeshName(0)
+        , m_Morph(0.0f) { }
 };
 
 // $SABE: Probably wrong, no way to tell

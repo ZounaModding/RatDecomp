@@ -51,7 +51,7 @@ Bool Fonts_Z::MarkHandles() {
 Bool Fonts_Z::GetCharDesc(const Char* i_Char, CharDesc_Z& o_CharDesc) {
     S32 l_CharCode = GetUTF8CharCode(i_Char);
     const FontGlyphHash_Z l_HashElt(l_CharCode);
-    const FontGlyphHash_Z* l_Result = m_FontGlyphHashHT.Search(l_HashElt);
+    const FontGlyphHash_Z* l_Result = m_GlyphsHT.Search(l_HashElt);
     if (!l_Result) {
         return FALSE;
     }
@@ -65,7 +65,7 @@ Bool Fonts_Z::GetCharDesc(const Char* i_Char, CharDesc_Z& o_CharDesc) {
 S32 Fonts_Z::GetSizeChar(const Char* i_Char) {
     S32 l_CharCode = GetUTF8CharCode(i_Char);
     const FontGlyphHash_Z l_HashElt(l_CharCode);
-    const FontGlyphHash_Z* l_Result = m_FontGlyphHashHT.Search(l_HashElt);
+    const FontGlyphHash_Z* l_Result = m_GlyphsHT.Search(l_HashElt);
     if (l_Result == NULL) {
         return -1;
     }

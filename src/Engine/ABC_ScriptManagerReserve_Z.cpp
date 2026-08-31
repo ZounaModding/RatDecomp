@@ -17,7 +17,7 @@ ABC_Message* ABC_ScriptManager::GetNewMessage() {
 }
 
 void ABC_ScriptManager::ReleaseMessage(ABC_Message* i_Msg) {
-    i_Msg->m_Sender = BaseObject_ZHdl(0);
+    i_Msg->m_Sender = HANDLE_NULL;
     m_LinkedMessageReserve.Release(i_Msg);
 }
 

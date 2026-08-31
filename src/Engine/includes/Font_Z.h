@@ -1,8 +1,9 @@
 #ifndef _FONT_Z_H_
 #define _FONT_Z_H_
+#include "Types_Z.h"
 
 // clang-format off
-unsigned char Font[255 - 32][8][8] = {
+U8 Font[255 - 32][8][8] = {
     { 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,

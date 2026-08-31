@@ -34,9 +34,9 @@ public:
     virtual void PlaySound(Sound_ZHdl& a1, U32 a2, const Node_ZHdl& a3, BoneNode_Z* a4);
     virtual void FreeSound(void* a1);
     virtual void StopSound(S32 a1);
-    virtual void GetTrackTime(S32 a1);
+    virtual Float GetTrackTime(S32 a1);
 
-    virtual void GetDlgDTime(S32 a1) { }
+    virtual Float GetDlgDTime(S32 a1) { return -1.0f; }
 
 private:
     S32 m_MusicTrackIdx;

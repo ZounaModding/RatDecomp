@@ -3,6 +3,7 @@
 #include "Agent_Z.h"
 #include "PlayParticles_ZHdl.h"
 #include "Skel_ZHdl.h"
+class BoneNode_Z;
 // clang-format off
 
 BEGIN_AGENT_CLASS(ParticlesAgent_Z, Agent_Z, 12)
@@ -22,6 +23,8 @@ public:
     void Pause();
     void Resume();
     void Replay();
+    void SetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot);
+    void SetPosAndRot(Node_Z* i_Node, BoneNode_Z* i_BoneNode);
 
 private:
     PlayParticles_ZHdl m_PlayParticlesHdl;

@@ -25,6 +25,10 @@ public:
         return m_ViewportId;
     }
 
+    ParticlesAgent_ZHdlDA& GetParticlesAgents() {
+        return m_ParticlesAgents;
+    }
+
 private:
     CameraEngine_ZHdl m_DefaultCameraEngineHdl;
     S32 m_ViewportId;

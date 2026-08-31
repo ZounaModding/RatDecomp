@@ -47,6 +47,8 @@ struct RegMaterialUser_Z {
 };
 
 class Material_Z : public ResourceObject_Z {
+    friend class MaterialAnim_Z;
+
 public:
     enum mtl_params {
         mtl_diffuse = 0, // Diffuse bitmap channel

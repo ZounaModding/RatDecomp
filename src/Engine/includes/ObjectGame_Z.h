@@ -40,6 +40,14 @@ public:
         return m_FirstPlayerVpId;
     }
 
+    inline void SetFirstVp(S32 i_FirstVp) {
+        m_FirstPlayerVpId = i_FirstVp;
+    }
+
+    inline const Game_ZHdl& GetGameHdl() const {
+        return m_GameHdl;
+    }
+
 private:
     U32 m_NbVp;
     U32 m_FirstPlayerVpId;

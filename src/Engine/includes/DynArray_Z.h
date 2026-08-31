@@ -22,6 +22,16 @@ public:
         m_ArrayPtr = NULL;
     }
 
+    DynArray_Z(const DynArray_Z<T, Granularity, DeleteObject, InitObject, Align>& i_Src) {
+        m_Size = 0;
+        m_ReservedSize = 0;
+        m_ArrayPtr = NULL;
+        SetReserve(i_Src.GetSize());
+        for (S32 i = 0; i < i_Src.GetSize(); i++) {
+            Add(i_Src[i]);
+        }
+    }
+
     ~DynArray_Z() {
         if (m_ArrayPtr) {
             if (DeleteObject) {
@@ -235,17 +245,17 @@ private:
     }
 
     U32 m_ReservedSize : DYA_RSVSIZEBITS,
-                         m_Size : DYA_SIZEBITS;
+        m_Size : DYA_SIZEBITS;
     T* m_ArrayPtr;
 };
 
-typedef DynArray_Z<S32, 32, FALSE, FALSE, 4> S32DA;
-typedef DynArray_Z<S16, 32, FALSE, FALSE, 4> S16DA;
-typedef DynArray_Z<S8, 32, FALSE, FALSE, 4> S8DA;
-typedef DynArray_Z<U32, 32, FALSE, FALSE, 4> U32DA;
-typedef DynArray_Z<U16, 32, FALSE, FALSE, 4> U16DA;
-typedef DynArray_Z<U8, 32, FALSE, FALSE, 4> U8DA;
-typedef DynArray_Z<Bool, 32, FALSE, FALSE, 4> BoolDA;
-typedef DynArray_Z<Float, 32, FALSE, FALSE, 4> FloatDA;
+typedef DynArray_Z<S32, 32, FALSE, FALSE> S32DA;
+typedef DynArray_Z<S16, 32, FALSE, FALSE> S16DA;
+typedef DynArray_Z<S8, 32, FALSE, FALSE> S8DA;
+typedef DynArray_Z<U32, 32, FALSE, FALSE> U32DA;
+typedef DynArray_Z<U16, 32, FALSE, FALSE> U16DA;
+typedef DynArray_Z<U8, 32, FALSE, FALSE> U8DA;
+typedef DynArray_Z<Bool, 32, FALSE, FALSE> BoolDA;
+typedef DynArray_Z<Float, 32, FALSE, FALSE> FloatDA;
 
 #endif

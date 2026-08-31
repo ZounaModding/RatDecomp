@@ -14,6 +14,9 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(20) MaterialObj_Z; }
 
     MaterialAnim_ZHdl GetMaterialByName(const Name_Z& i_Name);
+
+private:
+    MaterialAnim_ZHdlDA m_MaterialAnimHdls;
 };
 
 #endif // _MATERIALOBJ_Z_H_

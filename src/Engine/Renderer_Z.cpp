@@ -483,8 +483,29 @@ Bool CloseAvi() {
     return TRUE;
 }
 
-Bool StartRenderBench() {
-    return TRUE;
+void Renderer_Z::GetScreen2DPt(
+    Vec2f& o_ScreenPoint,
+    const Vec2f& i_Point,
+    const Vec2f& i_CameraPosition,
+    const Vec2f& i_ScreenCenter,
+    const Vec2f& i_CameraRotation,
+    Float i_Scale
+) {
+    Vec2f l_Point;
+    l_Point = i_Point - i_CameraPosition;
+    l_Point *= i_Scale;
+
+    o_ScreenPoint.x = l_Point.x * i_CameraRotation.x + l_Point.y * i_CameraRotation.y;
+
+    o_ScreenPoint.y = l_Point.y * i_CameraRotation.x - l_Point.x * i_CameraRotation.y;
+
+    o_ScreenPoint += i_ScreenCenter;
+}
+
+void Renderer_Z::SetLightFactor(Float i_X, Float i_Y, Float i_Z) {
+    m_LightFactorX = i_X;
+    m_LightFactorY = i_Y;
+    m_LightFactorZ = i_Z;
 }
 
 #pragma dont_inline reset
@@ -492,9 +513,6 @@ Bool StartRenderBench() {
 Float Renderer_Z::Renderer_ZDefaultNear = 0.0f;
 
 Float Renderer_Z::ScreenRatio = 0.0f;
-
-void Renderer_Z::SetLightFactor(Float a1, Float a2, Float a3) {
-}
 
 void Renderer_Z::GetLightFactor(Float& a1, Float& a2, Float& a3) {
 }
@@ -505,4 +523,8 @@ void Renderer_Z::ApplyDirectionalOnVertex(Vertex3D* a1, Vec3f& a2, LightData_Z& 
 Float Renderer_Z::Renderer_ZCurrentNear = 0.0f;
 
 void Renderer_Z::ApplyFogOnVertex(Vertex3D* a1, Vec4f& a2) {
+}
+
+Bool StartRenderBench() {
+    return TRUE;
 }

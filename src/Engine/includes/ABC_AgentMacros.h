@@ -33,7 +33,7 @@
             _ActivateCategory(Category, ClassName::GetCategories());                         \
             SuperClassName::ActivateCategory(Category);                                      \
         }                                                                                    \
-        virtual abc_category GetCategory(const char* aCategoryName) {                        \
+        virtual abc_category GetCategory(const Char* aCategoryName) {                        \
             abc_category Category = _GetCategory(aCategoryName, ClassName::GetCategories()); \
             if (cat_no_category != Category)                                                 \
                 return Category;                                                             \

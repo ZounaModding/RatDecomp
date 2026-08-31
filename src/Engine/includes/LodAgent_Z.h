@@ -12,7 +12,7 @@ public:
     virtual void SetPlayerId(S32 a1) { } 
     virtual void SetTeamId(S32 a1) { } 
     virtual void SetViewportId(S32 a1) { } 
-    virtual void GetViewportId() { } 
+    virtual S32 GetViewportId() const { return 0; }
     virtual void SetInputId(S32 a1) { } 
     virtual void GetInputId() { }
 private:

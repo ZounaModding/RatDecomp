@@ -543,7 +543,7 @@ void Bitmap_Z::SetUniversal(U8* i_Datas) {
         } break;
 
         default:
-            ASSERTL_Z(FALSE, "Bitmap_Z::SetUniversal", 929);
+            ASSERTLE_Z(FALSE, "", 929, "(Bool) (0==1)");
             break;
     }
 

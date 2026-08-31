@@ -9,7 +9,6 @@
 #include <gx.h>
 #include <mtx.h>
 
-#define MAX_OMNI 3
 #define FIFO_BUFFER_SIZE (380 * 1024)
 #define GC_BUFFER_ALIGN 32
 #define VIZ_QUERY_DISPLAY_LIST_SIZE 32
@@ -156,7 +155,7 @@ public:
     S32 m_CurDisplayListIdx;
     S32 m_RemainingVertexCount;
     BnkDynArray_Z<GCListVertex2D, 16, FALSE, FALSE, DRAW2D_VERTEX_LIST_ALIGN> m_Vtx2DBufferDA;
-    DynArray_Z<Primitive2DList_Z, 8, TRUE, TRUE, 4> m_PrimitiveLists;
+    DynArray_Z<Primitive2DList_Z> m_PrimitiveLists;
 };
 
 // END TODO
@@ -196,7 +195,7 @@ public:
     }
 
     S32 m_CurBankIdx;
-    BaseDisplayList_Z* m_CurDisplayList;
+    GCDisplayListVertex3D* m_CurDisplayList;
     BnkDynArray_Z<GCDisplayListVertex3D, 16, FALSE, TRUE, DRAW3D_VERTEX_LIST_ALIGN> m_Vtx3DBufferDA[2];
 };
 

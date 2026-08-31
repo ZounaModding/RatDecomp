@@ -16,7 +16,7 @@ void ConsoleInterp_Z::Start(const Char* i_CommandLine, S32 i_FileSize) {
     l_FileInterp.m_LinesOrCommandsParsed = 0;
     l_FileInterp.m_CommentCurrentDepth = 0;
     l_FileInterp.m_StackIndex = m_StackCommNb;
-    l_FileInterp.m_ParamCountMaybe = 0;
+    l_FileInterp.m_ParamCount = 0;
     l_FileInterp.m_Flags = FL_CONSOLE_UNK_0x10;
     l_FileInterp.m_File.Init(i_FileSize, i_CommandLine);
     Activate();
@@ -30,7 +30,7 @@ void ConsoleInterp_Z::Start(const Char* i_FileName, Char** i_CommandLine, S32 i_
     l_FileInterp.m_LinesOrCommandsParsed = 0;
     l_FileInterp.m_CommentCurrentDepth = 0;
     l_FileInterp.m_StackIndex = m_StackCommNb;
-    l_FileInterp.m_ParamCountMaybe = i_ParamCount - 2;
+    l_FileInterp.m_ParamCount = i_ParamCount - 2; // The first two parameters will be BSource/Source and the script name
     l_FileInterp.m_Flags = l_ConsFlags;
     l_FileInterp.m_FileName.StrCpy(i_FileName);
     for (S32 i = 0; i < i_ParamCount - 2; i++) {
@@ -213,50 +213,80 @@ Bool ConsoleInterp_Z::PushCommand(const Char* i_CommandLine, Bool i_TopOfStack) 
     }
 }
 
-Bool ConsoleInterp_Z::PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& i_CommandString) {
-    return FALSE;
+Bool ConsoleInterp_Z::PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& o_CommandString) {
+    S32 l_StackCommNb = m_StackCommNb;
+    if (l_StackCommNb == 0) {
+        return FALSE;
+    }
+
+    S32 l_StackIdx = 0;
+    S32 l_FileStackSize = m_FileStack.GetSize();
+    if (l_FileStackSize) {
+        l_StackIdx = m_FileStack[l_FileStackSize - 1].m_StackIndex;
+    }
+    if (l_StackCommNb <= l_StackIdx) {
+        return FALSE;
+    }
+
+    strcpy(o_CommandString, m_StackComm[m_StackCommNb-- - 1].m_CommandLine);
+    return TRUE;
 }
 
 // TODO: Finish matching
 Bool FileInterp_Z::ReplaceParams(Char* i_CommandString, String_Z<CONSOLE_STATIC_COMMAND_LEN_MAX>& o_ReplacedCommandString) {
-    String_Z<80> l_Temp;
-    Char* l_Replace = strstr(i_CommandString, "%");
-    if (!l_Replace) {
+    String_Z<16> l_ParamNumTemp;
+    Char* l_Dest;
+    S32 l_Length;
+
+    Char* l_ReplaceStart = strstr(i_CommandString, "%");
+    if (l_ReplaceStart == NULL) {
         return FALSE;
     }
 
-    while (l_Replace) {
+    while (l_ReplaceStart) {
         S32 l_StrLen = o_ReplacedCommandString.StrLen();
-        strncpy(&o_ReplacedCommandString[l_StrLen], i_CommandString, (S32)(l_Replace - i_CommandString));
-        o_ReplacedCommandString[l_StrLen + (S32)(l_Replace - i_CommandString)] = '\0';
-        l_Temp.Empty();
-        while (TRUE) {
-            l_Replace++;
-            Char l_ReplaceType = *l_Replace;
-            if ((l_ReplaceType == '\0') || (l_ReplaceType < '0') || (l_ReplaceType > '9')) break;
-            S32 l_TempLen = strlen(l_Temp);
-            strncpy(&l_Temp[l_TempLen], l_Replace, 1);
-            l_Temp[l_TempLen + 1] = '\0';
+        l_Dest = &o_ReplacedCommandString[l_StrLen];
+        l_Length = (S32)(l_ReplaceStart - i_CommandString);
+        strncpy(l_Dest, i_CommandString, l_Length);
+        o_ReplacedCommandString[l_StrLen + l_Length] = '\0';
+
+        l_ReplaceStart++;
+
+        l_ParamNumTemp.Empty();
+        while (*l_ReplaceStart != '\0') {
+            Char l_ReplaceDigit = *l_ReplaceStart;
+            if ((l_ReplaceDigit < '0') || (l_ReplaceDigit > '9')) break;
+
+            Char* l_OrigReplaceStart = l_ReplaceStart;
+            l_ReplaceStart++;
+            l_Length = strlen(l_ParamNumTemp);
+            strncpy(&l_ParamNumTemp[l_Length], l_OrigReplaceStart, 1);
+            l_ParamNumTemp[l_Length + 1] = '\0';
         }
-        S32 l_TempLenFinal = strlen(l_Temp);
-        if (!l_TempLenFinal) {
+
+        l_Length = strlen(l_ParamNumTemp);
+        if (l_Length) {
+            S32 l_ParamNum = atof(l_ParamNumTemp);
+            if ((l_ParamNum >= 1) && (l_ParamNum <= m_ParamCount)) {
+                S32 l_ParamLen = m_Params[l_ParamNum - 1].StrLen();
+                l_Length = o_ReplacedCommandString.StrLen();
+                strncpy(&o_ReplacedCommandString[l_Length], m_Params[l_ParamNum - 1], l_ParamLen);
+                o_ReplacedCommandString[l_Length + l_ParamLen] = '\0';
+
+                i_CommandString = l_ReplaceStart;
+            }
+        }
+        else {
             return FALSE;
         }
-        S32 l_ParamNum = atof(l_Temp);
-        if ((l_ParamNum > 0) && (l_ParamNum <= m_ParamCountMaybe)) {
-            S32 l_ParamLen = m_Params[l_ParamNum - 1].StrLen();
-            S32 l_ReplaceLen = o_ReplacedCommandString.StrLen();
-            strncpy(&o_ReplacedCommandString[l_ReplaceLen], m_Params[l_ParamNum - 1], l_ParamLen);
-            o_ReplacedCommandString[l_ReplaceLen + l_ParamLen] = '\0';
-            i_CommandString = l_Replace;
-        }
-        l_Replace = strstr(i_CommandString, "%");
-    }
-    S32 l_ReplaceLen = strlen(i_CommandString);
-    S32 l_FinalLen = strlen(o_ReplacedCommandString);
-    strncpy(&o_ReplacedCommandString[l_FinalLen], i_CommandString, l_ReplaceLen);
 
-    o_ReplacedCommandString[l_FinalLen + l_ReplaceLen] = '\0';
+        l_ReplaceStart = strstr(i_CommandString, "%");
+    }
+
+    l_Length = strlen(i_CommandString);
+    l_Dest = &o_ReplacedCommandString[o_ReplacedCommandString.StrLen()];
+    strncpy(l_Dest, i_CommandString, l_Length);
+    l_Dest[l_Length] = '\0';
 
     return TRUE;
 }

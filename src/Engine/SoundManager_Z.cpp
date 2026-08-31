@@ -47,6 +47,28 @@ Bool SoundManager_Z::Minimize() {
 void SoundManager_Z::Clean() {
 }
 
+S32 SoundManager_Z::GetFreeTrack() {
+    S32 l_FreeTrack = -1;
+    Float l_MaxLifeTime = 0.0f;
+
+    for (S32 i = m_NbFreeTracks; i < SND_MGR_MAX_TRACKS; i++) {
+        Track_Z& l_Track = m_Tracks[i];
+        if (!l_Track.m_Used) {
+            return i;
+        }
+        if (!(l_Track.m_Flags & FL_TRACK_STREAM) && !(l_Track.m_Flags & FL_TRACK_UNK_0x10) && !(l_Track.m_Flags & FL_TRACK_LINKED) && l_Track.m_LifeTime > l_MaxLifeTime) {
+            l_MaxLifeTime = l_Track.m_LifeTime;
+            l_FreeTrack = i;
+        }
+    }
+
+    if (l_FreeTrack >= 0) {
+        StopSound(l_FreeTrack);
+        FreeTrack(l_FreeTrack);
+    }
+    return l_FreeTrack;
+}
+
 void SoundManager_Z::FreeTrack(S32 i_TrackIdx) {
     if (i_TrackIdx < 0) {
         return;
@@ -91,7 +113,43 @@ void SoundManager_Z::PlaySound(Sound_ZHdl& i_SoundHdl, U32 i_Flag, const Node_ZH
 void SoundManager_Z::StopSound(Sound_ZHdl& i_SoundHdl, const Node_ZHdl& i_NodeHdl, Float i_UnkFloat) {
 }
 
-void SoundManager_Z::UpdateTrack(Float a1, S32 a2, Float& a3, Float& a4, Vec3f& a5) {
+void SoundManager_Z::UpdateTrack(Float i_DeltaTime, S32 i_TrackIdx, Float& o_Volume, Float& o_DistanceOnCameraX, Vec3f& o_Position) {
+    Track_Z& l_Track = m_Tracks[i_TrackIdx];
+
+    if ((l_Track.m_Flags & FL_TRACK_DIALOG) && (l_Track.m_Flags & FL_TRACK_STREAM)) {
+        o_Volume = m_DialogVolume * l_Track.m_VolumeFactor;
+    }
+    else {
+        o_Volume = m_SfxVolume * l_Track.m_VolumeFactor;
+    }
+
+    if (l_Track.m_Flags & FL_TRACK_IGNORE_GLOBAL_VOLUME) {
+        o_Volume = l_Track.m_VolumeFactor;
+    }
+
+    o_DistanceOnCameraX = 0.0f;
+    if (l_Track.m_Flags & FL_TRACK_MUTED) {
+        o_Volume = 0.0f;
+    }
+    else if (l_Track.m_NodeHdl.IsValid()) {
+        if (!(l_Track.m_Flags & FL_TRACK_UNK_0x1000) && IsOutOfRange(l_Track.m_NodeHdl, l_Track.m_BoneNode)) {
+            StopSound(i_TrackIdx);
+        }
+        else {
+            Float l_DistanceCamToSound;
+            Float l_Attenuation;
+            Compute3DVirtualization(i_TrackIdx, l_Attenuation, o_DistanceOnCameraX, l_DistanceCamToSound, o_Position);
+            o_Volume *= l_Attenuation;
+        }
+    }
+
+    if (l_Track.m_Flags & FL_TRACK_FADE) {
+        o_Volume *= l_Track.m_CurFadeProgress;
+        l_Track.m_CurFadeProgress -= l_Track.m_FadeDecrementStep * i_DeltaTime;
+        if (l_Track.m_CurFadeProgress < 0.0f) {
+            StopSound(i_TrackIdx);
+        }
+    }
 }
 
 void SoundManager_Z::Compute3DVirtualization(S32 a1, Float& a2, Float& a3, Float& a4, Vec3f& a5) {
@@ -127,7 +185,70 @@ void SoundManager_Z::Draw(DrawInfo_Z& i_DrawInfo) {
         return;
     }
 
-    // TODO: Implement debug draw
+    Vec2f l_Position(16.0f, 160.0f);
+    String_Z<ARRAY_CHAR_MAX> l_Text;
+    String_Z<ARRAY_CHAR_MAX> l_TrackName;
+    Color l_Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    l_Text.SprintfCat(
+        "FxVolume=%1.2f, DlgVolume=%1.2f, MusicVolume=%1.2f",
+        gData.SoundMgr->GetSfxVol(),
+        gData.SoundMgr->GetDlgVol(),
+        gData.SoundMgr->GetMusicVol()
+    );
+    gData.MainRdr->DrawString(l_Position, l_Text, l_Color, 0.1f, 1.0f);
+
+    l_Position.y += 10.0f;
+    for (U32 i = 0; i < SND_MGR_MAX_TRACKS; i++) {
+        Track_Z& l_Track = m_Tracks[i];
+        l_Text.Empty();
+
+        if (l_Track.m_Used) {
+            Float l_TimeAfterDialog;
+            Float l_TrackTime = GetTrackTime(i);
+            Float l_DlgDTime = GetDlgDTime(i);
+            l_TimeAfterDialog = 0.0f;
+            if (l_DlgDTime >= l_TimeAfterDialog) {
+                l_TimeAfterDialog = l_TrackTime - GetDlgDTime(i);
+            }
+
+            l_Color = Color(1.0f, 1.0f, 1.0f, 1.0f);
+            l_Text.Sprintf("%2d ", i);
+            if (l_Track.m_Flags & FL_TRACK_MUTED) {
+                l_Text.StrCat("MUTED ");
+                l_Color = Color(0.3f, 0.3f, 0.3f, 1.0f);
+            }
+            if (l_Track.m_Flags & FL_TRACK_LINKED) {
+                l_Text.StrCat("LINKED ");
+            }
+            l_Text.SprintfCat(
+                "%3dV %8.3fs %6.3fd %5.1fm ",
+                (S32)(100.0f * l_Track.m_VolumeFactor),
+                l_TrackTime,
+                l_TimeAfterDialog,
+                l_Track.m_DistanceCamToSound
+            );
+            GetTrackName(i, l_TrackName);
+            l_Text.StrCat(l_TrackName);
+
+            if ((l_Track.m_Flags & FL_TRACK_STREAM) && !(l_Track.m_Flags & 1)) {
+                l_Color = Color(0.8f, 0.2f, 0.2f, 1.0f);
+            }
+        }
+        else {
+            l_Color = Color(0.3f, 0.3f, 0.3f, 1.0f);
+            l_Text.Sprintf("%2d - FREE", i);
+        }
+
+        gData.MainRdr->DrawString(l_Position, l_Text, l_Color, 0.1f, 1.0f);
+        l_Position.y += 10.0f;
+    }
+}
+
+void SoundManager_Z::GetTrackName(S32 i_TrackIdx, String_Z<ARRAY_CHAR_MAX>& o_Name) {
+    o_Name.Empty();
+    if (m_Tracks[i_TrackIdx].m_Used) {
+    }
 }
 
 Bool Cmd_PlayMusic() {

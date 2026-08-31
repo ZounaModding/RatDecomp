@@ -43,7 +43,7 @@ public:
     }
 
 private:
-    DynArray_Z<ParticlesGDL_ZHdl, 32, TRUE, TRUE, 4> m_GDLHandles;
+    DynArray_Z<ParticlesGDL_ZHdl, 32> m_GDLHandles;
     U8 m_Unk_0x68[8];
 };
 

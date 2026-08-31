@@ -37,4 +37,6 @@ public:
 #define LOADDYNARRAYSIZENB_Z(da, nb) \
     LOAD_Z(nb);                      \
     da.SetSize(nb);
+#define SKIPBYTES_Z(size) *i_Data = (U8*)*i_Data + size
+
 #endif

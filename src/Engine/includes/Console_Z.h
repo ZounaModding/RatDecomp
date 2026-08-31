@@ -162,6 +162,8 @@ public:
         return m_StrParam[i_Index];
     }
 
+    Char* GetParamStr(U32 i_Index) const { return m_StrParam[i_Index]; }
+
     Float GetParamFloat(U32 i_Index) const {
         return m_FloatParam[i_Index];
     }

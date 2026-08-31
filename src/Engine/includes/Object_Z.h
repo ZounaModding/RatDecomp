@@ -78,13 +78,15 @@ enum ObjectType {
 #define FL_OBJECT_OMNI_REJECT_CHANNEL_X(x) (FL_OBJECT_OMNI_REJECT_CHANNEL_0 << (x))
 
 #define FL_OBJECT_OMNI_REJECT_ALL (FL_OBJECT_OMNI_REJECT_CHANNEL_0 | FL_OBJECT_OMNI_REJECT_CHANNEL_1 | FL_OBJECT_OMNI_REJECT_CHANNEL_2 | FL_OBJECT_OMNI_REJECT_CHANNEL_3 | FL_OBJECT_OMNI_REJECT_CHANNEL_4 | FL_OBJECT_OMNI_REJECT_CHANNEL_5 | FL_OBJECT_OMNI_REJECT_CHANNEL_6 | FL_OBJECT_OMNI_REJECT_CHANNEL_7 | FL_OBJECT_OMNI_REJECT_CHANNEL_8 | FL_OBJECT_OMNI_REJECT_CHANNEL_9 | FL_OBJECT_OMNI_REJECT_CHANNEL_10) // 0xFFE00 - Reject lighting by Omni lights in all channels
+#define FL_OBJECT_DEFAULT (FL_OBJECT_UNK_0x10 | FL_OBJECT_DISPLAY | FL_OBJECT_OMNI_REJECT_ALL)
 
 // TODO: Clean up below (move to own files). These are user flags, specified by the classes that inherit from Object_Z, starting from FL_OBJECT_LAST (1 << 20)
 #define FL_OBJECT_LAST (1 << 20)
 
 // Lod_Z flags
 
-#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0) // 0x100000 - LOD is a skin
+#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0)     // 0x100000 - LOD is a skin
+#define FL_IS_LOD_ANIMATED (FL_OBJECT_LAST << 1) // 0x200000 - LOD is animated
 
 // Mesh_Z flags
 
@@ -103,11 +105,11 @@ enum ObjectType {
 
 // Light_Z and Omni_Z shared flags (In case of Light_Z they're actually stored in LightData_Z::m_LightFlag)
 
-#define FL_IS_LIGHT_ACTIVE (FL_OBJECT_LAST << 0)        // 0x100000 - Light is active
-#define FL_IS_LIGHT_UNK_0x200000 (FL_OBJECT_LAST << 1)  // 0x200000 - Unknown
-#define FL_IS_LIGHT_UNK_0x400000 (FL_OBJECT_LAST << 2)  // 0x400000 - Unknown
-#define FL_IS_LIGHT_DYNAMIC (FL_OBJECT_LAST << 3)       // 0x800000 -  Can light objects at runtime
-#define FL_IS_LIGHT_UNK_0x1000000 (FL_OBJECT_LAST << 4) // 0x1000000 - Unknown
+#define FL_IS_LIGHT_ACTIVE (FL_OBJECT_LAST << 0)         // 0x100000 - Light is active
+#define FL_IS_LIGHT_ONLY_RADIOSITY (FL_OBJECT_LAST << 1) // 0x200000 - Not sure (from Flight Sim 2024 EngineBF)
+#define FL_IS_LIGHT_DO_SHADOW (FL_OBJECT_LAST << 2)      // 0x400000 - Cast shadows
+#define FL_IS_LIGHT_DYNAMIC (FL_OBJECT_LAST << 3)        // 0x800000 -  Can light objects at runtime (as opposed to baked lighting)
+#define FL_IS_LIGHT_UNK_0x1000000 (FL_OBJECT_LAST << 4)  // 0x1000000 - Unknown
 
 // Light_Z flags (Are actually stored in LightData_Z::m_LightFlag))
 
@@ -162,6 +164,10 @@ public:
         return (m_Flag & i_Flag) ? TRUE : FALSE;
     }
 
+    inline U32 GetFlag() const {
+        return m_Flag;
+    }
+
 protected:
     U32 m_Flag;
     Color m_DefaultColor;
@@ -202,7 +208,7 @@ public:
         return FALSE;
     }
 
-    virtual Bool GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, 256, 0, 1>& o_Result, U64 i_Flag, U64 i_NoFlag) {
+    virtual Bool GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, NUM_SPHERE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
         return FALSE;
     }
 
@@ -210,19 +216,19 @@ public:
         return FALSE;
     }
 
-    virtual Bool GetCollisionCapsule(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, StaticArray_Z<ColSphereResult_Z, 128, 0, 1>& o_Result, U64 i_Flag, U64 i_NoFlag) {
+    virtual Bool GetCollisionCapsule(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Capsule_Z& i_Cap, StaticArray_Z<ColSphereResult_Z, NUM_CAPSULE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
         return FALSE;
     }
 
-    virtual Bool GetCollisionBoxes(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<BoxFlag_Z, 8, FALSE, FALSE, 4>& o_Result, U64 i_Flag, U64 i_NoFlag) {
+    virtual Bool GetCollisionBoxes(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<BoxFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
         return FALSE;
     }
 
-    virtual Bool GetCollisionTriangles(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<TriangleFlag_Z, 8, FALSE, FALSE, 4>& o_Result, U64 i_Flag, U64 i_NoFlag) {
+    virtual Bool GetCollisionTriangles(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<TriangleFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
         return FALSE;
     }
 
-    virtual Bool GetCollisionSpheres(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<SphereFlag_Z, 8, FALSE, FALSE, 4>& o_Result, U64 i_Flag, U64 i_NoFlag) {
+    virtual Bool GetCollisionSpheres(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Sph, DynArray_Z<SphereFlag_Z, 8, FALSE, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
         return FALSE;
     }
 
@@ -240,7 +246,7 @@ public:
         return 0;
     }
 
-    inline U16 GetGeometryType() const {
+    inline U16 GetGeometryType() {
         return m_Type;
     }
 
@@ -286,6 +292,10 @@ public:
 
     inline Float GetFadeDist() const {
         return m_FadeOutDistance;
+    }
+
+    inline ObjectDatas_ZHdl& GetNonShared() {
+        return m_ObjectDataHdl;
     }
 
 protected:

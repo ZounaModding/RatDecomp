@@ -36,9 +36,16 @@ public:
     }
 
     U32 HasEmittersFlag(U32 i_Flag);
+    void UpdatePlane(const Mat4x4& i_NodeWorldMatrix, const DynArray_Z<Mat4x4, 32, FALSE, FALSE>& i_LocalPlanes, Vec3fDA& o_WorldPlanes);
+
+    inline const ParticlesEle_ZDA& GetParticleEmitters() const {
+        return m_ParticleEmitters;
+    }
 
 protected:
-    U8 m_Pad_0x80[32];
+    ParticlesEle_ZDA m_ParticleEmitters;
+    DynArray_Z<Mat4x4, 32, FALSE, FALSE> m_LocalPlanes;
+    Float m_UnkFloat_0x90;
 };
 
 class ParticlesData_Z : public ObjectDatas_Z {
@@ -52,9 +59,24 @@ public:
     virtual void Draw(DrawInfo_Z& i_DrawInfo);
     virtual void CloneEle(const ParticlesEle_ZDA& o_Elements, const Sphere_Z& i_BSphere);
 
+    void Reset();
+
+    inline Sphere_Z& GetBSphere() {
+        return m_BSphere;
+    }
+
+    inline ParticlesDataEle_ZDA& GetParticleEmittersData() {
+        return m_ParticleEmittersData;
+    }
+
+    inline Vec3fDA& GetWorldSpacePlanes() {
+        return m_WorldSpacePlanes;
+    }
+
 protected:
+    U8 m_Pad_0x30[8];
     Sphere_Z m_BSphere;
-    Float m_UnkFloat_0x40;
+    Float m_FadeDist;
     Float m_UnkFloat_0x44;
     ParticlesDataEle_ZDA m_ParticleEmittersData;
     Vec3fDA m_WorldSpacePlanes;

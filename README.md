@@ -27,6 +27,12 @@ Supported versions:
 
 - `GLLE78`: Rev 0 (USA)
 
+# Progress
+
+![progress overview](https://decomp.dev/ZounaModding/RatDecomp/GLLE78.svg?mode=overview)
+
+For the full detailed progress report check out our [decomp.dev](https://decomp.dev/ZounaModding/RatDecomp) entry
+
 # Dependencies
 
 ## Windows

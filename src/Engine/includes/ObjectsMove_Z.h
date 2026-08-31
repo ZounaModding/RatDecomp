@@ -27,24 +27,24 @@ struct ObjectMove {
     ObjectMoveCollNode_Z m_CollideNode;
 
     ObjectMove() {
-        m_NodeHdl = Node_ZHdl();
+        m_NodeHdl = HANDLE_NULL;
         m_BoneNode = NULL;
-        m_SenderHdl = ObjectMove_ZHdl();
-        m_TargetHdl = ObjectMove_ZHdl();
+        m_SenderHdl = HANDLE_NULL;
+        m_TargetHdl = HANDLE_NULL;
         m_TotalSpeed = VEC3F_NULL;
     }
 
     ~ObjectMove() {
-        m_NodeHdl = Node_ZHdl();
-        m_OwnerHdl = ObjectMove_ZHdl();
-        m_SenderHdl = ObjectMove_ZHdl();
-        m_TargetHdl = ObjectMove_ZHdl();
+        m_NodeHdl = HANDLE_NULL;
+        m_OwnerHdl = HANDLE_NULL;
+        m_SenderHdl = HANDLE_NULL;
+        m_TargetHdl = HANDLE_NULL;
         m_TotalSpeed = VEC3F_NULL;
         m_Accel = VEC3F_NULL;
         m_TimeToLive = -1.0f;
         m_BounceRatio = 0.0f;
         m_ShadowOldRayLen = -1.0f;
-        m_CollideNode.m_NodeHdl = Node_ZHdl();
+        m_CollideNode.m_NodeHdl = HANDLE_NULL;
         FIXDEBUGINLINING_Z();
     }
 };
@@ -109,7 +109,7 @@ public:
     virtual void FatherUnLinked(S32 i_Index);
     virtual void UpdateDynamic(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos, S32 i_Index);
     virtual void InitLinkCollisionNode(ColLineResult_Z& i_Result, const Vec3f& i_Orient, S32 i_Index);
-    virtual void EndCollisionNode(bool i_Abort, S32 i_Index);
+    virtual void EndCollisionNode(Bool i_Abort, S32 i_Index);
     virtual void GetLinkCollisionNode(Vec3f& o_Intersection, Vec3f& o_InterGround, Vec3f& o_Local, Vec3f& o_LocalLookAt, S32 i_Index);
 
     virtual StaticArray_Z<Node_ZHdl, 8>* GetVolumeMemory(S32 i_Index) {

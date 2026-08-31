@@ -34,9 +34,9 @@ public:
     virtual void RestoreStartingPos(S32 a1);
     virtual void StoreStartingPos(S32 a1);
 
-    virtual void ChangeLink(const Node_ZHdl& a1, Node_Z* a2, bool a3, S32 a4) { }
+    virtual void ChangeLink(const Node_ZHdl& a1, Node_Z* a2, Bool a3, S32 a4) { }
 
-    virtual void UpdateCollisionNode(SeadZone_Z& a1, const Vec3f& a2, const Sphere_Z& a3, Vec3f& a4, Vec3f& a5, S32 a6, bool a7);
+    virtual void UpdateCollisionNode(SeadZone_Z& a1, const Vec3f& a2, const Sphere_Z& a3, Vec3f& a4, Vec3f& a5, S32 a6, Bool a7);
     virtual void IsVisible();
     virtual void SetNodeObjectNb(S32 a1);
     virtual void CheckObjectMove(S32 a1, Float a2);

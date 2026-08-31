@@ -74,7 +74,7 @@ void BoneNode_Z::UpdateTM(BoneNode_Z* i_Parent) {
 
     m_RotInWorld = i_Parent->GetRotInWorld() * GetRotation();
     m_RotInWorld.GetMatrix(m_RotInWorldMatrix);
-    EnableFlag(FL_BONENODE_INVALIDROT);
+    EnableBoneFlag(FL_BONENODE_INVALIDROT);
 }
 
 void Node_Z::GetLocal(const Segment_Z& i_WorldSegment, Segment_Z& o_LocalSegment) {

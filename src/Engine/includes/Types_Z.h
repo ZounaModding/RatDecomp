@@ -40,6 +40,9 @@ typedef volatile double VDouble;
 #undef U32_MAX
 #define U32_MAX 0xFFFFFFFF
 
+#undef U16_MINUS_ONE
+#define U16_MINUS_ONE ((U16) - 1)
+
 #undef U32_MINUS_ONE
 #define U32_MINUS_ONE ((U32) - 1)
 
@@ -71,6 +74,9 @@ typedef volatile double VDouble;
 
 #undef ExternC_Z
 #define ExternC_Z extern "C"
+
+#undef Volatile_Z
+#define Volatile_Z volatile
 
 #define Aligned_Z(x) __attribute__((aligned(x)))
 #define Packed_Z(x)        \

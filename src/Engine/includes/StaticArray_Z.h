@@ -34,6 +34,14 @@ public:
         }
     }
 
+    T* GetArrayPtr() {
+        return (T*)m_ArrayChar;
+    }
+
+    const T* GetArrayPtr() const {
+        return (T*)m_ArrayChar;
+    }
+
     T& Get(int i_Index) {
         return *(T*)(m_ArrayChar + i_Index * sizeof(T));
     }
@@ -119,6 +127,18 @@ public:
             }
             m_Size = i_NewSize;
         }
+    }
+
+    void SetSizeNoConstruct(int i_NewSize) {
+        U32 i;
+        if (i_NewSize < m_Size) {
+            if (DeleteObject) {
+                for (i = m_Size - 1; i >= i_NewSize; i--) {
+                    Get(i).~T();
+                }
+            }
+        }
+        m_Size = i_NewSize;
     }
 
     void Remove(int i_Index) {

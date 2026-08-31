@@ -19,7 +19,7 @@ public:
     virtual const Vec3f& GetPos(S32 i_Index);
     virtual void SetPos(const Vec3f& i_Pos, S32 i_Index);
     virtual void SetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot, S32 i_Index);
-    virtual void EndCollisionNode(bool i_Abort, S32 i_Index);
+    virtual void EndCollisionNode(Bool i_Abort, S32 i_Index);
     virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos);
 
     virtual void GetCameraId() { }

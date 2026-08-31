@@ -28,7 +28,7 @@ public:
         return 0;
     }
 
-    virtual U32 GetBlockPtr(S16 i_BlockIdx) {
+    virtual S32 GetBlockPtr(S16 i_BlockIdx) {
         return 0;
     }
 

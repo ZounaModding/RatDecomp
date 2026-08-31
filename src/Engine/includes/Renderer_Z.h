@@ -11,6 +11,8 @@
 #include "GameManager_Z.h"
 #include "MatrixCache_Z.h"
 
+#define MAX_OMNI 3
+
 #define RATIO_SCREEN_STANDARD (4.f / 3.f)
 #define RATIO_SCREEN_WIDESCREEN (16.f / 9.f)
 
@@ -90,6 +92,10 @@ struct OmniStruct_Z {
     OmniFrust_Z* m_OmniFrust;
     Float m_Unk_0x48;
     Float m_Unk_0x4c;
+
+    Vec3f GetDirectionWorldSpace() const {
+        return m_DirectionWorldSpace;
+    }
 };
 
 typedef StaticArray_Z<OmniStruct_Z, 64, FALSE, FALSE> OmniStruct_ZSA;
@@ -151,7 +157,7 @@ struct DrawInfo_Z {
     Float m_LodPatchMax;
     Float m_LodPatchDist;
     Occluder_Z* m_Occluder;
-    Bool m_IsOccluding;
+    Bool m_IsOccluded; // Set to TRUE if the frustum was clipped by an occluder
     BitArray_Z* m_OccludedZonesBA;
     S32 m_Unk0_0x17c0_From_Renderer_0x704; // gets assigned from Renderer_Z::m_UnkBoolFalse_0x704
     Float m_DeltaTime;
@@ -170,7 +176,7 @@ struct DrawInfo_Z {
         m_VpCount = 0;
         m_DeltaTime = 0.0f;
         m_Occluder = NULL;
-        m_IsOccluding = FALSE;
+        m_IsOccluded = FALSE;
     }
 
     ~DrawInfo_Z() {
@@ -206,6 +212,13 @@ struct VertexBuffer_Z;
 struct IndexBuffer_Z;
 struct Vertex3D;
 class LightData_Z;
+
+struct Vertex3D {
+    Vec3f m_Pos;
+    Float m_Fog;
+    Color m_Color;
+    Vec2f m_UV;
+};
 
 enum BitmapType {
     BITMAP_DIFFUSE = 0,   // Color bitmap
@@ -500,6 +513,10 @@ public:
 
     virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Z, Float i_Scale) { }
 
+    inline void DrawStringOutline(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color = Color(1.0f, 1.0f, 1.0f, 1.0f), Float i_Z = 1.5f, Float i_Scale = 1.0f) {
+        DrawString(i_Pos, i_Text, i_Color, i_Z, i_Scale);
+    }
+
     virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3) { }
 
     virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4) { }
@@ -528,6 +545,15 @@ public:
 
     virtual void SetActiveViewport(S32 i_ViewportID);
     virtual void FlushActiveViewport();
+
+    static void GetScreen2DPt(
+        Vec2f& o_ScreenPoint,
+        const Vec2f& i_Point,
+        const Vec2f& i_CameraPosition,
+        const Vec2f& i_ScreenCenter,
+        const Vec2f& i_CameraRotation,
+        Float i_Scale
+    );
 
     inline Bool IsEffectFlag(U32 i_Flag) { return (m_EffectFlag & i_Flag); }
 

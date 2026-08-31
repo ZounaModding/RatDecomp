@@ -1,7 +1,6 @@
 #include "AnimMessage_Z.h"
 #include "Program_Z.h"
 
-// TODO: Finish matching
 S32 KeyframerMessage_Z::Get(
     Float i_StartTime,
     Float i_CurTime,
@@ -30,16 +29,18 @@ S32 KeyframerMessage_Z::Get(
         }
     }
     if (l_KeyIndex1 >= 0 && l_KeyIndex0 >= 0) {
-        const KeyMessage_Z* l_CurKey = &m_Keys[l_KeyIndex0];
+        KeyMessage_Z* l_CurKey = &m_Keys[l_KeyIndex0];
         for (l_Idx = l_KeyIndex0; l_Idx <= l_KeyIndex1; l_Idx++, l_CurKey++) {
             Float l_Time = l_CurKey->GetTime();
             S32 l_Size = l_CurKey->m_Messages.GetSize();
             Message_Z* l_CurMsg = l_CurKey->m_Messages.GetArrayPtr();
             for (S32 l_MsgIdx = 0; l_MsgIdx < l_Size; l_MsgIdx++, l_CurMsg++) {
-                if (l_CurMsg->m_Id == i_Msg.m_Id && l_CurMsg->m_U32Param == i_Msg.m_U32Param) {
-                    o_Value = *l_CurMsg;
-                    o_Value.m_Time = l_Time;
-                    return 1;
+                if (i_Msg.m_Id == l_CurMsg->m_Id) {
+                    if (i_Msg.m_U32Param == l_CurMsg->m_U32Param) {
+                        o_Value = *l_CurMsg;
+                        o_Value.m_Time = l_Time;
+                        return 1;
+                    }
                 }
             }
         }

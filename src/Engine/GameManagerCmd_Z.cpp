@@ -1,4 +1,5 @@
 #include "GameManager_Z.h"
+#include "ClassManager_Z.h"
 #include "Language_Z.h"
 #include "Console_Z.h"
 #include "Parameters_Z.h"
@@ -7,6 +8,8 @@
 #include "Program_Z.h"
 #include "Console_Z.h"
 #include "Language_Z.h"
+#include "Renderer_Z.h"
+#include "LodAgent_Z.h"
 
 void RegisterGameMgrCommand() {
     RegisterGameCommand();
@@ -47,7 +50,31 @@ Bool SetMonoGame() {
     return SetGame(TRUE);
 }
 
+// TODO: Finish matching
 Bool SetGame(Bool i_IsMono) {
+    if (gData.Cons->GetNbParam() < 3 || !gData.Cons->IsParamFloat(2)) {
+        return FALSE;
+    }
+
+    const Name_Z& l_WorldClassName = Name_Z(Name_Z::GetID("WORLD"));
+    World_ZHdl l_WorldHdl = gData.ClassMgr->GetObjectByName(Name_Z(gData.Cons->GetParamStr(1)), l_WorldClassName);
+    S32 l_PlayerCount = (S32)gData.Cons->GetParamFloat(2);
+
+    if (!GETPTR(l_WorldHdl)) {
+        return FALSE;
+    }
+    if (l_PlayerCount < 1 || l_PlayerCount > MAX_NUMBER_OF_PLAYERS || l_PlayerCount > MAX_VIEWPORT) {
+        return FALSE;
+    }
+
+    if (gData.Cons->GetNbParam() == 4) {
+        Name_Z l_CameraAgentClass(gData.Cons->GetParamStr(3));
+        gData.GameMgr->AddGame(l_WorldHdl, gData.Cons->GetParamStr(1), l_PlayerCount, i_IsMono, l_CameraAgentClass);
+    }
+    else {
+        gData.GameMgr->AddGame(l_WorldHdl, gData.Cons->GetParamStr(1), l_PlayerCount, i_IsMono, Name_Z(Name_Z::GetID("CameraAgent_Z")));
+    }
+
     return TRUE;
 }
 
@@ -83,7 +110,24 @@ Bool SwitchGameToMulti() {
     return TRUE;
 }
 
+// TODO: Finish matching
 Bool ActivateGame() {
+    if (gData.Cons->GetNbParam() != 2) {
+        return FALSE;
+    }
+
+    const Name_Z& l_WorldClassName = Name_Z(Name_Z::GetID("WORLD"));
+    World_ZHdl l_WorldHdl = gData.ClassMgr->GetObjectByName(Name_Z(gData.Cons->GetParamStr(1)), l_WorldClassName);
+    if (!GETPTR(l_WorldHdl)) {
+        return FALSE;
+    }
+
+    S32 l_GameId = gData.GameMgr->GetGameIdByWorld(l_WorldHdl);
+    if (l_GameId < 0) {
+        return FALSE;
+    }
+
+    gData.GameMgr->ActivateGame(l_GameId);
     return TRUE;
 }
 
@@ -131,10 +175,62 @@ void GameManager_Z::DebugDisplay(Viewport_Z* i_Vp) {
     if (!(gData.m_EngineFlag & FL_POS_PERSO)) {
         return;
     }
-    // TODO: Implement PosPerso debug display
+
+    Renderer_Z* l_Renderer = i_Vp->GetRenderer();
+    Float l_AddY[MAX_VIEWPORT];
+    S32 i;
+    for (i = 0; i < MAX_VIEWPORT; i++) {
+        l_AddY[i] = 0.0f;
+    }
+
+    for (i = 0; i < GetNbGame(); i++) {
+        Game_Z* l_Game = (Game_Z*)GETPTR(GetGame(i));
+        if (l_Game->GetFirstVp() < 0) {
+            continue;
+        }
+
+        S32 j;
+        for (j = 0; j < l_Game->GetNbPlayer(); j++) {
+            if (!l_Game->GetPlayerAgent(j)) {
+                continue;
+            }
+
+            LodAgent_Z* l_Agent = l_Game->GetPlayerAgent(j);
+            S32 l_ViewportId = l_Agent->GetViewportId();
+            if (l_ViewportId < 0 || l_ViewportId >= MAX_VIEWPORT) {
+                l_ViewportId = 0;
+            }
+
+            S32 l_StartX;
+            S32 l_StartY;
+            S32 l_SizeX;
+            S32 l_SizeY;
+            Viewport_Z& l_Viewport = l_Renderer->GetViewport(l_ViewportId);
+            l_Viewport.GetPosAndSize(l_StartX, l_StartY, l_SizeX, l_SizeY);
+            Camera_Z* l_Camera = (Camera_Z*)l_Viewport.GetCamera()->GetObject();
+
+            l_AddY[l_ViewportId] += 20.0f;
+            Vec2f l_Position((Float)l_StartX + 80.0f, (Float)l_StartY + l_AddY[l_ViewportId]);
+            const Vec3f& l_Translation = l_Agent->GetNode()->GetTranslation();
+
+            String_Z<ARRAY_CHAR_MAX> l_String;
+            l_String.Sprintf("(%.02f,%.02f,%.02f)", l_Translation.x, l_Translation.y, l_Translation.z);
+            l_Renderer->DrawStringOutline(l_Position, l_String);
+
+            Vec2f l_CameraPosition = l_Position;
+            l_CameraPosition.y += 16.0f;
+            l_String.Sprintf("Cam (N=%.02f,F=%.02f)", l_Camera->GetNearClip(), l_Camera->GetFarClip());
+            l_Renderer->DrawStringOutline(l_CameraPosition, l_String);
+        }
+    }
 }
 
 Bool AddTransText() {
+    if (gData.Cons->GetNbParam() < 3) {
+        return TRUE;
+    }
+
+    AddString((S32)gData.Cons->GetParamFloat(1), gData.Cons->GetParamStr(2));
     return TRUE;
 }
 

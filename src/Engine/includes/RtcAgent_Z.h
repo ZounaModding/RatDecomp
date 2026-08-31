@@ -23,8 +23,8 @@ public:
     virtual void Start(S32 a1);
     virtual void End();
     virtual void Shut();
-    virtual void GlobalTrackMessage(RegMessage_Z& a1, bool a2) { } 
-    virtual void NodeMessage(RegMessage_Z& a1, bool a2) { } 
+    virtual void GlobalTrackMessage(RegMessage_Z& a1, Bool a2) { } 
+    virtual void NodeMessage(RegMessage_Z& a1, Bool a2) { } 
 
 private:
     S32 m_ViewportId;

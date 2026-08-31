@@ -18,7 +18,7 @@ public:
     virtual void Minimize();
     virtual S16 AllocBlock(S32 i_Size, S32 i_UserParam1, S32 i_UserParam2);
 
-    virtual U32 GetBlockPtr(S16 i_BlockIdx) { return m_ARamAllocator.GetBlockPtr(i_BlockIdx); }
+    virtual S32 GetBlockPtr(S16 i_BlockIdx) { return m_ARamAllocator.GetBlockPtr(i_BlockIdx); }
 
     virtual S32 GetBlockSize(S16 i_BlockIdx) { return m_ARamAllocator.GetBlockSize(i_BlockIdx); }
 
@@ -27,8 +27,8 @@ public:
     virtual void LockBlockAt(S16 i_BlockIdx, S32 i_User) { m_ARamAllocator.SetBlockDate(i_BlockIdx, i_User); }
 
     virtual U8* Get(S16 a1, S32 a2);
-    virtual void Read(U8* a1, S32 a2, U32 a3, bool a4);
-    virtual void Write(U8* a1, S32 a2, U32 a3, bool a4);
+    virtual void Read(U8* a1, S32 a2, U32 a3, Bool a4);
+    virtual void Write(U8* a1, S32 a2, U32 a3, Bool a4);
 
 private:
     U8 m_Unk_0x4[4096];

@@ -18,7 +18,7 @@ public:
     virtual void Init() { };
 
     virtual ~BaseObject_Z() {
-        m_Handle = BaseObject_ZHdl(0);
+        m_Handle = HANDLE_NULL;
     };
 
     virtual void Load(void** i_Data) { };

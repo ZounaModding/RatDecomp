@@ -28,6 +28,10 @@ public:
 
     virtual void Resume();
 
+    inline Node_Z* GetNode() const {
+        return m_NodeHdl;
+    }
+
 private:
     Node_ZHdl m_NodeHdl;
     Node_ZHdl m_EmiterNodeHdl;

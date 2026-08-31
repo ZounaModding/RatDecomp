@@ -13,7 +13,7 @@ struct Color {
         a = i_Alpha;
     }
 
-    Color& operator=(const Color& i_Color) {
+    Color operator=(const Color& i_Color) {
         r = i_Color.r;
         g = i_Color.g;
         b = i_Color.b;

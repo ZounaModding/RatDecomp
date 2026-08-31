@@ -30,6 +30,10 @@ public:
     virtual void AddObjectMove(S32 a1) {}
     virtual void GetDisplayValue(const Name_Z& a1, const Name_Z& a2) {}
 
+    inline Node_Z* GetNode() const {
+        return m_NodeHdl;
+    }
+
 protected:
     Float m_MaxSqrDistActive;
     Float m_MinSqrDistActive;
@@ -37,7 +41,7 @@ protected:
     S32 m_ClassSoundIndex; // $VIOLET: Jimmy DWARF
     Node_ZHdl m_NodeHdl;
     Game_ZHdl m_GameHdl;
-    U32 m_AgentFlags;
+    U32 m_TypeFlags;
 END_AGENT_CLASS
 
 // clang-format on

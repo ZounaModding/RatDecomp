@@ -10,7 +10,7 @@ Bool Menu3D_Z::MarkHandles() {
 void Menu3D_Z::InitMenu(S32 a1) {
 }
 
-void Menu3D_Z::UpdateItems(bool a1, bool a2) {
+void Menu3D_Z::UpdateItems(Bool a1, Bool a2) {
 }
 
 void Menu3D_Z::Update(Float i_DeltaTime) {

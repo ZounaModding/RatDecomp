@@ -69,7 +69,7 @@ private:
     S8DA m_OptimizedNormals;
     S16DA m_OptimizedTextureCoordinates;
     S32DA m_MaterialIndices;
-    DynArray_Z<DisplayList_Z, 64, TRUE, TRUE, 4> m_DisplayLists;
+    DynArray_Z<DisplayList_Z, 64> m_DisplayLists;
     MeshStreamList_Z m_StreamList;
     U8 m_Pad_0x148[8];
 };

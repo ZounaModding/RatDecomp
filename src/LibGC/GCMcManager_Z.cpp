@@ -289,23 +289,19 @@ void GCMcManager_Z::_ParseTPLFile(TEXPalettePtr i_Icon) {
 
     for (l_Index = 0; l_Index < i_Icon->numDescriptors; l_Index++) {
         if (i_Icon->descriptorArray[l_Index].textureHeader) {
-            i_Icon->descriptorArray[l_Index].textureHeader = (TEXHeaderPtr)((U32)i_Icon->descriptorArray[l_Index].textureHeader + (U32)i_Icon
-            );
+            i_Icon->descriptorArray[l_Index].textureHeader = (TEXHeaderPtr)((U32)i_Icon->descriptorArray[l_Index].textureHeader + (U32)i_Icon);
 
             if (!i_Icon->descriptorArray[l_Index].textureHeader->unpacked) {
-                i_Icon->descriptorArray[l_Index].textureHeader->data = (Ptr)((U32)i_Icon->descriptorArray[l_Index].textureHeader->data + (U32)i_Icon
-                );
+                i_Icon->descriptorArray[l_Index].textureHeader->data = (Ptr)((U32)i_Icon->descriptorArray[l_Index].textureHeader->data + (U32)i_Icon);
                 i_Icon->descriptorArray[l_Index].textureHeader->unpacked = TRUE;
             }
         }
 
         if (i_Icon->descriptorArray[l_Index].CLUTHeader) {
-            i_Icon->descriptorArray[l_Index].CLUTHeader = (CLUTHeaderPtr)((U32)i_Icon->descriptorArray[l_Index].CLUTHeader + (U32)i_Icon
-            );
+            i_Icon->descriptorArray[l_Index].CLUTHeader = (CLUTHeaderPtr)((U32)i_Icon->descriptorArray[l_Index].CLUTHeader + (U32)i_Icon);
 
             if (!i_Icon->descriptorArray[l_Index].CLUTHeader->unpacked) {
-                i_Icon->descriptorArray[l_Index].CLUTHeader->data = (Ptr)((U32)i_Icon->descriptorArray[l_Index].CLUTHeader->data + (U32)i_Icon
-                );
+                i_Icon->descriptorArray[l_Index].CLUTHeader->data = (Ptr)((U32)i_Icon->descriptorArray[l_Index].CLUTHeader->data + (U32)i_Icon);
                 i_Icon->descriptorArray[l_Index].CLUTHeader->unpacked = TRUE;
             }
         }

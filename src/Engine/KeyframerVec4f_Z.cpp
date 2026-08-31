@@ -1,6 +1,5 @@
 #include "Keyframer_Z.h"
 
-// TODO: Finish matching
 S32 KeyframerVec4fLinear_Z::GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffset) {
     S32 l_NbKey = GetNbKeys();
     KeyVec4fLinear_Z* l_Key = &m_Keys[i_KeyOffset] - 1;
@@ -32,25 +31,19 @@ S32 KeyframerVec4fLinear_Z::GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffs
             l_PrevKey->Get(o_Value);
         }
         else {
-            Vec4f l_Prev;
-            l_PrevKey->Get(l_Prev);
-            Vec4f l_Cur;
+            Vec3f l_Prev;
+            Vec3f l_Cur;
             l_Key->Get(l_Cur);
+            l_PrevKey->Get(l_Prev);
             Float t = (i_Time - l_PrevTime) / (l_CurTime - l_PrevTime);
-            Vec4f def = l_Prev + (Vec4f(l_Cur.x - l_Prev.x, l_Cur.y - l_Prev.y, l_Cur.z - l_Prev.z, 1.0f)) * t;
-            o_Value = Vec4f(def.x, def.y, def.z, 1.0f);
-
-            // Also tried this but it's worse???
-            // Vec4f l_Prev;
-            // l_PrevKey->Get(l_Prev);
-            // Vec3f l_Cur;
-            // Vec4f abc;
-            // l_Key->Get(l_Cur);
-            // Float t = (i_Time - l_PrevTime) / (l_CurTime - l_PrevTime);
-            // Vec3f eee = (l_Cur - l_Prev.xyz());
-            // abc = Vec4f(eee);
-            // Vec4f ghi = l_Prev + abc * t;
-            // o_Value = Vec4f(ghi.x, ghi.y, ghi.z, 1.0f);
+            Float l_PrevX = l_Prev.x;
+            Float l_CurX = l_Cur.x;
+            Float l_CurY = l_Cur.y;
+            Float l_PrevY = l_Prev.y;
+            Float l_CurZ = l_Cur.z;
+            Float l_PrevZ = l_Prev.z;
+            Vec3f l_Delta(l_CurX - l_PrevX, l_CurY - l_PrevY, l_CurZ - l_PrevZ);
+            o_Value = l_Prev + Vec4f(l_Delta) * t;
         }
     }
 

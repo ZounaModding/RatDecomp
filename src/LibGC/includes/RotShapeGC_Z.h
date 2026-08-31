@@ -38,7 +38,7 @@ public:
     }
 
 private:
-    DynArray_Z<DisplayList_Z, 64, TRUE, TRUE, 4> m_DisplayLists;
+    DynArray_Z<DisplayList_Z, 64> m_DisplayLists;
     U8 m_Pad_0xd8[8];
 };
 

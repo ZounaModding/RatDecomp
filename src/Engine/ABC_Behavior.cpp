@@ -49,7 +49,7 @@ void ABC_Behavior::StoreLocalVariables(const void* i_Data) {
         memcpy(m_LocalData, i_Data, m_LocalDataSize);
 }
 
-void ABC_Behavior::AddCategory(abc_category i_Category, Bool i_IsPublic, const char* i_CategoryName) {
+void ABC_Behavior::AddCategory(abc_category i_Category, Bool i_IsPublic, const Char* i_CategoryName) {
     ABC_CategoryData* l_Category = m_CategoryListHead;
     while (l_Category) {
         if (i_Category == l_Category->m_Category) {
@@ -65,11 +65,11 @@ void ABC_Behavior::AddCategory(abc_category i_Category, Bool i_IsPublic, const c
     m_CategoryListHead = l_Category;
 }
 
-void ABC_Behavior::AddPublicCategory(abc_category i_Category, const char* i_CategoryName) {
+void ABC_Behavior::AddPublicCategory(abc_category i_Category, const Char* i_CategoryName) {
     AddCategory(i_Category, TRUE, i_CategoryName);
 }
 
-void ABC_Behavior::AddPrivateCategory(abc_category i_Category, const char* i_CategoryName) {
+void ABC_Behavior::AddPrivateCategory(abc_category i_Category, const Char* i_CategoryName) {
     AddCategory(i_Category, FALSE, i_CategoryName);
 }
 

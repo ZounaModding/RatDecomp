@@ -80,49 +80,33 @@ Vec3f::Vec3f(const Quat& Q) {
     *this *= w;
 }
 
-void Mat4x4::SetTRS(const Vec3f& Trans, const Quat& Rot, const Vec3f& Scale) {
-    Mat4x4 ScaleMat, RotMat, TransMat;
+void Mat4x4::Transp(Mat4x4& o_Matrix) const {
+    for (S32 i = 0; i < 4; i++) {
+        for (S32 j = 0; j < 4; j++) {
+            o_Matrix.m[i][j] = m[j][i];
+        }
+    }
+}
 
-    ScaleMat.m[0][0] = Scale.x;
-    ScaleMat.m[1][0] = 0.f;
-    ScaleMat.m[2][0] = 0.f;
-    ScaleMat.m[3][0] = 0;
-    ScaleMat.m[0][1] = 0.f;
-    ScaleMat.m[1][1] = Scale.y;
-    ScaleMat.m[2][1] = 0.f;
-    ScaleMat.m[3][1] = 0;
-    ScaleMat.m[0][2] = 0.f;
-    ScaleMat.m[1][2] = 0.f;
-    ScaleMat.m[2][2] = Scale.z;
-    ScaleMat.m[3][2] = 0;
-    ScaleMat.m[0][3] = 0.f;
-    ScaleMat.m[1][3] = 0.f;
-    ScaleMat.m[2][3] = 0.f;
-    ScaleMat.m[3][3] = 1.f;
+void Mat4x4::SetTRS(const Vec3f& i_Trans, const Quat& i_Rot, const Vec3f& i_Scale) {
+    i_Rot.GetMatrix(*this);
 
-    TransMat.m[0][0] = 1.f;
-    TransMat.m[1][0] = 0.f;
-    TransMat.m[2][0] = 0.f;
-    TransMat.m[3][0] = Trans.x;
-    TransMat.m[0][1] = 0.f;
-    TransMat.m[1][1] = 1.f;
-    TransMat.m[2][1] = 0.f;
-    TransMat.m[3][1] = Trans.y;
-    TransMat.m[0][2] = 0.f;
-    TransMat.m[1][2] = 0.f;
-    TransMat.m[2][2] = 1.f;
-    TransMat.m[3][2] = Trans.z;
-    TransMat.m[0][3] = 0.f;
-    TransMat.m[1][3] = 0.f;
-    TransMat.m[2][3] = 0.f;
-    TransMat.m[3][3] = 1.f;
-
-    Rot.GetMatrix(RotMat);
-
-    // We calculate the LocalMatrix
-    (*this) = TransMat;
-    (*this) *= RotMat;
-    (*this) *= ScaleMat;
+    m[0][0] *= i_Scale.x;
+    m[1][0] *= i_Scale.y;
+    m[2][0] *= i_Scale.z;
+    m[3][0] = i_Trans.x;
+    m[0][1] *= i_Scale.x;
+    m[1][1] *= i_Scale.y;
+    m[2][1] *= i_Scale.z;
+    m[3][1] = i_Trans.y;
+    m[0][2] *= i_Scale.x;
+    m[1][2] *= i_Scale.y;
+    m[2][2] *= i_Scale.z;
+    m[3][2] = i_Trans.z;
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    m[3][3] = 1.0f;
 }
 
 void Inverse2(const Mat4x4& In, Mat4x4& Out) {
@@ -306,12 +290,115 @@ Vec3f Quat::operator*(const Vec3f& p) const {
 }
 
 void Quat::Normalize(void) {
-    Float rhn = 1.0f / sqrtf(v.x * v.x + v.y * v.y + v.z * v.z + w * w); // $VIOLET: I think its using the wrong sqrtf func. doesn't compile right
+    Float l_Norm = Sqrt(v.x * v.x + v.y * v.y + v.z * v.z + w * w);
+    if (l_Norm < Float_Eps) {
+        v.x = 0.0f;
+        v.y = 0.0f;
+        v.z = 0.0f;
+        w = 1.0f;
+        return;
+    }
+
+    Float rhn = 1.0f / l_Norm;
     v.x *= rhn;
     v.y *= rhn;
     v.z *= rhn;
     w *= rhn;
 }
 
-void ComputeMathPrecision() {
+void BuildLookAtMatrix(const Vec3f& i_LookAt, const Vec3f& i_Up, Mat4x4& o_Matrix) {
+    Vec3f l_Norm2 = i_LookAt ^ i_Up;
+    if (l_Norm2 == VEC3F_NULL) {
+        l_Norm2 = Vec3f(1.0f, 0.0f, 0.0f);
+    }
+    else {
+        l_Norm2.Normalize();
+    }
+
+    Vec3f l_Norm3 = l_Norm2 ^ i_LookAt;
+
+    o_Matrix.SetIdentity();
+    o_Matrix.m[0][0] = l_Norm2.x;
+    o_Matrix.m[0][1] = l_Norm2.y;
+    o_Matrix.m[0][2] = l_Norm2.z;
+    o_Matrix.m[1][0] = l_Norm3.x;
+    o_Matrix.m[1][1] = l_Norm3.y;
+    o_Matrix.m[1][2] = l_Norm3.z;
+    o_Matrix.m[2][0] = i_LookAt.x;
+    o_Matrix.m[2][1] = i_LookAt.y;
+    o_Matrix.m[2][2] = i_LookAt.z;
+}
+
+// TODO: Finish matching
+Float ComputeMathPrecision() {
+    const Vec4f l_Vec1(1.79f, 1.09f, 1.3f, 1.34f);
+    const Vec4f l_Vec2(0.55f, 0.84f, 0.17f, 0.61f);
+    const Vec4f l_Vec3(1.13f, 0.78f, 0.35f, 0.87f);
+    const Vec4f l_Vec4(0.66f, 0.31f, 0.95f, 0.47f);
+
+    Vec4f l_Result(0.0f, 0.0f, 0.0f, 0.0f);
+    l_Result = l_Vec1;
+    l_Result += l_Vec2;
+    l_Result += l_Result;
+    l_Result += l_Vec3;
+    l_Result.xyz() += Vec3f(l_Vec2) ^ Vec3f(-0.47f, -0.47f, 0.6f);
+
+    Vec4f l_AbsResult;
+    MaxVec(-l_Result, l_Result, l_AbsResult);
+    const Vec3f l_Delta(
+        l_AbsResult.x - (l_Vec1.x + l_Vec2.x + l_Vec1.x + l_Vec2.x + l_Vec3.x),
+        l_AbsResult.y - (l_Vec1.y + l_Vec2.y + l_Vec1.y + l_Vec2.y + l_Vec3.y),
+        l_AbsResult.z - (l_Vec1.z + l_Vec2.z + l_Vec1.z + l_Vec2.z + l_Vec3.z)
+    );
+
+    Vec4f l_Value;
+    l_Value.x = l_Delta.x - l_Vec2.x;
+    l_Value.y = (l_Result.xyz() - Vec3f(l_Vec4)).GetNorm2() - l_Vec2.y;
+    l_Value.z = l_Delta.z - l_Vec2.z;
+    l_Value.w = 0.0f;
+    Float l_ValueNorm2 = l_Value.GetNorm2();
+    Vec4f l_Temp(l_Delta - Vec3f(l_Vec3));
+    l_Value.x = l_Temp.x * l_Temp.x + l_Temp.z * l_Temp.z;
+    l_Value.x = Vec3f(
+                    l_Result.x - l_Vec4.x,
+                    l_Result.y - l_Vec4.y,
+                    l_ValueNorm2 - l_Vec4.z
+    )
+                    .GetNorm();
+
+    Vec4f l_MaxLimits;
+    MaxVec(l_Result, l_Vec2, l_MaxLimits);
+    Vec4f l_MinLimits;
+    MinVec(l_Result, -l_Vec2, l_MinLimits);
+    const Vec4f l_Limits = l_MaxLimits + l_MinLimits;
+    Vec4f l_AbsLimits;
+    MaxVec(-l_Limits, l_Limits, l_AbsLimits);
+    l_Value.z = l_AbsLimits * Vec4f(l_Delta.x, l_Limits.GetNorm2(), l_Delta.z, 0.0f);
+
+    Mat4x4 l_Left;
+    l_Left.Set(
+        l_Vec4.x, l_Vec4.y, l_Vec4.z, l_Vec4.w, l_Vec2.x, l_Vec2.y, l_Vec2.z, l_Vec2.w, l_Vec3.x, l_Vec3.y, l_Vec3.z, l_Vec3.w, l_Vec4.x, l_Vec4.y, l_Vec4.z, l_Vec4.w
+    );
+    Mat4x4 l_Right;
+    l_Right.Set(
+        l_Vec3.x, l_Vec3.y, l_Vec3.z, l_Vec3.w, l_Vec4.x, l_Vec4.y, l_Vec4.z, l_Vec4.w, l_Vec2.x, l_Vec2.y, l_Vec2.z, l_Vec2.w, l_Vec3.x, l_Vec3.y, l_Vec3.z, l_Vec3.w
+    );
+
+    Mat4x4 l_Matrix;
+    for (S32 i = 0; i < 4; i++) {
+        l_Matrix.m[0][i] = l_Left.m[0][i] * l_Right.m[0][0] + l_Left.m[1][i] * l_Right.m[0][1] + l_Left.m[2][i] * l_Right.m[0][2] + l_Left.m[3][i] * l_Right.m[0][3];
+        l_Matrix.m[1][i] = l_Left.m[0][i] * l_Right.m[1][0] + l_Left.m[1][i] * l_Right.m[1][1] + l_Left.m[2][i] * l_Right.m[1][2] + l_Left.m[3][i] * l_Right.m[1][3];
+        l_Matrix.m[2][i] = l_Left.m[0][i] * l_Right.m[2][0] + l_Left.m[1][i] * l_Right.m[2][1] + l_Left.m[2][i] * l_Right.m[2][2] + l_Left.m[3][i] * l_Right.m[2][3];
+        l_Matrix.m[3][i] = l_Left.m[0][i] * l_Right.m[3][0] + l_Left.m[1][i] * l_Right.m[3][1] + l_Left.m[2][i] * l_Right.m[3][2] + l_Left.m[3][i] * l_Right.m[3][3];
+    }
+
+    Vec4f l_Final(l_Matrix * (l_Value.xyz() + l_Value.xyz()));
+    l_Final.x /= 66710628.0f;
+    l_Final.y /= 79069208.0f;
+    l_Final.z /= 72642080.0f;
+    l_Final.w /= 33569748.0f;
+
+    return 25.0f * ((l_Final.x >= 0.0f ? l_Final.x : -l_Final.x) + (l_Final.y >= 0.0f ? l_Final.y : -l_Final.y) + (l_Final.z >= 0.0f ? l_Final.z : -l_Final.z) + (l_Final.w >= 0.0f ? l_Final.w : -l_Final.w)) - 100.0f >= 0.0f
+               ? 25.0f * ((l_Final.x >= 0.0f ? l_Final.x : -l_Final.x) + (l_Final.y >= 0.0f ? l_Final.y : -l_Final.y) + (l_Final.z >= 0.0f ? l_Final.z : -l_Final.z) + (l_Final.w >= 0.0f ? l_Final.w : -l_Final.w)) - 100.0f
+               : -(25.0f * ((l_Final.x >= 0.0f ? l_Final.x : -l_Final.x) + (l_Final.y >= 0.0f ? l_Final.y : -l_Final.y) + (l_Final.z >= 0.0f ? l_Final.z : -l_Final.z) + (l_Final.w >= 0.0f ? l_Final.w : -l_Final.w)) - 100.0f);
 }
