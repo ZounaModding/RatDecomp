@@ -102,7 +102,7 @@ public:
 
     void SetTranslation(const Vec3f& i_Translation);
 
-    inline Vec3f& GetLocalTranslation() { return m_Translation; }
+    inline const Vec3f& GetTranslation() { return m_Translation; }
 
     void SetFromWorldTrans(const Vec3f& i_Trans);
     void SetFromWorldTransEpsilon(Node_Z* i_Parent, const Vec3f& i_Trans);
@@ -111,7 +111,7 @@ public:
     void SetFromWorldScale(Float i_Scale);
     void SetFromWorldTransRotScale(const Vec3f& i_Trans, const Quat& i_Rot, const Float& i_Scale);
 
-    inline const Vec3f& GetTranslation() {
+    inline const Vec3f& GetWorldTranslation() {
         return GetWorldMatrix().GetMatrixTrans();
     }
 

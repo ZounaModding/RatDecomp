@@ -7,6 +7,7 @@
 #include "Graph_ZHdl.h"
 #include "ManipulatorDraw_ZHdl.h"
 #include "CameraZone_ZHdl.h"
+#include "CameraZoneData_Z.h"
 #include "Occluder_ZHdl.h"
 #include "StaticArray_Z.h"
 #include "HoleArray_Z.h"
@@ -126,8 +127,16 @@ public:
     void EndDraw();
 
     Node_ZHdl GetNodeByName(const Name_Z& i_Name) const;
+    S32 GetNodesByObjectType(Node_ZHdlDA& o_Nodes, S32 i_Type) const;
+    Bool GetCameraZone(const Vec3f& i_WorldPosition, CameraZoneData_Z& o_Data, S32 i_CameraZoneId = -1);
+    void NoFrustrumClipping(const Node_ZHdl& i_NodeHdl, Bool i_NoClipping);
     void Update(Float i_DeltaTime);
+    void UpdateAnims(Float i_DeltaTime);
+    void UpdateLighting(Bool i_Force);
+    void RefWorldId(S16 i_WorldId);
+    void ActionOnActivate();
     void Assume();
+    void GetCollisionZone(SeadZone_Z& io_Zone, const Vec2f& i_BMin, const Vec2f& i_BMax, U32 i_Flag, U32 i_NoFlag);
 
     inline OccludedSeadHandle_Z& GetSeadDisplay() {
         return m_SeadDisplay;
@@ -231,6 +240,7 @@ protected:
 public:
     WorldManager_Z();
     virtual ~WorldManager_Z();
+    void AddWorld(World_ZHdl i_WorldHdl);
 
     inline void MarkHandles() {
         S32 i = m_WorldHdls.FindFirst();

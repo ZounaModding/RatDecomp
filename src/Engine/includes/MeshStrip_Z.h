@@ -17,14 +17,23 @@ public:
 
 class Strip_Z {
 public:
-    DynArray_Z<U16, 32> m_VertexIndices;
+    Strip_Z() {
+        FIXDEBUGINLINING_Z();
+        m_Flags = 0;
+    }
+
+    DynArray_Z<U16, 32, FALSE, FALSE> m_VertexIndices;
     U32 m_MaterialId;
     U32 m_Flags;
 };
 
 class StripExt_Z {
 public:
-    DynArray_Z<Vtx_Z, 32> m_Vertices;
+    StripExt_Z() {
+        FIXDEBUGINLINING_Z();
+    }
+
+    DynArray_Z<Vtx_Z, 32, FALSE, FALSE> m_Vertices;
 };
 
 typedef DynArray_Z<Strip_Z, 64> Strip_ZDA;

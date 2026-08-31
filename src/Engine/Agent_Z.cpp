@@ -4,7 +4,7 @@ BEGIN_INIT_AGENT_CLASS(Agent_Z, ABC_Agent)
 END_INIT_AGENT_CLASS
 
 Agent_Z::Agent_Z() {
-    m_AgentFlags = 0;
+    m_TypeFlags = 0;
     EnableFlag(FL_AGENT_DEFAULT);
     m_ClassSoundIndex = -1;
     m_MaxSqrDistActive = User_DefaultAgentMaxSqrDistActive;

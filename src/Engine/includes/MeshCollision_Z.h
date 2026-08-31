@@ -7,6 +7,10 @@
 
 class SphereCol_Z {
 public:
+    SphereCol_Z() {
+        m_Flag = 0;
+    }
+
     Sphere_Z m_Sphere;
     U32 m_Flag;
     Name_Z m_Name;
@@ -14,6 +18,10 @@ public:
 
 class BoxCol_Z {
 public:
+    BoxCol_Z() {
+        m_Flag = 0;
+    }
+
     Box_Z m_Box Aligned_Z(16);
     U32 m_Flag;
     Name_Z m_Name;
@@ -21,9 +29,23 @@ public:
 
 class CylindreCol_Z {
 public:
+    CylindreCol_Z() {
+        m_Flag = 0;
+    }
+
     Cylindre_Z m_Cylindre;
     U32 m_Flag;
     Name_Z m_Name;
+};
+
+class SphereColNode_Z : public SphereCol_Z {
+public:
+    SphereColNode_Z() {
+        m_BoneNodeId = -1;
+    }
+
+    S32 m_BoneNodeId;
+    U8 m_Unk_0x24[12];
 };
 
 class FaceCol_Z {
@@ -53,6 +75,13 @@ public:
 
 class AABBCol_Z {
 public:
+    void Load(void** i_Data);
+
+    void Flush() {
+        m_Faces.Flush();
+        m_Nodes.Flush();
+    }
+
     DynArray_Z<FaceCol_Z, 32, FALSE, FALSE> m_Faces;
     DynArray_Z<AABBNode_Z, 32, FALSE, FALSE> m_Nodes;
 };

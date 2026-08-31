@@ -97,6 +97,7 @@ public:
     }
 
     void SetWorld(const World_ZHdl& i_WorldHdl);
+    void SetCamera(const Node_ZHdl& i_CameraNodeHdl);
 
     const World_ZHdl& GetWorld() const {
         return m_WorldHdl;

@@ -46,6 +46,10 @@ public:
         return m_DefaultMaterialHdl;
     }
 
+    inline const MaterialAnim_ZHdl& GetDefaultMaterialAnim() const {
+        return m_DefaultMaterialAnimHdl;
+    }
+
     inline Material_ZHdl& GetBloomMaterial() {
         return m_BloomMaterialHdl;
     }

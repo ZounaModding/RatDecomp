@@ -669,6 +669,30 @@ struct Mat4x4 {
 
     Mat4x4(const Mat3x3& _Mat);
 
+    void Set(
+        Float i_00, Float i_01, Float i_02, Float i_03,
+        Float i_10, Float i_11, Float i_12, Float i_13,
+        Float i_20, Float i_21, Float i_22, Float i_23,
+        Float i_30, Float i_31, Float i_32, Float i_33
+    ) {
+        m[0][0] = i_00;
+        m[0][1] = i_01;
+        m[0][2] = i_02;
+        m[0][3] = i_03;
+        m[1][0] = i_10;
+        m[1][1] = i_11;
+        m[1][2] = i_12;
+        m[1][3] = i_13;
+        m[2][0] = i_20;
+        m[2][1] = i_21;
+        m[2][2] = i_22;
+        m[2][3] = i_23;
+        m[3][0] = i_30;
+        m[3][1] = i_31;
+        m[3][2] = i_32;
+        m[3][3] = i_33;
+    }
+
     const Mat3x3& m3() const {
         return *(Mat3x3*)m;
     }
@@ -769,8 +793,10 @@ struct Quat {
     }
 
     inline Quat(Float Angle, const Vec3f& Axis) {
-        w = cosf(Angle / 2.f);
-        v = sinf(Angle / 2.f) * Axis;
+        Vec2f l_SinCos;
+        O_SinCos(l_SinCos, Angle / 2.f);
+        w = l_SinCos.y;
+        v = l_SinCos.x * Axis;
     }
 
     inline Quat(const Quat& i_Quat) {
@@ -846,6 +872,8 @@ public:
     S16 x;
     S16 y;
     S16 z;
+
+    void Set(const Vec3f& i_Vector);
 };
 
 Sphere_Z operator*(const Mat4x4& i_Mat, const Sphere_Z& i_Sphere);
@@ -928,8 +956,40 @@ T Max(T i_V1, T i_V2) {
         return i_V2;
 }
 
+inline Vec4f MinVec(const Vec4f& i_Left, const Vec4f& i_Right) {
+    return Vec4f(
+        Min(i_Left.x, i_Right.x),
+        Min(i_Left.y, i_Right.y),
+        Min(i_Left.z, i_Right.z),
+        Min(i_Left.w, i_Right.w)
+    );
+}
+
+inline void MinVec(const Vec4f& i_Left, const Vec4f& i_Right, Vec4f& o_Result) {
+    o_Result.x = Min(i_Left.x, i_Right.x);
+    o_Result.y = Min(i_Left.y, i_Right.y);
+    o_Result.z = Min(i_Left.z, i_Right.z);
+    o_Result.w = Min(i_Left.w, i_Right.w);
+}
+
+inline Vec4f MaxVec(const Vec4f& i_Left, const Vec4f& i_Right) {
+    return Vec4f(
+        Max(i_Left.x, i_Right.x),
+        Max(i_Left.y, i_Right.y),
+        Max(i_Left.z, i_Right.z),
+        Max(i_Left.w, i_Right.w)
+    );
+}
+
+inline void MaxVec(const Vec4f& i_Left, const Vec4f& i_Right, Vec4f& o_Result) {
+    o_Result.x = Max(i_Left.x, i_Right.x);
+    o_Result.y = Max(i_Left.y, i_Right.y);
+    o_Result.z = Max(i_Left.z, i_Right.z);
+    o_Result.w = Max(i_Left.w, i_Right.w);
+}
+
 void Inverse2(const Mat4x4& i_Mat, Mat4x4& o_Mat);
-void ComputeMathPrecision();
+Float ComputeMathPrecision();
 
 typedef DynArray_Z<Vec3f_S16_Z, 32, FALSE, FALSE> Vec3f_S16_ZDA;
 typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;

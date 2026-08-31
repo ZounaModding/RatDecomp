@@ -42,7 +42,8 @@ void GCSoundManager_Z::GetStreamSoundDuration(const Char* a1) {
 void GCSoundManager_Z::GetLipSyncFromStream(const Node_ZHdl& a1) {
 }
 
-void GCSoundManager_Z::GetTrackTime(S32 a1) {
+Float GCSoundManager_Z::GetTrackTime(S32 i_TrackIdx) {
+    return m_Tracks[i_TrackIdx].m_LifeTime;
 }
 
 S32 GCSoundManager_Z::LoadMusic(const Char* a1) {

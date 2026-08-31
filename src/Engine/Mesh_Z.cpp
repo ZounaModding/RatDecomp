@@ -1,4 +1,5 @@
 #include "Mesh_Z.h"
+#include "Material_Z.h"
 
 Mesh_Z::Mesh_Z() {
     SetGeometryType(MESH_Z);
@@ -8,10 +9,17 @@ Mesh_Z::Mesh_Z() {
 }
 
 Mesh_Z::~Mesh_Z() {
+    Clean();
 }
 
 Bool Mesh_Z::MarkHandles() {
-    return FALSE;
+    if (!Points_Z::MarkHandles()) {
+        return FALSE;
+    }
+    for (S32 i = 0; i < m_Materials.GetSize(); i++) {
+        m_Materials[i]->MarkHandles();
+    }
+    return TRUE;
 }
 
 void MeshData_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl) {

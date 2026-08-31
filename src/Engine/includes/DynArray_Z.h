@@ -22,6 +22,16 @@ public:
         m_ArrayPtr = NULL;
     }
 
+    DynArray_Z(const DynArray_Z<T, Granularity, DeleteObject, InitObject, Align>& i_Src) {
+        m_Size = 0;
+        m_ReservedSize = 0;
+        m_ArrayPtr = NULL;
+        SetReserve(i_Src.GetSize());
+        for (S32 i = 0; i < i_Src.GetSize(); i++) {
+            Add(i_Src[i]);
+        }
+    }
+
     ~DynArray_Z() {
         if (m_ArrayPtr) {
             if (DeleteObject) {

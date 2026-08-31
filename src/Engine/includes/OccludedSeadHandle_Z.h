@@ -6,6 +6,8 @@
 class OccludedSeadHandle_Z : public SeadHandle_Z {
 public:
     U32 SetFrustrum(StaticArray_Z<OmniFrust_Z, 64, FALSE, FALSE>& o_OmniFrusts, SeadZone_Z& o_Zone1, SeadZone_Z& o_Zone2, DrawInfo_Z& io_DrawInfo, U32 i_Flag, U32 i_NoFlag);
+
+    void SetFrustrumForSeadEntry(S32 i_EntryIdx, StaticArray_Z<OmniFrust_Z, 64, FALSE, FALSE>& o_OmniFrusts, SeadZone_Z& o_Zone1, SeadZone_Z& o_Zone2, DrawInfo_Z& io_DrawInfo, U32 i_Flag, U32 i_NoFlag);
 };
 
 #endif // _OCCLUDEDSEADHANDLE_Z_H_

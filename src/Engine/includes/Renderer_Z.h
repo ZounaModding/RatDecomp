@@ -513,6 +513,10 @@ public:
 
     virtual void DrawString(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color, Float i_Z, Float i_Scale) { }
 
+    inline void DrawStringOutline(const Vec2f& i_Pos, const Char* i_Text, const Color& i_Color = Color(1.0f, 1.0f, 1.0f, 1.0f), Float i_Z = 1.5f, Float i_Scale = 1.0f) {
+        DrawString(i_Pos, i_Text, i_Color, i_Z, i_Scale);
+    }
+
     virtual void DrawString(const Vec3f& a1, const Char* a2, Bool a3) { }
 
     virtual void DrawString(const Vec3f& a1, const Char* a2, const Color& a3, Bool a4) { }

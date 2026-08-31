@@ -40,6 +40,8 @@ struct ZoneFace_Z {
 typedef DynArray_Z<ZoneFace_Z, 32, TRUE, TRUE, 16> ZoneFace_ZDA;
 
 class Occluder_Z : public SplineZone_Z {
+    friend class OccludedSeadHandle_Z;
+
 public:
     Occluder_Z() {
         SetGeometryType(OCCLUDER_Z);

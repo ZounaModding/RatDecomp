@@ -48,6 +48,8 @@ struct Sphere_Z {
     Vec3f Center;
     Float Radius;
 
+    Sphere_Z operator+(const Sphere_Z& i_Sphere) const;
+
     Sphere_Z& operator=(const Sphere_Z& i_Sph) {
         Center.x = i_Sph.Center.x;
         Center.y = i_Sph.Center.y;
@@ -178,9 +180,13 @@ struct Segment_Z {
     Float Length;
     Vec3f Direction;
     Float Pad;
-} Aligned_Z(16);
+};
 
 struct Cylindre_Z {
+    Cylindre_Z() {
+        Radius = 1.0f;
+    }
+
     Segment_Z Seg;
     Float Radius;
 };

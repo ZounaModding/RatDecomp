@@ -1,14 +1,15 @@
 #include "Mesh_Z.h"
 #include "Renderer_Z.h"
 
+// TODO: Finish matching
 void Mesh_Z::Draw(DrawInfo_Z& i_DrawInfo, ObjectDatas_Z* i_Data) {
     if (m_FadeOutDistance || m_DrawingCutoffDistance || m_DrawingStartDistance || i_Data->GetDfltColor().a < 1.0f) {
         Node_Z* l_Node = i_DrawInfo.m_Node;
 
         Float l_FadeOutDistance = m_FadeOutDistance;
 
-        Vec4f l_Delta Aligned_Z(16);
-        l_Delta = l_Node->GetTranslation() - i_DrawInfo.m_CameraTranslation.xyz();
+        Vec4f l_Delta;
+        l_Delta = l_Node->GetWorldTranslation() - i_DrawInfo.m_CameraTranslation.xyz();
         Float l_Distance = l_Delta.xyz().GetNorm();
 
         Float l_Alpha = i_Data->GetDfltColor().a;

@@ -792,7 +792,7 @@ public:
         m_Keys.Flush();
     }
 
-    S32 GetValue(Float i_Time, Vec3f& o_Value, S32 i_KeyOffset = 1) const;
+    S32 GetValue(Float i_Time, Float& o_Value, S32 i_KeyOffset = 1);
     void Load(void** i_Data);
 
     KeyframerFloatLinear_Z& operator=(const KeyframerFloatLinear_Z& i_Kfr) {
@@ -847,7 +847,7 @@ public:
         m_Keys.Flush();
     }
 
-    S32 GetValue(Float i_Time, Vec3f& o_Value, S32 i_KeyOffset = 1) const;
+    S32 GetValue(Float i_Time, Float& o_Value, S32 i_KeyOffset = 1);
     void Load(void** i_Data);
 
     KeyframerFloatLinearComp_Z& operator=(const KeyframerFloatLinearComp_Z& i_Kfr) {
@@ -1215,6 +1215,10 @@ private:
 
 class KeyframerVec2fLinearComp_Z : public Keyframer_Z {
 public:
+    KeyframerVec2fLinearComp_Z() {
+        m_Flag = FL_KEYFRAMER_LINEAR;
+    }
+
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();
     }
@@ -1321,6 +1325,10 @@ private:
 
 class KeyframerVec4fLinearComp_Z : public Keyframer_Z {
 public:
+    KeyframerVec4fLinearComp_Z() {
+        m_Flag = FL_KEYFRAMER_LINEAR;
+    }
+
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();
     }

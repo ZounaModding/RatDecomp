@@ -139,6 +139,8 @@ public:
         return 0.0f;
     }
 
+    S32 UseActionContext(S32 i_ActionContext, S32 i_PreviousActionContext, S32 i_DeviceIdx);
+    S32 SetActionContext(S32 i_ActionContext, S32 i_DeviceIdx);
     S32 FindButtonId(Name_Z i_ButtonName);
 };
 

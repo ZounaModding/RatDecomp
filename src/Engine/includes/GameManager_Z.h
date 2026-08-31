@@ -58,6 +58,8 @@ public:
 
     void Update(Float i_DeltaTime);
     void MarkHandles();
+    void AddGame(const World_ZHdl& i_WorldHdl, const Char* i_WorldName, S32 i_PlayerCount, Bool i_IsMono = FALSE, Name_Z i_CameraAgentClass = Name_Z("CameraAgent_Z"));
+    void ActivateGame(S32 i_GameId, S32 i_PlayerId = -1);
     S32 GetGameIdByWorld(const World_ZHdl& i_WorldHdl);
     void DebugDisplay(Viewport_Z* i_Vp);
 

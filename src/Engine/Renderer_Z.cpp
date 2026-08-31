@@ -502,7 +502,10 @@ void Renderer_Z::GetScreen2DPt(
     o_ScreenPoint += i_ScreenCenter;
 }
 
-void Renderer_Z::SetLightFactor(Float a1, Float a2, Float a3) {
+void Renderer_Z::SetLightFactor(Float i_X, Float i_Y, Float i_Z) {
+    m_LightFactorX = i_X;
+    m_LightFactorY = i_Y;
+    m_LightFactorZ = i_Z;
 }
 
 #pragma dont_inline reset

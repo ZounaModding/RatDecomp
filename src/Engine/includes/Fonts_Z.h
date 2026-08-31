@@ -101,7 +101,7 @@ public:
 
 private:
     Material_ZHdlDA m_MaterialDA;
-    HashTableBase_Z<FontGlyphHash_Z> m_FontGlyphHashHT;
+    HashTableBase_Z<FontGlyphHash_Z> m_GlyphsHT;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #define SND_MGR_MAX_TRACKS 32
 
 class BoneNode_Z;
+class Node_Z;
 
 Bool Cmd_PlayMusic();
 Bool Cmd_StopMusic();
@@ -19,7 +20,15 @@ Bool Cmd_PlayDialog();
 
 enum TrackFlags_Z {
     FL_TRACK_NONE = 0,
+    FL_TRACK_UNK_0x1 = 1 << 0,
+    FL_TRACK_MUTED = 1 << 1,
+    FL_TRACK_UNK_0x10 = 1 << 4,
     FL_TRACK_STREAM = 1 << 9,
+    FL_TRACK_FADE = 1 << 10,
+    FL_TRACK_UNK_0x1000 = 1 << 12,
+    FL_TRACK_DIALOG = 1 << 15,
+    FL_TRACK_LINKED = 1 << 16,
+    FL_TRACK_IGNORE_GLOBAL_VOLUME = 1 << 17,
     FL_TRACK_MUSIC = (1 << 12) | (1 << 11) | FL_TRACK_STREAM | (1 << 4) | (1 << 2) | (1 << 0)
 };
 
@@ -127,15 +136,15 @@ public:
 
     virtual void SetSfxVol(Float a1) { }
 
-    virtual void GetSfxVol() { }
+    virtual Float GetSfxVol() { return m_SfxVolume; }
 
     virtual void SetDlgVol(Float a1) { }
 
-    virtual void GetDlgVol() { }
+    virtual Float GetDlgVol() { return m_DialogVolume; }
 
     virtual void SetMusicVol(Float a1) { }
 
-    virtual void GetMusicVol() { }
+    virtual Float GetMusicVol() { return m_MusicVolume; }
 
     virtual void SetRandomFreqScale(Float a1, Float a2) { }
 
@@ -187,13 +196,17 @@ public:
 
     virtual void StopSound(S32 a1) { }
 
-    virtual void GetTrackTime(S32 a1) { }
+    virtual Float GetTrackTime(S32 i_TrackIdx) { return m_Tracks[i_TrackIdx].m_LifeTime; }
 
-    virtual void GetDlgDTime(S32 a1) { }
+    virtual void GetTrackName(S32 i_TrackIdx, String_Z<ARRAY_CHAR_MAX>& o_Name);
+
+    virtual Float GetDlgDTime(S32 i_TrackIdx) { return -1.0f; }
 
     virtual const Char* GetUsedTrackString();
 
+    S32 GetFreeTrack();
     void FreeTrack(S32 i_TrackIdx);
+    Bool IsOutOfRange(Node_Z* i_Node, BoneNode_Z* i_BoneNode);
 
     inline void InitFrame() {
         CloseFrame();

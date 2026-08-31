@@ -72,6 +72,17 @@ public:
         return;
     }
 
+    void SprintfCat(const Char* i_Format, ...) {
+        Char l_Buffer[Size];
+        va_list l_Args;
+
+        ASSERTLE_Z(i_Format != Get(), "", 39, "_Str!=Get()");
+        va_start(l_Args, i_Format);
+        vsprintf(l_Buffer, i_Format, l_Args);
+        va_end(l_Args);
+        StrCat(l_Buffer);
+    }
+
     Char* Upr() {
         return strupr(m_Str);
     }

@@ -11,7 +11,7 @@ END_INIT_AGENT_CLASS
 // clang-format on
 
 BaseAgent_G::BaseAgent_G() {
-    m_AgentFlags |= FL_AGENT_UNK_0x1;
+    m_TypeFlags |= FL_AGENT_TYPE_BASE;
 }
 
 void BaseAgent_G::Init() {

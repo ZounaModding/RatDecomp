@@ -33,9 +33,24 @@ Mat4x4Buffer_Z::Mat4x4Buffer_Z() {
 }
 
 U16 Mat4x4Buffer_Z::GetAMatrix() {
-    return 0;
+    if (!m_FreeMatNb) {
+        GetMatrixUsage();
+    }
+
+    ASSERTLE_Z(m_FreeMatNb, "Increase User_NbMatrix in your Config_Z.cpp", 52, "FreeMatNb");
+
+    U16 l_MatIdx = m_FreeMatIndices[--m_FreeMatNb];
+    m_MatArray[l_MatIdx].SetIdentity();
+
+    S32 l_InUseMatNb = m_TotalMatNb - m_FreeMatNb;
+    if (l_InUseMatNb > m_MaxInUseMatNb) {
+        m_MaxInUseMatNb = l_InUseMatNb;
+    }
+
+    return l_MatIdx;
 }
 
+// TODO: Finish matching
 U16 Mat4x4Buffer_Z::GetNewMatrix() {
     if (!m_FreeMatNb) {
         GetMatrixUsage();
@@ -81,6 +96,15 @@ U16 Mat4x4Buffer_Z::GetNewMatrix() {
 }
 
 void Mat4x4Buffer_Z::RemoveMatrix(U16 i_Id) {
+}
+
+Mat4x4* Mat4x4Buffer_Z::GetMatrix(U16 i_Id, S16 i_Buffer) {
+    U16& l_MatIdx = m_MatIdArray[i_Id].Id[i_Buffer];
+    if (l_MatIdx) {
+        return &m_MatArray[l_MatIdx];
+    }
+    l_MatIdx = GetAMatrix();
+    return &m_MatArray[l_MatIdx];
 }
 
 Bool GetMatrixUsage() {

@@ -20,7 +20,7 @@ public:
     }
 
     void Empty();
-    void IsRef(const Vec2f& i_Pos, U16** o_ZoneIds);
+    S32 IsRef(const Vec2f& i_Pos, U16** o_ZoneIds);
 
 private:
     Vec2f m_PMin;

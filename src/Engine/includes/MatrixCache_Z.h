@@ -18,14 +18,15 @@ public:
     U16 GetNewMatrix();
     U16 GetAMatrix();
     void GetState(CacheState_Z& o_State);
+    Mat4x4* GetMatrix(U16 i_Id, S16 i_Buffer);
 
-    inline Mat4x4* GetMatrix(U16 i_Id) {
-        U32 l_Id = m_MatIdArray[i_Id].Id[m_CurBuffer];
-        if (!l_Id) {
-            l_Id = GetAMatrix();
-            m_MatIdArray[i_Id].Id[m_CurBuffer] = l_Id;
+    Mat4x4* GetMatrix(U16 i_Id) {
+        U32 l_MatIdx = m_MatIdArray[i_Id].Id[m_CurBuffer];
+        if (!l_MatIdx) {
+            l_MatIdx = GetAMatrix();
+            m_MatIdArray[i_Id].Id[m_CurBuffer] = l_MatIdx;
         }
-        return &m_MatArray[l_Id];
+        return &m_MatArray[l_MatIdx];
     }
 
     inline S32 GetCurBuffer() const {

@@ -143,9 +143,9 @@ struct OccludedFrustum_Z {
         return *this;
     }
 
-    Bool GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ);
+    Bool GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ) const;
     // Should be called GetPtsOnLineZ
-    Bool GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX);
+    Bool GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX) const;
 };
 
 class Camera_Z : public Object_Z {
@@ -241,6 +241,14 @@ public:
 
     inline const Vec3f& GetWorldPos() const {
         return m_WorldPos;
+    }
+
+    inline const OccludedFrustum_Z& GetOccludedFrustum() const {
+        return m_OccludedFrustum;
+    }
+
+    inline const BitArray_Z& GetOccludedZones() const {
+        return m_OccludedZonesBA;
     }
 };
 

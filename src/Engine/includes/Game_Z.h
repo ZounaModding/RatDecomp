@@ -48,7 +48,7 @@ public:
     Agent_ZHdl CreateAgentForSystemObject(const Name_Z& i_ObjectName, Name_Z i_AgentClassName, Node_ZHdl i_ParentNodeHdl, U32 i_Flag, U32 i_NoFlag);
     void DeclareOtherAgent(const Agent_ZHdl& i_AgentHdl);
     Bool IsRtcActive(S32 i_RtcIdx);
-    U32 GetFirstVp() const;
+    S32 GetFirstVp() const;
     U32 GetNbVp() const;
     void SetGameWorld(const World_ZHdl& i_WorldHdl, const Char* i_GameName);
     void Update(Float i_DeltaTime);
@@ -61,6 +61,14 @@ public:
 
     const World_ZHdl& GetWorld() const {
         return m_WorldHdl;
+    }
+
+    inline S32 GetNbPlayer() const {
+        return m_NbPlayer;
+    }
+
+    inline LodAgent_Z* GetPlayerAgent(S32 i_PlayerId) const {
+        return m_PlayerLodAgentHdls[i_PlayerId];
     }
 
 private:

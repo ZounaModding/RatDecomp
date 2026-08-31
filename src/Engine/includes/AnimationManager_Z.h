@@ -195,6 +195,14 @@ public:
         return m_UpdateFlag & i_Flag;
     }
 
+    inline SkelNodeArray& GetOriginalNode(S32 l_SkelId) {
+        return m_SkelOriginalNodes[l_SkelId];
+    }
+
+    inline S32 GetNbNodes() {
+        return m_NodeNames.GetSize();
+    }
+
 private:
     HashName_ZTable_Z m_NodeIds;
     DynArray_Z<Name_Z, 32, FALSE> m_NodeNames;

@@ -13,6 +13,7 @@ class SeadHandle_Z;
 class Object_Z;
 class ObjectDatas_Z;
 class World_Z;
+class OccludedSeadHandle_Z;
 
 struct SeadZoneData_Z {
     U32 m_IntersectsZoneBoundingCircle;
@@ -25,6 +26,7 @@ typedef DynArray_Z<SeadZoneData_Z, 32, FALSE, FALSE> SeadZoneData_ZDA;
 
 class SeadZone_Z {
     friend class SeadHandle_Z;
+    friend class OccludedSeadHandle_Z;
     friend class World_Z;
 
 public:
@@ -123,6 +125,10 @@ public:
     S32 DoRef(S32 i_GridIdx, S32 i_EntryIdx, Node_Z* i_Node);
     S32 SetZone(SeadZone_Z& io_Zone, U32 i_Flag, U32 i_NoFlag) const;
     void GetSize(Vec2f& o_Min, Vec2f& o_Max);
+
+    inline void SetActive(Bool i_Active) {
+        m_Active = i_Active;
+    }
 
 protected:
     Vec2f m_PMin;

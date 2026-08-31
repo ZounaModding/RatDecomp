@@ -98,7 +98,7 @@ void ObjectMove_Z::RestoreStartingPos(S32 i_Index) {
 void ObjectMove_Z::StoreStartingPos(S32 i_Index) {
     Node_Z* l_Node = GetNode(i_Index);
     // $SABE: This is ugly as fuck... but it matches so we ball
-    m_StartingLocalPosDA.GetArrayPtr()[i_Index] = l_Node->GetLocalTranslation();
+    m_StartingLocalPosDA.GetArrayPtr()[i_Index] = l_Node->GetTranslation();
     m_StartingLocalRotDA.GetArrayPtr()[i_Index] = l_Node->GetRotation();
     m_StartingLocalScaleDA.GetArrayPtr()[i_Index] = l_Node->GetScale();
     m_StartingNodeParentHdlDA.GetArrayPtr()[i_Index] = l_Node->GetParent()->GetHandle();
@@ -128,7 +128,7 @@ void ObjectMove_Z::FatherUnLinked(S32 i_Index) {
 }
 
 const Vec3f& ObjectMove_Z::GetPos(S32 i_Index) {
-    return GetNode(0)->GetTranslation();
+    return GetNode(0)->GetWorldTranslation();
 }
 
 Float ObjectMove_Z::GetScale(S32 i_Index) {

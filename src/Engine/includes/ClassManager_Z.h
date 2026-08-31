@@ -110,7 +110,11 @@ public:
     const BaseObject_ZHdl& NewObject(const Name_Z& i_ClassName, const Name_Z& i_Name);
     const BaseObject_ZHdl& NewObject(const Name_Z& i_ClassName);
     const BaseObject_ZHdl& NewObject(const Char* i_ClassName);
+    const BaseObject_ZHdl& GetObjectByName(const Name_Z& i_ObjectName, const Name_Z& i_ClassName);
     Name_Z& GetClassName(const BaseObject_ZHdl& i_Hdl);
+    Bool CloneClasses(const Name_Z& i_ClonedClassName, const Name_Z& i_ClassName);
+    Bool IsCloneClass(const Name_Z& i_ClassName, Name_Z& o_ClonedClassName);
+    S32 GetCloneClass(const Name_Z& i_ClassName, DynArray_Z<Name_Z, 32, FALSE, TRUE>& o_CloneClasses);
     void GetNameFromId(U32 i_ID, Name_Z& o_Name);
     void SetNameStrFromID(Name_Z& o_Name);
 
@@ -122,11 +126,12 @@ public:
         const S32Hash_Z* l_Result = m_ClassNameToIndex.Search(l_NameToId);
         S16 l_ClassId;
         if (!l_Result) {
-            return -1;
+            l_ClassId = -1;
         }
         else {
-            return l_Result->m_Ref;
+            l_ClassId = l_Result->m_Ref;
         }
+        return l_ClassId;
     }
 
     // BigFile methods

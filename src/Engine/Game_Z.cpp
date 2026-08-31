@@ -21,7 +21,7 @@ void Game_Z::Init() {
     l_ObjectsGameClipHdl->SetObjectsGameHdl(m_ObjectsGameMgrHdl);
 }
 
-U32 Game_Z::GetFirstVp() const {
+S32 Game_Z::GetFirstVp() const {
     return m_ObjectsGameMgrHdl->GetFirstVp();
 }
 
@@ -127,7 +127,7 @@ void Game_Z::SetGamePlayerNb(S32 i_Nb, Bool i_IsMono, const Name_Z& i_CameraAgen
     l_Min /= 2.0f;
     Vec3f l_StartPos(l_Min.x, 0.0f, l_Min.y);
     if (l_StartBaseHdl.IsValid()) {
-        l_StartPos = l_StartBaseHdl->GetTranslation();
+        l_StartPos = l_StartBaseHdl->GetWorldTranslation();
     }
 
     for (S32 i = 0; i < m_NbPlayer; i++) {

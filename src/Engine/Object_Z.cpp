@@ -6,7 +6,7 @@
 
 Object_Z::Object_Z() {
     SetGeometryType(UNDEFINED_GEOMETRY);
-    m_Flag = 0xffe30;
+    m_Flag = FL_OBJECT_DEFAULT;
     Clean();
 }
 

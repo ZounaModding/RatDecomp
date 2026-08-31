@@ -126,6 +126,12 @@ public:
         m_ReservedSize = 0;
     }
 
+    void Null() {
+        if (GetArrayPtr()) {
+            memset(GetArrayPtr(), 0, GetSize() * sizeof(T*));
+        }
+    }
+
     T& Get(unsigned int i_Index) {
         DYNARRAY_Z_EXP(i_Index < m_Size);
         return m_ArrayPtr[i_Index];
@@ -147,11 +153,9 @@ public:
     }
 
     DynPtrArray_Z<T, Granularity, Align>& operator=(const DynPtrArray_Z<T, Granularity, Align>& i_Src) {
-        Empty();
-        SetReserve(i_Src.GetSize());
-        for (S32 i = 0; i < i_Src.GetSize(); ++i) {
-            Add(i_Src[i]);
-        }
+        U32 l_Size = i_Src.GetSize();
+        SetSize(l_Size);
+        memmove(m_ArrayPtr, i_Src.m_ArrayPtr, l_Size * sizeof(T));
         return *this;
     }
 
