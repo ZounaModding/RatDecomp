@@ -20,9 +20,7 @@ class Bitmap_Z;
 // multiply instead of after it.
 #define DC_MODULATE_SCALE 2.0f
 
-// Punch through alpha test threshold. KOS names neither the register nor a
-// default for it, so PT geometry keeps whatever was there until this is written.
-#define PVR_PT_ALPHA_REF 0x11c
+// Punch through alpha test threshold.
 #define DC_PT_ALPHA_REF 64
 
 static const Vec3f COLOR_ZOUNA = { 0.549f, 0.58f, 1.0f };
@@ -94,7 +92,8 @@ public:
         if (!l_HasRun) {
             l_TimeOffset = i_AbsTime;
             l_HasRun = TRUE;
-        } else {
+        }
+        else {
             i_AbsTime -= l_TimeOffset;
         }
 
