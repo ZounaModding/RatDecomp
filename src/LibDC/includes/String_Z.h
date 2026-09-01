@@ -74,6 +74,17 @@ public:
         return;
     }
 
+    void SprintfCat(const Char* i_Format, ...) {
+        Char l_Buffer[Size];
+        va_list l_Args;
+
+        ASSERT_Z(i_Format != Get(), "");
+        va_start(l_Args, i_Format);
+        vsprintf(l_Buffer, i_Format, l_Args);
+        va_end(l_Args);
+        StrCat(l_Buffer);
+    }
+
     Char* Upr() {
         return strupr(m_Str);
     }
@@ -97,6 +108,8 @@ public:
     S32 StrLen() const {
         return (S32)strlen(m_Str);
     }
+
+    Char* StrChr(int i_Char) const { return (Char*)strchr(m_Str, i_Char); }
 
 private:
     Char m_Str[Size];
