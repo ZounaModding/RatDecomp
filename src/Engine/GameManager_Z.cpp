@@ -39,6 +39,10 @@ void GameManager_Z::Update(Float i_DeltaTime) {
 void GameManager_Z::MarkHandles() {
 }
 
+void GameManager_Z::AddGame(const World_ZHdl& i_WorldHdl, const Char* i_WorldName, S32 i_PlayerCount, Bool i_IsMono, Name_Z i_CameraAgentClass) { }
+
+void GameManager_Z::ActivateGame(S32 i_GameId, S32 i_PlayerId) { }
+
 S32 GameManager_Z::GetGameIdByWorld(const World_ZHdl& i_WorldHdl) {
     for (S32 i = 0; i < GetNbGame(); i++) {
         Game_Z* l_Game = m_GameHdls[i];

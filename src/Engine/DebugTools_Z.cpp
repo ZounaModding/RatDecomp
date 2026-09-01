@@ -2,6 +2,7 @@
 #include "Program_Z.h"
 #include "Renderer_Z.h"
 #include "Console_Z.h"
+#include <String_Z.h>
 
 void RegisterDebugCommand() {
     REGISTERCOMMAND("BoxPatchClip", BoxPatchClip);

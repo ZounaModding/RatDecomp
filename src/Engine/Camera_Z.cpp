@@ -67,6 +67,9 @@ void Camera_Z::SetOccludedFarClip(Float i_Far) {
     return;
 }
 
+void Camera_Z::GetFrustrum2D(Frustrum2D_Z& o_Frustrum) const {
+}
+
 void Camera_Z::UpdateInverseWorldMatrix(Node_Z* i_Node) {
 }
 
@@ -115,4 +118,13 @@ void Camera_Z::Load(void** i_Data) {
 }
 
 void Camera_Z::EndLoad() {
+}
+
+// Should be called GetPtsOnLineZ
+Bool OccludedFrustum_Z::GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX) const {
+    return FALSE;
+}
+
+Bool OccludedFrustum_Z::GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ) const {
+    return FALSE;
 }

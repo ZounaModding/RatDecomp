@@ -103,3 +103,13 @@ void Box_Z::MatMulHasScale(const Box_Z& i_Box, const Mat4x4& i_Mat, Float i_Scal
     Scale = i_Box.Scale * i_Scale;
     Radius = i_Box.Radius * i_Scale;
 }
+
+Box_Z& Box_Z::operator=(const Box_Z& i_Box) {
+    Mat = i_Box.Mat;
+    Scale = i_Box.Scale;
+    Radius = i_Box.Radius;
+    return *this;
+}
+
+void Box_Z::GetVtx(Vec3f* o_VtxArr) const {
+}

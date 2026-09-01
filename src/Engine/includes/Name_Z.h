@@ -1,7 +1,7 @@
 #ifndef _NAME_Z_H_
 #define _NAME_Z_H_
 #include "Types_Z.h"
-#include "String_Z.h"
+#include <String_Z.h>
 
 class Name_Z {
 public:
