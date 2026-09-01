@@ -1,5 +1,11 @@
 #include "SubWorld_Z.h"
 
+S32 SubWorld_Z::SubWorldDisplayID;
+Bool SubWorld_Z::SubWorldDisplaySelection;
+Float SubWorld_Z::SubWorldDisplayScale = 1.0f;
+
+SubWorld_Z::SubWorld_Z() { }
+
 Bool SubWorld_Z::MarkHandles() {
     return FALSE;
 }

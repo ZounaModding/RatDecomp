@@ -615,7 +615,6 @@ public:
     }
 
     void Transp(Mat3x3& o_m) const;
-    Mat3x3& operator=(const Mat3x3& i_m);
     Mat3x3& operator*=(const Mat3x3& i_m);
     Mat3x3 operator*(const Mat3x3& i_m) const;
 
@@ -990,6 +989,9 @@ inline void MaxVec(const Vec4f& i_Left, const Vec4f& i_Right, Vec4f& o_Result) {
 
 void Inverse2(const Mat4x4& i_Mat, Mat4x4& o_Mat);
 Float ComputeMathPrecision();
+void ConcatMat4x4(const Mat4x4&, const Mat4x4&, Mat4x4&);
+void ConcatMat4x4AndConvert(const Mat4x4& a1, const Mat4x4& a2, Mat3x3& a3);
+void BuildLookAtLH(const Vec3f& i_Position, const Vec3f& i_Target, const Vec3f& i_Up, Mat4x4& o_Matrix);
 
 typedef DynArray_Z<Vec3f_S16_Z, 32, FALSE, FALSE> Vec3f_S16_ZDA;
 typedef DynArray_Z<Vec3f, 32, FALSE, FALSE, 32> Vec3fDA;

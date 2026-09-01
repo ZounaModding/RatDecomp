@@ -101,6 +101,10 @@ Bool Track_Z::Release() {
     return l_Used;
 }
 
+Bool SoundManager_Z::IsOutOfRange(Node_Z* i_Node, BoneNode_Z* i_BoneNode) {
+    return TRUE;
+}
+
 void SoundManager_Z::SetPitchRatio(Float a1, const Sound_ZHdl& a2, const Node_ZHdl& a3, BoneNode_Z* a4, S32 a5) {
 }
 

@@ -48,7 +48,26 @@ struct Sphere_Z {
     Vec3f Center;
     Float Radius;
 
-    Sphere_Z operator+(const Sphere_Z& i_Sphere) const;
+    // TODO: Implement
+    Sphere_Z operator+(const Sphere_Z& i_Sphere) const {
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        FIXDEBUGINLINING_Z();
+        Sphere_Z l_Result;
+        return l_Result;
+    }
 
     Sphere_Z& operator=(const Sphere_Z& i_Sph) {
         Center.x = i_Sph.Center.x;
