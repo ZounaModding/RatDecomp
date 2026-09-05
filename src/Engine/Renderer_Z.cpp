@@ -508,6 +508,8 @@ void Renderer_Z::SetLightFactor(Float i_X, Float i_Y, Float i_Z) {
     m_LightFactorZ = i_Z;
 }
 
+Color PureWhiteness(1.0f, 1.0f, 1.0f, 1.0f);
+
 #pragma dont_inline reset
 
 Float Renderer_Z::Renderer_ZDefaultNear = 0.0f;

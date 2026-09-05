@@ -8,6 +8,22 @@
 
 class Node_Z;
 
+// $SABE: This seemed like a plausible inline but I have no proof it really exists
+inline Float GetFadeValue_Z(Float i_Distance, Float i_FadeDistance, Float i_Scale, Float i_LodFadeDistance, Float i_Alpha = 1.0f) {
+    Float l_Fade;
+    if (i_FadeDistance) {
+        Float l_CurrentFadeDistance = -(i_FadeDistance * (i_Scale * i_LodFadeDistance) - i_Distance);
+        l_Fade = Clamp<Float>(1.0f - l_CurrentFadeDistance, 0.0f, 1.0f);
+    }
+    else {
+        l_Fade = 1.0f;
+    }
+    if (l_Fade >= 1.0f) {
+        l_Fade = 1.0f;
+    }
+    return l_Fade * i_Alpha;
+}
+
 enum ObjectType {
     UNDEFINED_GEOMETRY = 0,
     SURFACE_Z = 1,
@@ -35,22 +51,24 @@ enum ObjectType {
 // ObjectDatas_Z flags
 
 #define FL_OBJECTDATAS_NONE (0 << 0)
-#define FL_OBJECTDATAS_HIDE (1 << 1)                                    // 0x2 - Object data is hidden
-#define FL_OBJECTDATAS_CLONED (1 << 3)                                  // 0x8 - Object data is cloned
-#define FL_OBJECTDATAS_SKINNED (1 << 4)                                 // 0x10 - Skinned geometry
-#define FL_OBJECTDATAS_VREFLECT (1 << 5)                                // 0x20 - Fake vertical mirror to simulate reflection on the ground
-#define FL_OBJECTDATAS_HREFLECT (1 << 6)                                // 0x40 - Fake vertical mirror to simulate reflection on the wall
-#define FL_OBJECTDATAS_STATIC_SHADOW (1 << 7)                           // 0x80 - Deprecated
-#define FL_OBJECTDATAS_DISPLAY (1 << 8)                                 // 0x100 - Display the object data
-#define FL_OBJECTDATAS_NO_FOG (1 << 9)                                  // 0x200 - Don't use fog for this object data
-#define FL_OBJECTDATAS_LIGHTING_UPDATED (1 << 10)                       // 0x400 - Lighting is up to date
-#define FL_OBJECTDATAS_UPDATE_BSPHERE (1 << 11)                         // 0x800 - BSphere needs to be updated
-#define FL_OBJECTDATAS_VP0_HIDE (1 << 12)                               // 0x1000 - Hide object data for viewport 0
-#define FL_OBJECTDATAS_VP1_HIDE (1 << 13)                               // 0x2000 - Hide object data for viewport 1
-#define FL_OBJECTDATAS_VP2_HIDE (1 << 14)                               // 0x4000 - Hide object data for viewport 2
-#define FL_OBJECTDATAS_VP3_HIDE (1 << 15)                               // 0x8000 - Hide object data for viewport
-#define FL_OBJECTDATAS_VPX_HIDE(x) (FL_OBJECTDATAS_VP0_HIDE << (U8)(x)) // 0x1000/0x2000/0x4000/0x8000 - Hide object data for viewport 1/2/33
-#define FL_OBJECTDATAS_LAST (FL_OBJECTDATAS_VP3_HIDE << 1)              // 0x10000 - Last flag, user flags begin from here
+#define FL_OBJECTDATAS_UNK_0x1 (1 << 0)                             // 0x1 - Unknown
+#define FL_OBJECTDATAS_HIDE (1 << 1)                                // 0x2 - Object data is hidden
+#define FL_OBJECTDATAS_UNK_0x4 (1 << 2)                             // 0x4 - Cleared by Skel_Z::DefaultObjectsVisibility
+#define FL_OBJECTDATAS_CLONED (1 << 3)                              // 0x8 - Object data is cloned
+#define FL_OBJECTDATAS_SKINNED (1 << 4)                             // 0x10 - Skinned geometry
+#define FL_OBJECTDATAS_VREFLECT (1 << 5)                            // 0x20 - Fake vertical mirror to simulate reflection on the ground
+#define FL_OBJECTDATAS_HREFLECT (1 << 6)                            // 0x40 - Fake vertical mirror to simulate reflection on the wall
+#define FL_OBJECTDATAS_STATIC_SHADOW (1 << 7)                       // 0x80 - Deprecated
+#define FL_OBJECTDATAS_DISPLAY (1 << 8)                             // 0x100 - Display the object data
+#define FL_OBJECTDATAS_NO_FOG (1 << 9)                              // 0x200 - Don't use fog for this object data
+#define FL_OBJECTDATAS_LIGHTING_UPDATED (1 << 10)                   // 0x400 - Lighting is up to date
+#define FL_OBJECTDATAS_UPDATE_BSPHERE (1 << 11)                     // 0x800 - BSphere needs to be updated
+#define FL_OBJECTDATAS_VP0_HIDE (1 << 12)                           // 0x1000 - Hide object data for viewport 0
+#define FL_OBJECTDATAS_VP1_HIDE (1 << 13)                           // 0x2000 - Hide object data for viewport 1
+#define FL_OBJECTDATAS_VP2_HIDE (1 << 14)                           // 0x4000 - Hide object data for viewport 2
+#define FL_OBJECTDATAS_VP3_HIDE (1 << 15)                           // 0x8000 - Hide object data for viewport
+#define FL_OBJECTDATAS_VPX_HIDE(x) (FL_OBJECTDATAS_VP0_HIDE << (x)) // 0x1000/0x2000/0x4000/0x8000 - Hide object data for viewport 1/2/33
+#define FL_OBJECTDATAS_LAST (FL_OBJECTDATAS_VP3_HIDE << 1)          // 0x10000 - Last flag, user flags begin from here
 
 // Object_Z flags
 
@@ -85,8 +103,10 @@ enum ObjectType {
 
 // Lod_Z flags
 
-#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0)     // 0x100000 - LOD is a skin
-#define FL_IS_LOD_ANIMATED (FL_OBJECT_LAST << 1) // 0x200000 - LOD is animated
+#define FL_IS_LOD_SKIN (FL_OBJECT_LAST << 0)         // 0x100000 - LOD is a skin
+#define FL_IS_LOD_ANIMATED (FL_OBJECT_LAST << 1)     // 0x200000 - LOD is animated
+#define FL_IS_LOD_UNK_0x400000 (FL_OBJECT_LAST << 2) // 0x400000 - Tested in LodData_Z::SetActorData
+#define FL_IS_LOD_UNK_0x800000 (FL_OBJECT_LAST << 3) // 0x800000 - Tested in LodData_Z::SetActorData
 
 // Mesh_Z flags
 
@@ -164,8 +184,20 @@ public:
         return (m_Flag & i_Flag) ? TRUE : FALSE;
     }
 
+    inline void EnableFlag(const U32 i_Flag) {
+        m_Flag |= i_Flag;
+    }
+
+    inline void DisableFlag(const U32 i_Flag) {
+        m_Flag &= (U32)(~i_Flag);
+    }
+
     inline U32 GetFlag() const {
         return m_Flag;
+    }
+
+    inline void SetFlag(const U32 i_Flag) {
+        m_Flag = i_Flag;
     }
 
 protected:
@@ -275,6 +307,10 @@ public:
     }
 
     inline const Sphere_Z& GetBSphere() const {
+        return m_BSphereLocal;
+    }
+
+    inline Sphere_Z& GetBSphere() {
         return m_BSphereLocal;
     }
 

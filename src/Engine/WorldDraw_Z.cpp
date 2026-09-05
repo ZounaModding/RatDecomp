@@ -312,7 +312,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
             if (l_DrawObject) {
                 if (l_OmniFrusts.GetSize()) {
                     if (l_Node->IsFlagEnable(FL_NODE_NO_OMNI)) {
-                        i_DrawInfo.m_OmniFrustPtrSA.SetSize(0);
+                        i_DrawInfo.m_OmniFrustPtrSA.Empty();
                     }
                     else {
                         GetOmniOnClip(i_DrawInfo, l_OmniFrusts);
@@ -368,7 +368,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
             if (l_DrawObject) {
                 if (l_OmniFrusts.GetSize()) {
                     if (l_Node->IsFlagEnable(FL_NODE_NO_OMNI)) {
-                        i_DrawInfo.m_OmniFrustPtrSA.SetSize(0);
+                        i_DrawInfo.m_OmniFrustPtrSA.Empty();
                     }
                     else {
                         i_DrawInfo.m_ClipSph.Sph = i_DrawInfo.m_World2Cam * l_Node->GetBSphere();
@@ -408,7 +408,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
             if (l_DrawObject) {
                 if (l_OmniFrusts.GetSize()) {
                     if (l_Node->IsFlagEnable(FL_NODE_NO_OMNI)) {
-                        i_DrawInfo.m_OmniFrustPtrSA.SetSize(0);
+                        i_DrawInfo.m_OmniFrustPtrSA.Empty();
                     }
                     else {
                         GetOmniOnClip(i_DrawInfo, l_OmniFrusts);
@@ -425,7 +425,7 @@ void World_Z::DrawObjects(DrawInfo_Z& i_DrawInfo) {
 }
 
 void World_Z::GetOmniOnClip(DrawInfo_Z& i_DrawInfo, StaticArray_Z<OmniFrust_Z, 64, FALSE, FALSE>& io_OmniFrusts) {
-    i_DrawInfo.m_OmniFrustPtrSA.SetSize(0);
+    i_DrawInfo.m_OmniFrustPtrSA.Empty();
     OmniFrust_Z* l_OmniFrust = &io_OmniFrusts[0];
     S32 l_OmniFrustNb = io_OmniFrusts.GetSize();
     while (l_OmniFrustNb--) {

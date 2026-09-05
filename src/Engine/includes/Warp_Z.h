@@ -54,6 +54,7 @@ public:
     void Update();
     void DrawScene(DrawInfo_Z& i_DrawInfo);
     void UpdateAnims(Float i_DeltaTime);
+    void ResetAnimFrames();
 
 protected:
     MaterialAnim_ZHdl m_MaterialAnimHdls[MAX_WARP_FACE];

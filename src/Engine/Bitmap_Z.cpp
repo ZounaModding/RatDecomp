@@ -361,7 +361,7 @@ void Bitmap_Z::SetUniversal(U8* i_Datas) {
                         for (U32 l_X = 0; l_X < 4; l_X++) {
                             U8 l_Value = i_Datas[l_SrcOffset + l_X];
 
-                            *l_Dest++ = ((l_Value & 0x0f) << 4) | ((l_Value & 0xf0) >> 4);
+                            *l_Dest++ = ((l_Value & 0xf0) >> 4) | ((l_Value & 0x0f) << 4);
                         }
 
                         l_SrcOffset += l_LineSize;

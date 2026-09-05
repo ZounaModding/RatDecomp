@@ -34,6 +34,10 @@ public:
 
     virtual void CaptureStart(S32 a1) { }
 
+    void SetViewport(S32 i_ViewportId) { m_ViewportId = i_ViewportId; }
+
+    S32 GetViewport() const { return m_ViewportId; }
+
     const World_ZHdl& GetWorld();
     const Node_ZHdl& GetCameraNode();
 

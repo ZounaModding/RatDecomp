@@ -28,6 +28,9 @@ typedef volatile long long VS64;
 typedef volatile float VFloat;
 typedef volatile double VDouble;
 
+#undef U16_MAX
+#define U16_MAX 0xFFFF
+
 #undef S32_MIN
 #define S32_MIN -2147483648
 

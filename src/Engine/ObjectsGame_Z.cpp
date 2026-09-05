@@ -93,8 +93,9 @@ void ObjectsGame_Z::UpdateBuffer() {
             m_PlayParticlesGameDA.Add(PlayParticlesGame_Z(l_PlayParticles, l_Node, l_Agent, l_Particles, l_Node->GetName()));
         }
     }
-    m_AddedDuringUpdateObjectMoveHdls.SetSize(0);
-    m_AddedDuringUpdatePlayParticlesHdls.SetSize(0);
+
+    m_AddedDuringUpdateObjectMoveHdls.Empty();
+    m_AddedDuringUpdatePlayParticlesHdls.Empty();
 
     for (i = 0; i < m_RemovedDuringUpdateObjectMoveHdls.GetSize(); i++) {
         RemoveGameObject(m_RemovedDuringUpdateObjectMoveHdls[i]);
@@ -115,8 +116,8 @@ void ObjectsGame_Z::UpdateBuffer() {
             l_PlayParticlesHdl->Deactivate();
         }
     }
-    m_RemovedDuringUpdateObjectMoveHdls.SetSize(0);
-    m_RemovedDuringUpdatePlayParticlesHdls.SetSize(0);
+    m_RemovedDuringUpdateObjectMoveHdls.Empty();
+    m_RemovedDuringUpdatePlayParticlesHdls.Empty();
 }
 
 void ObjectsGame_Z::UpdateObject(Float i_DeltaTime) {

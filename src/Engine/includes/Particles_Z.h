@@ -42,6 +42,14 @@ public:
         return m_ParticleEmitters;
     }
 
+    S32 GetNbEle() {
+        return m_ParticleEmitters.GetSize();
+    }
+
+    ParticlesEle_Z& GetEle(S32 i_Index) {
+        return m_ParticleEmitters[i_Index];
+    }
+
 protected:
     ParticlesEle_ZDA m_ParticleEmitters;
     DynArray_Z<Mat4x4, 32, FALSE, FALSE> m_LocalPlanes;
@@ -49,6 +57,8 @@ protected:
 };
 
 class ParticlesData_Z : public ObjectDatas_Z {
+    friend class Particles_Z;
+
 public:
     ParticlesData_Z();
 
@@ -71,6 +81,14 @@ public:
 
     inline Vec3fDA& GetWorldSpacePlanes() {
         return m_WorldSpacePlanes;
+    }
+
+    inline S32 GetNbDataEle() {
+        return m_ParticleEmittersData.GetSize();
+    }
+
+    inline ParticlesDataEle_Z& GetDataEle(S32 i_Index) {
+        return m_ParticleEmittersData[i_Index];
     }
 
 protected:

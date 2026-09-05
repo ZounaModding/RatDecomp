@@ -52,7 +52,7 @@ void Warp_Z::DrawScene(DrawInfo_Z& i_DrawInfo) {
     U32 l_ObjectDatasHideFlag;
     U32 l_OldDrawInfoFlag = i_DrawInfo.m_Flag;
     i_DrawInfo.m_Flag = DrawInfo_Z::FL_DRAWINFO_NO_HFOG;
-    i_DrawInfo.m_OmniFrustPtrSA.SetSize(0);
+    i_DrawInfo.m_OmniFrustPtrSA.Empty();
 
     Camera_Z* l_Camera = i_DrawInfo.m_Camera;
     Float l_NearClip = l_Camera->GetFrustrum().m_NearClip;

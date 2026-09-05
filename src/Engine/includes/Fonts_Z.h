@@ -10,6 +10,15 @@
 S32 GetUTF8CharBytes(const Char* a1);
 U32 GetUTF8CharCode(const Char* a1);
 
+class FontGlyph_Z {
+public:
+    U32 m_ID;
+    S32 m_MaterialIndex;
+    Float m_Descent;
+    Vec2f m_TexCoordTopLeft;
+    Vec2f m_TexCoordBottomRight;
+};
+
 class FontGlyphHash_Z {
 public:
     U32 m_ID;
@@ -22,6 +31,14 @@ public:
     FontGlyphHash_Z() { }
 
     FontGlyphHash_Z(U32 i_ID) { m_ID = i_ID; }
+
+    FontGlyphHash_Z(FontGlyph_Z i_Glyph) {
+        m_ID = i_Glyph.m_ID;
+        m_MaterialIndex = i_Glyph.m_MaterialIndex;
+        m_Descent = i_Glyph.m_Descent;
+        m_TexCoordTopLeft = i_Glyph.m_TexCoordTopLeft;
+        m_TexCoordBottomRight = i_Glyph.m_TexCoordBottomRight;
+    }
 
     inline S32 HashBase() const { return m_ID; }
 
@@ -93,6 +110,7 @@ public:
     virtual Bool MarkHandles();
     Bool GetCharDesc(const Char* i_Char, CharDesc_Z& o_CharDesc);
     S32 GetSizeChar(const Char* i_Char);
+    void GetSizeYStr(const Char* i_Text, S32& o_MinY1, S32& o_MaxY, S32& o_MinY2);
     U32 GetSizeStr(const Char* i_Text);
     void DrawString(FontParam_Z& i_Params);
     void DrawString(Char* i_Text, S32 i_X, S32 i_Y, const Color& i_TopColor, const Color& i_BottomColor, Float i_Scale, Float i_Z);

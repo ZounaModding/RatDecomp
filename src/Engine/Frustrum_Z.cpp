@@ -55,6 +55,10 @@ Bool BoxVsFrustrumAndFlags(const Frustrum_Z& i_Frustrum, const Mat4x4& i_Matrix,
     Box_Z l_Box;
     l_Box.MatMulHasScale(i_Box, i_Matrix, i_Scale, 1.0f / i_Scale);
 
+    Float l_CenterX = l_Box.Mat.m.m[0][3];
+    Float l_CenterY = l_Box.Mat.m.m[1][3];
+    Float l_CenterZ = l_Box.Mat.m.m[2][3];
+
     for (S32 i = 0; i < 4; i++) {
         const Vec4f& l_Plane = i_Frustrum.m_ViewPlanes.m_PlaneNormals[i];
         Vec4f l_BoxPlane(
@@ -71,7 +75,7 @@ Bool BoxVsFrustrumAndFlags(const Frustrum_Z& i_Frustrum, const Mat4x4& i_Matrix,
             Max(l_NegativeBoxPlane.w, l_BoxPlane.w)
         );
         Float l_Radius = l_MaxPlane.xyz() * l_Box.Scale;
-        Float l_Distance = l_Box.Mat.m.m[0][3] * l_Plane.x + l_Box.Mat.m.m[1][3] * l_Plane.y + l_Box.Mat.m.m[2][3] * l_Plane.z;
+        Float l_Distance = l_CenterX * l_Plane.x + l_CenterY * l_Plane.y + l_CenterZ * l_Plane.z;
         if (l_Distance < -l_Radius) {
             return FALSE;
         }

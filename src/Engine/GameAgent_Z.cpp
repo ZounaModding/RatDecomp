@@ -72,7 +72,7 @@ Bool Game_Z::CreateAgentForNode(Node_Z* i_Node, Name_Z i_AgentClassName) {
             Lod_Z* l_Lod = (Lod_Z*)l_Object;
             Name_Z l_AnimationName = gData.ClassMgr->GetHandleName(l_Object->GetHandle());
 
-            if (l_Lod->GetObjectCount() && l_Lod->IsFlag(FL_IS_LOD_SKIN)) {
+            if (l_Lod->GetNbObject() && l_Lod->IsFlag(FL_IS_LOD_SKIN)) {
                 l_AgentHdl = gData.ScriptMgr->NewAgent(l_AgentClassName);
                 if (!l_AgentHdl.IsValid()) {
                     if (!l_Lod->IsFlag(FL_IS_LOD_ANIMATED)) {
@@ -131,7 +131,7 @@ Agent_ZHdl Game_Z::CreateAgentForSystemObject(
 ) {
     Node_ZHdl l_NodeHdl = gData.SystemDatas->GetObjectByName(i_ObjectName, 0);
     if (!l_NodeHdl.IsValid()) {
-        return Agent_ZHdl();
+        return HANDLE_NULL;
     }
 
     World_Z* l_World = m_WorldHdl;
@@ -159,7 +159,7 @@ Agent_ZHdl Game_Z::CreateAgentForSystemObject(
 
     S32 l_OldAgentCount = m_GameAgentHdls.GetSize();
     if (!CreateAgentForNode(l_ClonedNodeHdl, i_AgentClassName)) {
-        return Agent_ZHdl();
+        return HANDLE_NULL;
     }
 
     if (!m_InitAgentRunning) {

@@ -929,7 +929,6 @@ S32 AnimFrame_Z::GetAnimatedObjects(Node_Z* i_Node, Light_Z** o_Light, HFog_Z** 
     return l_Type;
 }
 
-// TODO: Finish matching
 Bool KeyframerFollow_Z::GetValue(Float i_Time, Float i_MaxTime, Vec3f& o_Value, Quat& o_Rot, Bool i_Inc) {
     S32 l_Idx = 0;
     while ((l_Idx < m_Keys.GetSize()) && (m_Keys[l_Idx].GetTime() < i_Time)) {
@@ -979,13 +978,13 @@ Bool KeyframerFollow_Z::GetValue(Float i_Time, Float i_MaxTime, Vec3f& o_Value, 
 
         const Vec3f& l_Axis = m_Keys[l_Idx].GetAxis();
 
-        if (l_Axis.x != 0) {
+        if (l_Axis.x) {
             l_LookAt.x = 0.0f;
         }
-        if (l_Axis.y != 0) {
+        if (l_Axis.y) {
             l_LookAt.y = 0.0f;
         }
-        if (l_Axis.z != 0) {
+        if (l_Axis.z) {
             l_LookAt.z = 1.0f;
         }
 
@@ -1007,20 +1006,19 @@ void KeyframerFollow_Z::MarkHandles() {
     }
 }
 
-// TODO: Finish matching
 Bool KeyframerStartStop_Z::GetValue(Float i_PrevTime, Float& i_CurTime, Float i_MaxTime, AnimFrame_Z* i_CurAnim) {
     S32 l_KeyIndex0 = -1;
     S32 l_KeyIndex1 = -1;
     S32 l_Index;
 
     if (i_CurTime < i_PrevTime) {
-        if (GetValue(i_PrevTime, i_MaxTime, i_MaxTime, i_CurAnim)) {
-            return GetValue(0, i_CurTime, i_MaxTime, i_CurAnim);
-        }
-        else {
-            i_CurTime = i_MaxTime;
+        Float l_Time = i_MaxTime;
+
+        if (!GetValue(i_PrevTime, l_Time, i_MaxTime, i_CurAnim)) {
+            i_CurTime = l_Time;
             return FALSE;
         }
+        return GetValue(0, i_CurTime, i_MaxTime, i_CurAnim);
     }
     else {
         for (l_Index = 0; l_Index < GetNbKeys(); l_Index++) {
@@ -1042,27 +1040,30 @@ Bool KeyframerStartStop_Z::GetValue(Float i_PrevTime, Float& i_CurTime, Float i_
                 S32 i;
                 for (i = 0; i < m_Keys[l_Index].GetNb(); i++) {
                     StartStop_Z& l_StSt = m_Keys[l_Index].Get(i);
+                    Float l_KeyTime = m_Keys[l_Index].GetTime();
                     AnimFrame_Z* l_Anim = l_StSt.m_AnimHdl;
                     U32 l_Value = l_StSt.m_Value;
 
                     if (l_Value == VL_STARTSTOP_START) {
-                        l_Anim->Start(i_CurTime - m_Keys[l_Index].GetTime());
+                        l_Anim->Start(i_CurTime - l_KeyTime);
                     }
                     else if (l_Value == VL_STARTSTOP_STOP) {
                         if (l_Anim == i_CurAnim) {
+                            i_CurTime = l_KeyTime + 0.001f;
                             i_CurAnim->m_PlayFlag |= FL_ANIM_PLAYED;
                             i_CurAnim->m_PlayFlag ^= FL_ANIM_PLAY;
                             return FALSE;
                         }
-                        l_Anim->Stop(m_Keys[l_Index].GetTime() - i_PrevTime);
+                        l_Anim->Stop(l_KeyTime - i_PrevTime);
                     }
                     else if (l_Value == VL_STARTSTOP_PAUSE) {
                         if (l_Anim == i_CurAnim) {
+                            i_CurTime = l_KeyTime + 0.001f;
                             i_CurAnim->m_PlayFlag |= FL_ANIM_PAUSED;
                             i_CurAnim->m_PlayFlag ^= FL_ANIM_PLAY;
                             return FALSE;
                         }
-                        l_Anim->Pause(m_Keys[l_Index].GetTime() - i_PrevTime + Float_Eps);
+                        l_Anim->Pause(l_KeyTime - i_PrevTime + Float_Eps);
                     }
                 }
             }

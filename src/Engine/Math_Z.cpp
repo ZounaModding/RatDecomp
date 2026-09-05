@@ -1,32 +1,31 @@
 #include "Math_Z.h"
 #include "MathTools_Z.h"
 
+// Vector constants
 const Vec3i VEC3I_NULL = Vec3i(0, 0, 0);
 const Vec4i VEC4I_NULL = Vec4i(0, 0, 0, 0);
-
-// Vec2f constants
 const Vec2f VEC2F_NULL = Vec2f(0.f, 0.f);
-const Vec2f VEC2F_ONE = Vec2f(1.f, 1.f);
-
-// Vec3f constants
 const Vec3f VEC3F_NULL = Vec3f(0.f, 0.f, 0.f);
-const Vec3f VEC3F_ONE = Vec3f(1.f, 1.f, 1.f);
-const Vec3f VEC3F_HALF = Vec3f(0.5f, 0.5f, 0.5f);
+const Vec4f VEC4F_NULL = Vec4f(0.f, 0.f, 0.f, 0.f);
 const Vec3f VEC3F_UP = Vec3f(0.f, 1.f, 0.f);
 const Vec3f VEC3F_DOWN = Vec3f(0.f, -1.f, 0.f);
-const Vec3f VEC3F_LEFT = Vec3f(1.f, 0.f, 0.f);
-const Vec3f VEC3F_RIGHT = Vec3f(-1.f, 0.f, 0.f);
+const Vec3f VEC3F_RIGHT = Vec3f(1.f, 0.f, 0.f);
+const Vec3f VEC3F_LEFT = Vec3f(-1.f, 0.f, 0.f);
 const Vec3f VEC3F_FRONT = Vec3f(0.f, 0.f, 1.f);
 const Vec3f VEC3F_BACK = Vec3f(0.f, 0.f, -1.f);
-
-// Vec4f constants
-const Vec4f VEC4F_NULL = Vec4f(0.f, 0.f, 0.f, 0.f);
+const Vec3f VEC3F_HALF = Vec3f(0.5f, 0.5f, 0.5f);
+const Vec2f VEC2F_ONE = Vec2f(1.f, 1.f);
+const Vec3f VEC3F_ONE = Vec3f(1.f, 1.f, 1.f);
 const Vec4f VEC4F_UP = Vec4f(0.f, 1.f, 0.f, 0.f);
 const Vec4f VEC4F_DOWN = Vec4f(0.f, -1.f, 0.f, 0.f);
-const Vec4f VEC4F_LEFT = Vec4f(1.f, 0.f, 0.f, 0.f);
-const Vec4f VEC4F_RIGHT = Vec4f(-1.f, 0.f, 0.f, 0.f);
+const Vec4f VEC4F_RIGHT = Vec4f(1.f, 0.f, 0.f, 0.f);
+const Vec4f VEC4F_LEFT = Vec4f(-1.f, 0.f, 0.f, 0.f);
 const Vec4f VEC4F_FRONT = Vec4f(0.f, 0.f, 1.f, 0.f);
 const Vec4f VEC4F_BACK = Vec4f(0.f, 0.f, -1.f, 0.f);
+const Vec3f VEC3F_FRONTLEFT = Vec3f(-0.70710677f, 0.f, 0.70710677f);
+const Vec3f VEC3F_FRONTRIGHT = Vec3f(0.70710677f, 0.f, 0.70710677f);
+const Vec3f VEC3F_BACKLEFT = Vec3f(-0.70710677f, 0.f, -0.70710677f);
+const Vec3f VEC3F_BACKRIGHT = Vec3f(0.70710677f, 0.f, -0.70710677f);
 
 // Color constants
 const Color COLOR_WHITE = Color(1.f, 1.f, 1.f, 1.f);

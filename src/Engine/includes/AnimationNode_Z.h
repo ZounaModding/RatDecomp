@@ -44,10 +44,6 @@ struct AnimationNodeData_Z {
     KeyframerVec3fComp_Z m_ScaleKfr;
     KeyframerMessage_Z m_MsgKfr;
 
-    AnimationNodeData_Z() {
-        m_Flag = 0;
-    }
-
     inline void Flush() {
         m_Flag = 0;
         m_TransKfr.Flush();

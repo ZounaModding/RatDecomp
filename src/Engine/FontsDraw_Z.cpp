@@ -39,7 +39,7 @@ void Fonts_Z::DrawString(FontParam_Z& i_Params) {
             continue;
         }
 
-        if (l_CharCode == 0xc2a7) {
+        if (l_CharCode == 0xc2a7) { // '§'
             Char l_Margin[4];
             l_Margin[0] = l_Text[2];
             l_Margin[1] = l_Text[3];

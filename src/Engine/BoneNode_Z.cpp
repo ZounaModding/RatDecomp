@@ -21,6 +21,13 @@ BoneNode_Z::~BoneNode_Z() {
 }
 
 void BoneNode_Z::MarkHandles() {
+    if (m_UserDefineHdl.IsValid()) {
+        m_UserDefineHdl->MarkHandles();
+    }
+
+    for (BoneNode_Z* l_Son = GetHeadSon(); l_Son; l_Son = l_Son->GetNext()) {
+        l_Son->MarkHandles();
+    }
 }
 
 BoneNode_Z* BoneNode_Z::GetRoot() {

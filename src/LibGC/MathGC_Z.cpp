@@ -12,6 +12,14 @@ Quat& Quat::operator*=(const Quat& i_Quat) {
     return *this;
 }
 
+Vec4f& Vec4f::operator*=(Float i_Factor) {
+    x *= i_Factor;
+    y *= i_Factor;
+    z *= i_Factor;
+    w *= i_Factor;
+    return *this;
+}
+
 Vec4f Mat4x4::operator*(const Vec4f& i_Vec) const {
     Vec4f l_Vec;
     Float l_Z = i_Vec.z;
@@ -34,7 +42,16 @@ Mat4x4 Mat4x4::operator*(const Mat4x4& i_Matrix) const {
     return l_Mat;
 }
 
-void BuildLookAtLH(const Vec3f& i_Position, const Vec3f& i_Target, const Vec3f& i_Up, Mat4x4& o_Matrix) {
+void BuildLookAtLH(const Vec3f& i_Position, const Vec3f& i_Target, const Vec3f& i_Up, Mat4x4& o_Matrix) { }
+
+Mat3x3 Mat3x3::operator*(const Mat3x3& i_Matrix) const {
+    Mat3x3 l_Mat;
+    for (int i = 0; i < 3; i++) {
+        l_Mat.m.m[0][i] = m.m[0][i] * i_Matrix.m.m[0][0] + m.m[1][i] * i_Matrix.m.m[0][1] + m.m[2][i] * i_Matrix.m.m[0][2];
+        l_Mat.m.m[1][i] = m.m[0][i] * i_Matrix.m.m[1][0] + m.m[1][i] * i_Matrix.m.m[1][1] + m.m[2][i] * i_Matrix.m.m[1][2];
+        l_Mat.m.m[2][i] = m.m[0][i] * i_Matrix.m.m[2][0] + m.m[1][i] * i_Matrix.m.m[2][1] + m.m[2][i] * i_Matrix.m.m[2][2];
+    }
+    return l_Mat;
 }
 
 #ifdef __MWERKS__

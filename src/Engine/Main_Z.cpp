@@ -1,4 +1,5 @@
 #include "Program_Z.h"
+#include "Random_Z.h"
 #include "Fonts_Z.h"
 #include "ClassManager_Z.h"
 #include "World_Z.h"
@@ -445,14 +446,27 @@ Bool SetBlockFrame() {
 }
 
 Bool PrintFreeMem() {
-    return FALSE;
+    MemManager.m_FreeMemCached = s_GetFreeMem();
+    s_GetLargestFree();
+    return TRUE;
 }
 
 Bool SetTimeFactor() {
-    return FALSE;
+    if (gData.Cons->GetNbParam() <= 2 && gData.Cons->IsParamFloat(1)) {
+        Float l_TimeFactor = gData.Cons->GetParamFloat(1);
+        if (l_TimeFactor > 0.0f && l_TimeFactor < 5.0f) {
+            gData.m_TimeFactor = l_TimeFactor;
+        }
+    }
+    return TRUE;
 }
 
 Bool InitRandomSeed() {
+    if (gData.Cons->GetNbParam() >= 1 && gData.Cons->IsParamFloat(1)) {
+        InitRandom(gData.Cons->GetParamFloat(1));
+        return TRUE;
+    }
+
     return FALSE;
 }
 

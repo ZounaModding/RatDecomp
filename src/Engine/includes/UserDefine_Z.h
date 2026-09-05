@@ -52,6 +52,8 @@ public:
 
     static BaseObject_Z* NewObject() { return NewL_Z(83) UserDefine_Z; }
 
+    inline UserDefineCmd_Z& GetCmd() { return m_Cmd; }
+
 private:
     UserDefineCmd_Z m_Cmd;
 };

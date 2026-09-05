@@ -1,5 +1,7 @@
 #include "ObjectMove_Z.h"
 
+ColLineResult_Z ObjectMove_Z::ColLineResult;
+
 void ObjectMove_Z::UpdateCollisionShadow(World_Z* i_World, Float i_DeltaTime) {
 }
 

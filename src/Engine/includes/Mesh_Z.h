@@ -71,7 +71,6 @@ public:
         return m_Normals.GetSize();
     }
 
-protected:
     static void Load(void** i_Data, SphereCol_Z& o_SphereCol);
     static void Load(void** i_Data, BoxCol_Z& o_BoxCol);
     static void Load(void** i_Data, CylindreCol_Z& o_CylindreCol);
@@ -80,6 +79,7 @@ protected:
     static void Load(void** i_Data, CylindreCol_ZDA& o_CylindreCols);
     static void Load(void** i_Data, SphereColNode_Z** o_SphereColNode);
 
+protected:
     Vec3fDA m_Normals;
     Vec2fDA m_TextureCoordinates;
     Strip_ZDA m_Strips;

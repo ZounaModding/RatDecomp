@@ -34,6 +34,18 @@ public:
         return m_NodeHdl;
     }
 
+    inline const Node_ZHdl& GetNodeHdl() const {
+        return m_NodeHdl;
+    }
+
+    inline Float GetMaxSqrDistActive() const {
+        return m_MaxSqrDistActive;
+    }
+
+    inline Float GetMinSqrDistActive() const {
+        return m_MinSqrDistActive;
+    }
+
 protected:
     Float m_MaxSqrDistActive;
     Float m_MinSqrDistActive;

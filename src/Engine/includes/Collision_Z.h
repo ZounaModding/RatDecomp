@@ -26,12 +26,12 @@ struct ColLineResult_Z {
     ColLineResult_Z() { Reset(); }
 
     void Reset() {
+        m_Flag = 0;
         m_IsIntersect = FALSE;
         m_Node = NULL;
         m_Object = NULL;
         m_ObjectDatas = NULL;
-        m_Flag = 0;
-        m_Material = NULL;
+        m_UnkS32_0x48 = 0;
     }
 };
 
@@ -66,6 +66,11 @@ struct ColSphereResult_Z {
     ColSphereResult_Z() { Reset(); }
 
     void Reset() { m_Node = NULL; }
+};
+
+// TODO: Reverse engineer members
+struct PENETRATION {
+    U8 m_Unk_0x0[80];
 };
 
 #endif

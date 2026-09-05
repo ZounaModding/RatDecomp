@@ -9,6 +9,26 @@
 
 #define FL_ANIM_CCT_NONE 0
 
+typedef DynArray_Z<AnimationNodeKeyId_Z, 16, FALSE, FALSE> AnimationNodeKeyId_ZDA;
+typedef DynArray_Z<AnimationMaterialKeyId_Z, 8, FALSE, FALSE> AnimationMaterialKeyId_ZDA;
+typedef DynArray_Z<AnimationMeshKeyId_Z, 8, FALSE, FALSE> AnimationMeshKeyId_ZDA;
+typedef DynArray_Z<AnimationMorphKeyId_Z, 8, FALSE, FALSE> AnimationMorphKeyId_ZDA;
+
+struct AnimationKeyId_Z {
+    AnimationKeyId_Z() {
+        m_MeshKeyIds.SetSize(0);
+        m_MaterialKeyIds.SetSize(0);
+        m_NodeKeyIds.SetSize(0);
+        m_MorphKeyIds.SetSize(0);
+    }
+
+    AnimationNodeKeyId_ZDA m_NodeKeyIds;
+    AnimationMaterialKeyId_ZDA m_MaterialKeyIds;
+    AnimationMeshKeyId_ZDA m_MeshKeyIds;
+    AnimationMorphKeyId_ZDA m_MorphKeyIds;
+    Float m_UnkFloat_0x20;
+};
+
 struct AnimationConcat_Z {
     Name_Z m_ObjectName;
     S16 m_ObjectID;

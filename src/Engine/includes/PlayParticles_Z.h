@@ -32,7 +32,7 @@ public:
         return m_NodeHdl;
     }
 
-private:
+protected:
     Node_ZHdl m_NodeHdl;
     Node_ZHdl m_EmiterNodeHdl;
     Bool m_IsPlaying;

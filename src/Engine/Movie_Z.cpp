@@ -59,6 +59,9 @@ void Movie_Z::Skip(Float i_SkipTime) {
 }
 
 void Movie_Z::MarkHandles() {
+    for (S32 i = 0; i < m_MovieManipHdls.GetSize(); i++) {
+        m_MovieManipHdls[i]->MarkHandles();
+    }
 }
 
 void Movie_Z::RemoveManip(const MovieManipHdl& i_ManipHdl) {

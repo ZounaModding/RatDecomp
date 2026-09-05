@@ -11,6 +11,10 @@
 
 #define PARTICLES_ELE_MAX_QUANTITY 256
 
+#define FL_PARTICLES_ELE_UNK_0x8 (1 << 3)       // tested by SuperSpray_Z
+#define FL_PARTICLES_ELE_UNK_0x10 (1 << 4)      // tested by SuperSpray_Z
+#define FL_PARTICLES_EMITTER_UNK_0x100 (1 << 8) // tested by ParticlesAgent_Z::UseNode
+
 struct ParticlesEle_Z {
     ParticlesEle_Z();
     void Load(void** i_Data);
@@ -23,7 +27,7 @@ struct ParticlesEle_Z {
     }
 
     S16 m_MaxQuantity;
-    U16 m_Rate;
+    S16 m_Rate;
     Float m_UnkFloat_0x4;
     Float m_Speed;
     Float m_Rotation;

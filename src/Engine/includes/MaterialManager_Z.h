@@ -23,6 +23,7 @@ public:
     void AddMaterialAnim(const MaterialAnim_ZHdl& i_MaterialAnimHdl);
     void GetMaterialByName(const Name_Z& i_Name, MaterialAnim_ZHdl& o_MaterialAnimHdl);
 
+    const MaterialAnim_ZHdl& GetMaterialAnimFromMaterial(const Material_ZHdl& i_MaterialHdl);
     void RegisterMaterialUser(S32 i_MaterialCode, NewMaterialUserProc i_NewMaterialUserProc);
     MaterialUser_Z* GetMaterialUser(S32 i_MaterialCode);
 

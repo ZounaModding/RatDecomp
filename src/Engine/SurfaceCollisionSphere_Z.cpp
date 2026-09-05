@@ -1,5 +1,9 @@
 #include "Surface_Z.h"
 
+static Vec4f s_pointstab[16];
+static PENETRATION s_penetration;
+static Vec4f t_points[4];
+
 Bool Surface_Z::GetCollisionSphere(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Sphere_Z& i_Seg, StaticArray_Z<ColSphereResult_Z, NUM_SPHERE_HIT_MAX, FALSE>& o_Result, U64 i_Flag, U64 i_NoFlag) {
     return FALSE;
 }

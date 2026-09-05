@@ -2,7 +2,10 @@
 #include "Program_Z.h"
 #include "Renderer_Z.h"
 #include "Console_Z.h"
+#include "Timer_Z.h"
 #include <String_Z.h>
+
+Float PreviousTime;
 
 void RegisterDebugCommand() {
     REGISTERCOMMAND("BoxPatchClip", BoxPatchClip);
@@ -46,11 +49,12 @@ Bool DisplayMemStatus() {
 }
 
 Bool DrawMemGraph() {
-    return FALSE;
+    return TRUE;
 }
 
 Bool DeltaTime() {
-    return FALSE;
+    PreviousTime = GetAbsoluteTime();
+    return TRUE;
 }
 
 Bool ScreenShot() {
@@ -90,6 +94,22 @@ Bool SetPosPerso() {
 }
 
 Bool EnablePopupMenu() {
+    if (gData.Cons->GetNbParam() > 2) {
+        return FALSE;
+    }
+
+    if (gData.Cons->GetNbParam() < 2) {
+        gData.ToggleEngineFlag(FL_POPUP_MENU);
+    }
+
+    if (gData.Cons->IsParamFloat(1)) {
+        if (gData.Cons->GetParamFloat(1) == 0.0f) {
+            gData.DisableEngineFlag(FL_POPUP_MENU);
+        }
+        else {
+            gData.EnableEngineFlag(FL_POPUP_MENU);
+        }
+    }
     return TRUE;
 }
 
@@ -181,7 +201,8 @@ Bool SkipMovie() {
 }
 
 Bool EnableL2R2() {
-    return FALSE;
+    gData.ToggleEngineFlag(FL_ENABLE_L2R2);
+    return TRUE;
 }
 
 Bool CheckMemoryEveryFrame() {

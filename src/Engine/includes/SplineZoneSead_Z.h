@@ -12,6 +12,8 @@ struct SplineZoneVoxel_Z {
 typedef DynArray_Z<SplineZoneVoxel_Z, 32, FALSE, FALSE> SplineZoneVoxelDA;
 
 class SplineZoneSead_Z {
+    friend class SplineZone_Z;
+
 public:
     SplineZoneSead_Z() {
         m_MaxZoneIndex = 0;

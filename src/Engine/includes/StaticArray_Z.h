@@ -62,6 +62,12 @@ public:
         return m_Size;
     }
 
+    void Empty() {
+        if (m_Size) {
+            SetSize(0);
+        }
+    }
+
     int Add() {
         if (m_Size >= ReservedSize) {
             DYNARRAY_Z_EXP(m_Size < ReservedSize);
@@ -110,23 +116,21 @@ public:
 
     void SetSize(int i_NewSize) {
         int i;
-        if (i_NewSize != m_Size) {
-            if (i_NewSize > m_Size) {
-                if (InitObject) {
-                    for (i = m_Size; i < i_NewSize; i++) {
-                        new (&Get(i)) T;
-                    }
+        if (i_NewSize > m_Size) {
+            if (InitObject) {
+                for (i = m_Size; i < i_NewSize; i++) {
+                    new (&Get(i)) T;
                 }
             }
-            else if (i_NewSize < m_Size) {
-                if (DeleteObject) {
-                    for (i = m_Size - 1; i >= i_NewSize; i--) {
-                        Get(i).~T();
-                    }
-                }
-            }
-            m_Size = i_NewSize;
         }
+        else if (i_NewSize < m_Size) {
+            if (DeleteObject) {
+                for (i = m_Size - 1; i >= i_NewSize; i--) {
+                    Get(i).~T();
+                }
+            }
+        }
+        m_Size = i_NewSize;
     }
 
     void SetSizeNoConstruct(int i_NewSize) {

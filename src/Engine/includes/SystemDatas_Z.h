@@ -62,6 +62,10 @@ public:
         return m_NoTextureMaterialHdl;
     }
 
+    Fonts_ZHdlDA& GetFonts() {
+        return m_FontHdls;
+    }
+
 private:
     GameObj_ZHdlDA m_ExtGameObjHdls;
     GameObj_ZHdlDA m_GameObjHdls;

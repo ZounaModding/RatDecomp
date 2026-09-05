@@ -14,6 +14,31 @@ MaterialManager_Z::~MaterialManager_Z() {
 }
 
 void MaterialManager_Z::MarkHandles() {
+    S32 i;
+
+    for (i = 0; i < m_MaterialAnimHdls.GetSize();) {
+        if (!m_MaterialAnimHdls[i].IsValid()) {
+            m_MaterialAnimHdls.Remove(i);
+        }
+        else if (!gData.ClassMgr->IsMarked(m_MaterialAnimHdls[i])) {
+            m_MaterialAnimHdls.Remove(i);
+        }
+        else {
+            i++;
+        }
+    }
+
+    for (i = 0; i < m_MaterialAnimHdlsReallyAnimated.GetSize();) {
+        if (!m_MaterialAnimHdlsReallyAnimated[i].IsValid()) {
+            m_MaterialAnimHdlsReallyAnimated.Remove(i);
+        }
+        else if (!gData.ClassMgr->IsMarked(m_MaterialAnimHdlsReallyAnimated[i])) {
+            m_MaterialAnimHdlsReallyAnimated.Remove(i);
+        }
+        else {
+            i++;
+        }
+    }
 }
 
 void MaterialManager_Z::Update(Float i_DeltaTime) {
@@ -54,6 +79,16 @@ void MaterialManager_Z::AddMaterialAnim(const MaterialAnim_ZHdl& i_MaterialAnimH
     if (i_MaterialAnimHdl->IsAnimated()) {
         m_MaterialAnimHdlsReallyAnimated.Add(i_MaterialAnimHdl);
     }
+}
+
+const MaterialAnim_ZHdl& MaterialManager_Z::GetMaterialAnimFromMaterial(const Material_ZHdl& i_MaterialHdl) {
+    for (S32 i = 0; i < m_MaterialAnimHdls.GetSize(); i++) {
+        if (i_MaterialHdl.GetGlobalID() == m_MaterialAnimHdls[i]->GetMaterial().GetGlobalID()) {
+            return m_MaterialAnimHdls[i];
+        }
+    }
+
+    return m_MaterialAnimHdls[0];
 }
 
 void MaterialManager_Z::RegisterMaterialUser(S32 i_MaterialCode, NewMaterialUserProc i_NewMaterialUserProc) {

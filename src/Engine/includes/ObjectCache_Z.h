@@ -60,12 +60,12 @@ public:
             CacheStateFrame_Z* l_FirstEntry = m_EntryDA.GetArrayPtr();
             CacheStateFrame_Z* l_LastEntry = l_FirstEntry + m_HighestUsed;
             for (CacheStateFrame_Z* l_CurEntry = l_FirstEntry; l_CurEntry <= l_LastEntry; l_CurEntry++) {
-                if (l_CurEntry->m_Key != 0xffff) {
+                if (l_CurEntry->m_Key != U16_MAX) {
                     if (l_CurEntry->m_Age == 2) {
                         U16 l_EntryIndex = l_CurEntry - l_FirstEntry;
                         m_Data[l_EntryIndex].FreeEntry(m_EntryDA[l_EntryIndex]);
                         CacheStateFrame_Z& l_Entry = m_EntryDA[l_EntryIndex];
-                        l_Entry.m_Key = 0xffff;
+                        l_Entry.m_Key = U16_MAX;
                         l_Entry.m_Age = 0;
                         l_Entry.m_UsedThisFrame = TRUE;
                         l_Entry.m_OwnerPtr = NULL;
@@ -187,6 +187,9 @@ struct CacheStateLRU_Z {
 
 template <class T, class V>
 class LRU_Z {
+    // $SABE: This might not be real, we might need more getters/setters
+    friend class ColSurfaceCache_Z;
+
 public:
     struct List_Ele {
         T m_Val;
@@ -205,12 +208,25 @@ public:
         FIXDEBUGINLINING_Z();
     }
 
+    void MakeFirst(V i_Id) {
+        List_Ele* l_List = m_LRUList.GetArrayPtr();
+        List_Ele& l_Ele = l_List[i_Id + 1];
+        m_LRUList[l_Ele.m_PrevEntry].m_NextEntry = l_Ele.m_NextEntry;
+        m_LRUList[l_Ele.m_NextEntry].m_PrevEntry = l_Ele.m_PrevEntry;
+        l_Ele.m_NextEntry = l_List[0].m_NextEntry;
+        l_Ele.m_PrevEntry = 0;
+        m_LRUList[l_List[0].m_NextEntry].m_PrevEntry = i_Id + 1;
+        l_List[0].m_NextEntry = i_Id + 1;
+    }
+
 private:
     DynArray_Z<List_Ele, 32, FALSE> m_LRUList;
 };
 
 template <class T>
 class CacheEntryLRU_Z {
+    friend class ColSurfaceCache_Z;
+
 public:
     CacheEntryLRU_Z() {
         m_CacheData = NULL;
@@ -226,6 +242,11 @@ public:
         }
         m_CacheData = NewL_Z(34) T[(i_LRUCount * m_CacheEntryCount)];
         return;
+    }
+
+    inline T* GetData(U16 i_Id) {
+        m_LRU.MakeFirst(i_Id);
+        return m_CacheData + i_Id * m_CacheEntryCount;
     }
 
 private:

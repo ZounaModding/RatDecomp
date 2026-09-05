@@ -13,6 +13,7 @@
 
 class SphereColNode_Z;
 class UserDefine_Z;
+class Lod_Z;
 
 struct ShadowReceiver_Z {
     Node_ZHdl m_NodeHdl;                  // node we collided with hdl
@@ -30,16 +31,32 @@ struct ActorData_Z {
     Float m_LightInterpolationTime; // used to switch light
     Vec3f m_WorldShadowNormal;
     U32 m_Flag;
-    Vec3f m_LocalShadowBoundsCenter;
-    Float m_LocalShadowBoundsRadius;
+    Sphere_Z m_LocalShadowBounds;
     LightData_Z m_LightData;
     LightData_ZHdl m_CurLightDataHdl;
     ShadowReceiver_ZDA m_ShadowReceivers;
-    Vec4f m_UnkVec4f_0xbc;
+    Vec3f m_UnkVec3f_0xbc;
+    Float m_UnkFloat_0xc8;
     Bool m_UnkBool_0xcc;
+
+    ActorData_Z() { }
+
+    ActorData_Z(U32 i_Flag) {
+        m_Flag = i_Flag;
+        m_UnkVec3f_0xbc.Set(0.0f, 0.0f, 0.0f);
+        m_UnkFloat_0xc8 = -1.0f;
+        m_UnkBool_0xcc = FALSE;
+        m_LightInterpolationTime = 0.0f;
+    }
+
+    void Load(void** i_Data);
+    void EndLoad();
+    void SetLightingData(Node_Z* i_Node, Node_Z* i_ReceiverNode, Float i_InterpolationTime);
 };
 
 class LodData_Z : public ObjectDatas_Z {
+    friend class Lod_Z;
+
 public:
     LodData_Z();
     virtual ~LodData_Z();
@@ -55,10 +72,22 @@ public:
     virtual void SetDfltColorNoAlpha(const Color& i_Color);
     virtual void SetDfltColorAlpha(Float i_Alpha);
 
+    void SetActorData(Lod_Z* i_Lod);
     void SetLightingData(LightData_ZHdl i_LightDataHdl);
+    Bool SetLightingData(Node_Z* i_Node, Node_Z* i_ReceiverNode, Float i_InterpolationTime);
+
+    inline ActorData_Z* GetActorData() const {
+        return m_ActorData;
+    }
+
+    inline ObjectDatas_ZHdl& GetObjectA(S32 i_Idx) {
+        return m_ObjectDatasHdls[i_Idx];
+    }
 
 protected:
-    U8 m_Pad_0x28[16];
+    ObjectDatas_ZHdlDA m_ObjectDatasHdls;
+    ObjectDatas_ZHdl m_VolumeObjectDatasHdl;
+    ActorData_Z* m_ActorData;
 };
 
 class Lod_Z : public Object_Z {
@@ -84,7 +113,17 @@ public:
         U64 i_NoFlag
     );
 
-    inline S32 GetObjectCount() const { return m_ObjectHdls.GetSize(); }
+    Bool GetWorldShadowSphere(Node_Z* i_Node, Sphere_Z& o_Sphere) const;
+
+    inline S32 GetNbObject() const { return m_ObjectHdls.GetSize(); }
+
+    inline Object_ZHdl& GetObjectA(S32 i_Idx) {
+        return m_ObjectHdls[i_Idx];
+    }
+
+    inline Object_ZHdl& GetVolume() {
+        return m_VolumeObjectHdl;
+    }
 
 protected:
     SphereCol_ZDA m_SphereCollisions;

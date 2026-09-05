@@ -13,6 +13,9 @@ Bool RtcPlayer_Z::MarkHandles() {
 void RtcPlayer_Z::InitRtc(const World_ZHdl& a1, const Rtc_ZHdl& a2, RtcAgent_ZHdl a3, Node_ZHdl a4, S32 a5) {
 }
 
+void RtcPlayer_Z::ShutRtc() {
+}
+
 void RtcPlayer_Z::Update(Float a1) {
 }
 

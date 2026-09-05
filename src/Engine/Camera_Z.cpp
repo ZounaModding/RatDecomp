@@ -54,7 +54,51 @@ void Camera_Z::SetTarget(const Vec3f& i_Target) {
     m_Target = i_Target;
 }
 
-void Camera_Z::UpdateObject(Node_Z* a1, ObjectDatas_Z* a2) {
+// TODO: Finish matching
+void Camera_Z::UpdateObject(Node_Z* i_Node, ObjectDatas_Z* i_Data) {
+    Mat4x4 l_RollMatrix;
+    Vec2f l_SinCos;
+
+    memset(&l_RollMatrix, 0, sizeof(l_RollMatrix));
+
+    l_RollMatrix.m[0][0] = 1.0f;
+    l_RollMatrix.m[1][1] = 1.0f;
+    l_RollMatrix.m[2][2] = 1.0f;
+    l_RollMatrix.m[3][3] = 1.0f;
+
+    O_SinCos(l_SinCos, m_Roll);
+
+    l_RollMatrix.m[0][1] = l_SinCos.x;
+    l_RollMatrix.m[0][0] = l_SinCos.y;
+    l_RollMatrix.m[1][0] = -l_SinCos.x;
+    l_RollMatrix.m[1][1] = l_SinCos.y;
+
+    m_WorldPos = i_Node->GetWorldMatrix().GetMatrixTrans();
+
+    Node_Z* l_TargetNode = m_NodeTargetHdl;
+
+    if (l_TargetNode) {
+        m_Target = l_TargetNode->GetWorldMatrix().GetMatrixTrans();
+    }
+
+    m_Direction = m_Target - m_WorldPos;
+
+    if (!m_Direction.CNormalize()) {
+        m_Direction = VEC3F_FRONT;
+    }
+
+    BuildLookAtMatrix(m_Direction, Vec3f(0.0f, 1.0f, 0.0f), m_WorldMatrix);
+
+    m_WorldMatrix.m[3][0] = m_WorldPos.x;
+    m_WorldMatrix.m[3][1] = m_WorldPos.y;
+    m_WorldMatrix.m[3][2] = m_WorldPos.z;
+    m_WorldMatrix.m[3][3] = 1.0f;
+
+    m_WorldMatrix *= l_RollMatrix;
+
+    UpdateInverseWorldMatrix(i_Node);
+
+    Object_Z::UpdateObject(i_Node, i_Data);
 }
 
 void Camera_Z::SetOccludedFarClip(Float i_Far) {
@@ -71,6 +115,15 @@ void Camera_Z::GetFrustrum2D(Frustrum2D_Z& o_Frustrum) const {
 }
 
 void Camera_Z::UpdateInverseWorldMatrix(Node_Z* i_Node) {
+    i_Node->SetWorldMatrixPtr();
+    i_Node->GetWorldMatrix() = m_WorldMatrix;
+    i_Node->EnableFlag(FL_NODE_INVALIDMAT);
+
+    i_Node->GetRotInWorld() = Quat(m_WorldMatrix);
+    i_Node->GetRotInWorld().GetMatrix(i_Node->GetRotInWorldMatrix());
+    i_Node->EnableFlag(FL_NODE_INVALIDROT);
+
+    Inverse2(m_WorldMatrix, GetInverseWorldMatrix());
 }
 
 void Camera_Z::DoOcclusion(const Occluder_ZHdl& i_OccluderHdl) {
@@ -122,9 +175,95 @@ void Camera_Z::EndLoad() {
 
 // Should be called GetPtsOnLineZ
 Bool OccludedFrustum_Z::GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX) const {
+    const Vec2f* l_Cur = m_Points;
+    const Vec2f* l_Next = l_Cur + 1;
+
+    o_IntersectionsX.Empty();
+
+    S32 l_Nb = m_PointNb;
+
+    for (S32 i = 0; i < l_Nb; i++, l_Cur++, l_Next++) {
+        if (i == l_Nb - 1) {
+            l_Next = m_Points;
+        }
+
+        if ((l_Cur->y < i_Z && l_Next->y >= i_Z) || (l_Cur->y >= i_Z && l_Next->y < i_Z)) {
+            Float l_X = (i_Z - l_Cur->y) / (l_Next->y - l_Cur->y) * (l_Next->x - l_Cur->x) + l_Cur->x;
+
+            if (!o_IntersectionsX.GetSize()) {
+                o_IntersectionsX.Add(l_X);
+            }
+            else if (l_X <= o_IntersectionsX[0]) {
+                o_IntersectionsX.Insert(0, l_X);
+            }
+            else if (l_X > o_IntersectionsX[o_IntersectionsX.GetSize() - 1]) {
+                o_IntersectionsX.Add(l_X);
+            }
+            else {
+                for (S32 j = 0; j < o_IntersectionsX.GetSize() - 1; j++) {
+                    if (l_X > o_IntersectionsX[j] && l_X <= o_IntersectionsX[j + 1]) {
+                        o_IntersectionsX.Insert(j + 1, l_X);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (o_IntersectionsX.GetSize()) {
+        if (o_IntersectionsX.GetSize() & 1) {
+            ASSERTLE_Z(FALSE, "Nombre de point impair dans intersection occluder Y", 516, "FALSE");
+        }
+
+        return TRUE;
+    }
+
     return FALSE;
 }
 
 Bool OccludedFrustum_Z::GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ) const {
+    const Vec2f* l_Cur = m_Points;
+    const Vec2f* l_Next = l_Cur + 1;
+
+    o_IntersectionsZ.Empty();
+
+    S32 l_Nb = m_PointNb;
+
+    for (S32 i = 0; i < l_Nb; i++, l_Cur++, l_Next++) {
+        if (i == l_Nb - 1) {
+            l_Next = m_Points;
+        }
+
+        if ((l_Cur->x < i_X && l_Next->x >= i_X) || (l_Cur->x >= i_X && l_Next->x < i_X)) {
+            Float l_Z = (i_X - l_Cur->x) / (l_Next->x - l_Cur->x) * (l_Next->y - l_Cur->y) + l_Cur->y;
+
+            if (!o_IntersectionsZ.GetSize()) {
+                o_IntersectionsZ.Add(l_Z);
+            }
+            else if (l_Z <= o_IntersectionsZ[0]) {
+                o_IntersectionsZ.Insert(0, l_Z);
+            }
+            else if (l_Z > o_IntersectionsZ[o_IntersectionsZ.GetSize() - 1]) {
+                o_IntersectionsZ.Add(l_Z);
+            }
+            else {
+                for (S32 j = 0; j < o_IntersectionsZ.GetSize() - 1; j++) {
+                    if (l_Z > o_IntersectionsZ[j] && l_Z <= o_IntersectionsZ[j + 1]) {
+                        o_IntersectionsZ.Insert(j + 1, l_Z);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (o_IntersectionsZ.GetSize()) {
+        if (o_IntersectionsZ.GetSize() & 1) {
+            ASSERTLE_Z(FALSE, "Nombre de point impair dans intersection occluder X", 570, "FALSE");
+        }
+
+        return TRUE;
+    }
+
     return FALSE;
 }
