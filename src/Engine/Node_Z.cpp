@@ -1,4 +1,5 @@
 #include "Node_Z.h"
+#include "Agent_Z.h"
 #include "Assert_Z.h"
 #include "Light_Z.h"
 #include "Lod_Z.h"
@@ -47,7 +48,51 @@ Node_Z::~Node_Z() {
 }
 
 Bool Node_Z::MarkHandles() {
-    return FALSE;
+    if (!ResourceObject_Z::MarkHandles()) {
+        return FALSE;
+    }
+
+    if (m_Object) {
+        m_Object->MarkHandles();
+    }
+
+    if (m_ObjectDatas) {
+        m_ObjectDatas->MarkHandles();
+    }
+
+    if (m_HeadSon) {
+        m_HeadSon->MarkHandles();
+    }
+
+    if (m_Next) {
+        m_Next->MarkHandles();
+    }
+
+    if (m_UserDefine) {
+        m_UserDefine->MarkHandles();
+    }
+
+    if (m_LightData) {
+        m_LightData->MarkHandles();
+    }
+
+    if (m_HFogData) {
+        m_HFogData->MarkHandles();
+    }
+
+    if (m_Agent.IsValid()) {
+        m_Agent->MarkHandles();
+    }
+
+    if (m_RadiosityBitmap) {
+        m_RadiosityBitmap->MarkHandles();
+    }
+
+    if (m_RadiosityNormalBitmap) {
+        m_RadiosityNormalBitmap->MarkHandles();
+    }
+
+    return TRUE;
 }
 
 Node_ZHdl& Node_Z::GetRoot() {
@@ -385,6 +430,16 @@ void Node_Z::SetLighting(LightData_Z* i_LightData, HFogData_Z* i_HFogData, Bool 
     if (m_Next) {
         m_Next->SetLighting(m_LightData, m_HFogData, i_KeepExisting);
     }
+}
+
+// TODO: Implement this function
+LightData_Z* Node_Z::GetFirstDLight() {
+    return NULL;
+}
+
+// TODO: Implement this function
+HFogData_Z* Node_Z::GetFirstHFog() {
+    return NULL;
 }
 
 void Node_Z::Changed() {

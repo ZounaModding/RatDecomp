@@ -14,6 +14,8 @@ class ObjectMoveCollData_Z;
 
 class ObjectMove_Z : public Manipulator_Z {
 public:
+    static ColLineResult_Z ColLineResult;
+
     ObjectMove_Z() { }
 
     virtual ~ObjectMove_Z() { }

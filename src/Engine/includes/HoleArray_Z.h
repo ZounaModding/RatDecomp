@@ -97,7 +97,7 @@ public:
     }
 
     void Minimize() {
-        S32 l_LastID = m_BA.FindLastBit(TRUE, m_BA.m_Size - 1);
+        S32 l_LastID = m_BA.FindLastBit(TRUE, m_BA.GetSize() - 1);
         if (l_LastID == -1) {
             m_DA.Flush();
             m_BA.Flush();

@@ -26,7 +26,11 @@ struct BoneTRS_Z {
     }
 };
 
+class Skel_Z;
+
 class BoneNode_Z {
+    friend class Skel_Z;
+
 public:
     BoneNode_Z();
     ~BoneNode_Z();
@@ -107,6 +111,8 @@ public:
     inline void SetName(const Name_Z& i_Name) { m_Name = i_Name; }
 
     inline const Name_Z& GetName() const { return m_Name; }
+
+    inline UserDefine_ZHdl& GetUserDefine() { return m_UserDefineHdl; }
 
     inline BoneTRS_Z& GetTRS() { return m_Trs; }
 

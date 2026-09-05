@@ -196,6 +196,8 @@ public:
 
     virtual void StopSound(S32 a1) { }
 
+    void StopSoundOnNode(const Node_ZHdl& i_NodeHdl, Bool a2);
+
     virtual Float GetTrackTime(S32 i_TrackIdx) { return m_Tracks[i_TrackIdx].m_LifeTime; }
 
     virtual void GetTrackName(S32 i_TrackIdx, String_Z<ARRAY_CHAR_MAX>& o_Name);

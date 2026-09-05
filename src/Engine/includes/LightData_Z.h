@@ -4,6 +4,8 @@
 #include "Object_Z.h"
 
 class LightData_Z : public ObjectDatas_Z {
+    friend class Light_Z;
+
 public:
     LightData_Z();
 
@@ -19,6 +21,12 @@ public:
     inline void SetAmbiant(const Vec3f& i_Ambient) { m_Ambient = i_Ambient; }
 
     inline void SetDir(const Vec3f& i_Direction) { m_Direction = i_Direction; }
+
+    inline Vec3f& GetDirection() { return m_Direction; }
+
+    inline Vec3f& GetColor() { return m_Color; }
+
+    inline Vec3f& GetAmbient() { return m_Ambient; }
 
 private:
     Float m_UnkFloat_0x28;

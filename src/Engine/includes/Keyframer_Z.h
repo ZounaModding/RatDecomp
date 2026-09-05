@@ -650,6 +650,10 @@ private:
 
 class KeyframerFloat_Z : public Keyframer_Z {
 public:
+    KeyframerFloat_Z() {
+        m_Flag = FL_KEYFRAMER_SMOOTH;
+    }
+
     inline S32 GetNbKeys() const {
         return m_Keys.GetSize();
     }
@@ -1365,7 +1369,7 @@ public:
         m_Keys.Flush();
     }
 
-    S32 GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffset = 1) const;
+    S32 GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffset = 1);
     void Load(void** i_Data);
 
     KeyframerVec4fLinearComp_Z& operator=(const KeyframerVec4fLinearComp_Z& i_Kfr) {

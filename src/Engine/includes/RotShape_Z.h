@@ -9,8 +9,25 @@
 #define ROTSHAPE_TYPE_VERTICAL 0    // Only rotate around Y axis
 #define ROTSHAPE_TYPE_ALWAYSFRONT 1 // Always face the camera in all axes
 
+#define FL_ROTSHAPE_HIDE (1 << 3)   // RotShapeData is hidden
+#define FL_ROTSHAPE_SCALED (1 << 4) // RotShapeData is scaled
+#define FL_ROTSHAPE_SHADOW (1 << 5) // RotShapeData casts shadows
+
 class RotShapeData_Z;
 class RotShape_Z;
+
+// $SABE: Figure this out if needed
+struct RotShapeData {
+    Float m_Unk_0x0;
+    Float m_Unk_0x4;
+    Float m_Unk_0x8;
+    Float m_Unk_0xc;
+    Float m_Unk_0x10;
+    Float m_Unk_0x14;
+    Float m_Unk_0x18;
+};
+
+typedef DynArray_Z<RotShapeData, 32, FALSE, FALSE> RotShapeDataDA;
 
 HANDLE_Z(RotShapeData_Z, PointsDatas_Z);
 HANDLE_Z(RotShape_Z, Points_Z);
@@ -56,11 +73,12 @@ public:
     virtual ~RotShapeData_Z();
     virtual void Load(void** i_Data);
     virtual void Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl);
-    virtual void HideObject(S32 i_Index);
-    virtual void UnHideObject(S32 i_Index);
+    virtual void HideObject(S32 i_Index = -1);
+    virtual void UnHideObject(S32 i_Index = -1);
     virtual void SetShadowData(Node_Z* i_Node, const Vec3f& i_Origin, const ColLineResult_Z& i_Result, Float i_Radius);
 
 protected:
-    U8 m_Pad_0x28[16];
+    U16DA m_FlagsDA;
+    RotShapeDataDA m_RotShapeDatas;
 };
 #endif

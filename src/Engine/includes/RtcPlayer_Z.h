@@ -10,8 +10,14 @@
 #include "Animation_ZHdl.h"
 #include "Bitmap_ZHdl.h"
 #include "Math_Z.h"
+#include "Object_ZHdl.h"
 
 struct RtcNode {
+    RtcNode() {
+        m_ParentIdx = -1;
+        m_IsWorldNode = FALSE;
+    }
+
     Name_Z m_ParentName;
     Name_Z m_NodeName;
     S32 m_ParentIdx;
@@ -19,6 +25,19 @@ struct RtcNode {
     Node_ZHdl m_ParentNodeHdl;
     Bool m_IsWorldNode;         // Node is in the world, not in the rtc bf
     Name_Z m_WorldNodeFileName; // If m_IsWorldNode is set this is used to find the world node
+};
+
+struct RtcPerso {
+    RtcPerso() {
+        m_NodeIdx = -1;
+    }
+
+    ~RtcPerso() { }
+
+    S32 m_NodeIdx;
+    Name_Z m_NodeName;
+    Animation_ZHdl m_AnimHdl;
+    Object_ZHdl m_ObjectHdl;
 };
 
 class RtcPlayer_Z : public ManipulatorDraw_Z {
@@ -35,6 +54,8 @@ public:
     virtual void InitRtc(const World_ZHdl& a1, const Rtc_ZHdl& a2, RtcAgent_ZHdl a3, Node_ZHdl a4, S32 a5);
     virtual void Start(const Game_ZHdl& a1);
     virtual void UpdateLod(Float a1);
+
+    void ShutRtc();
 
     static BaseObject_Z* NewObject() { return NewL_Z(129) RtcPlayer_Z; }
 

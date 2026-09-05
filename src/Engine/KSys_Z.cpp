@@ -105,6 +105,26 @@ void PathKDBToSys(const Char* i_KName, Char* o_SysName) {
 }
 
 void PathSysToDB(const Char* i_SysName, Char* o_KName) {
+    if (!i_SysName || !i_SysName[0]) {
+        o_KName[0] = 0;
+        return;
+    }
+
+    if (strncmp(gData.m_DBPath, i_SysName, strlen(gData.m_DBPath))) {
+        strcpy(o_KName, i_SysName);
+        Console_Z::PrintErrorString(ERROR_CODE_NONE, ">? File Access Outside DB Path %s", o_KName);
+    }
+    else {
+        strcpy(o_KName, "DB:");
+        strcat(o_KName, i_SysName + strlen(gData.m_DBPath));
+    }
+
+    Char* l_Separator = strchr(o_KName, '\\');
+
+    while (l_Separator) {
+        *l_Separator = KSYS_DIRECTORY_CHAR;
+        l_Separator = strchr(l_Separator, '\\');
+    }
 }
 
 Bool SetDBPath() {

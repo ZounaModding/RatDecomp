@@ -20,6 +20,8 @@ public:
     virtual void UnRegisterFromGame(Game_ZHdl& a1);
     virtual void DoFollow();
 
+    void SetPlayParticles(const BaseObject_ZHdl& i_Hdl);
+    void Follow(Node_Z* i_Node, Skel_Z* i_Skel, S32 i_BoneId);
     void Pause();
     void Resume();
     void Replay();

@@ -9,7 +9,17 @@ Particles_Z::Particles_Z() {
 }
 
 Bool Particles_Z::MarkHandles() {
-    return FALSE;
+    if (!Object_Z::MarkHandles()) {
+        return FALSE;
+    }
+
+    int l_Nb = m_ParticleEmitters.GetSize();
+
+    for (S32 i = 0; i < l_Nb; i++) {
+        m_ParticleEmitters[i].MarkHandles();
+    }
+
+    return TRUE;
 }
 
 void Particles_Z::Clean() {
@@ -77,7 +87,7 @@ ParticlesData_Z::ParticlesData_Z() {
 
 void ParticlesData_Z::Clone(ObjectDatas_ZHdl& o_ObjectDatasHdl, Object_ZHdl& o_ObjectHdl) {
     Name_Z l_ClassName(Name_Z::GetID("ParticlesData_Z", 0));
-    (BaseObject_ZHdl&)o_ObjectDatasHdl = gData.ClassMgr->NewObject(l_ClassName, GetName());
+    o_ObjectDatasHdl = gData.ClassMgr->NewObject(l_ClassName, GetName());
     ObjectDatas_Z::Clone(o_ObjectDatasHdl, o_ObjectHdl);
 
     Particles_Z* l_Particles = (Particles_Z*)(Object_Z*)o_ObjectHdl;

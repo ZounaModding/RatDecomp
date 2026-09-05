@@ -5,46 +5,27 @@
 #include "BoneNode_Z.h"
 #include "Material_ZHdl.h"
 #include "MeshMorph_Z.h"
+#include "MeshCollision_Z.h"
 #include "Points_ZHdl.h"
 
-struct SphereColBone_Z {
-    Sphere_Z m_Sphere;
-    U32 m_UnkU32_0x10;
-    Name_Z m_Name;
-    U8 m_Unk_0x18[8];
+class SphereColBone_Z : public SphereCol_Z {
+public:
+    SphereColBone_Z() {
+        m_BoneNode = NULL;
+    }
+
     BoneNode_Z* m_BoneNode;
     U8 m_Unk_0x24[12];
-
-    SphereColBone_Z() {
-        m_UnkU32_0x10 = 0;
-        m_BoneNode = NULL;
-    }
-
-    SphereColBone_Z(const SphereColBone_Z& i_Sphere)
-        : m_Sphere(i_Sphere.m_Sphere)
-        , m_UnkU32_0x10(i_Sphere.m_UnkU32_0x10)
-        , m_Name(i_Sphere.m_Name)
-        , m_BoneNode(i_Sphere.m_BoneNode) { }
 };
 
-struct BoxColBone_Z {
-    Box_Z m_Box;
-    U32 m_UnkU32_0x40;
-    Name_Z m_Name;
-    U8 m_Unk_0x48[8];
-    BoneNode_Z* m_BoneNode;
-    U8 m_Unk_0x54[0xc];
-
+class BoxColBone_Z : public BoxCol_Z {
+public:
     BoxColBone_Z() {
-        m_UnkU32_0x40 = 0;
         m_BoneNode = NULL;
     }
 
-    BoxColBone_Z(const BoxColBone_Z& i_Box)
-        : m_Box(i_Box.m_Box)
-        , m_UnkU32_0x40(i_Box.m_UnkU32_0x40)
-        , m_Name(i_Box.m_Name)
-        , m_BoneNode(i_Box.m_BoneNode) { }
+    BoneNode_Z* m_BoneNode;
+    U8 m_Unk_0x54[12];
 };
 
 typedef DynArray_Z<SphereColBone_Z, 8> SphereColBone_ZDA;
@@ -64,6 +45,9 @@ public:
     virtual Bool IsBSphere(Node_Z* i_Node, Frustrum_Z& i_Frust, DrawInfo_Z& i_DrawInfo);
     virtual void GetCollisionLines(Node_Z* i_Node, ObjectDatas_Z* i_Data, const Segment_Z& i_Seg, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
 
+    void RegisterAndRemap();
+    void Load(void** i_Data, SphereColBone_ZDA& o_Spheres);
+    void Load(void** i_Data, BoxColBone_ZDA& o_Boxes);
     void Reset();
     void ResetBoneNodes();
     BoneNode_Z* GetOrgBoneNode(S32 i_Index);
@@ -87,6 +71,12 @@ public:
             return m_Bones[i_Index];
         }
         return NULL;
+    }
+
+    S32 GetNbBone() const { return m_Bones.GetSize(); }
+
+    inline const SphereColBone_ZDA& GetHitSpheres() const {
+        return m_HitSpheres;
     }
 
     void DefaultObjectsVisibility();

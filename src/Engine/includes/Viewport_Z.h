@@ -16,6 +16,7 @@
 #define FL_CLIPPLANE_FAR (1 << 2)
 
 Bool WSphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Sphere_Z& i_Sphere, U32& o_Flag);
+Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Sphere_Z& i_Sphere, U32& o_Flag);
 Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, DrawInfo_Z& io_DrawInfo, Node_Z* i_Node);
 Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Mat4x4& i_Matrix, const Sphere_Z& i_Sphere, ClipSphere_Z& o_ClipSphere, Float i_Scale);
 Bool BoxVsFrustrumAndFlags(const Frustrum_Z& i_Frustrum, const Mat4x4& i_Matrix, const Box_Z& i_Box, U32& o_Flag, Float i_Scale);

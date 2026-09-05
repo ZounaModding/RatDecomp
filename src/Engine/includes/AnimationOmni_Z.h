@@ -15,6 +15,10 @@ private:
     KeyframerFloatComp_Z m_EndKfr;
 
 public:
+    AnimationOmni_Z() {
+        m_ObjectId = -1;
+    }
+
     void UpdateFrame(Float i_Time, Omni_Z* i_Omni);
     void Load(void** i_Data);
 };

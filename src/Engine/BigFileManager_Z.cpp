@@ -212,7 +212,7 @@ BaseObject_ZHdl ClassManager_Z::GetResourceObject(const Char* i_RscName) {
         }
     }
 
-    Name_Z l_RscName(l_RscNameString);
+    Name_Z l_RscName(l_RscNameString.Get());
 
     S32 l_HdlIdx = IsResourceRef(l_RscName.m_ID);
     if (l_HdlIdx >= 0) {
@@ -244,7 +244,7 @@ BaseObject_ZHdl ClassManager_Z::AssumeGetResourceObject(const Char* i_RscName) {
         }
     }
 
-    Name_Z l_RscName(l_RscNameString);
+    Name_Z l_RscName(l_RscNameString.Get());
 
     S32 l_HdlIdx = IsResourceRef(l_RscName.m_ID);
     if (l_HdlIdx >= 0) {

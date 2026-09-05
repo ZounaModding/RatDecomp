@@ -4,6 +4,7 @@
 #include "DynArray_Z.h"
 #include "Material_ZHdl.h"
 #include "SystemObject_Z.h"
+#include "CollisionTool_Z.h"
 
 class SphereCol_Z {
 public:
@@ -75,6 +76,7 @@ public:
 
 class AABBCol_Z {
 public:
+    Bool Intersect(const Segment_Z& i_Segment, const Vec3f_S16_ZDA& i_Vertices, CollisionReport_Z& o_Report, const Material_ZHdlDA& i_Materials, U64 i_Flag, U64 i_NoFlag);
     void Load(void** i_Data);
 
     void Flush() {

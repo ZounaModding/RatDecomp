@@ -6,6 +6,8 @@
 #define FL_BONENODE_UNK_0x4 (1 << 2)
 #define FL_BONENODE_UNK_0x8 (1 << 3)
 #define FL_BONENODE_UNK_0x10 (1 << 4)
+#define FL_BONENODE_UNK_0x20 (1 << 5)
+#define FL_BONENODE_UNK_0x40 (1 << 6)
 #define FL_BONENODE_UNK_0x80 (1 << 7)
 
 #endif

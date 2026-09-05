@@ -77,116 +77,112 @@ void Viewport_Z::UpdateFrustrum() {
 
     Camera_Z* l_Camera = (Camera_Z*)l_CameraNode->GetObjectA();
 
-    m_Tangent = O_Tan(l_Camera->GetFov() / 2.0f);
-    m_InvDiagTangent = O_Tan(l_Camera->GetFovEdition() / 2.0f) / m_Tangent;
+    m_Tangent = O_Tan(0.5f * l_Camera->GetFov());
+    m_InvDiagTangent = O_Tan(0.5f * l_Camera->GetFovEdition()) / m_Tangent;
     m_Ratio = ((Float)m_SizeX / (Float)m_SizeY) / RATIO_SCREEN_STANDARD;
-    m_DFov = m_SizeX / (m_Tangent * 2.0f);
+    Float l_Bias = (4000.0f * m_Tangent) / (Float)m_SizeX;
 
-    Float l_XBias = (m_Tangent * 4000.0f) / m_SizeX;
-    Float l_XScale = gData.MainRdr->GetScreenRatio() * gData.MainRdr->GetXScaleFactor();
+    m_DFov = (Float)m_SizeX / (2.0f * m_Tangent);
+    Float l_XScale = gData.MainRdr->GetScreenRatio() / gData.MainRdr->GetXScaleFactor();
+    Float l_BiasHRatio;
+    Float l_BiasVRatio;
 
     if (m_SizeX > m_SizeY) {
-        m_HRatio = l_XScale * m_Tangent * m_Ratio;
+        m_HRatio = l_XScale * (m_Tangent * m_Ratio);
         m_VRatio = m_Tangent / RATIO_SCREEN_STANDARD;
         m_HSize = m_DFov / (m_Ratio * l_XScale);
         m_VSize = m_DFov / m_Ratio;
-        l_XScale = l_XScale * l_XBias * m_Ratio;
+        l_BiasHRatio = l_XScale * (l_Bias * m_Ratio);
+        l_BiasVRatio = l_Bias / RATIO_SCREEN_STANDARD;
     }
     else {
         m_HRatio = 2.0f * m_Tangent * m_Ratio;
         m_VRatio = m_Tangent / (RATIO_SCREEN_STANDARD / l_XScale);
-        m_HSize = (m_DFov / 2.0f) / m_Ratio;
-        m_VSize = (m_DFov / 2.0f) / (m_Ratio / l_XScale);
-        l_XScale = 2.0f * l_XBias * m_Ratio;
+        m_HSize = 0.5f * m_DFov / m_Ratio;
+        m_VSize = 0.5f * m_DFov / (m_Ratio / l_XScale);
+        l_BiasHRatio = 2.0f * l_Bias * m_Ratio;
+        l_BiasVRatio = l_Bias / (RATIO_SCREEN_STANDARD / l_XScale);
     }
 
     Mat4x4& l_CameraMatrix = l_CameraNode->GetWorldMatrix();
-    l_Camera->GetFrustrum().m_WorldTranslation = l_CameraMatrix.GetMatrixTrans();
-    l_Camera->GetFrustrum().m_WorldMatrix = l_CameraMatrix;
-    l_Camera->GetFrustrum().m_Direction = l_Camera->GetDir();
-    Vec3f l_Left = l_Camera->GetFrustrum().m_Direction ^ VEC3F_UP;
+    Frustrum_Z& l_Frustrum = l_Camera->GetFrustrum();
+    l_Frustrum.m_WorldTranslation = l_CameraMatrix.GetMatrixTrans();
+    l_Frustrum.m_WorldMatrix = l_CameraMatrix;
+    l_Frustrum.m_Direction = l_Camera->GetDir();
+    Vec3f l_Left = l_Frustrum.m_Direction ^ VEC3F_UP;
     l_Left.CNormalize();
-    l_Camera->GetFrustrum().m_Up = l_Left ^ l_Camera->GetFrustrum().m_Direction;
-    l_Camera->GetFrustrum().m_Up.CNormalize();
-    l_Camera->GetFrustrum().m_ViewPlanes.BuildFrustrum(
+    l_Frustrum.m_Up = l_Left ^ l_Frustrum.m_Direction;
+    l_Frustrum.m_Up.CNormalize();
+    l_Frustrum.m_ViewPlanes.BuildFrustrum(
         l_CameraMatrix,
-        l_Camera->GetFrustrum().m_WorldTranslation,
+        l_Frustrum.m_WorldTranslation,
         m_HRatio,
         m_VRatio,
-        l_Camera->GetFrustrum().m_NearClip,
-        l_Camera->GetFrustrum().m_FarClip
+        l_Frustrum.m_NearClip,
+        l_Frustrum.m_FarClip
     );
-    l_Camera->GetFrustrum().m_SecondaryPlanes.BuildFrustrum(
+    l_Frustrum.m_SecondaryPlanes.BuildFrustrum(
         l_CameraMatrix,
-        l_Camera->GetFrustrum().m_WorldTranslation,
-        l_XScale,
-        l_XBias / (RATIO_SCREEN_STANDARD / l_XScale),
-        l_Camera->GetFrustrum().m_NearClip,
-        l_Camera->GetFrustrum().m_FarClip
+        l_Frustrum.m_WorldTranslation,
+        l_BiasHRatio,
+        l_BiasVRatio,
+        l_Frustrum.m_NearClip,
+        l_Frustrum.m_FarClip
     );
 
-    l_Camera->SetOccludedFarClip(l_Camera->GetFrustrum().m_FarClip);
+    l_Camera->SetOccludedFarClip(l_Frustrum.m_FarClip);
 
-    m_PlaneDirL = l_Camera->GetFrustrum().m_ViewPlanes.m_PlaneNormals[0].xyz();
-    m_PlaneDirR = l_Camera->GetFrustrum().m_ViewPlanes.m_PlaneNormals[1].xyz();
-    m_PlaneDirB = l_Camera->GetFrustrum().m_ViewPlanes.m_PlaneNormals[2].xyz();
-    m_PlaneDirT = l_Camera->GetFrustrum().m_ViewPlanes.m_PlaneNormals[3].xyz();
+    m_PlaneDirL = l_Frustrum.m_ViewPlanes.m_PlanesDir[0].xyz();
+    m_PlaneDirR = l_Frustrum.m_ViewPlanes.m_PlanesDir[1].xyz();
+    m_PlaneDirB = l_Frustrum.m_ViewPlanes.m_PlanesDir[2].xyz();
+    m_PlaneDirT = l_Frustrum.m_ViewPlanes.m_PlanesDir[3].xyz();
 
     Vec3f l_Corner0(-m_HRatio, m_VRatio, 1.0f);
     Vec3f l_Corner1(-m_HRatio, -m_VRatio, 1.0f);
     Vec3f l_Corner2(m_HRatio, -m_VRatio, 1.0f);
     Vec3f l_Corner3(m_HRatio, m_VRatio, 1.0f);
+    Vec3f l_Dir0;
+    Vec3f l_Dir1;
+    Vec3f l_Dir2;
+    Vec3f l_Dir3;
 
-    l_CameraMatrix.MulWithoutTrans(l_Corner0, l_Corner0);
-    l_CameraMatrix.MulWithoutTrans(l_Corner1, l_Corner1);
-    l_CameraMatrix.MulWithoutTrans(l_Corner2, l_Corner2);
-    l_CameraMatrix.MulWithoutTrans(l_Corner3, l_Corner3);
+    l_CameraMatrix.MulWithoutTrans(l_Corner0, l_Dir0);
+    l_CameraMatrix.MulWithoutTrans(l_Corner1, l_Dir1);
+    l_CameraMatrix.MulWithoutTrans(l_Corner2, l_Dir2);
+    l_CameraMatrix.MulWithoutTrans(l_Corner3, l_Dir3);
 
-    l_Camera->GetFrustrum().m_CornerPoints[0] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner0 * l_Camera->GetFrustrum().m_NearClip;
-    l_Camera->GetFrustrum().m_CornerPoints[4] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner0 * l_Camera->GetFrustrum().m_FarClip;
+    l_Frustrum.m_CornerPoints[0] = l_Dir0 * l_Frustrum.m_NearClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[4] = l_Dir0 * l_Frustrum.m_FarClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[1] = l_Dir1 * l_Frustrum.m_NearClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[5] = l_Dir1 * l_Frustrum.m_FarClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[2] = l_Dir2 * l_Frustrum.m_NearClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[6] = l_Dir2 * l_Frustrum.m_FarClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[3] = l_Dir3 * l_Frustrum.m_NearClip + l_Frustrum.m_WorldTranslation;
+    l_Frustrum.m_CornerPoints[7] = l_Dir3 * l_Frustrum.m_FarClip + l_Frustrum.m_WorldTranslation;
 
-    l_Camera->GetFrustrum().m_CornerPoints[1] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner1 * l_Camera->GetFrustrum().m_NearClip;
-    l_Camera->GetFrustrum().m_CornerPoints[5] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner1 * l_Camera->GetFrustrum().m_FarClip;
+    l_Frustrum.m_FarPlaneData[0] = 0.5f * (l_Frustrum.m_CornerPoints[4] - l_Frustrum.m_CornerPoints[7]).GetNorm();
+    l_Frustrum.m_FarPlaneData[1] = 0.5f * (l_Frustrum.m_CornerPoints[5] - l_Frustrum.m_CornerPoints[6]).GetNorm();
+    l_Frustrum.m_FarPlaneData[2] = l_Frustrum.m_FarClip;
 
-    l_Camera->GetFrustrum().m_CornerPoints[2] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner2 * l_Camera->GetFrustrum().m_NearClip;
-    l_Camera->GetFrustrum().m_CornerPoints[6] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner2 * l_Camera->GetFrustrum().m_FarClip;
-
-    l_Camera->GetFrustrum().m_CornerPoints[3] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_NearClip;
-    l_Camera->GetFrustrum().m_CornerPoints[7] = l_Camera->GetFrustrum().m_WorldTranslation + l_Corner3 * l_Camera->GetFrustrum().m_FarClip;
-
-    l_Camera->GetFrustrum().m_FarPlaneData[0] = ((l_Camera->GetFrustrum().m_CornerPoints[4] - l_Camera->GetFrustrum().m_CornerPoints[7]).GetNorm()) * 0.5f;
-    l_Camera->GetFrustrum().m_FarPlaneData[1] = ((l_Camera->GetFrustrum().m_CornerPoints[5] - l_Camera->GetFrustrum().m_CornerPoints[6]).GetNorm()) * 0.5f;
-
-    l_Camera->GetFrustrum().m_FarPlaneData[2] = l_Camera->GetFrustrum().m_FarClip;
-
-    m_FrustumBoundsMin = l_Camera->GetFrustrum().m_CornerPoints[0];
+    m_FrustumBoundsMin = l_Frustrum.m_CornerPoints[0];
     m_FrustumBoundsMax = m_FrustumBoundsMin;
+    l_Frustrum.m_BoundsSphereRadiusSq = (l_Frustrum.m_BoundsSphereCenter - l_Frustrum.m_CornerPoints[0]).GetNorm2();
 
-    for (S32 i = 1; i < 8; ++i) {
-        const Vec3f& l_Point = l_Camera->GetFrustrum().m_CornerPoints[i];
-
-        m_FrustumBoundsMin.x = Min(l_Point.x, m_FrustumBoundsMin.x);
-        m_FrustumBoundsMin.y = Min(l_Point.y, m_FrustumBoundsMin.y);
-        m_FrustumBoundsMin.z = Min(l_Point.z, m_FrustumBoundsMin.z);
-
-        m_FrustumBoundsMax.x = Max(l_Point.x, m_FrustumBoundsMax.x);
-        m_FrustumBoundsMax.y = Max(l_Point.y, m_FrustumBoundsMax.y);
-        m_FrustumBoundsMax.z = Max(l_Point.z, m_FrustumBoundsMax.z);
+    for (S32 i = 1; i < 8; i++) {
+        m_FrustumBoundsMin.x = Min(l_Frustrum.m_CornerPoints[i].x, m_FrustumBoundsMin.x);
+        m_FrustumBoundsMin.y = Min(l_Frustrum.m_CornerPoints[i].y, m_FrustumBoundsMin.y);
+        m_FrustumBoundsMin.z = Min(l_Frustrum.m_CornerPoints[i].z, m_FrustumBoundsMin.z);
+        m_FrustumBoundsMax.x = Max(l_Frustrum.m_CornerPoints[i].x, m_FrustumBoundsMax.x);
+        m_FrustumBoundsMax.y = Max(l_Frustrum.m_CornerPoints[i].y, m_FrustumBoundsMax.y);
+        m_FrustumBoundsMax.z = Max(l_Frustrum.m_CornerPoints[i].z, m_FrustumBoundsMax.z);
+        l_Frustrum.m_BoundsSphereRadiusSq = Max(l_Frustrum.m_BoundsSphereRadiusSq, (l_Frustrum.m_BoundsSphereCenter - l_Frustrum.m_CornerPoints[i]).GetNorm2());
     }
 
-    l_Camera->GetFrustrum().m_BoundsMin = m_FrustumBoundsMin;
-    l_Camera->GetFrustrum().m_BoundsMax = m_FrustumBoundsMax;
-    l_Camera->GetFrustrum().m_BoundsSphereCenter = (m_FrustumBoundsMin + m_FrustumBoundsMax) / 2.0f;
-
-    l_Camera->GetFrustrum().m_BoundsSphereRadiusSq = (l_Camera->GetFrustrum().m_BoundsSphereCenter - l_Camera->GetFrustrum().m_CornerPoints[0]).GetNorm2();
-
-    for (S32 i = 1; i < 8; ++i) {
-        Float l_DistSq = (l_Camera->GetFrustrum().m_BoundsSphereCenter - l_Camera->GetFrustrum().m_CornerPoints[i]).GetNorm2();
-        l_Camera->GetFrustrum().m_BoundsSphereRadiusSq = Max(l_Camera->GetFrustrum().m_BoundsSphereRadiusSq, l_DistSq);
-    }
-
-    l_Camera->GetFrustrum().m_TopViewBoundsMin.Set(m_FrustumBoundsMin.x, m_FrustumBoundsMin.z);
-    l_Camera->GetFrustrum().m_TopViewBoundsMax.Set(m_FrustumBoundsMax.x, m_FrustumBoundsMax.z);
+    l_Frustrum.m_BoundsMin = m_FrustumBoundsMin;
+    l_Frustrum.m_BoundsMax = m_FrustumBoundsMax;
+    l_Frustrum.m_BoundsSphereCenter = (m_FrustumBoundsMax + m_FrustumBoundsMin) * 0.5f;
+    l_Frustrum.m_TopViewBoundsMin.Set(m_FrustumBoundsMin.x, m_FrustumBoundsMin.z);
+    l_Frustrum.m_TopViewBoundsMax.Set(m_FrustumBoundsMax.x, m_FrustumBoundsMax.z);
 }
 
 const Mat4x4& Viewport_Z::GetMatrixInv() const {

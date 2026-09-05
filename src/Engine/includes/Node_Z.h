@@ -156,6 +156,8 @@ public:
 
     void LightingChanged();
     void SetLighting(LightData_Z* i_LightData, HFogData_Z* i_HFogData, Bool i_KeepExisting);
+    LightData_Z* GetFirstDLight();
+    HFogData_Z* GetFirstHFog();
 
     void Hide(Bool i_Recursive = FALSE);
     void HideSons();

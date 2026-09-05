@@ -113,15 +113,15 @@ enum MaterialCode_Z {
 #define FL_COL_ROTSHAPE ((U64)1 << 35)  // 0x0000000800000000 - Enable collision against rotshape objects
 #define FL_COL_PARTICLES ((U64)1 << 36) // 0x0000001000000000 -  Enable collision against particle emitter objects
 
-#define FL_COL_MESH_CYLINDRE_PRIM ((U64)1 << 37)                                                 // 0x0000002000000000 - Enable Mesh_Z cylinder primitive collision
-#define FL_COL_MESH_BOX_PRIM ((U64)1 << 38)                                                      // 0x0000004000000000 - Enable Mesh_Z box primitive collision
-#define FL_COL_MESH_SPHERE_PRIM ((U64)1 << 39)                                                   // 0x0000008000000000 - Enable Mesh_Z sphere primitive collision
-#define FL_COL_MESH_PRIM ((U64)(FL_MESH_CYLINDRE_PRIM | FL_MESH_BOX_PRIM | FL_MESH_SPHERE_PRIM)) // 0x000000E000000000 - All Mesh_Z primitive collision types
+#define FL_COL_MESH_CYLINDRE_PRIM ((U64)1 << 37)                                                             // 0x0000002000000000 - Enable Mesh_Z cylinder primitive collision
+#define FL_COL_MESH_BOX_PRIM ((U64)1 << 38)                                                                  // 0x0000004000000000 - Enable Mesh_Z box primitive collision
+#define FL_COL_MESH_SPHERE_PRIM ((U64)1 << 39)                                                               // 0x0000008000000000 - Enable Mesh_Z sphere primitive collision
+#define FL_COL_MESH_PRIM ((U64)(FL_COL_MESH_CYLINDRE_PRIM | FL_COL_MESH_BOX_PRIM | FL_COL_MESH_SPHERE_PRIM)) // 0x000000E000000000 - All Mesh_Z primitive collision types
 
-#define FL_COL_LOD_CYLINDRE_PRIM ((U64)1 << 40)                                              // 0x0000010000000000 - Enable Lod_Z cylinder primitive collision
-#define FL_COL_LOD_BOX_PRIM ((U64)1 << 41)                                                   // 0x0000020000000000 - Enable Lod_Z box primitive collision
-#define FL_COL_LOD_SPHERE_PRIM ((U64)1 << 42)                                                // 0x0000040000000000 - Enable Lod_Z sphere primitive collision
-#define FL_COL_LOD_PRIM ((U64)(FL_LOD_CYLINDRE_PRIM | FL_LOD_BOX_PRIM | FL_LOD_SPHERE_PRIM)) // 0x0000070000000000 - All Lod_Z primitive collision types
+#define FL_COL_LOD_CYLINDRE_PRIM ((U64)1 << 40)                                                          // 0x0000010000000000 - Enable Lod_Z cylinder primitive collision
+#define FL_COL_LOD_BOX_PRIM ((U64)1 << 41)                                                               // 0x0000020000000000 - Enable Lod_Z box primitive collision
+#define FL_COL_LOD_SPHERE_PRIM ((U64)1 << 42)                                                            // 0x0000040000000000 - Enable Lod_Z sphere primitive collision
+#define FL_COL_LOD_PRIM ((U64)(FL_COL_LOD_CYLINDRE_PRIM | FL_COL_LOD_BOX_PRIM | FL_COL_LOD_SPHERE_PRIM)) // 0x0000070000000000 - All Lod_Z primitive collision types
 
 #define FL_COL_LOD_COLLECT ((U64)1 << 43)     // 0x0000080000000000 - Select the LOD collect collision representation
 #define FL_COL_LOD_DYNAMIC ((U64)1 << 44)     // 0x0000100000000000 - Select the LOD dynamic collision representation

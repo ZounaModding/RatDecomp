@@ -50,6 +50,28 @@ public:
         m_BitsDA[i_Bit >> 5] |= (1 << (i_Bit & 0x1F));
     }
 
+    inline S32 GetDABits(S32DA& o_Bits, Bool i_State) {
+        o_Bits.Empty();
+
+        for (S32 i = FindFirstBit(i_State, 0); i >= 0; i = FindFirstBit(i_State, i + 1)) {
+            o_Bits.Add(i);
+        }
+
+        return o_Bits.GetSize();
+    }
+
+    inline void SetDABits(const S32DA& i_Bits, S32 i_Size, Bool i_Clear) {
+        SetSize(i_Size);
+
+        if (i_Clear) {
+            ClearAllBits();
+        }
+
+        for (S32 i = 0; i < i_Bits.GetSize(); i++) {
+            SetBit(i_Bits[i]);
+        }
+    }
+
     inline void ClearBit(S32 i_Bit) {
         DYNARRAY_Z_EXP(i_Bit < m_Size);
         m_BitsDA[i_Bit >> 5] &= ~(U32)(1 << (i_Bit & 0x1F));

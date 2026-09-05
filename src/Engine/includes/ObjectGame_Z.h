@@ -48,7 +48,7 @@ public:
         return m_GameHdl;
     }
 
-private:
+protected:
     U32 m_NbVp;
     U32 m_FirstPlayerVpId;
     Game_ZHdl m_GameHdl;

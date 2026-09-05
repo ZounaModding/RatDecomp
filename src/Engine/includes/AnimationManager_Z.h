@@ -51,7 +51,8 @@ enum NodeIds {
     BONE_ARME2,
     BONE_ARME05,
     BONE_ECLAIR,
-    BONE_DYN1,
+    BONE_DYN_START,
+    BONE_DYN1 = BONE_DYN_START,
     BONE_DYN2,
     BONE_DYN3,
     BONE_DYN4,
@@ -67,7 +68,9 @@ enum NodeIds {
     BONE_DYN14,
     BONE_DYN15,
     BONE_DYN16,
-    BONE_HIDE_01,
+    BONE_DYN_END,
+    BONE_HIDE_START = BONE_DYN_END,
+    BONE_HIDE_01 = BONE_HIDE_START,
     BONE_HIDE_02,
     BONE_HIDE_03,
     BONE_HIDE_04,
@@ -83,11 +86,14 @@ enum NodeIds {
     BONE_HIDE_14,
     BONE_HIDE_15,
     BONE_HIDE_16,
-    BONE_SPINE,
+    BONE_HIDE_END,
+    BONE_SPINE_START = BONE_HIDE_END,
+    BONE_SPINE = BONE_SPINE_START,
     BONE_SPINE1,
     BONE_SPINE2,
     BONE_SPINE3,
-    BONE_LEFTSHOULDER,
+    BONE_SPINE_END,
+    BONE_LEFTSHOULDER = BONE_SPINE_END,
     BONE_LEFTARM,
     BONE_LEFTFOREARM,
     BONE_LEFTHAND,
@@ -201,6 +207,14 @@ public:
 
     inline S32 GetNbNodes() {
         return m_NodeNames.GetSize();
+    }
+
+    inline S32 GetNbMaterials() {
+        return m_MaterialNames.GetSize();
+    }
+
+    inline S32 GetNbMeshes() {
+        return m_MeshNames.GetSize();
     }
 
 private:

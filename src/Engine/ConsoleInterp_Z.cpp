@@ -234,12 +234,14 @@ Bool ConsoleInterp_Z::PopCommand(String_Z<CONSOLE_STACK_COMMAND_LEN_MAX>& o_Comm
 
 // TODO: Finish matching
 Bool FileInterp_Z::ReplaceParams(Char* i_CommandString, String_Z<CONSOLE_STATIC_COMMAND_LEN_MAX>& o_ReplacedCommandString) {
-    String_Z<16> l_ParamNumTemp;
+    String_Z<8> l_ParamNumTemp;
     Char* l_Dest;
+    Char* l_ReplaceStart;
     S32 l_Length;
 
-    Char* l_ReplaceStart = strstr(i_CommandString, "%");
-    if (l_ReplaceStart == NULL) {
+    l_ReplaceStart = strstr(i_CommandString, "%");
+
+    if (!l_ReplaceStart) {
         return FALSE;
     }
 

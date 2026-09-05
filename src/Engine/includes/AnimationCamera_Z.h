@@ -16,6 +16,14 @@ private:
     KeyframerFloatComp_Z m_NearClipKfr;
 
 public:
+    AnimationCamera_Z() {
+        m_ObjectId = -1;
+    }
+
+    const Name_Z& GetName() const { return m_ObjectName; }
+
+    const S16 GetObjectId() const { return m_ObjectId; }
+
     void UpdateFrame(Float i_Time, Camera_Z* i_Camera);
     void Load(void** i_Data);
 };

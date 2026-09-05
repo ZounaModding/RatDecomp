@@ -278,6 +278,10 @@ public:
         return m_PlayFlag & FL_ANIM_PLAY;
     }
 
+    inline const Node_ZHdl& GetAnimatedNode() const {
+        return m_AnimatedNodeHdl;
+    }
+
 private:
     void InitNoteTrack(Node_Z* i_Node);
     void UpdateNoteTrack(Node_Z* i_Node);

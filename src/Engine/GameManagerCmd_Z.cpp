@@ -60,7 +60,7 @@ Bool SetGame(Bool i_IsMono) {
     World_ZHdl l_WorldHdl = gData.ClassMgr->GetObjectByName(Name_Z(gData.Cons->GetParamStr(1)), l_WorldClassName);
     S32 l_PlayerCount = (S32)gData.Cons->GetParamFloat(2);
 
-    if (!GETPTR(l_WorldHdl)) {
+    if (!l_WorldHdl.IsValid()) {
         return FALSE;
     }
     if (l_PlayerCount < 1 || l_PlayerCount > MAX_NUMBER_OF_PLAYERS || l_PlayerCount > MAX_VIEWPORT) {
@@ -118,7 +118,7 @@ Bool ActivateGame() {
 
     const Name_Z& l_WorldClassName = Name_Z(Name_Z::GetID("WORLD"));
     World_ZHdl l_WorldHdl = gData.ClassMgr->GetObjectByName(Name_Z(gData.Cons->GetParamStr(1)), l_WorldClassName);
-    if (!GETPTR(l_WorldHdl)) {
+    if (!l_WorldHdl.IsValid()) {
         return FALSE;
     }
 
@@ -184,7 +184,7 @@ void GameManager_Z::DebugDisplay(Viewport_Z* i_Vp) {
     }
 
     for (i = 0; i < GetNbGame(); i++) {
-        Game_Z* l_Game = (Game_Z*)GETPTR(GetGame(i));
+        Game_Z* l_Game = GetGame(i);
         if (l_Game->GetFirstVp() < 0) {
             continue;
         }

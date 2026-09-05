@@ -77,7 +77,9 @@ public:
     virtual void Update(const Vec3f& i_CurPos, const Vec3f& i_NewPos, const Vec3f& i_Dir, Float i_DeltaTime, S32 i_Index);
     virtual void ComputeNewPos(const Vec3f& i_CurPos, Vec3f& o_NewPos, Vec3f& o_Dir, Float i_DeltaTime, S32 i_Index);
 
-    virtual void ResetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot) { }
+    virtual void ResetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot) {
+        Reset();
+    }
 
     virtual void DisableCollision(World_Z* i_World, Float i_DeltaTime, S32 i_Index);
     virtual void UpdateCollision(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, Vec3f& io_NewPos, Vec3f& io_Dir, Vec3f& io_Orient, Float i_DeltaTime, S32 i_Index);
@@ -89,6 +91,7 @@ public:
     virtual void GetName() { }
 
     virtual Node_ZHdl& GetNode(S32 i_Index) {
+        return m_Objects[i_Index].m_NodeHdl;
     }
 
     virtual const Vec3f& GetPos(S32 i_Index);
@@ -101,9 +104,11 @@ public:
     virtual void SetScale(Float i_Scale, S32 i_Index);
 
     virtual Vec3f& GetLastEffectiveSpeed(S32 i_Index) {
+        return m_Objects[i_Index].m_TotalSpeed;
     }
 
     virtual Vec3f& GetLastEffectiveAccel(S32 i_Index) {
+        return m_Objects[i_Index].m_Accel;
     }
 
     virtual void FatherUnLinked(S32 i_Index);
@@ -113,7 +118,7 @@ public:
     virtual void GetLinkCollisionNode(Vec3f& o_Intersection, Vec3f& o_InterGround, Vec3f& o_Local, Vec3f& o_LocalLookAt, S32 i_Index);
 
     virtual StaticArray_Z<Node_ZHdl, 8>* GetVolumeMemory(S32 i_Index) {
-        return NULL;
+        return &m_Objects[i_Index].m_CollisionVolNodeHdls;
     }
 
     virtual void Shut();

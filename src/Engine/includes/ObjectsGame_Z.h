@@ -1,6 +1,8 @@
 #ifndef _OBJECTSGAME_Z_H_
 #define _OBJECTSGAME_Z_H_
 #include "ObjectGame_Z.h"
+#include "AnimMessage_Z.h"
+#include "Skel_Z.h"
 #include "ObjectsGame_ZHdl.h"
 #include "PlayParticles_ZHdl.h"
 #include "DynPtrArray_Z.h"
@@ -14,6 +16,7 @@ class Particles_Z;
 class PlayAnim_Z;
 class Skel_Z;
 class AnimatedAgent_Z;
+class World_Z;
 
 struct ObjectMoveGame_Z {
     ObjectMove_Z* m_ObjectMove;
@@ -42,6 +45,8 @@ struct PlayParticlesGame_Z {
 typedef DynArray_Z<PlayParticlesGame_Z, 16, FALSE> PlayParticlesGame_ZDA;
 
 class ObjectsGame_Z : public ObjectGame_Z {
+    friend class ObjectsGameClip_Z;
+
 public:
     virtual ~ObjectsGame_Z() { }
 
@@ -56,12 +61,17 @@ public:
 
     void AddGamePlayParticles(const PlayParticles_ZHdl& i_PlayParticlesHdl);
     void UpdateSkelCollision();
+    S32 GetCollisionSkelMsg(const SphereColBone_ZDA& i_Spheres, const SphereColBone_ZDA& i_VsSpheres, const Mat4x4& i_Matrix, SkelMessage_Z* o_Msgs);
     void UpdateBuffer();
     void UpdateObject(Float i_DeltaTime);
 
+    void SetRunningUpdateFromManager(Bool i_Running) {
+        m_IsRunningUpdateFromManager = i_Running;
+    }
+
     static BaseObject_Z* NewObject() { return NewL_Z(125) ObjectsGame_Z; }
 
-private:
+protected:
     Bool m_IsRunningUpdate;
     Bool m_IsRunningUpdateFromManager;
     ObjectMoveGame_ZDA m_ObjectMoveGameDA;
@@ -79,9 +89,12 @@ private:
 
 class ObjectsGameClip_Z : public ObjectGame_Z {
 public:
-    virtual ~ObjectsGameClip_Z();
+    virtual ~ObjectsGameClip_Z() { }
+
     virtual void Init();
     virtual void Update(Float i_DeltaTime);
+
+    void UpdateObjectActivity(World_Z* i_World);
 
     static BaseObject_Z* NewObject() { return NewL_Z(31) ObjectsGameClip_Z; }
 

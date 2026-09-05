@@ -19,30 +19,30 @@
         }                                                \
     } while (0)
 
-#define NewMgrInitL_Z(mgr, class, line)                                                                          \
-    do {                                                                                                         \
-        MemManager.m_FreeMemCached = s_GetFreeMem();                                                             \
-        if (!mgr) {                                                                                              \
-            mgr = NewL_Z(line) class;                                                                            \
-            if (!mgr->Init()) {                                                                                  \
-                Console_Z::PrintBoxString("Fatal error", GetStringTabError(GetLanguage(), error_eight), #class); \
-                exit(0);                                                                                         \
-            }                                                                                                    \
-            MemManager.m_FreeMemCached = s_GetFreeMem();                                                         \
-        }                                                                                                        \
+#define NewMgrInitL_Z(mgr, class, line)                                                                             \
+    do {                                                                                                            \
+        MemManager.m_FreeMemCached = s_GetFreeMem();                                                                \
+        if (!mgr) {                                                                                                 \
+            mgr = NewL_Z(line) class;                                                                               \
+            if (!mgr->Init()) {                                                                                     \
+                Console_Z::PrintBoxString("Fatal error", GetStringTabError(GetLanguage(), error_mgr_init), #class); \
+                exit(0);                                                                                            \
+            }                                                                                                       \
+            MemManager.m_FreeMemCached = s_GetFreeMem();                                                            \
+        }                                                                                                           \
     } while (0)
 
-#define NewMgrInitArgsL_Z(mgr, class, line, ...)                                                                 \
-    do {                                                                                                         \
-        MemManager.m_FreeMemCached = s_GetFreeMem();                                                             \
-        if (!mgr) {                                                                                              \
-            mgr = NewL_Z(line) class;                                                                            \
-            if (!mgr->Init(__VA_ARGS__)) {                                                                       \
-                Console_Z::PrintBoxString("Fatal error", GetStringTabError(GetLanguage(), error_eight), #class); \
-                exit(0);                                                                                         \
-            }                                                                                                    \
-            MemManager.m_FreeMemCached = s_GetFreeMem();                                                         \
-        }                                                                                                        \
+#define NewMgrInitArgsL_Z(mgr, class, line, ...)                                                                    \
+    do {                                                                                                            \
+        MemManager.m_FreeMemCached = s_GetFreeMem();                                                                \
+        if (!mgr) {                                                                                                 \
+            mgr = NewL_Z(line) class;                                                                               \
+            if (!mgr->Init(__VA_ARGS__)) {                                                                          \
+                Console_Z::PrintBoxString("Fatal error", GetStringTabError(GetLanguage(), error_mgr_init), #class); \
+                exit(0);                                                                                            \
+            }                                                                                                       \
+            MemManager.m_FreeMemCached = s_GetFreeMem();                                                            \
+        }                                                                                                           \
     } while (0)
 
 #define NewMgr_Z(mgr, class) NewMgrL_Z(mgr, class, __LINE__)

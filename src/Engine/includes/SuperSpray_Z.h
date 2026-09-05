@@ -5,9 +5,15 @@
 
 class Node_ZHdl;
 class ParticlesEle_Z;
+class ParticlesData_Z;
 class ParticlesDataEle_Z;
 
 struct ParticlesEleState_Z {
+    ParticlesEleState_Z() {
+        m_ParticlesEle = NULL;
+        m_ParticlesDataEle = NULL;
+    }
+
     ParticlesEle_Z* m_ParticlesEle;
     ParticlesDataEle_Z* m_ParticlesDataEle;
     Float m_Num;
@@ -34,6 +40,8 @@ public:
     virtual void SetEmitColor(const Vec3f& a1, S32 a2);
     virtual void Pause();
     virtual void Resume();
+
+    void Check(ParticlesData_Z* i_Data);
 
     static BaseObject_Z* NewObject() { return NewL_Z(32) SuperSpray_Z; }
 

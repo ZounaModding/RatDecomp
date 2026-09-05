@@ -36,7 +36,8 @@ void ObjectMove_Z::Reset() {
     EnableFlag(COL_BOL_DEFAULT);
     m_Flag = 0;
     m_ShadowOldRayLen = -1.0f;
-    GetVolumeMemory(0)->SetSize(0);
+    StaticArray_Z<Node_ZHdl, 8>* l_VolumeMemory = GetVolumeMemory(0);
+    l_VolumeMemory->Empty();
     m_SplineNodeHdl = HANDLE_NULL;
     m_UnkNodeHdl_0x190 = HANDLE_NULL;
     m_CurrentAlignRot = QUAT_NULL;

@@ -601,6 +601,10 @@ public:
         m_ParticlesFadeDist = i_ParticlesFadeDist;
     }
 
+    Float GetParticlesFadeDist() const {
+        return m_ParticlesFadeDist;
+    }
+
     void SetTextureFiltering(U32 i_TextureFiltering) {
         m_TextureFiltering = i_TextureFiltering;
     }

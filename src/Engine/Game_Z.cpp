@@ -10,6 +10,9 @@
 #include "Camera_ZHdl.h"
 #include "SystemDatas_Z.h"
 #include "ObjectsGameClip_ZHdl.h"
+#include "Renderer_Z.h"
+
+String_Z<ARRAY_CHAR_MAX> Game_Z::m_AddStartBaseName;
 
 void Game_Z::Init() {
     m_NbPlayer = 0;
@@ -152,4 +155,82 @@ void Game_Z::SetGamePlayerNb(S32 i_Nb, Bool i_IsMono, const Name_Z& i_CameraAgen
         l_CamAgent->UseNode((Node_ZHdl&)m_PlayerCamNodeHdls[i]);
         l_CamAgent->RegisterWithGame((Game_ZHdl&)GetHandle());
     }
+}
+
+// TODO: Finish matching
+void Game_Z::Activate(S32 i_FirstVp, S32 i_NbVp) {
+    Bool l_WasActive;
+    S32 i;
+
+    TryToSuspend();
+
+    l_WasActive = m_ObjectsGameMgrHdl->GetFirstVp() >= 0;
+
+    for (i = 0; i < m_NbPlayer; i++) {
+        if (m_PlayerLodAgentHdls[i].IsValid()) {
+            m_PlayerLodAgentHdls[i]->SetViewportId(i_FirstVp + i % i_NbVp);
+        }
+        m_PlayerCamAgentHdls[i]->Suspend();
+        m_PlayerCamAgentHdls[i]->SetViewport(i_FirstVp + i % i_NbVp);
+    }
+
+    ObjectsGame_Z* l_ObjectsGameMgr = m_ObjectsGameMgrHdl;
+    l_ObjectsGameMgr->SetNbVp(i_NbVp);
+    l_ObjectsGameMgr->SetFirstVp(i_FirstVp);
+
+    for (i = 0; i < m_ObjectGameHdls.GetSize(); i++) {
+        ObjectGame_Z* l_ObjectGame = m_ObjectGameHdls[i];
+        l_ObjectGame->SetNbVp(i_NbVp);
+        l_ObjectGame->SetFirstVp(i_FirstVp);
+    }
+
+    m_WorldHdl->SetNbVp(i_NbVp);
+    m_WorldHdl->SetFirstVp(i_FirstVp);
+
+    Restore();
+    FlushMessage(GAME_MESSAGE_TARGET_PLAYER_LOD_AGENTS | GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS | GAME_MESSAGE_TARGET_RTC_AGENTS | GAME_MESSAGE_TARGET_GAME_AGENTS, msg_game_deactivated);
+
+    if (!l_WasActive) {
+        SendMessage(GAME_MESSAGE_TARGET_PLAYER_LOD_AGENTS | GAME_MESSAGE_TARGET_PLAYER_CAMERA_AGENTS | GAME_MESSAGE_TARGET_RTC_AGENTS | GAME_MESSAGE_TARGET_GAME_AGENTS, msg_game_activated, UNDEFINED_FVALUE);
+        gData.ScriptMgr->Update(0.0f);
+        gData.ScriptMgr->ActivateGame(GetHandle());
+    }
+
+    gData.ScriptMgr->ViewportDone(GetHandle());
+}
+
+void Game_Z::Restore() {
+    S32 i;
+    S32 l_FirstVp = m_ObjectsGameMgrHdl->GetFirstVp();
+    S32 l_NbVp = m_ObjectsGameMgrHdl->GetNbVp();
+
+    for (i = 0; i < m_NbPlayer; i++) {
+        if (m_PlayerLodAgentHdls[i].IsValid()) {
+            m_PlayerLodAgentHdls[i]->Restore();
+        }
+        if (i < l_NbVp) {
+            RestoreVpCamera(l_FirstVp + i % l_NbVp);
+        }
+        else {
+            m_PlayerCamAgentHdls[i]->Suspend();
+        }
+    }
+
+    for (i = 0; i < m_ObjectGameHdls.GetSize(); i++) {
+        m_ObjectGameHdls[i]->Activate();
+    }
+
+    m_ObjectsGameMgrHdl->Activate();
+}
+
+void Game_Z::RestoreVpCamera(S32 i_Vp) {
+    S32 l_FirstVp = m_ObjectsGameMgrHdl->GetFirstVp();
+
+    m_ObjectsGameMgrHdl->GetFirstVp();
+
+    S32 l_CamId = i_Vp - l_FirstVp;
+
+    gData.MainRdr->GetViewport(i_Vp).SetCamera(m_PlayerCamNodeHdls[l_CamId]);
+    gData.MainRdr->GetViewport(i_Vp).SetWorld(World_ZHdl(m_WorldHdl));
+    m_PlayerCamAgentHdls[l_CamId]->Restore();
 }

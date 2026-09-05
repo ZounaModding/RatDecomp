@@ -22,7 +22,15 @@ public:
         m_Cache.SetSize(SURFACECACHED_COLLISION_CACHE_ENTRY_COUNT, l_Size);
     }
 
-private:
+    inline S32 GetCollisionLod() const {
+        return m_CollisionLod;
+    }
+
+    inline Vec4f* GetCollisionCache(U16 i_Id) {
+        return m_Cache.GetData(i_Id);
+    }
+
+protected:
     S32 m_CollisionLod;
     CacheEntryLRU_Z<Vec4f> m_Cache;
 };
@@ -30,6 +38,10 @@ private:
 class ColSurfaceCache_Z : public BaseColSurfaceCache_Z {
 public:
     U16 GetFreeEntry(Surface_Z* i_Surface, U16 i_PatchId);
+
+    inline void FreeEntry(U16 i_Id) {
+        m_Cache.m_LRU.m_LRUList[i_Id + 1].m_Val.m_OwnerId = U16_MAX;
+    }
 };
 
 #endif

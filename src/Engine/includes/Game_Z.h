@@ -9,6 +9,7 @@
 #include "ObjectsGame_ZHdl.h"
 #include "RtcAgent_ZHdl.h"
 #include "Math_Z.h"
+#include "PlayParticles_ZHdl.h"
 #include "SubWorld_ZHdl.h"
 
 Extern_Z void RegisterGameCommand();
@@ -45,8 +46,10 @@ public:
     void DeclareObjectGame(const ObjectGame_ZHdl& i_ObjectGameHdl);
     void InitAgent(Node_Z* i_StartNode, Bool i_RecursiveBelow, Bool i_RecursiveNextTo);
     Bool CreateAgentForNode(Node_Z* i_Node, Name_Z i_AgentClassName = NULL);
-    Agent_ZHdl CreateAgentForSystemObject(const Name_Z& i_ObjectName, Name_Z i_AgentClassName, Node_ZHdl i_ParentNodeHdl, U32 i_Flag, U32 i_NoFlag);
+    Agent_ZHdl CreateAgentForSystemObject(const Name_Z& i_ObjectName, Name_Z i_AgentClassName, Node_ZHdl i_ParentNodeHdl = HANDLE_NULL, U32 i_Flag = 0, U32 i_NoFlag = 0);
     void DeclareOtherAgent(const Agent_ZHdl& i_AgentHdl);
+    void DeclareParticlesManipulator(const PlayParticles_ZHdl& i_PlayParticlesHdl);
+    void UnDeclareParticlesManipulator(const PlayParticles_ZHdl& i_PlayParticlesHdl);
     Bool IsRtcActive(S32 i_RtcIdx);
     S32 GetFirstVp() const;
     U32 GetNbVp() const;
@@ -58,6 +61,12 @@ public:
     void AddSubLevel(const SubWorld_ZHdl& i_SubWorldHdl, S32 i_SubLevelId);
     void SendMessage(U32 i_Target, abc_message i_Message, Float i_Param);
     void FlushMessage(U32 i_Target, abc_message i_Message);
+    Bool TryToSuspend();
+    void Activate(S32 i_FirstVp, S32 i_NbVp);
+    void Restore();
+    void RestoreVpCamera(S32 i_Vp);
+
+    static String_Z<ARRAY_CHAR_MAX> m_AddStartBaseName;
 
     const World_ZHdl& GetWorld() const {
         return m_WorldHdl;
@@ -72,6 +81,9 @@ public:
     }
 
 private:
+    Bool Stream(const S32DA& i_SubLevelIds, const Vec3f& i_Pos);
+    S32 GetSubLevelId(const Vec3f& i_Pos, S32DA& o_SubLevelIds, S32DA& o_SubIds, Bool i_Unk);
+
     World_ZHdl m_WorldHdl;
     Node_ZHdl m_SubRootNodeHdl;
     String_Z<ARRAY_CHAR_MAX> m_GameName;

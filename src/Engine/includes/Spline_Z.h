@@ -11,8 +11,8 @@ struct Segment {
 };
 
 struct Spline {
-    S16 m_PointIds[2];
-    S16 m_TgtIds[2];
+    U16 m_PointIds[2];
+    U16 m_TgtIds[2];
     U32 m_Flag;
     Float m_Length;
     Segment m_Segments[SPLINE_NBSEGMENT];

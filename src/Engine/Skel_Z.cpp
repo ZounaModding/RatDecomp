@@ -354,6 +354,27 @@ Bool Skel_Z::InsertNode(const Name_Z& i_NodeName, const Name_Z& i_ParentName) {
     return TRUE;
 }
 
+// TODO: Finish matching
+void Skel_Z::DefaultObjectsVisibility() {
+    S16 i;
+    S16 j;
+
+    for (i = 0; i < m_ObjectDatasHdls.GetSize(); i++) {
+        S16DA& l_BoneNodeIds = m_ObjectDatasBoneNodeIds[i];
+
+        for (j = 0; j < l_BoneNodeIds.GetSize(); j++) {
+            m_Bones[l_BoneNodeIds[j]]->DisableBoneFlag(FL_BONENODE_UNK_0x20);
+        }
+
+        ObjectDatas_Z* l_ObjectDatas = m_ObjectDatasHdls[i];
+        if (l_ObjectDatas) {
+            l_ObjectDatas->DisableFlag(
+                FL_OBJECTDATAS_UNK_0x4 | FL_OBJECTDATAS_VP0_HIDE | FL_OBJECTDATAS_VP1_HIDE | FL_OBJECTDATAS_VP2_HIDE | FL_OBJECTDATAS_VP3_HIDE
+            );
+        }
+    }
+}
+
 Bool Skel_Z::IsBSphere(Node_Z* i_Node, Frustrum_Z& i_Frust, DrawInfo_Z& i_DrawInfo) {
     for (S32 i = 0; i < m_ObjectDatasHdls.GetSize(); i++) {
     }

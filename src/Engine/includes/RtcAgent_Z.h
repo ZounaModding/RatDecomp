@@ -26,6 +26,14 @@ public:
     virtual void GlobalTrackMessage(RegMessage_Z& a1, Bool a2) { } 
     virtual void NodeMessage(RegMessage_Z& a1, Bool a2) { } 
 
+    RtcPlayer_ZHdl& GetPlayRtc() {
+        return m_RtcPlayerHdl;
+    }
+
+    Rtc_ZHdl& GetRtc() {
+        return m_RtcHdl;
+    }
+
 private:
     S32 m_ViewportId;
     Rtc_ZHdl m_RtcHdl;

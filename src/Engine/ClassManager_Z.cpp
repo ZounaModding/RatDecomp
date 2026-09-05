@@ -31,13 +31,17 @@ ClassManager_Z::~ClassManager_Z() {
 }
 
 S32 ClassManager_Z::CheckHandles() {
-    return 0;
+    return HandleManager_Z::CheckHandles();
 }
 
 void ClassManager_Z::Minimize() {
+    HandleManager_Z::Minimize();
+    m_ClassList.Minimize();
+    m_ClassNameToIndex.Minimize();
 }
 
 void ClassManager_Z::ClearMark() {
+    HandleManager_Z::ClearMark();
 }
 
 void ClassManager_Z::RegisterClass(const Char* i_ClassName, const Char* i_ParentClassName, NewObjectProc i_NewObject) {
@@ -208,7 +212,8 @@ Bool ClassManager_Z::GetFile(const Char* i_Path, File_Z& i_File) {
 }
 
 Bool CheckHandles() {
-    return FALSE;
+    gData.ClassMgr->CheckHandles();
+    return TRUE;
 }
 
 Bool AsynchCheckHandles() {

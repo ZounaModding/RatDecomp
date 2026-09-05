@@ -67,6 +67,9 @@ typedef DynArray_Z<PosName_Z, 32> PosName_ZDA;
 typedef DynArray_Z<PosName2D_Z, 32> PosName2D_ZDA;
 
 struct SubWorldRange_Z {
+    void Load(void** i_Data);
+    Bool Inside(const Vec2f& i_Pos) const;
+
     Vec2fRect_Z m_Rect;
     Float m_Unk_0x10;
     Float m_Unk_0x14;
@@ -86,6 +89,14 @@ enum SubWorldType {
 #define FL_SUBWORLD_REMOVING (1 << 2)
 
 struct SubWorldData_Z {
+    SubWorldData_Z()
+        : m_Type(SUBWORLD_TYPE_NONE)
+        , m_Unk_0x4(-1)
+        , m_Unk_0xc(-1)
+        , m_Unk_0x10(-1)
+        , m_Unk_0x14(-1)
+        , m_Flag(FL_SUBWORLD_NONE) { }
+
     S32 m_Type; // 1 == sublevel, 2 == subdata?
     S32 m_Unk_0x4;
     S32 m_SubId;
@@ -93,7 +104,7 @@ struct SubWorldData_Z {
     S32 m_Unk_0x10;
     S32 m_Unk_0x14;
     SubWorldRange_Z m_Range;
-    Char m_SubWorldName[256];
+    String_Z<ARRAY_CHAR_MAX> m_SubWorldName;
     S32DA m_UnkIds_0x140;
     S32DA m_UnkIds_0x148;
     S32DA m_SubIds;
@@ -130,9 +141,19 @@ public:
     S32 GetNodesByObjectType(Node_ZHdlDA& o_Nodes, S32 i_Type) const;
     Bool GetCameraZone(const Vec3f& i_WorldPosition, CameraZoneData_Z& o_Data, S32 i_CameraZoneId = -1);
     void NoFrustrumClipping(const Node_ZHdl& i_NodeHdl, Bool i_NoClipping);
+    void NoOccluderClipping(const Node_ZHdl& i_NodeHdl, Bool i_NoClipping);
+    void NoClippingRoot(const Node_ZHdl& i_NodeHdl, Bool i_NoClipping);
     void Update(Float i_DeltaTime);
     void UpdateAnims(Float i_DeltaTime);
+    Bool StartAnimationOnNode(const Node_ZHdl& i_NodeHdl);
+    AnimFrame_ZHdl GetAnimationOnNode(const Node_ZHdl& i_NodeHdl, Bool a2);
+    Bool RemoveAnimation(const AnimFrame_ZHdl& i_AnimFrameHdl);
+    void AddAnimation(const AnimFrame_ZHdl& i_AnimFrameHdl);
+    Bool IsAnimation(const AnimFrame_ZHdl& i_AnimFrameHdl);
+    void ResetAnimFrames();
     void UpdateLighting(Bool i_Force);
+    void UpdateLodData();
+    Bool GetCollisionLines(const Segment_Z& i_Segment, ColLineResult_Z& o_Result, U64 i_Flag, U64 i_NoFlag);
     void RefWorldId(S16 i_WorldId);
     void ActionOnActivate();
     void Assume();
@@ -166,6 +187,14 @@ public:
         return m_NbVp;
     }
 
+    inline void SetNbVp(S32 i_NbVp) {
+        m_NbVp = i_NbVp;
+    }
+
+    inline void SetFirstVp(S32 i_FirstVp) {
+        m_FirstPlayerVpId = i_FirstVp;
+    }
+
     inline S32 GetFirstVp() const {
         return m_FirstPlayerVpId;
     }
@@ -192,6 +221,14 @@ public:
 
     inline GenWorld_ZHdl GetGenWorld() {
         return m_GenWorldHdl;
+    }
+
+    inline S32 GetNbSubWorldData() const {
+        return m_SubWorldDatas.GetSize();
+    }
+
+    inline SubWorldData_Z& GetSubWorldData(S32 i_Idx) {
+        return m_SubWorldDatas[i_Idx];
     }
 
     static BaseObject_Z* NewObject() { return NewL_Z(314) World_Z; }

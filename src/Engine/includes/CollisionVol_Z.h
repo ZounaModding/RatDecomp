@@ -16,6 +16,8 @@ typedef DynArray_Z<CollisionVol, 4, FALSE, FALSE> CollisionVolDA;
 
 class CollisionVol_Z : public Object_Z {
 public:
+    CollisionVol_Z();
+
     virtual ~CollisionVol_Z() { }
 
     virtual void Load(void** i_Data);

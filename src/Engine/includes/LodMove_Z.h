@@ -22,7 +22,7 @@ public:
     virtual void EndCollisionNode(Bool i_Abort, S32 i_Index);
     virtual void UpdateCollisionCarrying(SeadZone_Z& i_Zone, const Vec3f& i_CurPos, const Vec3f& i_NewPos);
 
-    virtual void GetCameraId() { }
+    virtual S32 GetCameraId() { return -1; }
 
     virtual void SetCameraAgent(Agent_ZHdl& i_AgentHdl) { }
 
@@ -30,11 +30,11 @@ public:
 
     virtual void SetCameraPos(Vec3f& i_Pos) { }
 
-    virtual void GetCameraDirFromZone() { }
+    virtual Vec3f GetCameraDirFromZone() const { return VEC3F_NULL; }
 
-    virtual void GetCameraPos() { }
+    virtual Vec3f GetCameraPos() const { return VEC3F_NULL; }
 
-    virtual void GetCameraNodeDisable() { }
+    virtual Node_ZHdl& GetCameraNodeDisable() { return m_DisableCameraFromNodeHdl; }
 
     virtual void SetCameraNodeDisable(Node_ZHdl& i_NodeHdl) { }
 
@@ -51,6 +51,24 @@ public:
     virtual void ClingEdgeLandDist() { }
 
     static BaseObject_Z* NewObject() { return NewL_Z(138) LodMove_Z; }
+
+    inline const Vec3f& GetCameraFocus() const { return m_CameraFocus; }
+
+    inline const Vec3f& GetVehicleDelta() const { return m_VehicleDelta; }
+
+    inline const Vec3f& GetCameraDistance() const { return m_CameraDistance; }
+
+    inline const Vec3f& GetCameraOffset() const { return m_CameraDelta; }
+
+    inline void SetCameraOffset(const Vec3f& i_Offset) { m_CameraDelta = i_Offset; }
+
+    inline Bool IsFocusCameraEnable() const { return m_IsFocusCamera; }
+
+    inline Bool IsFixedCameraEnable() const { return m_IsFixedCamera; }
+
+    inline void EnableFocusCamera(Bool i_Enable = TRUE) { m_IsFocusCamera = i_Enable; }
+
+    inline void EnableFixedCamera(Bool i_Enable = TRUE) { m_IsFixedCamera = i_Enable; }
 
 private:
     ObjectMove_ZHdl m_VehicleHdl;
