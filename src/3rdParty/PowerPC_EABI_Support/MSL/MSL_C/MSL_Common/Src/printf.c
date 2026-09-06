@@ -4,7 +4,7 @@
 #include "ctype.h"
 #include "scanf.h"
 #include "stdio.h"
-#include "string.h"
+#include "cstring.h"
 #include "wchar_io.h"
 
 #define TARGET_FLOAT_BITS 64
