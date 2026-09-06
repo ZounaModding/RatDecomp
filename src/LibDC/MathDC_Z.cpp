@@ -12,6 +12,14 @@ Quat& Quat::operator*=(const Quat& i_Quat) {
     return *this;
 }
 
+Vec4f& Vec4f::operator*=(Float i_Factor) {
+    x *= i_Factor;
+    y *= i_Factor;
+    z *= i_Factor;
+    w *= i_Factor;
+    return *this;
+}
+
 Vec4f Mat4x4::operator*(const Vec4f& i_Vec) const {
     Vec4f l_Vec;
     Float l_Z = i_Vec.z;

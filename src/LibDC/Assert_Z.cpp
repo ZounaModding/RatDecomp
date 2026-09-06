@@ -79,3 +79,6 @@ void ExceptionHandler() {
     irq_set_handler(EXC_SLOT_FPU, DCErrorHandler, NULL);
 #endif
 }
+
+void BreakPoint_Z() {
+}

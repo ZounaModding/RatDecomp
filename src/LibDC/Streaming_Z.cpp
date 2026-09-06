@@ -1,6 +1,7 @@
 #include "Streaming_Z.h"
 #include "Program_Z.h"
 #include "StreamManager_Z.h"
+#include "Timer_Z.h"
 
 void DCStream_Z::Open(const Char* i_FilePath) {
     m_LoadStage = 1;
