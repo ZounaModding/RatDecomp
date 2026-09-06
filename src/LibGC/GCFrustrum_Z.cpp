@@ -107,5 +107,48 @@ Bool SphereVsFrustrum(
 }
 
 Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Sphere_Z& i_Sphere, U32& o_Flag) {
-    return FALSE;
+    const FrustrumPlane_Z& l_Planes = i_Frustrum.m_ViewPlanes;
+    Float l_CenterZ = i_Sphere.Center.z;
+    Float l_Radius = i_Sphere.Radius;
+    Float l_Near = i_Frustrum.m_NearClip - l_CenterZ;
+    Float l_Far = i_Frustrum.m_OccludedFarClip - l_CenterZ;
+
+    o_Flag = 0;
+
+    if (l_Near > l_Radius || l_Far < -l_Radius) {
+        return FALSE;
+    }
+
+    Vec4f l_ScaledX;
+    Vec4f l_ScaledY;
+    Vec4f l_ScaledZ;
+    Vec4f l_Dots;
+    Vec4_Scale(l_ScaledX, i_Sphere.Center.x, l_Planes.m_PlaneX);
+    Vec4_Scale(l_ScaledY, i_Sphere.Center.y, l_Planes.m_PlaneY);
+    Vec4_Add(l_Dots, l_ScaledX, l_ScaledY);
+    Vec4_Scale(l_ScaledZ, l_CenterZ, l_Planes.m_PlaneZ);
+    Vec4_Add(l_Dots, l_Dots, l_ScaledZ);
+
+    Float l_D0 = l_Dots.x;
+    Float l_D1 = l_Dots.y;
+    Float l_D2 = l_Dots.z;
+    Float l_D3 = l_Dots.w;
+
+    if (l_D0 < -l_Radius || l_D1 < -l_Radius || l_D2 < -l_Radius || l_D3 < -l_Radius) {
+        return FALSE;
+    }
+
+    if (l_D0 < l_Radius || l_D1 < l_Radius || l_D2 < l_Radius || l_D3 < l_Radius) {
+        o_Flag |= FL_CLIPPLANE_SIDES;
+    }
+
+    if (l_Near > -i_Sphere.Radius) {
+        o_Flag |= FL_CLIPPLANE_NEAR;
+    }
+
+    if (l_Far < i_Sphere.Radius) {
+        o_Flag |= FL_CLIPPLANE_FAR;
+    }
+
+    return TRUE;
 }

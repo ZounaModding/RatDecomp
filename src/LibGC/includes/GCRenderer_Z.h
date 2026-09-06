@@ -114,8 +114,7 @@ public:
     };
 
 // $SABE: This is kinda weird so it may be wrong and it's done some other way
-#pragma push
-#pragma pack(1)
+#pragma pack(push, 1)
 
     class GCListVertex2D {
     public:
@@ -126,7 +125,7 @@ public:
         S32 m_DisplayListSize;
     };
 
-#pragma pop
+#pragma pack(pop)
 
     class Primitive2DList_Z {
     public:

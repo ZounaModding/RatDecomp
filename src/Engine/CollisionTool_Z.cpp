@@ -1,7 +1,10 @@
 #include "CollisionTool_Z.h"
 
 Bool SphereVsEdge(const Sphere_Z& i_Sphere, const Vec4f& i_V0, const Vec4f& i_V1, CollisionReport_Z& o_Report) {
+// TODO: KOS is broken with local static initializer currently. Remove this #ifdef when that's fixed
+#ifdef GAMECUBE_Z
     static Vec4f DirUp(0.0f, 1.0f, 0.0f, 1.0f);
+#endif
     return FALSE;
 }
 
