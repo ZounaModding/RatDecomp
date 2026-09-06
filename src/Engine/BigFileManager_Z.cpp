@@ -56,9 +56,9 @@ void ClassManager_Z::CloseBigFile() {
 Bool ClassManager_Z::LoadResourceLink(BigFileRsc_Z& io_Resource) {
     S32 l_CurRscSize;
     BigFileRscHeader_Z& l_RscHeader = *io_Resource.m_Header;
-    Name_Z& l_RscName = l_RscHeader.m_Name;
-    Name_Z& l_ClassName = l_RscHeader.m_ClassName;
-    S32 l_HdlIdx = IsResourceRef(l_RscName.GetID());
+    Name_Z& l_RscName = io_Resource.m_Header->m_Name;
+    Name_Z& l_ClassName = io_Resource.m_Header->m_ClassName;
+    S32 l_HdlIdx = IsResourceRef(io_Resource.m_Header->m_Name.GetID());
     if (l_HdlIdx >= 0) {
         ASSERTLE_Z(m_HandleRecDA[l_HdlIdx].m_ObjPtr, "", 93, "HandleRecDA[result].ObjPtr");
         ASSERTLE_Z(m_HandleRecDA[l_HdlIdx].m_Name == l_RscName, "", 94, "HandleRecDA[result].Name==pRscName");

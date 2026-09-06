@@ -26,10 +26,20 @@ Camera_Z::Camera_Z()
     m_OccludedZonesBA.ClearBit(0);
     m_OccludedZonesBA.SetBit(1);
 
-    m_UnkFloat_0x10d0 = 0.18f;
-    m_UnkFloat_0x10d4 = 1.0f;
+    m_AverageGrayLevel = 0.18f;
+    m_WhiteLevel = 1.0f;
     m_UnkFloat_0x10d8 = 0.1f;
     m_UnkFloat_0x10dc = 100.0f;
+}
+
+void Camera_Z::SetAverageGrayLevel(Float i_AverageGrayLevel) {
+    ASSERTLE_Z(i_AverageGrayLevel > 0.0f, "Invalid Average Gray Level Value", 39, "_AverageGrayLevel>0.f");
+    m_AverageGrayLevel = i_AverageGrayLevel;
+}
+
+void Camera_Z::SetWhiteLevel(Float i_WhiteLevel) {
+    ASSERTLE_Z(i_WhiteLevel > 0.0f, "Invalid White Level Value", 45, "_WhiteLevel>0.f");
+    m_WhiteLevel = i_WhiteLevel;
 }
 
 void Camera_Z::SetNearClip(Float i_Near) {
@@ -59,12 +69,7 @@ void Camera_Z::UpdateObject(Node_Z* i_Node, ObjectDatas_Z* i_Data) {
     Mat4x4 l_RollMatrix;
     Vec2f l_SinCos;
 
-    memset(&l_RollMatrix, 0, sizeof(l_RollMatrix));
-
-    l_RollMatrix.m[0][0] = 1.0f;
-    l_RollMatrix.m[1][1] = 1.0f;
-    l_RollMatrix.m[2][2] = 1.0f;
-    l_RollMatrix.m[3][3] = 1.0f;
+    l_RollMatrix.SetIdentity();
 
     O_SinCos(l_SinCos, m_Roll);
 
@@ -112,6 +117,29 @@ void Camera_Z::SetOccludedFarClip(Float i_Far) {
 }
 
 void Camera_Z::GetFrustrum2D(Frustrum2D_Z& o_Frustrum) const {
+    Float l_DirectionY = m_Target.y - m_WorldPos.y;
+    o_Frustrum.m_Points[0] = Vec2f(m_WorldPos.x, m_WorldPos.z);
+    if (l_DirectionY > -Float_Eps && l_DirectionY < Float_Eps) {
+        o_Frustrum.m_Points[1] = Vec2f(m_Frustum.m_CornerPoints[6].x, m_Frustum.m_CornerPoints[6].z);
+        o_Frustrum.m_Points[2] = Vec2f(m_Frustum.m_CornerPoints[5].x, m_Frustum.m_CornerPoints[5].z);
+        o_Frustrum.m_PointNb = 3;
+    }
+    else {
+        if (l_DirectionY > 0.0f) {
+            o_Frustrum.m_Points[1] = Vec2f(m_Frustum.m_CornerPoints[7].x, m_Frustum.m_CornerPoints[7].z);
+            o_Frustrum.m_Points[2] = Vec2f(m_Frustum.m_CornerPoints[6].x, m_Frustum.m_CornerPoints[6].z);
+            o_Frustrum.m_Points[3] = Vec2f(m_Frustum.m_CornerPoints[5].x, m_Frustum.m_CornerPoints[5].z);
+            o_Frustrum.m_Points[4] = Vec2f(m_Frustum.m_CornerPoints[4].x, m_Frustum.m_CornerPoints[4].z);
+        }
+        else {
+            o_Frustrum.m_Points[1] = Vec2f(m_Frustum.m_CornerPoints[6].x, m_Frustum.m_CornerPoints[6].z);
+            o_Frustrum.m_Points[2] = Vec2f(m_Frustum.m_CornerPoints[7].x, m_Frustum.m_CornerPoints[7].z);
+            o_Frustrum.m_Points[3] = Vec2f(m_Frustum.m_CornerPoints[4].x, m_Frustum.m_CornerPoints[4].z);
+            o_Frustrum.m_Points[4] = Vec2f(m_Frustum.m_CornerPoints[5].x, m_Frustum.m_CornerPoints[5].z);
+        }
+        o_Frustrum.m_PointNb = 5;
+    }
+    o_Frustrum.m_Points[o_Frustrum.m_PointNb] = o_Frustrum.m_Points[0];
 }
 
 void Camera_Z::UpdateInverseWorldMatrix(Node_Z* i_Node) {
@@ -153,6 +181,13 @@ void Camera_Z::DoOcclusion(const Occluder_ZHdl& i_OccluderHdl) {
     }
 }
 
+void Camera_Z::NoOcclusion() {
+    m_OccluderHdl = HANDLE_NULL;
+    m_OccludedFrustum.m_IsOccluded = FALSE;
+    m_OccludedZonesBA.ClearAllBits();
+    m_OccludedZonesBA.SetBit(1);
+}
+
 void Camera_Z::GetOccluded(DrawInfo_Z& io_DrawInfo) {
     io_DrawInfo.m_IsOccluded = m_OccludedFrustum.m_IsOccluded;
     io_DrawInfo.m_Occluder = m_OccluderHdl;
@@ -164,13 +199,11 @@ void Camera_Z::GetOccluded(DrawInfo_Z& io_DrawInfo) {
     }
 }
 
-void Camera_Z::NoOcclusion() {
-}
-
 void Camera_Z::Load(void** i_Data) {
 }
 
 void Camera_Z::EndLoad() {
+    gData.ClassMgr->UpdateLink(m_NodeTargetHdl);
 }
 
 // Should be called GetPtsOnLineZ
@@ -188,7 +221,8 @@ Bool OccludedFrustum_Z::GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX) cons
         }
 
         if ((l_Cur->y < i_Z && l_Next->y >= i_Z) || (l_Cur->y >= i_Z && l_Next->y < i_Z)) {
-            Float l_X = (i_Z - l_Cur->y) / (l_Next->y - l_Cur->y) * (l_Next->x - l_Cur->x) + l_Cur->x;
+            Float l_Ratio = (i_Z - l_Cur->y) / (l_Next->y - l_Cur->y);
+            Float l_X = l_Ratio * (l_Next->x - l_Cur->x) + l_Cur->x;
 
             if (!o_IntersectionsX.GetSize()) {
                 o_IntersectionsX.Add(l_X);
@@ -202,7 +236,7 @@ Bool OccludedFrustum_Z::GetPtsOnLineY(Float i_Z, FloatDA& o_IntersectionsX) cons
             else {
                 for (S32 j = 0; j < o_IntersectionsX.GetSize() - 1; j++) {
                     if (l_X > o_IntersectionsX[j] && l_X <= o_IntersectionsX[j + 1]) {
-                        o_IntersectionsX.Insert(j + 1, l_X);
+                        o_IntersectionsX.Insert(j, l_X);
                         break;
                     }
                 }
@@ -235,7 +269,8 @@ Bool OccludedFrustum_Z::GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ) cons
         }
 
         if ((l_Cur->x < i_X && l_Next->x >= i_X) || (l_Cur->x >= i_X && l_Next->x < i_X)) {
-            Float l_Z = (i_X - l_Cur->x) / (l_Next->x - l_Cur->x) * (l_Next->y - l_Cur->y) + l_Cur->y;
+            Float l_Ratio = (i_X - l_Cur->x) / (l_Next->x - l_Cur->x);
+            Float l_Z = l_Ratio * (l_Next->y - l_Cur->y) + l_Cur->y;
 
             if (!o_IntersectionsZ.GetSize()) {
                 o_IntersectionsZ.Add(l_Z);
@@ -249,7 +284,7 @@ Bool OccludedFrustum_Z::GetPtsOnLineX(Float i_X, FloatDA& o_IntersectionsZ) cons
             else {
                 for (S32 j = 0; j < o_IntersectionsZ.GetSize() - 1; j++) {
                     if (l_Z > o_IntersectionsZ[j] && l_Z <= o_IntersectionsZ[j + 1]) {
-                        o_IntersectionsZ.Insert(j + 1, l_Z);
+                        o_IntersectionsZ.Insert(j, l_Z);
                         break;
                     }
                 }

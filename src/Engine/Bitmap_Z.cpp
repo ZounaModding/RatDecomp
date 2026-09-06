@@ -304,10 +304,11 @@ void Bitmap_Z::Clear(Color i_Color) {
     }
 }
 
-// $VIOLET: TODO: Fix this
+// $TODO: Finish matching
 void Bitmap_Z::SetPoint(S32 i_X, S32 i_Y, const Color& i_Color) {
-    if ((i_X > -1) && (i_X < m_SizeX) && (i_Y > -1) && (i_Y < m_SizeY)) {
-        SetPoint(&((U8*)m_Datas)[i_X + i_Y * m_SizeX * (int)GetBytePerPixel()], GetFormat(), i_X, i_Y, i_Color);
+    if ((i_X >= 0) && (i_X < m_SizeX) && (i_Y >= 0) && (i_Y < m_SizeY)) {
+        U8* l_Datas = &((U8*)m_Datas)[(i_X + i_Y * m_SizeX) * (int)GetBytePerPixel()];
+        SetPoint(l_Datas, GetFormat(), i_X, i_Y, i_Color);
     }
 }
 
@@ -317,16 +318,24 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
     U8 l_Blue = i_Color.b * 255.0f;
     U8 l_Alpha = i_Color.a * 255.0f;
     switch (i_Format) {
+        case BM_4:
+        case BM_8:
+        case BM_5551:
+        case BM_565:
+        case BM_4444:
+        case BM_1555:
+            break;
+        case BM_888:
+            i_Datas[0] = l_Blue;
+            i_Datas[1] = l_Green;
+            i_Datas[2] = l_Red;
+            break;
         case BM_8888:
             i_Datas[0] = l_Blue;
             i_Datas[1] = l_Green;
             i_Datas[2] = l_Red;
             i_Datas[3] = l_Alpha;
             break;
-        case BM_888:
-            i_Datas[0] = l_Blue;
-            i_Datas[1] = l_Green;
-            i_Datas[2] = l_Red;
     }
 }
 
@@ -335,8 +344,8 @@ void Bitmap_Z::SetPoint(U8* i_Datas, U8 i_Format, S32 i_X, S32 i_Y, const Color&
 #if defined(GAMECUBE_Z)
 
 void Bitmap_Z::SetUniversal(U8* i_Datas) {
-    U8* l_Datas;
     S32 l_Size = m_SizeX * m_SizeY;
+    U8* l_Datas;
 
     switch (m_Format) {
         case BM_4: {

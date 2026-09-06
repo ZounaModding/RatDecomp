@@ -163,8 +163,8 @@ private:
     BitArray_Z m_OccludedZonesBA; // possibly bit array of occluded zones
     OccludedFrustum_Z m_OccludedFrustum;
     Float m_FovEdition; // Name from Monopoly
-    Float m_UnkFloat_0x10d0;
-    Float m_UnkFloat_0x10d4;
+    Float m_AverageGrayLevel;
+    Float m_WhiteLevel;
     Float m_UnkFloat_0x10d8;
     Float m_UnkFloat_0x10dc;
 
@@ -188,6 +188,8 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(188) Camera_Z; }
 
     void SetFov(Float i_Fov);
+    void SetAverageGrayLevel(Float i_AverageGrayLevel);
+    void SetWhiteLevel(Float i_WhiteLevel);
     void SetTarget(const Vec3f& i_Target);
 
     inline Float GetFov() const {

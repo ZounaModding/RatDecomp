@@ -811,7 +811,10 @@ struct Quat {
     }
 
     inline Quat(Float Angle, const Vec3f& Axis) {
-        SetAngleAxis(Angle, Axis);
+        Vec2f l_SinCos;
+        O_SinCos(l_SinCos, Angle * 0.5f);
+        xyz() = Axis * l_SinCos.x;
+        w = l_SinCos.y;
     }
 
     inline Quat(const Quat& i_Quat) {
@@ -830,11 +833,13 @@ struct Quat {
     Quat(const Mat3x3& Matrix);
     Quat(const Mat4x4& Matrix);
 
-    void SetAngleAxis(const Float Angle, const Vec3f& Axis) {
+    Quat& SetAngleAxis(const Float Angle, const Vec3f& Axis) {
         Vec2f l_SinCos;
         O_SinCos(l_SinCos, Angle * 0.5f);
-        xyz() = Axis * l_SinCos.x;
+        xyz() = Axis;
         w = l_SinCos.y;
+        xyz() *= l_SinCos.x;
+        return *this;
     }
 
     Quat& SetInverse() {

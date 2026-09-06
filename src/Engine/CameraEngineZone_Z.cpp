@@ -142,7 +142,8 @@ void CameraEngineZone_Z::Update(Float i_DeltaTime) {
         l_Node->GetWorldMatrix().MulWithoutTrans(VEC3F_FRONT, l_Direction);
         Float l_Angle = O_Atan2(l_Direction.x, l_Direction.z);
         Vec3f l_Axis = Vec3f(0.0f, 1.0f, 0.0f);
-        Quat l_Rotation(l_Angle, l_Axis);
+        Quat l_Rotation;
+        l_Rotation = Quat(l_Angle, l_Axis);
 
         Vec3f l_WorldFocus = l_WorldPosition + l_Rotation * l_Focus;
 
