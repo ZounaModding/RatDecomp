@@ -276,5 +276,13 @@ Bool Cmd_PlayDialog() {
 }
 
 const Char* SoundManager_Z::GetUsedTrackString() {
-    return "TODO: Implement GetUsedTrackString";
+    S32 l_UsedNb = 0;
+    for (S32 i = m_NbFreeTracks; i < SND_MGR_MAX_TRACKS; i++) {
+        if (m_Tracks[i].m_Used) {
+            l_UsedNb++;
+        }
+    }
+    sprintf(SndMgrStatusString, "Snd Tracks: %d/%d (%d)", l_UsedNb, SND_MGR_MAX_TRACKS, m_NbTracksFailedToPlay);
+    m_NbTracksFailedToPlay = 0;
+    return SndMgrStatusString;
 }

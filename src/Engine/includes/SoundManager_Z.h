@@ -32,8 +32,7 @@ enum TrackFlags_Z {
     FL_TRACK_MUSIC = (1 << 12) | (1 << 11) | FL_TRACK_STREAM | (1 << 4) | (1 << 2) | (1 << 0)
 };
 
-#pragma push
-#pragma pack(4)
+#pragma pack(push, 4)
 
 struct Track_Z {
     Bool Release();
@@ -61,7 +60,7 @@ struct Track_Z {
     Float m_OcclusionFactor;
 };
 
-#pragma pop
+#pragma pack(pop)
 
 // $SABE: Fake name
 struct Music_Z {
