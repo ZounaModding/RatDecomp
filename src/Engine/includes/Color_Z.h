@@ -28,6 +28,13 @@ struct Color {
         a = i_Alpha;
     }
 
+    Color& operator*=(Float i_Multiplier) {
+        r *= i_Multiplier;
+        g *= i_Multiplier;
+        b *= i_Multiplier;
+        return *this;
+    }
+
     Float r;
     Float g;
     Float b;

@@ -11,6 +11,8 @@ public:
     virtual void ActionOnDeactivate();
     virtual void Update(Float i_DeltaTime);
 
+    void StopAllVibrations();
+
     static BaseObject_Z* NewObject() { return NewL_Z(101) VibrationManager_C; }
 
 private:

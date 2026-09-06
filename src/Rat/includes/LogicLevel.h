@@ -4,5 +4,8 @@
 
 class LogicLevel_G : public BaseObject_Z {
     U8 m_Unk_0x0c[0x20];
+
+public:
+    Bool IsOpened();
 };
 #endif // _LOGICLEVEL_H_

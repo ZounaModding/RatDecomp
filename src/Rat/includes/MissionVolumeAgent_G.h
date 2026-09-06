@@ -12,7 +12,7 @@ public:
     virtual void Init();
     void AddToStaticList();
     void RemoveFromStaticList();
-    MissionVolumeAgent_G * CheckAnims();
+    static MissionVolumeAgent_G* CheckAnims();
 
 private:
     static DynPtrArray_Z<MissionVolumeAgent_G*> instances;

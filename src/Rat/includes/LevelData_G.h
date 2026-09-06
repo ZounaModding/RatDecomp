@@ -11,6 +11,8 @@ struct MaterialLib {
 class LevelData_G : public BaseObject_Z {
 public:
     MaterialLib* GetMaterialLib(const Name_Z& i_Name);
+    MaterialLib* GetMaterialLibLoaded(const Name_Z& i_Name);
+    void FreeMaterialLib(MaterialLib* i_MaterialLib, Bool i_Force);
     void ResetAdvancement();
 
 private:

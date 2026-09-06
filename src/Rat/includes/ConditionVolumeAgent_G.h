@@ -12,6 +12,7 @@ public:
     virtual void Init();
     void AddToStaticList();
     void RemoveFromStaticList();
+    static void CheckAllConditions();
 
 private:
     static DynPtrArray_Z<ConditionVolumeAgent_G*> STC_Instances;

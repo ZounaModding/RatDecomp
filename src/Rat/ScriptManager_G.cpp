@@ -3,6 +3,8 @@
 #include "AnimationManager_Z.h"
 #include "ClassManager_Z.h"
 #include "LevelData_G.h"
+#include "GameManager_Z.h"
+#include "Game_Z.h"
 #include "Memory_Z.h"
 #include "MemoryCardMgr_G.h"
 #include "MusicManager_G.h"
@@ -10,6 +12,14 @@
 #include "Program_Z.h"
 #include "Renderer_Z.h"
 #include "TextGameDraw_G.h"
+#include "LogicAgent_G.h"
+#include "VibrationManager_G.h"
+#include "MissionVolumeAgent_G.h"
+#include "ConditionVolumeAgent_G.h"
+#include "Mission_Global.h"
+#include "LogicLevel.h"
+#include "PersoLight_G.h"
+#include "Console_Z.h"
 
 ScriptManager_G::ScriptManager_G() {
     m_PlayerSaveStruct.Reset();
@@ -172,6 +182,83 @@ void ScriptManager_G::Update(Float i_DeltaTime) {
 void ScriptManager_G::RemoveLogicAgent(const Game_ZHdl& i_GameHdl) {
 }
 
+void ScriptManager_G::StopAllVibrations() {
+    m_VibrationMgrHdl->StopAllVibrations();
+}
+
+LevelData_GHdl ScriptManager_G::AddLevelData() {
+    LevelData_GHdl l_LevelHdl = gData.ClassMgr->NewObject("LevelData_G");
+    m_Levels.Add(l_LevelHdl);
+    return m_Levels[m_Levels.GetSize() - 1];
+}
+
+S32 ScriptManager_G::GetLevelDataId(LevelData_GHdl i_Hdl) {
+    for (S32 l_Index = 0; l_Index < m_Levels.GetSize(); ++l_Index) {
+        if (m_Levels[l_Index] == i_Hdl) {
+            return l_Index;
+        }
+    }
+    return -1;
+}
+
+void ScriptManager_G::RemoveOldLevel() {
+    S32 l_Removed = FALSE;
+    for (S32 l_Index = 0; l_Index < gData.GameMgr->GetNbGame(); ++l_Index) {
+        if (gData.GameMgr->GetGame(l_Index)) {
+            gData.GameMgr->DeactivateGame(l_Index);
+            gData.GameMgr->RemoveGame(l_Index, FALSE);
+            l_Removed = TRUE;
+        }
+    }
+    if (l_Removed) {
+        gScriptMgr->m_PersoLightMgrHdl->GameRemoved();
+        gData.Cons->PushCommand("CheckHandles", TRUE);
+    }
+}
+
+LogicLevel_GHdl ScriptManager_G::GetLogicLevel(S32 i_Index) {
+    return m_LogicLevels[i_Index];
+}
+
+LogicLevel_GHdl ScriptManager_G::AddLogicLevel() {
+    LogicLevel_GHdl l_LevelHdl = gData.ClassMgr->NewObject("LogicLevel_G");
+    m_LogicLevels.Add(l_LevelHdl);
+    return m_LogicLevels[m_LogicLevels.GetSize() - 1];
+}
+
+S32 ScriptManager_G::GetLogicLevelId(LogicLevel_GHdl i_Hdl) {
+    for (S32 l_Index = 0; l_Index < m_LogicLevels.GetSize(); ++l_Index) {
+        if (m_LogicLevels[l_Index] == i_Hdl) {
+            return l_Index;
+        }
+    }
+    return -1;
+}
+
+LogicLevel_GHdl ScriptManager_G::GetCurrentLogicLevel() {
+    for (S32 l_Index = 0; l_Index < m_LogicLevels.GetSize(); ++l_Index) {
+        if (m_LogicLevels[l_Index]->IsOpened()) {
+            LogicLevel_GHdl l_NextLevelHdl = GetNextLogicLevel(m_LogicLevels[l_Index]);
+            if (!l_NextLevelHdl) {
+                return m_LogicLevels[l_Index];
+            }
+            if (!l_NextLevelHdl->IsOpened()) {
+                return m_LogicLevels[l_Index];
+            }
+        }
+    }
+}
+
+void ScriptManager_G::RemoveAllMaterialLib(const Name_Z& i_Name) {
+    for (S32 l_Index = 0; l_Index < m_Levels.GetSize(); ++l_Index) {
+        LevelData_GHdl l_LevelHdl = LevelData_GHdl(m_Levels[l_Index]);
+        MaterialLib* l_MaterialLib = l_LevelHdl->GetMaterialLibLoaded(i_Name);
+        if (l_MaterialLib) {
+            l_LevelHdl->FreeMaterialLib(l_MaterialLib, FALSE);
+        }
+    }
+}
+
 void ScriptManager_G::ResetAdvancement() {
     m_AbilityFlag = 0;
     m_PlayerSaveStruct.Reset();
@@ -185,9 +272,66 @@ void ScriptManager_G::ResetAdvancement() {
     CheckUnlock(TRUE);
 }
 
-void ScriptManager_G::CheckUnlock(Bool i_Force) { }
+S32 ScriptManager_G::GetNbPlayer() {
+    if (!gData.GameMgr->GetNbGame()) {
+        return 0;
+    }
+    return gData.GameMgr->GetGame(0)->GetNbPlayer();
+}
 
-void ScriptManager_G::ResetObjectTextInfo(CloneClassTextInfoDA& io_TextInfos) { }
+Player_G* ScriptManager_G::GetMainPlayer(S32 i_PlayerId) {
+    if (!gData.GameMgr) {
+        return NULL;
+    }
+    if (i_PlayerId >= GetNbPlayer()) {
+        return NULL;
+    }
+    for (S32 l_GameId = 0; l_GameId < gData.GameMgr->GetNbGame(); ++l_GameId) {
+        Player_G* l_Player = (Player_G*)gData.GameMgr->GetGame(l_GameId)->GetPlayerAgent(i_PlayerId);
+        if (l_Player) {
+            return l_Player;
+        }
+    }
+    return NULL;
+}
+
+void ScriptManager_G::CheckUnlock(Bool i_Force) {
+    m_UnlockEvents.CheckUnlock(i_Force);
+    MissionVolumeAgent_G::CheckAnims();
+    ConditionVolumeAgent_G::CheckAllConditions();
+    Mission_Global::UpdateValues();
+}
+
+void ScriptManager_G::CloneClassDone() {
+    DynArray_Z<Name_Z, 32, FALSE, TRUE> l_Classes;
+    gData.ClassMgr->GetCloneClass(Name_Z(Name_Z::GetID("IT_COLLECT_G")), l_Classes);
+    S32 l_Index = 0;
+    S32 l_Count = l_Classes.GetSize();
+    for (; l_Index < l_Count; ++l_Index) {
+        CloneClassTextInfo l_Info;
+        l_Info.m_ClassName = l_Classes[l_Index];
+        l_Info.m_Triggered = FALSE;
+        m_CollectTutorialTextInfos.Add(l_Info);
+    }
+    gData.ClassMgr->GetCloneClass(Name_Z(Name_Z::GetID("IT_Carrying")), l_Classes);
+    S32 l_CarryCount = l_Classes.GetSize();
+    S32 l_CarryIndex = 0;
+    for (; l_CarryIndex < l_CarryCount; ++l_CarryIndex) {
+        const Name_Z& l_ClassName = l_Classes[l_CarryIndex];
+        CloneClassTextInfo l_Info;
+        l_Info.m_ClassName = l_ClassName;
+        l_Info.m_Triggered = FALSE;
+        m_CarryTutorialTextInfos.Add(l_Info);
+    }
+}
+
+void ScriptManager_G::ResetObjectTextInfo(CloneClassTextInfoDA& io_TextInfos) {
+    S32 l_Index = 0;
+    S32 l_Count = io_TextInfos.GetSize();
+    for (; l_Count > 0; --l_Count, ++l_Index) {
+        io_TextInfos[l_Index].m_Triggered = FALSE;
+    }
+}
 
 // $SABE: Never thought I'd commit an array of slurs to a repo, let's hope this is not against GitHub's TOS.
 Char* arrayMotsPasJoli[] = {
