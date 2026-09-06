@@ -216,6 +216,32 @@ public:
 
     void IncreaseHealthMax(S32 i_Amount) { m_PlayerSaveStruct.IncreaseHealthMax(i_Amount); }
 
+    langDefineDA& GetLangDefines() { return m_ArrayLang.m_LangDefines; }
+
+    langDefine& GetLangDefine(S32 i_Idx) { return m_ArrayLang.m_LangDefines[i_Idx]; }
+
+    UnLockEvents_G& GetUnlockEvents() { return m_UnlockEvents; }
+
+    void SetEnableDebugTools(Bool i_Enabled) {
+        m_EnableDebugTools = i_Enabled;
+    }
+
+    void* GetPackedMenuCmdBuf() {
+        return m_PackedMenuCommandBuffer;
+    }
+
+    void SetPackedMenuCmdBuf(void* i_Buffer) {
+        m_PackedMenuCommandBuffer = i_Buffer;
+    }
+
+    S32 GetPackedMenuCmdBufSize() {
+        return m_PackedMenuCommandBufferSize;
+    }
+
+    void SetPackedMenuCmdBufSize(S32 i_Size) {
+        m_PackedMenuCommandBufferSize = i_Size;
+    }
+
 private:
     BriefData m_BriefData;
     CTFGameMgr_G m_ScriptGameMgr;
@@ -275,6 +301,8 @@ private:
     PlayerSaveStruct_G m_PlayerSaveStruct;
     S32 m_AbilityFlag;
     S32 m_CookBfStartId;
+
+public:
     void* m_PackedMenuCommandBuffer;
     S32 m_PackedMenuCommandBufferSize;
 };

@@ -9,6 +9,8 @@ public:
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
 
+    void InitLanguageMC();
+
     static BaseObject_Z* NewObject() { return NewL_Z(134) MemoryCardManager_C; }
 
 private:

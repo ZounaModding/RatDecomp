@@ -76,6 +76,7 @@ public:
     CTFGameMgr_G();
     ~CTFGameMgr_G();
 
+    Bool Init();
     void InitConfiguration();
     void AddTime(Float i_DeltaTime);
 

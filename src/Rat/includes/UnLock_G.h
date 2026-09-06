@@ -2,6 +2,7 @@
 #define _UNLOCK_G_H_
 #include "DynArray_Z.h"
 class UnlockElem_G;
+class Console_Z;
 
 typedef DynArray_Z<UnlockElem_G, 4> UnlockElem_GDA;
 
@@ -13,6 +14,7 @@ class UnLockEvents_G {
     UnlockElem_GDA m_UnlockElemDA;
 
 public:
+    void AddUnlockEvent(Console_Z* i_Console);
     void CheckUnlock(Bool i_Force);
 };
 

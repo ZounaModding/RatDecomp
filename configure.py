@@ -1272,7 +1272,7 @@ config.libs = [
             Object(NonMatching, "Rat/Mission_Glissade.cpp"),
             Object(NonMatching, "Rat/DialogVoices.cpp"),
             Object(NonMatching, "Rat/GameLogicAgent_G.cpp"),
-            Object(NonMatching, "Rat/MenuParser.cpp", extra_cflags=["-O4,s","-inline off"]),
+            Object(NonMatching, "Rat/MenuParser.cpp", extra_cflags=["-O4,s", "-inline off"]),
             Object(NonMatching, "Rat/RtcScriptFunctions_G.cpp"),
             Object(NonMatching, "Rat/PaddleChecker_G.cpp"),
             Object(NonMatching, "Rat/CreaturesMachineCommands_G.cpp"),
