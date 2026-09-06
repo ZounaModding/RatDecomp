@@ -6,6 +6,33 @@
 #include "HoleArray_Z.h"
 #include "InputAction_Z.h"
 
+// $SABE: Fake name
+enum PadButton_Z {
+    BUTTON_FIRST,
+    BUTTON_A = BUTTON_FIRST,
+    BUTTON_B,
+    BUTTON_X,
+    BUTTON_Y,
+    BUTTON_Z,
+    BUTTON_L,
+    BUTTON_R,
+    BUTTON_START,
+    BUTTON_LEFT,
+    BUTTON_RIGHT,
+    BUTTON_UP,
+    BUTTON_DOWN,
+    BUTTON_LANALOG_LEFT,
+    BUTTON_LANALOG_RIGHT,
+    BUTTON_LANALOG_UP,
+    BUTTON_LANALOG_DOWN,
+    BUTTON_RANALOG_LEFT,
+    BUTTON_RANALOG_RIGHT,
+    BUTTON_RANALOG_UP,
+    BUTTON_RANALOG_DOWN,
+    BUTTON_CROSS,
+    BUTTON_COUNT,
+};
+
 struct ButtonRemap_Z {
     S32 m_ButtonId;
     S32 m_SecondaryButtonId;

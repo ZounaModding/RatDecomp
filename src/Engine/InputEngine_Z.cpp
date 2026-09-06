@@ -3,8 +3,6 @@
 #include "Name_Z.h"
 #include "Types_Z.h"
 
-#define BUTTON_COUNT 21
-
 // $VIOLET: sinit will match when DynArray_Z is used elsewhere
 static Name_Z InputButtonName[BUTTON_COUNT] = {
     Name_Z::GetID("A"),

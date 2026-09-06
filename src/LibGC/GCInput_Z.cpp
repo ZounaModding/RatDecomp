@@ -80,64 +80,64 @@ Float GCInput_Z::GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_Co
     Float l_Result = 0.0f;
 
     switch (i_ControlId) {
-        case 0:
+        case BUTTON_A:
             l_Result = (l_ControllerData->button & PAD_BUTTON_A) ? 255 : 0;
             break;
-        case 1:
+        case BUTTON_B:
             l_Result = (l_ControllerData->button & PAD_BUTTON_B) ? 255 : 0;
             break;
-        case 2:
+        case BUTTON_X:
             l_Result = (l_ControllerData->button & PAD_BUTTON_X) ? 255 : 0;
             break;
-        case 3:
+        case BUTTON_Y:
             l_Result = (l_ControllerData->button & PAD_BUTTON_Y) ? 255 : 0;
             break;
-        case 4:
+        case BUTTON_Z:
             l_Result = (l_ControllerData->button & PAD_TRIGGER_Z) ? 255 : 0;
             break;
-        case 5:
+        case BUTTON_L:
             l_Result = l_ControllerData->triggerLeft;
             break;
-        case 6:
+        case BUTTON_R:
             l_Result = l_ControllerData->triggerRight;
             break;
-        case 7:
+        case BUTTON_START:
             l_Result = (l_ControllerData->button & PAD_BUTTON_START) ? 255 : 0;
             break;
-        case 8:
+        case BUTTON_LEFT:
             l_Result = (l_ControllerData->button & PAD_BUTTON_LEFT) ? 255 : 0;
             break;
-        case 9:
+        case BUTTON_RIGHT:
             l_Result = (l_ControllerData->button & PAD_BUTTON_RIGHT) ? 255 : 0;
             break;
-        case 10:
+        case BUTTON_UP:
             l_Result = (l_ControllerData->button & PAD_BUTTON_UP) ? 255 : 0;
             break;
-        case 11:
+        case BUTTON_DOWN:
             l_Result = (l_ControllerData->button & PAD_BUTTON_DOWN) ? 255 : 0;
             break;
-        case 12:
+        case BUTTON_LANALOG_LEFT:
             l_Result = -Clamp(5.5f * l_ControllerData->stickX, -255.0f, 0.0f);
             break;
-        case 13:
+        case BUTTON_LANALOG_RIGHT:
             l_Result = Clamp(5.5f * l_ControllerData->stickX, 0.0f, 255.0f);
             break;
-        case 14:
+        case BUTTON_LANALOG_UP:
             l_Result = Clamp(5.5f * l_ControllerData->stickY, 0.0f, 255.0f);
             break;
-        case 15:
+        case BUTTON_LANALOG_DOWN:
             l_Result = -Clamp(5.5f * l_ControllerData->stickY, -255.0f, 0.0f);
             break;
-        case 16:
+        case BUTTON_RANALOG_LEFT:
             l_Result = -Clamp(6.5f * l_ControllerData->substickX, -255.0f, 0.0f);
             break;
-        case 17:
+        case BUTTON_RANALOG_RIGHT:
             l_Result = Clamp(6.5f * l_ControllerData->substickX, 0.0f, 255.0f);
             break;
-        case 18:
+        case BUTTON_RANALOG_UP:
             l_Result = Clamp(6.5f * l_ControllerData->substickY, 0.0f, 255.0f);
             break;
-        case 19:
+        case BUTTON_RANALOG_DOWN:
             l_Result = -Clamp(6.5f * l_ControllerData->substickY, -255.0f, 0.0f);
             break;
     }

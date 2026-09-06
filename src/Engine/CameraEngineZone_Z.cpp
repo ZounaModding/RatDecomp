@@ -49,13 +49,13 @@ void CameraEngineZone_Z::InterpMessage(const int& i_Message, Float i_Param) {
         CaptureEnd();
     }
     if (i_Message == msg_camera_capture_param_1) {
-        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_FRAMERATE, i_Param);
+        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_PATCH_DELTA, i_Param);
     }
     if (i_Message == msg_camera_capture_param_2) {
-        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_FRAME_NB, i_Param);
+        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_PATCH_NB, i_Param);
     }
     if (i_Message == msg_camera_capture_param_3) {
-        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_PATCH_NB, i_Param);
+        CaptureParams(CAMERA_ENGINE_CAPTURE_PARAM_FRAMERATE, i_Param);
     }
     if (i_Message == msg_camera_reset_focus) {
         m_CameraWorldFocus = VEC3F_NULL;
@@ -96,7 +96,8 @@ void CameraEngineZone_Z::Update(Float i_DeltaTime) {
     Node_ZHdl l_NodeHdl = l_Lod->GetNode(0);
 
     if (!l_Lod->IsFixedCameraEnable() || !l_Lod->IsFocusCameraEnable()) {
-        Node_Z* l_FromNode = l_Lod->GetCameraNodeDisable();
+        Node_ZHdl& l_FromHdl = l_Lod->GetCameraNodeDisable();
+        Node_Z* l_FromNode = l_FromHdl;
         l_WorldPosition = l_FromNode->GetWorldTranslation();
         if (l_World->GetCameraZone(l_WorldPosition, l_CameraZoneData, l_Lod->GetCameraId())) {
             CameraZone_Z* l_CameraZone = l_CameraZoneData.m_CameraZoneHdl;
@@ -142,8 +143,7 @@ void CameraEngineZone_Z::Update(Float i_DeltaTime) {
         l_Node->GetWorldMatrix().MulWithoutTrans(VEC3F_FRONT, l_Direction);
         Float l_Angle = O_Atan2(l_Direction.x, l_Direction.z);
         Vec3f l_Axis = Vec3f(0.0f, 1.0f, 0.0f);
-        Quat l_Rotation;
-        l_Rotation = Quat(l_Angle, l_Axis);
+        Quat l_Rotation(l_Angle, l_Axis);
 
         Vec3f l_WorldFocus = l_WorldPosition + l_Rotation * l_Focus;
 
