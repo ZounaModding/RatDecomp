@@ -186,3 +186,6 @@ Bool World_Z::GetCameraZone(const Vec3f& i_WorldPosition, CameraZoneData_Z& o_Da
 
     return FALSE;
 }
+
+void World_Z::NoOccluderClipping(const Node_ZHdl& i_NodeHdl, Bool i_NoClipping) {
+}

@@ -19,3 +19,11 @@ Bool CylinderSphereVsSegment(const Sphere_Z& i_Sphere, const Segment_Z& i_Segmen
 Bool SegmentVsTri(const Segment_Z& i_Segment, const Vec3f_S16_Z& i_V0, const Vec3f_S16_Z& i_V1, const Vec3f_S16_Z& i_V2, CollisionReport_Z& o_Report) {
     return FALSE;
 }
+
+Bool SegmentVsBox(const Segment_Z& i_Segment, const Box_Z& i_Box, CollisionReport_Z& o_Report) {
+    return FALSE;
+}
+
+Bool SegmentVsCylindre(const Segment_Z& i_Segment, const Cylindre_Z& i_Cylindre, CollisionReport_Z& o_Report) {
+    return FALSE;
+}

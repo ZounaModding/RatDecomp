@@ -49,3 +49,7 @@ S32 KeyframerVec4fLinear_Z::GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffs
 
     return i_KeyOffset;
 }
+
+S32 KeyframerVec4fLinearComp_Z::GetValue(Float i_Time, Vec4f& o_Value, S32 i_KeyOffset) {
+    return 0;
+}

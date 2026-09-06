@@ -11,3 +11,7 @@ void KeyRot_Z::Set(const Quat& i_Value) {
     Float l_NewW = i_Value.w * KEY_QUAT_COMP_FACTOR + 0.5f;
     m_Value.w = l_NewW >= 0.0f ? (int)l_NewW : -((int)-l_NewW);
 }
+
+S32 KeyframerRot_Z::GetValue(Float i_Time, Quat& o_Value, S32 i_KeyOffset) {
+    return 0;
+}

@@ -1,4 +1,5 @@
 #include "SubWorld_Z.h"
+#include "World_Z.h"
 
 S32 SubWorld_Z::SubWorldDisplayID;
 Bool SubWorld_Z::SubWorldDisplaySelection;
@@ -17,4 +18,8 @@ void SubWorld_Z::EndLoad() {
 }
 
 void SubWorld_Z::AfterEndLoad() {
+}
+
+Bool SubWorldRange_Z::Inside(const Vec2f& i_Pos) const {
+    return FALSE;
 }

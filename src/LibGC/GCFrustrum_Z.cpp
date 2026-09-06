@@ -105,3 +105,7 @@ Bool SphereVsFrustrum(
     }
     return TRUE;
 }
+
+Bool SphereVsFrustrum(const Frustrum_Z& i_Frustrum, const Sphere_Z& i_Sphere, U32& o_Flag) {
+    return FALSE;
+}

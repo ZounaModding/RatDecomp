@@ -97,3 +97,9 @@ void ParticlesAgent_Z::DoFollow() {
 
 void ParticlesAgent_Z::SetPosAndRot(const Vec3f& i_Pos, const Quat& i_Rot) {
 }
+
+void ParticlesAgent_Z::Resume() {
+}
+
+void ParticlesAgent_Z::Replay() {
+}

@@ -501,3 +501,9 @@ void Node_Z::EnableFlag(U32 i_Flag, Bool i_Recursive) {
         }
     }
 }
+
+void Node_Z::Ref(World_Z* i_World, Object_Z* i_Object) {
+}
+
+void Node_Z::LightingChanged() {
+}
