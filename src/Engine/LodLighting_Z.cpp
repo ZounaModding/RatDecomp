@@ -25,3 +25,6 @@ Bool LodData_Z::SetLightingData(Node_Z* i_Node, Node_Z* i_ReceiverNode, Float i_
 
 void LodData_Z::SetLightingData(LightData_ZHdl i_LightDataHdl) {
 }
+
+void ActorData_Z::SetLightingData(Node_Z* i_Node, Node_Z* i_ReceiverNode, Float i_InterpolationTime) {
+}

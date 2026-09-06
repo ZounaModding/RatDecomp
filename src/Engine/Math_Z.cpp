@@ -401,3 +401,6 @@ Float ComputeMathPrecision() {
                ? 25.0f * ((l_Final.x >= 0.0f ? l_Final.x : -l_Final.x) + (l_Final.y >= 0.0f ? l_Final.y : -l_Final.y) + (l_Final.z >= 0.0f ? l_Final.z : -l_Final.z) + (l_Final.w >= 0.0f ? l_Final.w : -l_Final.w)) - 100.0f
                : -(25.0f * ((l_Final.x >= 0.0f ? l_Final.x : -l_Final.x) + (l_Final.y >= 0.0f ? l_Final.y : -l_Final.y) + (l_Final.z >= 0.0f ? l_Final.z : -l_Final.z) + (l_Final.w >= 0.0f ? l_Final.w : -l_Final.w)) - 100.0f);
 }
+
+void BuildLookAtRotation(const Vec3f& i_LookAt, const Vec3f& i_Up, Quat& o_Quat) {
+}

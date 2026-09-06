@@ -71,3 +71,7 @@ S32 Spline_Z::GetSplineId(Float i_Ratio) {
 Float Spline_Z::CalcSplineLen(Vec3f& i_PosA, Vec3f& i_PosB, Vec3f& i_PosC, Vec3f& i_PosD, Float i_Ratio) {
     return 0.0f;
 }
+
+Float Spline_Z::GetValueOutTrack(Float i_Ratio, Vec3f& i_Pos) {
+    return 0.0f;
+}
