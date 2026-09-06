@@ -135,7 +135,7 @@ S32 KeyframerMessage_Z::GetCctValue(
     }
     if (l_KeyIndex1 >= 0 && l_KeyIndex0 >= 0) {
         const KeyMessage_Z* l_CurKey = &m_Keys[l_KeyIndex0];
-        for (l_Idx = l_KeyIndex0; l_Idx <= l_KeyIndex1; l_Idx++, l_CurKey++) {
+        for (S32 l_Cur = l_KeyIndex0; l_Cur <= l_KeyIndex1; l_Cur++, l_CurKey++) {
             Float l_Time = l_CurKey->GetTime();
             S32 l_Size = l_CurKey->m_Messages.GetSize();
             Message_Z* l_CurMsg = l_CurKey->m_Messages.GetArrayPtr();
