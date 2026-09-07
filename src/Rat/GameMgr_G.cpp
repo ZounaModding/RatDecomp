@@ -60,6 +60,7 @@ void CTFGameMgr_G::SetCurrentLanguage(S32 i_Language) {
     ASSERTL_Z(FALSE, "Language not found !", 0x131);
 }
 
+// TODO: Figure out Rat flags cause SwitchScreen shouldn't be getting inlined
 void CTFGameMgr_G::SetVideoMode(S32 i_VideoMode) {
     if (gData.MainRdr->GetScreenRatio() == RATIO_SCREEN_STANDARD) {
         if (i_VideoMode == screen_widescreen) {

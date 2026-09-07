@@ -10,6 +10,9 @@ struct Cylindre_Z;
 struct Capsule_Z;
 struct Segment_Z;
 
+extern S32 CubeEdge[2 * 12];
+extern S32 CubeIndex[6 * 4];
+
 struct Box_Z {
     Mat3x3 Mat; // $SABE: Mat3x3 is actually Float[3][4]. 3x3 is pure rotation, center is [0][3],[1][3],[2][3]
     Vec3f Scale;
@@ -194,11 +197,33 @@ struct Capsule_Z {
     Float Radius;
 };
 
+inline Capsule_Z operator*(const Mat4x4& i_Matrix, const Capsule_Z& i_Capsule) {
+    Capsule_Z l_Capsule;
+    l_Capsule.Origin = i_Matrix * i_Capsule.Origin;
+    i_Matrix.MulWithoutTrans(i_Capsule.Direction, l_Capsule.Direction);
+    Float l_Scale = l_Capsule.Direction.GetNorm();
+    l_Capsule.Length = l_Scale * i_Capsule.Length;
+    l_Capsule.Direction /= l_Scale;
+    l_Capsule.Radius = i_Capsule.Radius * l_Scale;
+    return l_Capsule;
+}
+
 struct Segment_Z {
     Vec3f Origin;
     Float Length;
     Vec3f Direction;
     Float Pad;
+
+    Segment_Z() { }
+
+    Segment_Z(const Vec3f& i_Start, const Vec3f& i_End) {
+        Origin = i_Start;
+        Direction = i_End - i_Start;
+        Length = Direction.GetNorm();
+        if (Length > Float_Eps) {
+            Direction /= Length;
+        }
+    }
 };
 
 struct Cylindre_Z {

@@ -1,13 +1,11 @@
 #include "ProGounrMgr_G.h"
 
-struct ProceduralObjectDef {
-    const Char* m_Name;
-    S32 m_Type;
-    void* m_Unk;
-    S32 m_Count;
+ProceduralObjectDef procedural[4] = {
+    { "PROCEDURAL_1", 0x04000000, 0x0c000000, 128 },
+    { "PROCEDURAL_2", 0x08000000, 0x0c000000, 128 },
+    { "PROCEDURAL_3", 0x0c000000, 0x0c000000, 128 },
+    { NULL, 0, 0, 0 },
 };
-
-extern ProceduralObjectDef procedural[];
 
 void ProGroundMgr_G::SetGame(const Game_ZHdl& i_GameHdl) {
     m_GameHdl = i_GameHdl;

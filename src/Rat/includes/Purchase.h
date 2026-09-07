@@ -1,5 +1,6 @@
 #ifndef _PURCHASE_H_
 #define _PURCHASE_H_
+#include "MenuStyle.h"
 #include "Name_Z.h"
 #include "Types_Z.h"
 
@@ -13,10 +14,6 @@
 #define SHOP_BONUS_SKETCH_COUNT 25
 #define SHOP_CHEAT_COUNT 24
 #define SHOP_BONUS_VIDEO_COUNT 5
-
-class styleBitmap {
-    U8 m_MenuStyle[0x94];
-};
 
 class Purchase {
 public:

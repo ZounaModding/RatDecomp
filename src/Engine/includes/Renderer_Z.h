@@ -325,13 +325,20 @@ protected:
 public:
     Renderer_Z();
 
-    static void SwitchScreen(ScreenType i_ScreenType) { }
+    static void SwitchScreen(ScreenType i_ScreenType) {
+        if (i_ScreenType == screen_standard) {
+            ScreenRatio = RATIO_SCREEN_STANDARD;
+        }
+        else if (i_ScreenType == screen_widescreen) {
+            ScreenRatio = RATIO_SCREEN_WIDESCREEN;
+        }
+    }
 
     void SetSize(S32 i_SizeX, S32 i_SizeY);
 
     Viewport_Z& GetViewport(S32 i_ViewportID) { return m_Viewports[i_ViewportID]; }
 
-    inline Float GetScreenRatio() {
+    static inline Float GetScreenRatio() {
         return ScreenRatio;
     }
 
@@ -619,10 +626,6 @@ public:
 
     S32 GetNbViewport() const {
         return m_NbViewports;
-    }
-
-    inline Float GetScreenRatio() const {
-        return ScreenRatio;
     }
 
     inline Float GetXScaleFactor() const {
