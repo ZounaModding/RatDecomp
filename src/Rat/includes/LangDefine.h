@@ -15,6 +15,7 @@ typedef DynArray_Z<langDefine, 8> langDefineDA;
 
 struct ArrayLang {
     ArrayLang();
+    void AddLangDefine(langDefine& i_Define);
 
     langDefineDA m_LangDefines;
 };

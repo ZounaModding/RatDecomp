@@ -19,7 +19,6 @@ extern Name_Z BoxNames[34];
 extern Name_Z DialogButtonNames[775];
 extern Name_Z ButtonNames[775];
 extern const Color COLOR_WHITE;
-extern "C" int atoi(const char* i_String);
 
 class Dialog_G;
 class Frame_G;

@@ -113,7 +113,7 @@ public:
 
     virtual void SetPlayer(S32 i_PlayerId, ABC_AgentHdl i_PlayerHdl) { }
 
-    virtual ABC_AgentHdl GetPlayer(S32 i_PlayerId) { return ABC_AgentHdl(); }
+    virtual ABC_AgentHdl GetPlayer(S32 i_PlayerId) { return HANDLE_NULL; }
 
     virtual void ResetGame(Game_ZHdl& i_GameHdl) { }
 
@@ -179,7 +179,7 @@ public:
     MultiGame* GetMultiGame(Name_Z i_Name);
     Championship* GetChampionship(Name_Z i_Name);
     Bool IsMotPasJoli(Char* i_Text);
-    void AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Param2, Float i_Param3, Float i_Param4, Bool i_Flag);
+    S32 AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Param2, Float i_Param3, Float i_Param4, Bool i_Flag);
     void AddTTDialog(S32 i_DialogGroupId, S32 i_TextId);
 
     void ParseAIHierarchy(Node_Z* i_Node);
@@ -219,6 +219,8 @@ public:
     langDefineDA& GetLangDefines() { return m_ArrayLang.m_LangDefines; }
 
     langDefine& GetLangDefine(S32 i_Idx) { return m_ArrayLang.m_LangDefines[i_Idx]; }
+
+    MenuMpegTextDA& GetMpegTexts() { return m_MpegTexts; }
 
     UnLockEvents_G& GetUnlockEvents() { return m_UnlockEvents; }
 

@@ -104,6 +104,9 @@ void ScriptManager_G::GetAIDummies(const Game_ZHdl& i_GameHdl) {
 void ScriptManager_G::CheckNodeOnAIDummies(const Node_ZHdl& i_NodeHdl) {
 }
 
+void ScriptManager_G::ParseAIHierarchy(Node_Z* i_Node) {
+}
+
 void ScriptManager_G::InterpKeyframeMsg(const RegMessage_Z& i_Message) {
 }
 

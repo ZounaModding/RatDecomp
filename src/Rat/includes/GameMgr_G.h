@@ -10,6 +10,7 @@ class IsToBePlayed;
 #define RAT_INPUT_ACTION_COUNT 49
 
 struct CInputDef_G {
+    U32 GetActionID(Char* i_ActionName);
     void InitInputs();
 
     S32 m_Actions[RAT_INPUT_ACTION_COUNT];
@@ -20,10 +21,10 @@ struct CInputDef_G {
 
 struct ConfigStruct {
     S32 m_VideoMode;
-    U32 m_MusicVolume;
-    U32 m_SfxVolume;
-    U32 m_DialogVolume;
-    U32 m_CamSens;
+    S32 m_MusicVolume;
+    S32 m_SfxVolume;
+    S32 m_DialogVolume;
+    S32 m_CamSens;
     S32 m_ScreenPosX;
     S32 m_ScreenPosY;
     Bool m_Subtitles;
@@ -78,7 +79,17 @@ public:
 
     Bool Init();
     void InitConfiguration();
+    void SetCurrentLanguage(S32 i_Language);
+    void SetVideoMode(S32 i_VideoMode);
+    void SetMusicVolume(U32 i_Volume);
+    void SetSfxVolume(U32 i_Volume);
+    void SetDialogVolume(U32 i_Volume);
+    void SetFadeVolume(Float i_Volume);
+    void SetScreenPosX(S32 i_ScreenPosX);
+    void SetScreenPosY(S32 i_ScreenPosY);
+    void SetSubTitles(Bool i_SubTitles);
     void AddTime(Float i_DeltaTime);
+    Bool InitSaveStruct(Bool i_ResetActive);
 
     CInputDef_G* GetInputDef() { return &m_InputDef; }
 

@@ -2,3 +2,6 @@
 
 ArrayLang::ArrayLang() {
 }
+
+void ArrayLang::AddLangDefine(langDefine& i_Define) {
+}

@@ -74,6 +74,8 @@ class VideoPurchase {
 };
 
 struct Shop {
+    Bool Init();
+
     S32 m_Money;
     Bool m_DoUpdate;
     GamemodePurchase m_GameModes[SHOP_GAME_MODE_COUNT];
