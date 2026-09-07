@@ -10,6 +10,10 @@ void fsprintfID(Char* a1, U32 a2, U32 a3);
 
 int stricmp(const char* str1, const char* str2);
 
+namespace std {
+using ::strstr;
+}
+
 template <S32 Size>
 class String_Z {
 public:
