@@ -60,6 +60,8 @@ public:
     void MarkHandles();
     void AddGame(const World_ZHdl& i_WorldHdl, const Char* i_WorldName, S32 i_PlayerCount, Bool i_IsMono = FALSE, Name_Z i_CameraAgentClass = Name_Z("CameraAgent_Z"));
     void ActivateGame(S32 i_GameId, S32 i_PlayerId = -1);
+    void DeactivateGame(S32 i_GameId);
+    void RemoveGame(S32 i_GameId, Bool i_RemoveWorld);
     S32 GetGameIdByWorld(const World_ZHdl& i_WorldHdl);
     void DebugDisplay(Viewport_Z* i_Vp);
 

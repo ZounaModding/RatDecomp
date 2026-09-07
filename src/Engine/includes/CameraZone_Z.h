@@ -3,6 +3,11 @@
 #include "SplineZone_Z.h"
 #include "CameraZoneData_Z.h"
 
+struct ZoneTrigger_Z {
+    U16 m_TriggerNb;
+    U16 m_TriggerIndex;
+};
+
 class CameraZone_Z : public SplineZone_Z {
 public:
     virtual ~CameraZone_Z() { }
@@ -18,6 +23,11 @@ public:
     Bool GetCameraZoneInterpol(const Vec3f& i_WorldPosition, const Vec3f& i_WorldFocus, const CameraZoneData_Z& i_Data, CameraZoneInterpolData_Z& o_Data);
 
     static BaseObject_Z* NewObject() { return NewL_Z(56) CameraZone_Z; }
+
+private:
+    DynArray_Z<Trigger_Z, 32> m_Triggers;
+    DynArray_Z<ZoneTrigger_Z, 32> m_ZoneTriggers;
+    U16DA m_TriggerIndices;
 };
 
 #endif // _CAMERAZONE_Z_H_

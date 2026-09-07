@@ -23,6 +23,8 @@ struct chlink {
 
 class Pack_Z {
 public:
+    Pack_Z(U32 i_Size);
+    ~Pack_Z();
     S32 Pack(const U8* i_Data, S32 i_Size, S32 i_MaxBlockSize);
     void Init(U32 i_Size);
     void Flush();

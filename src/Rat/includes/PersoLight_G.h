@@ -8,6 +8,7 @@ public:
     virtual void Init();
     virtual void Reset();
     virtual void Update(Float i_DeltaTime);
+    void GameRemoved();
 
     static BaseObject_Z* NewObject() { return NewL_Z(75) PersoLight_G; }
 

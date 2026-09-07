@@ -4,6 +4,9 @@ void CameraZone_Z::Clean() {
 }
 
 void CameraZone_Z::Reset() {
+    for (S32 i = 0; i < m_Triggers.GetSize(); i++) {
+        m_Triggers[i].m_Flag &= ~(FL_TRIGGER_NOFIX | FL_TRIGGER_NOFOCUS);
+    }
 }
 
 Bool CameraZone_Z::GetCameraZoneData(const Vec3f& i_WorldPosition, CameraZoneData_Z& o_Data) {

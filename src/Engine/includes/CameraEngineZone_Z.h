@@ -13,9 +13,9 @@ class Bitmap_Z;
 #define CAMERA_ENGINE_CAPTURE_TYPE_TEXTURE 2
 #define CAMERA_ENGINE_CAPTURE_TYPE_NONE 3
 
-#define CAMERA_ENGINE_CAPTURE_PARAM_FRAMERATE 0
-#define CAMERA_ENGINE_CAPTURE_PARAM_FRAME_NB 1
-#define CAMERA_ENGINE_CAPTURE_PARAM_PATCH_NB 2
+#define CAMERA_ENGINE_CAPTURE_PARAM_PATCH_DELTA 0
+#define CAMERA_ENGINE_CAPTURE_PARAM_PATCH_NB 1
+#define CAMERA_ENGINE_CAPTURE_PARAM_FRAMERATE 2
 
 class CameraEngineZone_Z : public CameraEngine_Z {
 public:
@@ -46,19 +46,18 @@ private:
     Bool m_First;
     Bool m_Capture;
     Bitmap_Z* m_CaptureBitmap;
-    CameraZone_ZHdl m_CameraZoneHdl;
     Vec2f m_CaptureDepl;
     Sphere_Z m_CaptureSph;
+    CameraZone_ZHdl m_CameraZoneHdl;
     S32 m_CaptureNb;
     Float m_CapturedTime;
     Float m_CapturedTotalTime;
     Vec3f m_CapturePos;
     Float m_CaptureDelta;
     Float m_CaptureFramerate;
-    Float m_CapturePatchMax;
+    S32 m_CapturePatchMax;
     S32 m_CaptureFrameNb;
     S32 m_CaptureType;
-    S32 m_UnkS32_0xac;
     Vec3f m_Velocity;
     Vec3f m_OldCamPos;
 };

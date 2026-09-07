@@ -63,8 +63,9 @@ void ClassManager_Z::RegisterClassType(const Char* i_ClassName, U8 i_AddFlag, U8
 
     ASSERTLE_Z(l_Result, "", 151, "pResult");
 
-    m_ClassList[l_Result->m_Ref].m_Flag |= i_AddFlag;
-    m_ClassList[l_Result->m_Ref].m_Flag &= ~i_RemoveFlag;
+    U8& l_Flag = m_ClassList[l_Result->m_Ref].m_Flag;
+    l_Flag |= i_AddFlag;
+    l_Flag &= ~i_RemoveFlag;
 }
 
 Bool ClassManager_Z::IsObjectInherit(const Name_Z& i_ClassName, const Name_Z& i_ParentClassName) {
@@ -73,15 +74,15 @@ Bool ClassManager_Z::IsObjectInherit(const Name_Z& i_ClassName, const Name_Z& i_
         if (m_ClassList[l_ClassId].m_ParentClassName == i_ParentClassName) {
             return TRUE;
         }
-        l_ClassId = GetClassIndex(m_ClassList[l_ClassId].m_ParentClassName);
+        l_ClassId = GetClassIndex(Name_Z(m_ClassList[l_ClassId].m_ParentClassName));
     }
     return FALSE;
 }
 
-// TODO: Finish matching
 Name_Z& ClassManager_Z::GetClassName(const BaseObject_ZHdl& i_Hdl) {
-    U32 l_Id = i_Hdl.GetID();
-    return m_ClassList[m_HandleRecDA[l_Id].m_ClassID].m_ClassName;
+    ClassDesc_Z* l_Class = m_ClassList.GetArrayPtr();
+    l_Class += m_HandleRecDA[i_Hdl.GetID()].m_ClassID;
+    return l_Class->m_ClassName;
 }
 
 // TODO: Finish matching
@@ -180,7 +181,7 @@ const BaseObject_ZHdl& ClassManager_Z::NewObject(S16 i_ClassId, const Name_Z& i_
 const BaseObject_ZHdl& ClassManager_Z::GetObjectByName(const Name_Z& i_ObjectName, const Name_Z& i_ClassName) {
     HandleRec_Z* l_HandleRec = m_HandleRecDA.GetArrayPtr();
     S32 l_HandleCount = m_HandleRecDA.GetSize();
-    S16 l_ClassId = GetClassIndex(i_ClassName);
+    S32 l_ClassId = GetClassIndex(i_ClassName);
     while (l_HandleCount != 0) {
         if (l_HandleRec->m_ClassID == l_ClassId && l_HandleRec->m_ObjPtr && l_HandleRec->m_ObjPtr->GetName() == i_ObjectName) {
             return l_HandleRec->m_ObjPtr->GetHandle();
@@ -217,7 +218,7 @@ Bool CheckHandles() {
 }
 
 Bool AsynchCheckHandles() {
-    return FALSE;
+    return gData.ClassMgr->AsynchCheckHandles();
 }
 
 // TODO: Finish matching

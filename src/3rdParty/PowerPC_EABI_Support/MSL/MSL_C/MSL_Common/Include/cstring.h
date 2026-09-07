@@ -1,11 +1,49 @@
-#ifndef STD_CMATH_H_
-#define STD_CMATH_H_
+#ifndef _MSL_CSTRING_H
+#define _MSL_CSTRING_H
 
-#include "string.h"
+#include <cstddef>
+#include <ansi_files.h>
+#include <extras.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void* memcpy(void* dst, const void* src, size_t n);
+void* memset(void* dst, int val, size_t n);
+int memcmp(const void* lhs, const void* rhs, size_t count);
+void* __memrchr(const void* ptr, int ch, size_t count);
+void* memchr(const void* ptr, int ch, size_t count);
+void* memmove(void* dst, const void* src, size_t n);
+char* strrchr(const char* str, int c);
+char* strpbrk(const char* str, const char* c);
+char* strstr(const char* str, const char* substr);
+char* strchr(const char* str, int c);
+int strncmp(const char* str1, const char* str2, size_t n);
+int strcmp(const char* str1, const char* str2);
+char* strcat(char* dst, const char* src);
+char* strncpy(char* dst, const char* src, size_t n);
+char* strcpy(char* dst, const char* src);
+size_t strlen(const char* str);
+
+#ifdef __cplusplus
+};
 
 namespace std {
+using ::memcpy;
+using ::memset;
+using ::memcmp;
+using ::memchr;
+using ::memmove;
+using ::strrchr;
+using ::strchr;
 using ::strlen;
+using ::strncmp;
+using ::strcmp;
+using ::strcat;
+using ::strncpy;
 using ::strcpy;
-};  // namespace std
-
+} // namespace std
 #endif
+
+#endif /* _MSL_COMMON_STRING_H */
