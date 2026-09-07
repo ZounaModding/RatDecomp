@@ -171,6 +171,15 @@ struct InputAction_Z {
     S32 m_DeviceIdx;
     S32 m_ActionId;
 
+    void SetBaseValue(Float i_BaseValue) {
+        m_PressThreshold = i_BaseValue;
+    }
+
+    void SetMinMax(Float i_MinValue, Float i_MaxValue) {
+        m_MinValue = i_MinValue;
+        m_MaxValue = i_MaxValue;
+    }
+
     InputAction_Z() {
         m_WasPressed = FALSE;
         m_Pressed = FALSE;
@@ -208,6 +217,13 @@ struct InputActionContext_Z {
     DynArray_Z<InputAction_Z, 4> m_Actions;
     Bool m_IsActive;
     S32 m_FirstActionIdx;
+
+    InputActionContext_Z() {
+        m_DeviceIdx = -1;
+        m_IsActive = FALSE;
+        m_FirstActionIdx = -1;
+        m_AlwaysActive = FALSE;
+    }
 
     S32 AddAction(S32 i_ActionId);
     InputAction_Z& GetAction(S32 i_ActionId);

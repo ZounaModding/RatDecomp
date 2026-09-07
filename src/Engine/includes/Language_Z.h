@@ -44,7 +44,7 @@ LanguageEnum_Z GetLanguageForWAVE();
 
 // Game defined functions
 
-Extern_Z void LanguageHandleSTR(Char* i_Text);
+Extern_Z Bool LanguageHandleSTR(Char* i_Text);
 
 typedef DynArray_Z<Char, 256> CharDA;
 

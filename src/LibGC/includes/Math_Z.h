@@ -763,12 +763,6 @@ struct Mat4x4 {
         o_v = m3() * i_v;
     }
 
-    inline Vec3f MulWithoutTrans(const Vec3f& i_Vec) const {
-        Vec3f l_Result;
-        MulWithoutTrans(i_Vec, l_Result);
-        return l_Result;
-    }
-
     void MulWithoutTrans(const Vec4f& i_v, Vec4f& o_v) const;
 
     void Transp(Mat4x4& _Out) const;

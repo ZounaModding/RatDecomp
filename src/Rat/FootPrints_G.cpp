@@ -1,9 +1,14 @@
 #include "FootPrints_G.h"
 
 void FootPrints_G::Init() {
+    ManipulatorSceneDraw_Z::Init();
 }
 
 void FootPrints_G::Reset() {
+}
+
+void FootPrints_G::Activate() {
+    Manipulator_Z::Activate();
 }
 
 void FootPrints_G::Minimize() {

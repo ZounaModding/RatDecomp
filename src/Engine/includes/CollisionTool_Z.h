@@ -34,6 +34,10 @@ inline Float CollisionCrossDot(const Vec3f& i_Left, const Vec3f& i_Right, const 
     return (i_Left.y * i_Right.z - i_Left.z * i_Right.y) * i_Normal.x + (i_Left.z * i_Right.x - i_Left.x * i_Right.z) * i_Normal.y + (i_Left.x * i_Right.y - i_Left.y * i_Right.x) * i_Normal.z;
 }
 
+inline Float CollisionDot(const Float* i_Left, const Float* i_Right) {
+    return i_Left[0] * i_Right[0] + i_Left[1] * i_Right[1] + i_Left[2] * i_Right[2];
+}
+
 inline Double CollisionCubeRoot(Double i_Value) {
     return i_Value > 0.0 ? Float(pow(Float(i_Value), 1.f / 3.f)) : (i_Value < 0.0 ? -Float(pow(Float(-i_Value), 1.f / 3.f)) : 0.0);
 }
@@ -77,6 +81,9 @@ Bool MovingSphereVsVertex(const Capsule_Z& i_Capsule, const Vec4f& i_Vertex, Col
 Bool MovingSphereVsFaceInfinyUp(const Capsule_Z& i_Capsule, Vec4f& io_V0, Vec4f& io_V1, const Vec4f& i_Up, CollisionReport_Z& o_Report);
 Bool SegmentVsInfinySeg(const Segment_Z& i_Segment, const Vec4f& i_V0, const Vec4f& i_V1, CollisionReport_Z& o_Report);
 Bool PointVsBox(const Vec3f& i_Point, const Box_Z& i_Box);
+Bool SphereVsBox(const Sphere_Z& i_Sphere, const Box_Z& i_Box, CollisionReport_Z& o_Report);
+void cullPoints(int i_PointCount, Float* i_Points, int i_MaxPoints, int i_FirstPoint, int* o_Indices);
+void dLineClosestApproach(const Float* i_PointA, const Float* i_DirectionA, const Float* i_PointB, const Float* i_DirectionB, Float* o_Alpha, Float* o_Beta);
 Bool LineVsPatch(const Segment_Z& i_Segment, Vec4f* i_Cache, CollisionReport_Z& o_Report, S32 i_Lod);
 Bool LineVsSplineCollide(const Segment_Z& i_Segment, const Vec3f& i_P0, const Vec3f& i_P1, const Vec3f& i_P2, const Vec3f& i_P3, CollisionReport_Z& o_Report, Float i_Step);
 

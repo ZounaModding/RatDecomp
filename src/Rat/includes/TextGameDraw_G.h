@@ -8,6 +8,15 @@
 #include "Node_ZHdl.h"
 
 struct ObjTextDraw_G {
+    ObjTextDraw_G() {
+        m_HasColorCode = FALSE;
+        m_HasScroll = FALSE;
+        m_ScrollRelated0 = 0.0f;
+        m_ScrollRelated3 = 10.0f;
+        m_ScrollRelated1 = 1.0f;
+        m_Color = COLOR_RED;
+    }
+
     Bool m_HasColorCode;
     Node_ZHdl m_NodeHdl;
     Name_Z m_NodeName;
@@ -40,8 +49,11 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(73) TextGameDraw_G; }
 
     void Minimize();
+    void Activate();
     void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
     void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
+    void SharedDataInit(const Game_ZHdl& i_GameHdl);
+    void ParseHierarchy(const Node_ZHdl& i_NodeHdl, Bool i_Remove);
 
 private:
     ObjTextDraw_GDA m_ObjTextDrawDA;

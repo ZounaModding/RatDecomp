@@ -15,6 +15,8 @@ public:
 
     void Minimize() { }
 
+    void Activate();
+
 private:
     U8 m_Unk_0x20[0x130];
 };

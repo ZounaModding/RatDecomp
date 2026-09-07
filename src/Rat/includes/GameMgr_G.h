@@ -67,7 +67,15 @@ struct LastSavedBuffer {
 };
 
 struct RemapTextInfo {
-    U8 m_Data[0x20];
+    Char m_RemapText[24];
+    U8 m_InputButtonNameIndex;
+    S32 m_TrTextId;
+
+    RemapTextInfo() {
+        m_RemapText[0] = 0;
+        m_InputButtonNameIndex = 0xff;
+        m_TrTextId = -1;
+    }
 };
 
 typedef DynArray_Z<RemapTextInfo, 1> RemapTextInfoDA;
@@ -92,6 +100,8 @@ public:
     Bool InitSaveStruct(Bool i_ResetActive);
 
     CInputDef_G* GetInputDef() { return &m_InputDef; }
+
+    RemapTextInfoDA& GetRemapTextInfos() { return m_RemapTextInfos; }
 
 private:
     CInputDef_G m_InputDef;

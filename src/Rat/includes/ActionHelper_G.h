@@ -73,13 +73,15 @@ public:
     Bool Minimize();
     void StreamDone(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
     void StreamRemoving(const Game_ZHdl& i_GameHdl, const Node_ZHdl& i_NodeHdl);
+    void SharedDataInit(const Game_ZHdl& i_GameHdl);
+    void ParseHierarchy(const Node_ZHdl& i_NodeHdl, Bool i_Remove);
+    virtual void Reset();
 
 private:
     virtual void Init();
 
     virtual ~ActionHelper_G() { }
 
-    virtual void Reset();
     virtual void Update(Float i_DeltaTime);
     virtual void Draw(const DrawInfo_Z& i_DrawInfo);
     virtual void Activate();

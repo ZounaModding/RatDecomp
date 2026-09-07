@@ -98,6 +98,13 @@ public:
         m_IsPaused = FALSE;
     }
 
+    S32 CreateActionContext(Bool i_AlwaysActive) {
+        int l_ActionContextIdx = m_RegisteredInputActionContexts.Add();
+        m_RegisteredInputActionContexts[l_ActionContextIdx].m_FirstActionIdx = l_ActionContextIdx << 16;
+        m_RegisteredInputActionContexts[l_ActionContextIdx].m_AlwaysActive = i_AlwaysActive;
+        return l_ActionContextIdx;
+    }
+
     virtual ~InputPlatForm_Z() { }
 
     void SetControl(S32 i_ControlIdx, S32 i_ButtonId, S32 i_SecondaryButtonId) {

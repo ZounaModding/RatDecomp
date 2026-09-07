@@ -14,6 +14,7 @@ public:
     static BaseObject_Z* NewObject() { return NewL_Z(140) Ropes_G; }
 
     void Minimize();
+    void Activate();
 
 private:
     U8 m_Unk_0x20[0xc];

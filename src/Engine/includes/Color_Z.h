@@ -42,6 +42,7 @@ struct Color {
 };
 
 Extern_Z const Color COLOR_BLACK;
+Extern_Z const Color COLOR_RED;
 
 struct ColorU8 {
     ColorU8() { }

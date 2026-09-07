@@ -7,6 +7,10 @@ void Smell_G::Init() {
 void Smell_G::Reset() {
 }
 
+void Smell_G::Activate() {
+    Manipulator_Z::Activate();
+}
+
 void Smell_G::Update(Float i_DeltaTime) {
 }
 
