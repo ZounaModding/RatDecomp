@@ -35,3 +35,6 @@ void ConditionVolumeAgent_G::RemoveFromStaticList() {
         }
     }
 }
+
+void ConditionVolumeAgent_G::CheckAllConditions() {
+}

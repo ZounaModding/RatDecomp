@@ -57,10 +57,34 @@ Bool StartMENUDefinition() {
     return TRUE;
 }
 
+Bool MENUDialog() {
+    return FALSE;
+}
+
+Bool MENUButton() {
+    return FALSE;
+}
+
+Bool RemoveAllDialogs() {
+    return FALSE;
+}
+
 Bool EndMENURessourceParsing() {
     currentMenuManager->InitVoices();
     currentMenuManager->SetRessourcesParsed(TRUE);
     return TRUE;
+}
+
+Bool EndMENUDialog() {
+    return FALSE;
+}
+
+Bool MENUDEBug() {
+    return FALSE;
+}
+
+Bool MENUUpdate() {
+    return FALSE;
 }
 
 Bool MENUPlatform() {
@@ -137,6 +161,10 @@ Bool MENUButtonNotAvailable() {
     }
     currentButton->SetAvailable(FALSE);
     return TRUE;
+}
+
+Bool MENUButtonBitmap() {
+    return FALSE;
 }
 
 Bool MENUButtonSurroundingBitmaps() {
@@ -294,12 +322,64 @@ void GetColorFromText(Color& o_Color, Char* i_Text) {
     o_Color.a /= 255.0f;
 }
 
+Bool MENUStyleText() {
+    return FALSE;
+}
+
+Bool MENUStyleTextScroll() {
+    return FALSE;
+}
+
+Bool MENUStyleBox() {
+    return FALSE;
+}
+
+Bool MENUButtonAnimateCyclicTRUE() {
+    return FALSE;
+}
+
+Bool MENUSTyleTextStruct() {
+    return FALSE;
+}
+
+Bool MENUStyleTextEqual() {
+    return FALSE;
+}
+
+Bool MENUStyleBoxCoinScale() {
+    return FALSE;
+}
+
+Bool MENUStyleBitmapColor() {
+    return FALSE;
+}
+
+Bool MENUStyleBitmap() {
+    return FALSE;
+}
+
+Bool MENUStyleBitmapDim() {
+    return FALSE;
+}
+
+Bool MENUSurroundingBitMaps() {
+    return FALSE;
+}
+
+Bool MenuButtonMAJ() {
+    return FALSE;
+}
+
 Bool MENUBoxAutoShrink() {
     if (!(currentPlafeforme & menuPlafeforme)) {
         return TRUE;
     }
     currentButton->SetAutoShrinkBox();
     return TRUE;
+}
+
+Bool MENUStyleCyclicAnimation() {
+    return FALSE;
 }
 
 Bool MENUStateAnimation() {

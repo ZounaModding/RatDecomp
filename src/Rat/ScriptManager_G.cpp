@@ -249,6 +249,13 @@ LogicLevel_GHdl ScriptManager_G::GetCurrentLogicLevel() {
     }
 }
 
+S32 ScriptManager_G::GetIdCharacter(Char* i_Name) {
+    return 0;
+}
+
+void ScriptManager_G::PlayLevel(Char* i_LevelName, S32 i_PlayerCount, S32* i_CharacterIds, Char* i_MissionName, Char* i_StartName) {
+}
+
 void ScriptManager_G::RemoveAllMaterialLib(const Name_Z& i_Name) {
     for (S32 l_Index = 0; l_Index < m_Levels.GetSize(); ++l_Index) {
         LevelData_GHdl l_LevelHdl = LevelData_GHdl(m_Levels[l_Index]);
