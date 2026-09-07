@@ -71,6 +71,8 @@ public:
 
     ObjectDatas_Z* GetObjectDatas() const { return m_ObjectDatas; }
 
+    UserDefine_Z* GetUserDefine() const { return m_UserDefine; }
+
     inline Quat& GetRotInWorld() { return m_RotInWorld; }
 
     inline Sphere_Z& GetBSphere() { return m_BSphere; }

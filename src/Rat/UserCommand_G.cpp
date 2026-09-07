@@ -1,14 +1,20 @@
 #include "UserCommand_G.h"
 
 #include "Console_Z.h"
+#include "BaseInGameDatas_G.h"
+#include "ClassManager_Z.h"
 #include "GameMgr_G.h"
+#include "GameManager_Z.h"
 #include "Language_Z.h"
+#include "LevelData_G.h"
 #include "LoadingDraw_G.h"
 #include "MemoryCardMgr_G.h"
 #include "MenuParser.h"
 #include "Program_Z.h"
 #include "ScriptManager_G.h"
 #include "UnLock_G.h"
+#include <stdlib.h>
+#include <string.h>
 
 void RegisterUserCommand() {
     REGISTERCOMMAND("SetGameLogicAgent", SetGameLogicAgent);
@@ -180,6 +186,25 @@ void RegisterUserCommand() {
 }
 
 Bool SetGameLogicAgent() {
+    if (gData.Cons->GetNbParam() != 3) {
+        return FALSE;
+    }
+
+    Name_Z l_WorldClassName(Name_Z::GetID("WORLD_Z"));
+    Name_Z l_WorldName(gData.Cons->GetStrParam(1));
+    World_ZHdl l_WorldHdl(gData.ClassMgr->GetObjectByName(l_WorldName, l_WorldClassName));
+    if (!l_WorldHdl) {
+        return FALSE;
+    }
+
+    S32 l_GameId = gData.GameMgr->GetGameIdByWorld(l_WorldHdl);
+    if (l_GameId < 0) {
+        return FALSE;
+    }
+
+    Agent_ZHdl l_AgentHdl = gScriptMgr->NewAgent(gData.Cons->GetStrParam(2));
+    LogicAgent_GHdl l_LogicAgentHdl = l_AgentHdl;
+    gScriptMgr->AddLogicAgent(l_LogicAgentHdl, gData.GameMgr->GetGame(l_GameId));
     return TRUE;
 }
 
@@ -537,10 +562,17 @@ Bool AddLevelMPEG() {
 }
 
 Bool AddLevelRTC() {
+    LevelData_GHdl l_LevelDataHdl = gScriptMgr->GetLevelData(gData.Cons->GetStrParam(1));
+    if (l_LevelDataHdl) {
+        l_LevelDataHdl->SetRTCs(gData.Cons->GetStrParam(2), gData.Cons->GetStrParam(3));
+    }
     return TRUE;
 }
 
 Bool AddMpegMenu() {
+    MenuMpegTextDA& l_MpegTexts = gScriptMgr->GetMpegTexts();
+    S32 l_Index = l_MpegTexts.Add();
+    strcpy((Char*)l_MpegTexts[l_Index].m_Data, gData.Cons->GetStrParam(1));
     return TRUE;
 }
 
@@ -651,6 +683,7 @@ Bool StartStrip() {
 }
 
 Bool StartFadeFromBlack() {
+    gScriptMgr->GetInGameDatas()->StartFadeFromBlack(0.3f);
     return TRUE;
 }
 
@@ -715,6 +748,46 @@ Bool BeRich() {
 }
 
 Bool AddLangDefine() {
+    if (gData.Cons->GetNbParam() != 6) {
+        return FALSE;
+    }
+
+    LanguageEnum_Z l_Language = LANG_NONE;
+    if (!strcmp(gData.Cons->GetStrParam(5), "JAPANESE")) {
+        l_Language = LANG_JAPANESE_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "ENGLISH")) {
+        l_Language = LANG_ENGLISH_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "FRENCH")) {
+        l_Language = LANG_FRENCH_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "SPANISH")) {
+        l_Language = LANG_SPANISH_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "GERMAN")) {
+        l_Language = LANG_GERMAN_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "ITALIAN")) {
+        l_Language = LANG_ITALIAN_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "DUTCH")) {
+        l_Language = LANG_DUTCH_Z;
+    }
+    if (!strcmp(gData.Cons->GetStrParam(5), "PORTUGUESE")) {
+        l_Language = LANG_PORTUGUESE_Z;
+    }
+
+    S32 l_MpegId = atoi(gData.Cons->GetStrParam(4));
+    S32 l_DialogId = atoi(gData.Cons->GetStrParam(3));
+    S32 l_TrTextId = atoi(gData.Cons->GetStrParam(2));
+    langDefine l_Define;
+    l_Define.m_LangNameTrTextId = atoi(gData.Cons->GetStrParam(1));
+    l_Define.m_TrTextId = l_TrTextId;
+    l_Define.m_DialogId = l_DialogId;
+    l_Define.m_MpegId = l_MpegId;
+    l_Define.m_Lang = l_Language;
+    gScriptMgr->GetArrayLang().AddLangDefine(l_Define);
     return TRUE;
 }
 
@@ -728,6 +801,16 @@ Bool DisableDebugTools() {
 }
 
 Bool AddIngameDialog() {
+    Name_Z l_Name(gData.Cons->GetStrParam(1));
+    Float l_Param1 = atof(gData.Cons->GetStrParam(2));
+    Float l_Param2 = atof(gData.Cons->GetStrParam(3));
+    Bool l_Flag = atof(gData.Cons->GetStrParam(4)) > 0.0;
+    Float l_Param3 = atof(gData.Cons->GetStrParam(5));
+    Float l_Param4 = atof(gData.Cons->GetStrParam(6));
+    S32 l_DialogGroupId = gScriptMgr->AddInGameDialog(l_Name, l_Param1, l_Param2, l_Param3, l_Param4, l_Flag);
+    for (S32 i = 7; i < gData.Cons->GetNbParam(); ++i) {
+        gScriptMgr->AddTTDialog(l_DialogGroupId, atoi(gData.Cons->GetStrParam(i)));
+    }
     return TRUE;
 }
 

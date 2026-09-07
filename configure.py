@@ -1264,7 +1264,7 @@ config.libs = [
             Object(NonMatching, "Rat/Mission_WireConnect.cpp"),
             Object(NonMatching, "Rat/CreatureBumper.cpp"),
             Object(NonMatching, "Rat/Mission_LinguiniMakingInterface.cpp"),
-            Object(NonMatching, "Rat/ScriptExternalCommands_G.cpp"),
+            Object(NonMatching, "Rat/ScriptExternalCommands_G.cpp", extra_cflags=["-inline noauto"]),
             Object(NonMatching, "Rat/TextGameDraw_G.cpp"),
             Object(NonMatching, "Rat/FlyUpVolumeAgent_G.cpp"),
             Object(NonMatching, "Rat/IT_FishMove.cpp"),

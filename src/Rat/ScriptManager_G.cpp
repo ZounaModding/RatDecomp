@@ -179,6 +179,9 @@ void ScriptManager_G::Update(Float i_DeltaTime) {
     }
 }
 
+void ScriptManager_G::AddLogicAgent(const LogicAgent_GHdl& i_LogicAgentHdl, const Game_ZHdl& i_GameHdl) {
+}
+
 void ScriptManager_G::RemoveLogicAgent(const Game_ZHdl& i_GameHdl) {
 }
 
@@ -199,6 +202,10 @@ S32 ScriptManager_G::GetLevelDataId(LevelData_GHdl i_Hdl) {
         }
     }
     return -1;
+}
+
+LevelData_GHdl ScriptManager_G::GetLevelData(Char* i_LevelName) {
+    return HANDLE_NULL;
 }
 
 void ScriptManager_G::RemoveOldLevel() {
@@ -360,4 +367,11 @@ Bool ScriptManager_G::IsMotPasJoli(Char* i_Text) {
         ++l_Word;
     }
     return FALSE;
+}
+
+S32 ScriptManager_G::AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Param2, Float i_Param3, Float i_Param4, Bool i_Flag) {
+    return 0;
+}
+
+void ScriptManager_G::AddTTDialog(S32 i_DialogGroupId, S32 i_TextId) {
 }

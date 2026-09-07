@@ -54,6 +54,14 @@ public:
 
     inline UserDefineCmd_Z& GetCmd() { return m_Cmd; }
 
+    inline Char* GetFirstCommand(U32& o_Length) {
+        return m_Cmd.GetFirstCommand(o_Length);
+    }
+
+    inline Char* GetNextCommand(U32& o_Length) {
+        return m_Cmd.GetNextCommand(o_Length);
+    }
+
 private:
     UserDefineCmd_Z m_Cmd;
 };

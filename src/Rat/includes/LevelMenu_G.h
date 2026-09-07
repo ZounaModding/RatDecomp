@@ -12,6 +12,8 @@ struct LevelDemoMenu_G {
 };
 
 struct MenuMpegText {
+    MenuMpegText() { }
+
     U8 m_Data[0x10];
 };
 

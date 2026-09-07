@@ -8,6 +8,7 @@
 #include "Name_Z.h"
 #include "Pack_Z.h"
 #include "Program_Z.h"
+#include "ResName.h"
 #include "ScriptManager_G.h"
 #include "Sys_Z.h"
 #include "Memory_Z.h"
@@ -15,11 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern Name_Z BoxNames[34];
-extern Name_Z DialogButtonNames[775];
-extern Name_Z ButtonNames[775];
 extern const Color COLOR_WHITE;
-extern "C" int atoi(const char* i_String);
 
 class Dialog_G;
 class Frame_G;

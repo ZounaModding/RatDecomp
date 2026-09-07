@@ -14,6 +14,7 @@ public:
     MaterialLib* GetMaterialLibLoaded(const Name_Z& i_Name);
     void FreeMaterialLib(MaterialLib* i_MaterialLib, Bool i_Force);
     void ResetAdvancement();
+    void SetRTCs(Char* i_Rtc1, Char* i_Rtc2);
 
 private:
     U8 m_Unk_0x0c[0xc4];

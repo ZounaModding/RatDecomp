@@ -125,6 +125,10 @@ public:
         return m_VolumeObjectHdl;
     }
 
+    inline UserDefine_Z* GetUserDefine() const {
+        return m_UserDefine;
+    }
+
 protected:
     SphereCol_ZDA m_SphereCollisions;
     BoxCol_ZDA m_BoxCollisions;
