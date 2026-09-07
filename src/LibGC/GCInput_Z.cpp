@@ -33,7 +33,7 @@ void GCInput_Z::AddDevice() {
         return;
     }
     m_Devices.Add();
-    m_Devices[l_DeviceIdx].m_Status = 0;
+    m_Devices[l_DeviceIdx].m_Status = PAD_CONNECTED;
     m_Devices[l_DeviceIdx].Reset();
 }
 
@@ -66,13 +66,6 @@ void GCInput_Z::ResetPad(S16 i_PadIdx) {
             PADReset(PAD_CHAN3_BIT);
             break;
     }
-}
-
-void InputPlatForm_Z::Minimize() {
-    m_Devices.Minimize();
-    m_ActionButtonMappings.Minimize();
-    m_RegisteredInputActionContexts.Minimize();
-    m_ActiveInputActionContexts.Minimize();
 }
 
 Float GCInput_Z::GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown) {
@@ -154,19 +147,19 @@ Bool GCInput_Z::UpdatePaddle(S16 i_PadIdx) {
         case SI_GC_CONTROLLER:
         case SI_GC_WAVEBIRD:
             if (m_PadStatus[l_PadIdx].err == PAD_ERR_NO_CONTROLLER) {
-                m_Devices[l_PadIdx].m_Status = 1;
+                m_Devices[l_PadIdx].m_Status = PAD_DISCONNECTED;
                 ResetPad(i_PadIdx);
                 return FALSE;
             }
             break;
         default:
             m_PadStatus[l_PadIdx].err = PAD_ERR_NO_CONTROLLER;
-            m_Devices[l_PadIdx].m_Status = 1;
+            m_Devices[l_PadIdx].m_Status = PAD_DISCONNECTED;
             ResetPad(i_PadIdx);
             return FALSE;
     }
 
-    m_Devices[l_PadIdx].m_Status = 0;
+    m_Devices[l_PadIdx].m_Status = PAD_CONNECTED;
     if (m_PadStatus[l_PadIdx].button & PAD_BUTTON_UP) {
         l_Device.m_DPadUpPressedPassed = 255;
     }
@@ -233,11 +226,11 @@ void GCInput_Z::IsButtonPressed(U8 a1) {
 }
 
 S32 GCInput_Z::GetDeviceStatus(S32 i_DeviceIdx, S32 i_Unused) {
-    if (i_DeviceIdx >= 0 && i_DeviceIdx < 4) {
+    if (i_DeviceIdx >= 0 && i_DeviceIdx < PAD_MAX_CONTROLLERS) {
         return m_Devices[i_DeviceIdx].m_Status;
     }
 
-    return 1;
+    return PAD_DISCONNECTED;
 }
 
 void GCInput_Z::ResetPads() {

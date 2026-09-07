@@ -11,6 +11,11 @@
 #define INPUT_VALUE_CURVE_NONE -1
 #define INPUT_VALUE_CURVE_DOUBLE_EXPONENTIAL 0
 
+enum PadStatus_Z {
+    PAD_CONNECTED,
+    PAD_DISCONNECTED,
+};
+
 class DeviceAction_Z {
 public:
     Float m_Value;
