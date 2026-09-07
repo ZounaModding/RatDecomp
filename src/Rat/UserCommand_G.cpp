@@ -9,7 +9,6 @@
 #include "Program_Z.h"
 #include "ScriptManager_G.h"
 #include "UnLock_G.h"
-#include <extras.h>
 
 void RegisterUserCommand() {
     REGISTERCOMMAND("SetGameLogicAgent", SetGameLogicAgent);
