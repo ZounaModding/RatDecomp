@@ -201,3 +201,7 @@ long strtol(const char* str, char** end, int base) {
 
     return svalue;
 }
+
+int atoi(const char* str) {
+    return (int)strtol(str, NULL, 10);
+}

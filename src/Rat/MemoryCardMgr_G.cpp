@@ -4,6 +4,9 @@ void MemoryCardManager_C::Init() {
     Manipulator_Z::Init();
 }
 
+void MemoryCardManager_C::InitLanguageMC() {
+}
+
 MemoryCardManager_C::~MemoryCardManager_C() {
 }
 
