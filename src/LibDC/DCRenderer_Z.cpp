@@ -3,6 +3,7 @@
 #include "Timer_Z.h"
 #include "Bitmap_Z.h"
 #include "Material_Z.h"
+#include "SystemDatas_Z.h"
 #include <dc/pvr.h>
 
 static void PvrBlendFromRenderFlags(U32 i_RenderFlags, pvr_blend_mode_t& o_Src, pvr_blend_mode_t& o_Dst);
@@ -236,6 +237,8 @@ static S32 PvrFormatFromBitmap(Bitmap_Z* i_Bitmap) {
             return PVR_TXRFMT_ARGB4444;
         case BM_565:
             return PVR_TXRFMT_RGB565;
+        case BM_5551:
+            return PVR_TXRFMT_ARGB1555;
         default:
             ASSERT_Z(FALSE, "DCRenderer_Z::PvrFormatFromBitmap: Unsupported bitmap format");
             break;
@@ -267,6 +270,9 @@ void DCRenderer_Z::BuildPolyContext(pvr_poly_cxt_t& o_Cxt, Material_Z* i_Materia
     // ds_cwrite has no equivalent, the PVR has no colour write mask, so
     // FL_MTL_CODE_ZONLY materials cannot be expressed.
     Bitmap_Z* l_Bitmap = i_Material ? (Bitmap_Z*)i_Material->GetBitmap(Material_Z::mtl_diffuse) : NULL;
+    if (gData.m_EngineFlag & FL_NO_TEXTURE) {
+        l_Bitmap = gData.SystemDatas->GetWhiteBitmap();
+    }
     DCTexture_Z* l_Texture = l_Bitmap ? LoadTexture(l_Bitmap) : NULL;
 
     if (l_Texture) {

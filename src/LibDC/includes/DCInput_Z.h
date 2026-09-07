@@ -1,6 +1,10 @@
 #ifndef _DCINPUT_Z_H_
 #define _DCINPUT_Z_H_
 #include "InputEngine_Z.h"
+#include <dc/maple.h>
+#include <dc/maple/controller.h>
+
+#define DC_MAX_CONTROLLERS 4
 
 class DCInput_Z : public InputPlatForm_Z {
 public:
@@ -16,10 +20,10 @@ public:
     virtual void Vibration(S32 a1, U8 a2, U8 a3);
     virtual S32 GetDeviceStatus(S32 a1, S32 a2);
     virtual Float GetControl(InputDevice_Z* i_Device, S32 i_ControlId, void* i_ControllerData, Bool i_Unknown);
-    virtual void ResetPad(S16 a1);
     Bool UpdatePaddle(S16 i_PadIdx);
 
 private:
+    maple_device* m_Controllers[DC_MAX_CONTROLLERS];
 };
 
 #endif // _GCINPUT_Z_H_

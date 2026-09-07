@@ -4,6 +4,7 @@
 #include "Material_Z.h"
 #include "Assert_Z.h"
 #include "DCRenderer_Z.h"
+#include "DCInput_Z.h"
 #include "ErrorLanguage_Z.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -51,6 +52,7 @@ void InitProgram(int i_Argc, Char** i_Argv) {
 
 void LowLevelInitProgram() {
     NewMgrInitArgs_Z(gData.MainRdr, DCRenderer_Z, 640, 480);
+    NewMgrInit_Z(gData.InputMgr, DCInput_Z);
 }
 
 // TODO: MaterialDC_Z might need to be a real class

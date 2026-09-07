@@ -147,6 +147,10 @@ struct Vec2f {
     Vec2f& Normalize() { return (*this) /= GetNorm(); }
 };
 
+inline Vec2f operator*(Float i_Factor, const Vec2f& i_Vec) {
+    return i_Vec * i_Factor;
+}
+
 Extern_Z const Vec2f VEC2F_NULL;
 Extern_Z const Vec2f VEC2F_ONE;
 
@@ -526,6 +530,15 @@ struct Vec4f {
 
     Vec4f& Normalize() { return (*this) /= fsqrt(x * x + y * y + z * z); }
 
+    Vec4f& HNormalize() {
+        Float l_InvNorm = 1.f / Sqrt(x * x + z * z);
+        x *= l_InvNorm;
+        y = 0.f;
+        z *= l_InvNorm;
+        w = 1.f;
+        return *this;
+    }
+
     Vec3f& xyz() {
         return *(Vec3f*)&x;
     }
@@ -884,6 +897,8 @@ public:
     S16 z;
 
     void Set(const Vec3f& i_Vector);
+    void Get(Vec4f& o_Vector) const;
+    static void Get(const Vec3f_S16_Z& i_V0, const Vec3f_S16_Z& i_V1, const Vec3f_S16_Z& i_V2, Vec4f& o_V0, Vec4f& o_V1, Vec4f& o_V2);
 };
 
 Sphere_Z operator*(const Mat4x4& i_Mat, const Sphere_Z& i_Sphere);

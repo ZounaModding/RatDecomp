@@ -5,6 +5,8 @@
 
 class DCConsole_Z : public Console_Z {
 public:
+    DCConsole_Z();
+
     virtual Bool InitConsole() {
         return TRUE;
     }
