@@ -120,7 +120,12 @@ public:
         return TRUE;
     }
 
-    virtual void Minimize();
+    virtual void Minimize() {
+        m_Devices.Minimize();
+        m_ActionButtonMappings.Minimize();
+        m_RegisteredInputActionContexts.Minimize();
+        m_ActiveInputActionContexts.Minimize();
+    }
 
     virtual void Shut() { }
 

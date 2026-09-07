@@ -980,7 +980,7 @@ config.libs = [
             Object(NonMatching, "Engine/KeyframerRot_Z.cpp"),
             Object(NonMatching, "Engine/ObjectsBreakCollShadow_Z.cpp"),
             Object(NonMatching, "Engine/ClassManager_Z.cpp"),
-            Object(NonMatching, "Engine/Collision_Z.cpp"),
+            Object(Matching,    "Engine/Collision_Z.cpp"),
             Object(NonMatching, "Engine/BoneNode_Z.cpp"),
             Object(NonMatching, "Engine/Node_Z.cpp"),
             Object(NonMatching, "Engine/ObjectMoveCollVol_Z.cpp"),
