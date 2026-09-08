@@ -11,9 +11,6 @@ END_INIT_AGENT_CLASS
 
 // clang-format on
 
-LevelAgent_G::LevelAgent_G() {
-}
-
 // clang-format off
 
 BEHAVIOR(LevelAgent_G,BhvToLevel)

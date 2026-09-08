@@ -4,14 +4,29 @@
 #include "CreaturesBoneManipHdl.h"
 #include "DynArray_Z.h"
 #include "DynPtrArray_Z.h"
+#include "Node_ZHdl.h"
 #include "Math_Z.h"
 
 class CreaturesMove_G;
 class InGameCreatures_G;
 class Node_Z;
 
+// $SABE: This probably goes in another place, since ProGroundMgr also uses it (probs engine header)
 struct ObjectLinked_Z {
-    U8 m_Unk_0x00[0x50];
+    Agent_ZHdl m_AgentHdl;
+    Node_ZHdl m_NodeHdl;
+    S32 m_Unk_0x08;
+    BaseObject_ZHdl m_Unk_0x0c;
+    S32 m_Type;
+    Name_Z m_Name;
+    Vec3f m_Pos;
+    U8 m_Unk_0x24[12];
+    Quat m_Rot;
+    Bool m_Active;
+    Bool m_Hidden;
+    Bool m_Unk_0x42;
+    U8 m_Pad_0x43;
+    U8 m_Unk_0x44[12];
 };
 
 typedef DynArray_Z<ObjectLinked_Z, 8> ObjectLinked_ZDA;

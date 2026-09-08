@@ -286,6 +286,8 @@ void ScriptManager_G::ResetAdvancement() {
     CheckUnlock(TRUE);
 }
 
+#pragma auto_inline off
+
 S32 ScriptManager_G::GetNbPlayer() {
     if (!gData.GameMgr->GetNbGame()) {
         return 0;
@@ -308,6 +310,8 @@ Player_G* ScriptManager_G::GetMainPlayer(S32 i_PlayerId) {
     }
     return NULL;
 }
+
+#pragma auto_inline on
 
 void ScriptManager_G::CheckUnlock(Bool i_Force) {
     m_UnlockEvents.CheckUnlock(i_Force);

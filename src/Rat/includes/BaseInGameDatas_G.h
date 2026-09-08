@@ -43,6 +43,7 @@ protected:
     U8 m_Unk_0xcc4[0x5f0];
 
 public:
+    virtual void Init();
     void InitAfterSharedLoad();
     void DrawDebugWindow(Renderer_Z* i_Renderer, COMMON_INFOS& i_Infos);
     void AddPage(InterfacePage* i_Page);

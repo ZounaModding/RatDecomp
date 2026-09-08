@@ -4,6 +4,7 @@
 #include "Math_Z.h"
 #include "Purchase.h"
 #include "Types_Z.h"
+#include "Language_Z.h"
 
 class IsToBePlayed;
 
@@ -88,6 +89,9 @@ public:
     Bool Init();
     void InitConfiguration();
     void SetCurrentLanguage(S32 i_Language);
+
+    S32 GetCurrentLanguage() { return GetLanguage(); }
+
     void SetVideoMode(S32 i_VideoMode);
     void SetMusicVolume(U32 i_Volume);
     void SetSfxVolume(U32 i_Volume);

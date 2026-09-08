@@ -16,6 +16,7 @@
 #include "PermanentDraw.h"
 #include "PersoLight_G.h"
 #include "PointJump_G.h"
+#include "ProGroundMgr_G.h"
 #include "Program_Z.h"
 #include "Ropes_G.h"
 #include "ScriptManager_G.h"
@@ -67,7 +68,10 @@ void GetFlagsFromGame() {
 void RegisterGameClasses() {
     REGISTER_CLASS("CameraUser_Z", "Manipulator_Z", CameraUser_Z::NewObject);
 
-    // PlayerMove_G through MenuManager_G
+    // PlayerMove_G through PhysicWorld_G
+    REGISTER_CLASS("ProGroundMgr_G", "ObjectGame_Z", ProGroundMgr_G::NewObject);
+
+    // Game_SoundMgr through MenuManager_G
     REGISTER_CLASS("LoadingDraw_C", "ManipulatorDraw", LoadingDraw_C::NewObject);
     REGISTER_CLASS("PermanentDraw", "ManipulatorDraw", PermanentDraw::NewObject);
     REGISTER_CLASS("TextGameDraw_G", "ManipulatorSceneDraw_Z", TextGameDraw_G::NewObject);
