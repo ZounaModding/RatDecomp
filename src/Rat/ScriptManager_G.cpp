@@ -379,3 +379,45 @@ S32 ScriptManager_G::AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Par
 
 void ScriptManager_G::AddTTDialog(S32 i_DialogGroupId, S32 i_TextId) {
 }
+
+Bool PlayerSaveStruct_G::IsPlayerDead() {
+    return (U8)(m_Health <= 0);
+}
+
+void PlayerSaveStruct_G::SetHealthMax(S32 i_MaxHealth) {
+    m_MaxHealth = i_MaxHealth;
+
+    if (m_MaxHealth > PLAYER_HEALTH_CAP) {
+        m_MaxHealth = PLAYER_HEALTH_CAP;
+    }
+}
+
+Bool PlayerSaveStruct_G::IsPlayerFullHealth() {
+    return (U8)(m_Health >= m_MaxHealth);
+}
+
+void PlayerSaveStruct_G::IncreaseHealth(S32 i_Amount) {
+    m_Health += i_Amount;
+
+    if (m_Health > m_MaxHealth) {
+        m_Health = m_MaxHealth;
+    }
+}
+
+void PlayerSaveStruct_G::IncreaseHealthMax(S32 i_Amount) {
+    m_MaxHealth += i_Amount;
+
+    if (m_MaxHealth > PLAYER_HEALTH_CAP) {
+        m_MaxHealth = PLAYER_HEALTH_CAP;
+    }
+}
+
+Bool PlayerSaveStruct_G::DecreaseHealth(S32 i_Amount) {
+    m_Health -= i_Amount;
+
+    if (m_Health <= 0) {
+        m_Health = 0;
+        return TRUE;
+    }
+    return FALSE;
+}
