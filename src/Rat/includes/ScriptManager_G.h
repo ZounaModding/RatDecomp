@@ -53,6 +53,7 @@ class RtcScriptAgent_G;
 #define PLAYER_DEFAULT_MAX_HEALTH 3
 #define PLAYER_DEFAULT_HEALTH PLAYER_DEFAULT_MAX_HEALTH
 #define PLAYER_DEFAULT_LIVES 5
+#define PLAYER_HEALTH_CAP 8
 
 #define SPECIAL_VISION_COLOR_1_R 0.4f
 #define SPECIAL_VISION_COLOR_1_G 0.1f
@@ -76,7 +77,7 @@ public:
     Bool IsPlayerFullHealth();
     void SetHealthMax(S32 i_MaxHealth);
     void IncreaseHealthMax(S32 i_Amount);
-    void DecreaseHealth(S32 i_Amount);
+    Bool DecreaseHealth(S32 i_Amount);
     void DecreaseLife(S32 i_Amount);
     Bool IsPlayerDead();
 
