@@ -362,33 +362,11 @@ void PlayerSaveStruct_G::Reset() {
     m_Lives = PLAYER_DEFAULT_LIVES;
 }
 
-Bool ScriptManager_G::IsMotPasJoli(Char* i_Text) {
-    Char** l_Word = &arrayMotsPasJoli[0];
-    while (stricmp(*l_Word, "END") != 0) {
-        if (stricmp(i_Text, *l_Word) == 0) {
-            return TRUE;
-        }
-        ++l_Word;
-    }
-    return FALSE;
-}
+void PlayerSaveStruct_G::IncreaseHealth(S32 i_Amount) {
+    m_Health += i_Amount;
 
-S32 ScriptManager_G::AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Param2, Float i_Param3, Float i_Param4, Bool i_Flag) {
-    return 0;
-}
-
-void ScriptManager_G::AddTTDialog(S32 i_DialogGroupId, S32 i_TextId) {
-}
-
-Bool PlayerSaveStruct_G::IsPlayerDead() {
-    return (U8)(m_Health <= 0);
-}
-
-void PlayerSaveStruct_G::SetHealthMax(S32 i_MaxHealth) {
-    m_MaxHealth = i_MaxHealth;
-
-    if (m_MaxHealth > PLAYER_HEALTH_CAP) {
-        m_MaxHealth = PLAYER_HEALTH_CAP;
+    if (m_Health > m_MaxHealth) {
+        m_Health = m_MaxHealth;
     }
 }
 
@@ -396,11 +374,11 @@ Bool PlayerSaveStruct_G::IsPlayerFullHealth() {
     return (U8)(m_Health >= m_MaxHealth);
 }
 
-void PlayerSaveStruct_G::IncreaseHealth(S32 i_Amount) {
-    m_Health += i_Amount;
+void PlayerSaveStruct_G::SetHealthMax(S32 i_MaxHealth) {
+    m_MaxHealth = i_MaxHealth;
 
-    if (m_Health > m_MaxHealth) {
-        m_Health = m_MaxHealth;
+    if (m_MaxHealth > PLAYER_HEALTH_CAP) {
+        m_MaxHealth = PLAYER_HEALTH_CAP;
     }
 }
 
@@ -421,3 +399,26 @@ Bool PlayerSaveStruct_G::DecreaseHealth(S32 i_Amount) {
     }
     return FALSE;
 }
+
+Bool PlayerSaveStruct_G::IsPlayerDead() {
+    return (U8)(m_Health <= 0);
+}
+
+Bool ScriptManager_G::IsMotPasJoli(Char* i_Text) {
+    Char** l_Word = &arrayMotsPasJoli[0];
+    while (stricmp(*l_Word, "END") != 0) {
+        if (stricmp(i_Text, *l_Word) == 0) {
+            return TRUE;
+        }
+        ++l_Word;
+    }
+    return FALSE;
+}
+
+S32 ScriptManager_G::AddInGameDialog(Name_Z& i_Name, Float i_Param1, Float i_Param2, Float i_Param3, Float i_Param4, Bool i_Flag) {
+    return 0;
+}
+
+void ScriptManager_G::AddTTDialog(S32 i_DialogGroupId, S32 i_TextId) {
+}
+
